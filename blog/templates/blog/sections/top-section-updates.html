@@ -1,0 +1,48 @@
+{% load static %}
+<div class="container-medium">
+    <div class="blog-category-wrapper w-dyn-list">
+        <div role="list" class="blog-category-list w-dyn-items">
+            <div role="listitem" class="w-dyn-item">
+                <a href="/karamoja" class="category-link w-inline-block"><p>#Karamoja Cry</p></a></div>
+                
+                <div role="listitem" class="w-dyn-item">
+                <a href="/response" class="category-link w-inline-block"><p>#Our Response</p></a></div>
+                {% comment %} w--current {% endcomment %}
+                <div role="listitem" class="w-dyn-item"><a href="#" aria-current="page" class="category-link w-inline-block">
+                    <p>Lasting Solutions</p></a></div>
+                    
+                    <div role="listitem" class="w-dyn-item">
+                        <a href="/karamoja" class="category-link w-inline-block"><p>Food Security & Value Addition</p></a></div>
+                        <div role="listitem" class="w-dyn-item">
+                            <a href="#" class="category-link w-inline-block"><p>Mindset Change</p></a></div>
+                            <div role="listitem" class="w-dyn-item"><a href="#" class="category-link w-inline-block"><p>Machinary & Production</p></a></div>
+                            <div role="listitem" class="w-dyn-item"><a href="#" class="category-link w-inline-block"><p>Awards</p></a></div>
+                            {% comment %} /blog-category/product-updates {% endcomment %}
+                            <div role="listitem" class="w-dyn-item"><a href="#" class="category-link w-inline-block"><p>Land Clearing</p></a></div>
+                            <div role="listitem" class="w-dyn-item"><a href="#" class="category-link w-inline-block"><p>Food Storage</p></a></div>
+                            <div role="listitem" class="w-dyn-item"><a href="#" class="category-link w-inline-block"><p>Food Processing</p></a></div></div></div></div>
+
+
+
+
+
+
+
+                            {% block extra_js %}
+                            <script src="{% static 'js/jquery-3.6.0.slim.min.js' %}"></script>
+                     
+                                <script>
+                                    $(document).ready(function() {
+                                        // Handle menu item click
+                                        $('.w-inline-block').on('click', function() {
+                                            // Remove the 'w--current' class from all menu items
+                                            $('.w-inline-block').removeClass('w--current');
+                                            
+                                            // Add the 'w--current' class to the clicked menu item
+                                            $(this).addClass('w--current');
+                                        });
+                                    });
+                                </script>
+
+                            
+                            {% endblock  %}

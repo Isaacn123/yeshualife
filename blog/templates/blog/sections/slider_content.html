@@ -1,0 +1,102 @@
+{% load static %}
+
+
+
+{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags %}
+
+<h2 class="d2c_title">Plowing, Planting, Produce </h2>
+<div id="carouselExampleControls" class="carousel">
+    
+    <div class="carousel-inner ">
+
+        {% if forloop.first %}
+          {% for m in post.specific.body_content %}
+          {% for v in m.value.videos %}
+
+
+        <div class="carousel-item active custom-carousel-inner">
+            <div class="card">
+                <div class="img-wrapper">
+                    {% comment %} <img src="https://plus.unsplash.com/premium_photo-1668104454442-a251cc42ee58?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top"  alt="..."> {% endcomment %}
+                    {% comment %} <img src="..." class="d-block w-100" alt="...">  {% endcomment %}
+                    {% comment %} width="420" height="315" {% endcomment %}
+                    <iframe class="card-img-top"  src="{{v.video_url}}" title="Sowing Hope: Battling Karamoja Hunger Through Strategic Plowing Sustainable Agriculture Empowerment." frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" frameborder="0" allowfullscreen 
+                    allowfullscreen="allowfullscreen"
+                    mozallowfullscreen="mozallowfullscreen" 
+                    msallowfullscreen="msallowfullscreen" 
+                    oallowfullscreen="oallowfullscreen" 
+                    webkitallowfullscreen="webkitallowfullscreen"
+                    ></iframe>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{page.specific.caption}}</h5>
+                    <p class="card-text">{{page.specific.intro}}</p>
+                    <a href="#" class="btn btn-primary">More</a>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+        {% endfor %}
+
+        {% endif %}
+      
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+{% block  extra_css %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var multipleCardCarousel = $("#carouselExampleControls");
+        if (window.matchMedia("(min-width: 768px)").matches) {
+            multipleCardCarousel.carousel({ interval: false });
+            var carouselWidth = $(".carousel-inner")[0].scrollWidth;
+            var cardWidth = $(".carousel-item").width();
+            var scrollPosition = 0;
+
+            multipleCardCarousel
+                .find(".carousel-control-next")
+                .on("click", function () {
+                    if (scrollPosition < carouselWidth - cardWidth * 4) {
+                        scrollPosition += cardWidth;
+                        multipleCardCarousel
+                            .find(".carousel-inner")
+                            .animate({ scrollLeft: scrollPosition }, 600);
+                    }
+                });
+
+            multipleCardCarousel
+                .find(".carousel-control-prev")
+                .on("click", function () {
+                    if (scrollPosition > 0) {
+                        scrollPosition -= cardWidth;
+                        multipleCardCarousel
+                            .find(".carousel-inner")
+                            .animate({ scrollLeft: scrollPosition }, 600);
+                    }
+                });
+        } else {
+            multipleCardCarousel.addClass("slide");
+        }
+    });
+
+// I added $(document).ready(function () { ... }); to ensure the script runs after the document has loaded.
+// I replaced document.querySelector with jQuery selectors.
+// I used multipleCardCarousel.carousel() to initialize the Bootstrap Carousel.
+// I adjusted the jQuery functions to use multipleCardCarousel.find() to target elements within the carousel.
+
+</script>
+
+{% endblock  %}

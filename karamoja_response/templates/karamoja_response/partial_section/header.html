@@ -1,0 +1,33 @@
+{% load static %}
+<div class="header-container">
+
+    <div class="video-container">
+        <video playsinline preload autoplay muted loop post>
+            <!-- Provide video sources for different browsers/formats -->
+            <source src="{% static 'images/giving_food_karamoja.mp4'%}" type="video/mp4">
+            <source src="your-video.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+
+        <div class="overlay"></div>
+        <div class="video-content d-flex flex-column justify-content-center align-items-center ">
+            <div class="col-md-6 p-lg-5 mx-auto my-5">
+                <h1 class="display-3 fw-bold">Yeshua Life</h1>
+                <h3 class="fw-normal text-mutedd mb-3">Harvesting Hope, Ending Hunger.</h3>
+                <div class="d-flex gap-3 justify-content-center lead fw-normal">
+                  <a class="icon-link" href="#">
+                    Learn more
+                    <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+                  </a>
+                  <a class="icon-link" href="#">
+                    Contact us
+                    <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+                  </a>
+                </div>
+              </div>
+              <div class="product-device shadow-sm d-none d-md-block"></div>
+              <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+      
+          </div>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+{% comment %} (max-width: 767px) 37vw, (max-width: 991px) 41vw, 40vw {% endcomment %}
+{% load static %}
+{% comment %} <div role="list" class="blog-collection-large blog-category-grid w-dyn-items">
+
+                    <div class="container">
+                        <div class="row">
+                          <div class="col">
+                            <a href="#" class="image-wrapper-16-9 image-wrapper-16-9-alternative w-inline-block">
+                             <img src="https://plus.unsplash.com/premium_photo-1700391373098-cd9acd1b7e7c?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" loading="lazy" alt="Chipping Away Illiteracy through Football" height="400" width="700" class="blog-item-image"></a>
+                          </div>
+                          <div class="col">
+                            <a href="#" class="image-wrapper-16-9 image-wrapper-16-9-alternative w-inline-block">
+                            <img src="https://plus.unsplash.com/premium_photo-1700391373098-cd9acd1b7e7c?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" loading="lazy" alt="Chipping Away Illiteracy through Football"  height="400" width="700" class="blog-item-image"></a>
+                        </div>
+                        </div>
+                      </div>
+                                            
+                </div> {% endcomment %}
+
+
+
+                  {% comment %} <div class="w-dyn-list">
+
+                    <div role="list" class="blog-category-list w-dyn-items">
+
+                    <div role="listitem" class="product-category-item w-dyn-item">
+                        <a href="#" aria-current="page" class="blog-category w--current">Chipper In The Community</a></div></div></div>
+                        <a href="#" class="blog-title-link w-inline-block"><h3>Chipping Away Illiteracy through Football</h3></a>
+                        <div class="blog-metadata-large"><p>October 5, 2022</p><p>|</p><p>Read Time</p>
+                        </div>
+                    </div>
+
+                        <a href="#" class="image-wrapper-16-9 image-wrapper-16-9-alternative w-inline-block">
+                        <img src="" loading="lazy" alt="Chipping Away Illiteracy through Football" sizes="" class="blog-item-image"></a>
+                     </div>
+
+
+                 </div> {% endcomment %}
+
+    
+
+   <div class="container_">
+
+    <section class="pb-5">
+        <!-- container text-center -->
+        <div class="container">
+            <!-- Masonry grid -->
+            <div class="gallery-wrapper">
+                <!-- Grid sizer -->
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 grid-item mb-4">
+                        <div class="image-container" style="height: 300px; overflow: hidden;">
+                        <img class="img-fluid w-100 mb-3 img-thumbnail shadow-sm rounded-0" src="https://ichef.bbci.co.uk/news/976/cpsprodpb/118D9/production/_131779817_ramat.jpg.webp" alt="" style="object-fit: cover; height: 100%;">
+                        </div>
+                        <h2 class="h4">Masonry grid item</h2>
+                        <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <a class="media__tag tag tag--news" href="/news/technology" rev="news|source">Technology</a>
+                    </div>
+            
+                    <!-- Repeat the above div structure for the other two items  img-thumbnail -->
+            
+                    <div class="col-lg-4 col-md-6 grid-item mb-4">
+                        <div class="image-container" style="height: 300px; overflow: hidden;">
+                        <img class="img-fluid w-100 mb-3 img-thumbnail shadow-sm rounded-0" src="https://bootstrapious.com/i/snippets/sn-masonry/grid-item-2.png" alt="">
+                        </div>
+                        <h2 class="h4">Masonry grid item</h2>
+                        <p class="small text-muted font-italic">Another item description.</p>
+                        <a class="media__tag tag tag--news" href="/news/technology" rev="news|source">Technology</a>
+                    </div>
+            
+                    <div class="col-lg-4 col-md-6 grid-item mb-4 text-left">
+                        <div class="image-container" style="height: 300px; overflow: hidden;">
+                        <img class="img-fluid w-100 mb-3 img-thumbnail shadow-sm rounded-0" src="https://bootstrapious.com/i/snippets/sn-masonry/grid-item-3.png" alt="">
+                        </div>
+                        <h2 class="h4">Masonry grid item</h2>
+                        <p class="small text-muted font-italic">Yet another item description.</p>
+                        <div class="blog-metadata-large"><p>January 19, 2023</p><p>|</p><p>Read Time</p></div>
+                        <a class="media__tag tag tag--news" href="/news/technology" rev="news|source">Technology</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+   </div>
+
+
+
+
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script>
+
+    $(function () {
+
+        // Initate masonry grid
+        var $grid = $('.gallery-wrapper').masonry({
+            temSelector: '.grid-item',
+            columnWidth: '.grid-sizer',
+            percentPosition: true,
+        });
+    
+        // Initate imagesLoaded
+        $grid.imagesLoaded().progress( function() {
+            $grid.masonry('layout');
+        });
+        
+    });
+    
+</script>
+
+{% endblock  %}
+                                           

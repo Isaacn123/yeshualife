@@ -1,0 +1,105 @@
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static "js/slick/slick.css" %}">
+<!-- Bootstrap CSS link -->
+<link rel="stylesheet" href="{% static "css/slider_css/style.css" %}">
+<!-- Responsive Link -->
+<link rel="stylesheet" href="{% static "css/slider_css/responsive.css" %}">
+{% endblock  %}
+
+{% load wagtailcore_tags wagtailimages_tags wagtailembeds_tags %}
+
+<div class="d2c_product_grid_wrapper">
+    <div class="container">
+        <h2 class="d2c_title">Plowing, Planting, Produce </h2>
+        
+        <div class="d2c_slider_wrapper">
+            {% comment %} {% for child in page.get_children %} {% endcomment %}
+
+            {% if forloop.first %}
+            {% comment %} <pre>{{ post|pprint }}</pre> {% endcomment %}
+              {% for m in post.specific.body_content %}
+              {% comment %} <pre>{{ m|pprint }}</pre>
+              <pre>{{ m.value.images|pprint }}</pre> {% endcomment %}
+              {% for v in m.value.videos %}
+
+              {% comment %} <pre>{{ v.video_url|pprint }}</pre> {% endcomment %}
+              
+              <div class="d2c_card_wrapper">
+                <div class="d2c_vid_wrapper">
+                    <img src="https://images.unsplash.com/photo-1700740760502-f28b1769c8d3?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+                    {% comment %} {% image v width-400 %} https://www.youtube.com/embed/Zd_X0NrRk_Q{% endcomment %}
+                    {% comment %} <iframe width="560" height="315" src="{{ v.video_url | replace:'watch?v=','embed/'  }}" frameborder="0" allowfullscreen></iframe> {% endcomment %}
+                    {% comment %} <iframe width="420" height="400" src="{{v.video_url}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> {% endcomment %}
+                    {% comment %} <iframe width="420" height="315" src="{{ v.video_url }}"> </iframe> {% endcomment %}
+                    {% comment %} <iframe width="420" height="315" src="{{v.video_url}}" title="Sowing Hope: Battling Karamoja Hunger Through Strategic Plowing Sustainable Agriculture Empowerment." frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" frameborder="0" allowfullscreen {% endcomment %}
+                    {% comment %} allowfullscreen="allowfullscreen"
+                    mozallowfullscreen="mozallowfullscreen" 
+                    msallowfullscreen="msallowfullscreen" 
+                    oallowfullscreen="oallowfullscreen" 
+                    webkitallowfullscreen="webkitallowfullscreen"
+                    ></iframe> {% endcomment %}
+                    {% comment %} <iframe width="356" height="200" src="https://www.youtube.com/embed/LArV6sJ370U" title="Sowing Hope: Battling Karamoja Hunger Through Strategic Plowing Sustainable Agriculture Empowerment." frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> {% endcomment %}
+                    {% comment %} {% embed v.video_url max_width="600" %} {% endcomment %}
+            
+                </div>
+                <div class="d2c_card_body">
+                    <h5 class="d2c_name">{{page.specific.intro}}</h5>
+                    <p class="d2c_price">Firming in Karamoja</p>
+                    <a href="#" class="d2c_btn">
+                        Read More
+                        {% comment %} {{v.title}} {% endcomment %}
+                        <i class="fas fa-circle-chevron-down"></i>
+                        {% comment %} <i class="fas fa-shopping-cart"></i> {% endcomment %}
+                    </a>
+                </div>
+            </div>
+            
+
+          
+              {% comment %} <pre>{{ v.title|pprint }}</pre> {% endcomment %}
+               {% endfor %}
+              {% comment %} {% endfor %} {% endcomment %}
+              {% endfor %}
+
+              {% endif %}
+
+
+        </div>
+    </div>
+</div>
+
+
+{% block extra_js %}
+<script src="{% static 'js/jquery-3.6.0.slim.min.js' %}"></script>
+<script src="{% static "js/slick/slick.js" %}"></script>
+
+<script>
+    $('.d2c_slider_wrapper').slick({
+        infinite: true,
+        speed: 300,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        dots: false,
+        responsive: [
+            {
+            breakpoint: 1023,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                }
+            },
+            {
+            breakpoint: 767,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+        });
+</script>
+{% endblock  %}

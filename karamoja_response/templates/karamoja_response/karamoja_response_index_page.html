@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags%}
+
+{% block body_class %}template-blogindexpage{% endblock  %}
+
+{% block extra_css  %}
+<link rel="stylesheet" href="{% static "css/top-section.css" %}">
+{% endblock  %}
+
+
+{% block  content %}
+
+{% include "nav_bar.html" %}
+<section class="yesh-header">
+{% include "karamoja_response/partial_section/header.html" %}
+</section>
+
+<div class="top-content-wrap">
+    {% include "blog/sections/top-section-updates.html" %}
+</div>
+{% for post in  page.get_children %}
+    
+{% if forloop.first %}
+{% comment %} {% include "blog/main_content/carosel.html"  with post=post %} {% endcomment %}
+{% endif %}
+{% endfor %}
+
+<div class="d-flex flex-column justify-content-center align-items-center wrap-blog">
+    <hr class="featurette-divider">
+    {% include "karamoja_response/partial_section/list_items.html" %}
+        
+</div>
+
+
+
+{% endblock  %}
+
+{% block footer %}
+{% include "blog/footer.html" %}
+{% endblock  %}

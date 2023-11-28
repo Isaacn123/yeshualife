@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% load wagtailcore_tags %}
+{% block body_class %}template-homepage{% endblock %}
+
+
+{% block content %}
+
+<div class="d-flex p-3 flex-column justify-content-center align-items-center text-center h-100">
+
+
+    <div class="custom-welcome-message"> 
+        <a href="/blog"><img src="{% static 'images/yeshua_logo.png' %}" alt="Custom Project" width="400" /></a>
+        <p>Welcome to Yeshua Life.</p>
+        <span class="vist-us"><a href="/blog">Visit Us</a></span>
+    </div>
+
+</div>
+
+{% endblock %}
+

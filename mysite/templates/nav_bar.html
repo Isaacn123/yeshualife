@@ -1,0 +1,39 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-md bg-dark sticky-top border-bottom" data-bs-theme="dark">
+    <div class="container">
+      <a class="navbar-brand d-md-none" href="/home">
+        <img src="{% static '/images/yeshua_logo.png' %}" alt="" srcset="" width="44" height="44">
+
+        {% comment %} <svg class="bi" width="24" height="24"><use xlink:href="#aperture"/></svg> {% endcomment %}
+       Yeshua Life
+      </a>
+      {% comment %} <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navOffcanvas" aria-controls="navOffcanvas" aria-label="Toggle navigation"> {% endcomment %}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      {% comment %} <div class="offcanvas offcanvas-end" tabindex="-1" id="navOffcanvas" aria-labelledby="#offcanvasLabel"> {% endcomment %}
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="offcanvas-header">
+          {% comment %} <h5 class="offcanvas-title" id="#offcanvasLabel">Yeshua Life</h5> {% endcomment %}
+          {% comment %} <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button> {% endcomment %}
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav flex-grow-1 justify-content-between">
+            <li class="nav-item"><a class="nav-link" href="#">
+                <img src="{% static '/images/yeshua_logo.png' %}" alt="" srcset="" width="34" height="34">
+            </a></li>
+            <li class="nav-item"><a class="nav-link" href="/blog">Home</a></li>
+            {% comment %} <li class="nav-item"><a class="nav-link" href="#">Product</a></li> {% endcomment %}
+            {% comment %} <li class="nav-item"><a class="nav-link" href="#">Gallary</a></li> {% endcomment %}
+            <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Support</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Donate</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">
+              <svg class="bi" width="24" height="24"><use xlink:href="#cart"/></svg>
+            </a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>

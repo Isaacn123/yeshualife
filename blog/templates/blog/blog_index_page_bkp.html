@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags%}
+
+{% block body_class %}template-blogindexpage{% endblock  %}
+
+{% block content %}
+
+{% include "nav_bar.html" %}
+<section class="yesh-header">
+{% include "blog/header.html" %}
+</section>
+
+<div class="d-flex flex-column justify-content-center align-items-center wrap-blog">
+    
+{% comment %} <h1 class="blog-tile">{{page.title}}</h1> {% endcomment %}
+
+{% comment %} <p class="intro">{{page.intro}}</p> {% endcomment %}
+
+{% for post in  page.get_children %}
+
+<h3 class="big-blog-title text-center"><a  class="blog-title-link" href="{% pageurl post %}">{{ post.title}}</a></h3>
+<p class="blog-metadata-large">{{post.specific.date}}</p>
+{% comment %} (max-width: 991px) 90vw, 87vw {% endcomment %}
+{% comment %} {% image post.specific.image fill-787x440 %}(max-width: 767px) 90vw, (max-width: 991px) 78vw, 59vw {% endcomment %}
+<a href="{% pageurl post %}">{% srcset_image post.specific.image class="image-blog-main" width-{600,700} sizes="(max-width: 767px) 90vw, (max-width: 991px) 78vw, 59vw" %}</a>
+<p class="intro"> {{post.specific.intro}}</p>
+
+{% endfor %}
+    
+</div>
+
+{% endblock content %}
+
+
+{% block footer %}
+{% include "blog/footer.html" %}
+{% endblock  %}
+
+
+
+{% comment %} <div class="col-lg-4 col-md-6 grid-item mb-4">
+    <div class="image-container" style="height: 300px; overflow: hidden;">
+    <img class="img-fluid w-100 mb-3 img-thumbnail shadow-sm rounded-0" src="https://bootstrapious.com/i/snippets/sn-masonry/grid-item-2.png" alt="">
+    </div>
+    <h2 class="h4">Masonry grid item</h2>
+    <p class="small text-muted font-italic">Another item description.</p>
+    <a class="media__tag tag tag--news" href="/news/technology" rev="news|source">Technology</a>
+</div>
+
+<div class="col-lg-4 col-md-6 grid-item mb-4 text-left">
+    <div class="image-container" style="height: 300px; overflow: hidden;">
+    <img class="img-fluid w-100 mb-3 img-thumbnail shadow-sm rounded-0" src="https://bootstrapious.com/i/snippets/sn-masonry/grid-item-3.png" alt="">
+    </div>
+    <h2 class="h4">Masonry grid item</h2>
+    <p class="small text-muted font-italic">Yet another item description.</p>
+    <div class="blog-metadata-large"><p>January 19, 2023</p><p>|</p><p>Read Time</p></div>
+    <a class="media__tag tag tag--news" href="/news/technology" rev="news|source">Technology</a>
+</div> {% endcomment %}

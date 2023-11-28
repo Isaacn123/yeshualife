@@ -1,0 +1,143 @@
+{% load static %}
+
+
+<div id="carouselExampleControls" class="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="card">
+                <div class="img-wrapper">
+                    <img src="https://plus.unsplash.com/premium_photo-1668104454442-a251cc42ee58?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top"  alt="...">
+                    {% comment %} <img src="..." class="d-block w-100" alt="...">  {% endcomment %}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Card title 1</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+      
+        <div class="carousel-item">
+            <div class="card">
+                <div class="img-wrapper">
+                    <img src="https://plus.unsplash.com/premium_photo-1668104454442-a251cc42ee58?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top"  alt="...">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Card title 3</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="card">
+                <div class="img-wrapper">
+                    <img src="https://plus.unsplash.com/premium_photo-1668104454442-a251cc42ee58?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top"  alt="...">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Card title 4</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="card">
+                <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1700802671784-abeb4601a378?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="d-block w-100" alt="..."> </div>
+                <div class="card-body">
+                    <h5 class="card-title">Card title 5</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-item">
+            <div class="card">
+                <div class="img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1682685795579-37e731bfefab?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top"  alt="...">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Card title 7</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="card">
+                <div class="img-wrapper">
+                    <img src="https://plus.unsplash.com/premium_photo-1668104454442-a251cc42ee58?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  class="card-img-top" alt="...">    
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Card title 9</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+{% block  extra_css %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var multipleCardCarousel = $("#carouselExampleControls");
+        if (window.matchMedia("(min-width: 768px)").matches) {
+            multipleCardCarousel.carousel({ interval: false });
+            var carouselWidth = $(".carousel-inner")[0].scrollWidth;
+            var cardWidth = $(".carousel-item").width();
+            var scrollPosition = 0;
+
+            multipleCardCarousel
+                .find(".carousel-control-next")
+                .on("click", function () {
+                    if (scrollPosition < carouselWidth - cardWidth * 4) {
+                        scrollPosition += cardWidth;
+                        multipleCardCarousel
+                            .find(".carousel-inner")
+                            .animate({ scrollLeft: scrollPosition }, 600);
+                    }
+                });
+
+            multipleCardCarousel
+                .find(".carousel-control-prev")
+                .on("click", function () {
+                    if (scrollPosition > 0) {
+                        scrollPosition -= cardWidth;
+                        multipleCardCarousel
+                            .find(".carousel-inner")
+                            .animate({ scrollLeft: scrollPosition }, 600);
+                    }
+                });
+        } else {
+            multipleCardCarousel.addClass("slide");
+        }
+    });
+
+// I added $(document).ready(function () { ... }); to ensure the script runs after the document has loaded.
+// I replaced document.querySelector with jQuery selectors.
+// I used multipleCardCarousel.carousel() to initialize the Bootstrap Carousel.
+// I adjusted the jQuery functions to use multipleCardCarousel.find() to target elements within the carousel. {% endcomment %}
+
+</script>
+
+{% endblock  %}
