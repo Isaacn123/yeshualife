@@ -59,7 +59,7 @@ class BlogPage(Page):
     ]
 
     image = models.ForeignKey(
-        'wagtailimages.Image', on_delete=models.CASCADE, related_name='+',blank=True,null=True
+        'wagtailimages.Image', on_delete=models.PROTECT, related_name='+',blank=True,null=True
     )
     caption = models.CharField(blank=True, max_length=250)
 
