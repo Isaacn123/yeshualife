@@ -126,7 +126,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'yeshualife_db',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': '123456@Admin',
         'HOST': 'localhost',
         'PORT': '3306',
     }
