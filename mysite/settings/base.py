@@ -100,16 +100,39 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'yeshualife_db',
+#         'USER': 'postgres',
+#         'PASSWORD': '123456@Admin',
+#         'HOST': 'localhost',  # Set to the host where your PostgreSQL server is running
+#         'PORT': '5432',      # Set to the port your PostgreSQL server is listening on
+#     }
+# } 
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'yeshualife_db',
+    #     'USER': 'root',
+    #     'PASSWORD': '', #123456@Admin
+    #     'PORT': '3306',
+    #     'HOST': 'localhost',  # Set to the host where your PostgreSQL server is running
+    #     #'PORT': '5432',      # Set to the port your PostgreSQL server is listening on
+    # }
+
+        'default': {
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'yeshualife_db',
-        'USER': 'postgres',
-        'PASSWORD': '123456@Admin',
-        'HOST': 'localhost',  # Set to the host where your PostgreSQL server is running
-        'PORT': '5432',      # Set to the port your PostgreSQL server is listening on
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 } 
+
+
 
 
 # Password validation
