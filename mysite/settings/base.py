@@ -65,6 +65,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    "wagtail.contrib.sitemaps.middleware.SitemapMiddleware",
 ]
 
 ROOT_URLCONF = "mysite.urls"
