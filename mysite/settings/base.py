@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",
     'corsheaders',
 ]
 
@@ -65,7 +66,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
-    "wagtail.contrib.sitemaps.middleware.SitemapMiddleware",
+    # "wagtail.contrib.sitemaps.middleware.SitemapMiddleware",
 ]
 
 ROOT_URLCONF = "mysite.urls"
