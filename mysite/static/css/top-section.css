@@ -373,9 +373,21 @@ p {
 
 /* new style */
 
- .header-container{
+/* .header-container{
+    position: relative;
     width:100%;
-    height: 100vh;
+    height: auto;
+    min-height: 35rem;
+    border-left: none;
+    border-right: none;
+    object-fit: contain;
+
+ } */
+ .header-container{
+    position: relative;
+    width:100%;
+    /* height: auto; */
+    min-height: 35rem;
     border-left: none;
     border-right: none;
     object-fit: contain;
@@ -417,4 +429,15 @@ p {
     width: 100%;
     height: 900px;
     /* background-color: red; */
+}
+
+/* .video-container video{
+    height: 100vh;
+} */
+
+@media (min-width: 992px){
+    .header-container {
+        height: 100vh;
+        padding: 0;
+    }
 }

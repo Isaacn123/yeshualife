@@ -1,12 +1,15 @@
 {% load static %}
 <div class="header-container">
 
-    <div class="video-container">
-        <video playsinline preload autoplay muted loop post>
+  {% comment %} container px-4 px-lg-5 d-flex h-100 {% endcomment %}
+
+    <div id="intro" class="video-container">
+        {% comment %} <video playsinline preload autoplay muted loop post> {% endcomment %}
+          <video style="min-width: 50%; min-height: 100%;" playsinline preload autoplay muted loop post>
             <!-- Provide video sources for different browsers/formats -->
-            <source src="{% static 'images/giving_food_karamoja.mp4'%}" type="video/mp4">
-            <source src="your-video.webm" type="video/webm">
-            Your browser does not support the video tag.
+            <source class="h-100" src="{% static 'images/giving_food_karamoja.mp4'%}" type="video/mp4">
+            {% comment %} <source src="your-video.webm" type="video/webm">
+            Your browser does not support the video tag. {% endcomment %}
         </video>
 
         <div class="overlay"></div>
