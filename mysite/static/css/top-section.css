@@ -441,3 +441,7 @@ p {
         padding: 0;
     }
 }
+
+.nav-line-h{
+    line-height: 4rem;
+ }

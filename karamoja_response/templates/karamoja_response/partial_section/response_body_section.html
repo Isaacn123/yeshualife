@@ -1,0 +1,16 @@
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static "css/res_k_style.css" %}">
+{% endblock  %}
+
+<section class="content-secstion" id="karamoja-resp">
+    <div class="container px-4 px-lg-5">
+        <div class="content-section-heading text-center">
+            <h3 class="text-secondary mb-0">Yeshua Life</h3>
+            <h2 class="mb-5">Our Response</h2>
+        </div>
+       {% include "karamoja_response/partial_section/respo_page.html" %}
+    </div>
+</section>
