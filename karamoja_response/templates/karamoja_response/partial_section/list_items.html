@@ -1,13 +1,14 @@
 
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags%}
-{% block body_class %}template-blogindexpage{% endblock  %}
 
 <hr class="featurette-divider">
 
 <h1>Our Response</h1>
 
 {% for post in page.get_children %}
-  {{post.title}}
+ <ul>
+    <li> {{post.title}}</li>
+ </ul>
 {% endfor %}
 {% comment %} {% include "karamoja_response/partial_section/response_body_section.html" %} {% endcomment %}
