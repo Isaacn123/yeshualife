@@ -254,6 +254,6 @@ img {
   @media (min-width: 1200px) {
     img.img-fluid {
       /* Additional styles for very large screens */
-      max-width: 60%; /* Adjust as needed */
+      max-width: 100%; /* Adjust as needed  max-width: 60%;*/ 
     }
   }
