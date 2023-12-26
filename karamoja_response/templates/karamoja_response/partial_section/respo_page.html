@@ -7,7 +7,9 @@
                     <p class="mb-0">{{post.specific.intro}}</p>
                 </div>
             </div>
-            <img class="img-fluid" src="{{post.specific.image}}" alt="...">
+            {% comment %} <img class="img-fluid" src="{{post.specific.image}}" alt="..."> {% endcomment %}
+            {% image post.specific.image width-400 class="img-fluid" id="yeshua-life" %}
+            {% comment %} {% srcset_image page.photo width-{400,800} sizes="(max-width: 600px) 400px, 80vw" %} {% endcomment %}
         </a>
     </div>
 
