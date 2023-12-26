@@ -479,4 +479,11 @@ p {
         background-repeat: no-repeat;
         background-size: cover;
       }
+
+      .container-info{
+        position: absolute;
+        left: 0;
+        top: 80%;
+        
+      }
    
