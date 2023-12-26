@@ -133,43 +133,8 @@
   }
 
 
-  @media (min-width: 768px) {
-
-    .karamoja-resp-item .caption {
-        display: flex;
-        height: 100%;
-        width: 100%;
-        background-color: rgba(33, 37, 41, 0.2);
-        position: absolute;
-        top: 40px;
-        bottom: 0;
-        z-index: 1;
-        }
-
-        .karamoja-resp-item .caption .caption-content h2, .karamoja-resp-item .caption .caption-content .h2 {
-            font-size: 0.4rem;
-            text-transform: uppercase;
-            }
-
-            .karamoja-resp-item .caption .caption-content p {
-                font-weight: 200;
-                font-size: 0.9rem;
-                background-color: rgb(97, 132, 161);
-                
-                }
-  }
 
   @media screen and (max-width: 479px) {
-    .karamoja-resp-item .caption {
-        display: flex;
-        height: 100%;
-        width: 100%;
-        background-color: rgba(33, 37, 41, 0.2);
-        position: absolute;
-        top: 40px;
-        bottom: 0;
-        z-index: 1;
-        }
 
         .karamoja-resp-item .caption .caption-content h2, .karamoja-resp-item .caption .caption-content .h2 {
             font-size: 0.4rem;
@@ -182,6 +147,30 @@
                 background-color: rgb(97, 132, 161);
                 
                 }
+
+
+                .karamoja-resp-item .caption {
+                  display: flex;
+                  height: 100%;
+                  width: 100%;
+                  background-color: rgba(33, 37, 41, 0.3);
+                  position: absolute;
+                  top: 40px;
+                  bottom: 0;
+                  z-index: 1;
+                  }
+          
+                  .karamoja-resp-item .caption .caption-content h2, .karamoja-resp-item .caption .caption-content .h2 {
+                      font-size: 0.4rem;
+                      text-transform: uppercase;
+                      }
+          
+                      .karamoja-resp-item .caption .caption-content p {
+                          font-weight: 200;
+                          font-size: 0.9rem;
+                          background-color: rgba(97, 132, 161, 0.3);
+                          
+                          }
 }
 
 
