@@ -460,7 +460,7 @@ p {
     }
     }
 
-    .bg-primary{
+    .bg-primary, .bg-primary2{
         /* #1D809F */
     background-color:  #95b1ba !important;
     }
