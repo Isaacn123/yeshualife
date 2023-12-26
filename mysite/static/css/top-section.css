@@ -483,7 +483,9 @@ p {
       .container-info{
         position: absolute;
         left: 0;
-        top: 80%;
-        
+        top: 70%;
+      }
+      .container-info .mb-1{
+        color: #fff !important;
       }
    
