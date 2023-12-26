@@ -224,6 +224,11 @@
   padding: 1.25rem 2.5rem;
 }
 
+.content-section {
+  padding-top: 7.5rem;
+  padding-bottom: 7.5rem;
+}
+
 
 @media (min-width: 992px){
 .px-lg-5 {
