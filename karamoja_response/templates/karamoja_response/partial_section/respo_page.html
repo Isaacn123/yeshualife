@@ -11,8 +11,9 @@
                 </div>
             </div>
             {% comment %} <img class="img-fluid" src="{{post.specific.image}}" alt="..."> {% endcomment %}
-            {% image post.specific.image scale-100 class="img-fluid" id="yeshua-life" %}
-            {% comment %} {% srcset_image page.photo width-{400,800} sizes="(max-width: 600px) 400px, 80vw" %} {% endcomment %}
+            {% comment %} {% image post.specific.image scale-100 class="img-fluid" id="yeshua-life" %} {% endcomment %}
+
+            <img src="{{ post.specific.image }}"  alt="..." class="img-fluid" />
         </a>
     </div>
 
