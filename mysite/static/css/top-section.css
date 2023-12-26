@@ -460,7 +460,8 @@ p {
     }
 
     .bg-primary{
-    background-color:  #1D809F !important;
+        /* #1D809F */
+    background-color:  #bfcbcf !important;
     }
 
    
