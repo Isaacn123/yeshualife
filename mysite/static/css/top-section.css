@@ -445,3 +445,16 @@ p {
 .nav-line-h{
     line-height: 4rem;
  }
+
+
+ .content-section {
+    padding-top: 7.5rem;
+    padding-bottom: 7.5rem;
+  }
+
+  @media (min-width: 992px){
+    .px-lg-5 {
+        padding-right: 3rem !important;
+        padding-left: 3rem !important;
+    }
+    }
