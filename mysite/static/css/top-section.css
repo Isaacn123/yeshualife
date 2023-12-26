@@ -450,6 +450,7 @@ p {
  .content-section {
     padding-top: 7.5rem;
     padding-bottom: 7.5rem;
+    margin-top: 40px;
   }
 
   @media (min-width: 992px){
