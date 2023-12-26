@@ -6,9 +6,4 @@
 
 <h1>Our Response</h1>
 
-{% for post in page.get_children %}
- <ul>
-    <li class="text_lt"> {{post.specific.caption}}</li>
- </ul>
-{% endfor %}
-{% comment %} {% include "karamoja_response/partial_section/response_body_section.html" %} {% endcomment %}
+{% include "karamoja_response/partial_section/response_body_section.html" %}

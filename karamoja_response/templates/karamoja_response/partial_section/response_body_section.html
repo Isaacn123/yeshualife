@@ -11,6 +11,11 @@
             <h3 class="text-secondary mb-0">Yeshua Life</h3>
             {% comment %} <h2 class="mb-5">Our Response</h2> {% endcomment %}
         </div>
-       {% comment %} {% include "karamoja_response/partial_section/respo_page.html" %} {% endcomment %}
+
+
+{% for post in page.get_children %}
+{% include "karamoja_response/partial_section/respo_page.html" with post=post  %}
+{% endfor %}
+
     </div>
 </section>
