@@ -11,11 +11,11 @@
                 </div>
             </div>
             {% comment %} <img class="img-fluid" src="{{post.specific.image}}" alt="..."> {% endcomment %}
-            {% comment %} {% image post.specific.image  class="img-fluid" id="yeshua-life" %} {% endcomment %}
+            {% image post.specific.image  height-480 class="img-fluid" id="yeshua-life" %}
 
 
             {% comment %} <img src="clearing-the-Fields" alt="..." class="img-fluid"> {% endcomment %}
-            <img src="{{ tmp_photo.src }}"  alt="..." class="img-fluid" />
+            {% comment %} <img src="{{ tmp_photo.src }}"  alt="..." class="img-fluid" /> {% endcomment %}
         </a>
     </div>
 
