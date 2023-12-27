@@ -491,7 +491,7 @@ p {
 
       @media screen and (max-width: 479px) {
         .container-info{
-            top: 83% !important;
+            top: 82% !important;
             background-color: rgba(51, 118, 157, 0.5);
           }
           .container-info .mb-1{
