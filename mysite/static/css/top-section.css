@@ -491,15 +491,16 @@ p {
 
       @media screen and (max-width: 479px) {
         .container-info{
+            top: 80% !important;
             background-color: rgba(51, 118, 157, 0.5);
           }
           .container-info .mb-1{
-            font-size: 14px !important;
+            font-size: 18px !important;
             font-weight: 400 !important;
           }
 
           .container-info .mb-5{
-            font-size: 8px !important;
+            font-size: 9px !important;
             font-weight: 200 !important;
           }
 
