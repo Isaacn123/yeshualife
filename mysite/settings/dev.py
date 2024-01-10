@@ -8,7 +8,7 @@ SECRET_KEY = "django-insecure-9@865u5i22(b6n03#k396q%a84pfbnqsj^*+ua9qp-l7k3#5-!
 
 # SECURITY WARNING: define the correct hosts in production!
 # ALLOWED_HOSTS = ["*"]
-ALLOWED_HOSTS = ['yeshualifeug.com', 'www.yeshualifeug.com']
+ALLOWED_HOSTS = ['yeshualifeug.com', 'www.yeshualifeug.com','127.0.0.1', '167.99.117.231']
 # ALLOWED_HOSTS = ['http://yeshualifeug.com', 'http://167.99.117.231']
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
