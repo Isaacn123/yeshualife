@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags%}
+{% block body_class %}template-blogindexpage{% endblock  %}
+
+{% block extra_css  %}
+<link rel="stylesheet" href="{% static "css/top-section.css" %}">
+ {% endblock  %}
+
+{% block content %}
+{% include "nav_bar.html" %}
+{% include 'sections/header.html' %}
+
+{% endblock  %}
+
+
+
+{% block footer %}
+{% include "blog/footer.html" %}
+{% endblock  %}

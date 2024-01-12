@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "clothes",
     "blog",
     "home",
+    "donation",
     "search",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -128,9 +129,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'yeshualife_db',
         'USER': 'root',
-        'PASSWORD': '123456@Admin',
+        'PASSWORD': '',#'123456@Admin',
         'HOST': 'localhost',
         'PORT': '3306',
+        'OPTIONS': {
+            'unix_socket': '/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock',
+        },
     }
 } 
 
