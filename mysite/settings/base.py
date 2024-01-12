@@ -114,7 +114,7 @@ DATABASESs = {
 #     }
 # } 
 
-DATABASES = {
+DATABASESsd = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'yeshualife_db',
@@ -135,6 +135,17 @@ DATABASES = {
         # 'OPTIONS': {
         #     'unix_socket': '/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock',
         # },
+    }
+} 
+
+DATABASES = {
+        'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'yeshualife_db',
+        'USER': 'root',
+        'PASSWORD': '123456@Admin',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 } 
 
