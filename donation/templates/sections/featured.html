@@ -7,7 +7,7 @@
     <div class="col-md-7">
         {% comment %} <span class="text-muted">It'll blow your mind.</span> {% endcomment %}
       <h2 class="featurette-heading"><a  class="blog-title-link" href="{% pageurl post %}">{{ post.title}}</a></h2>
-      <p class="lead">{{post.specific.body|truncatewords:60}}</p>
+      <p class="lead">{{post.specific.body|richtext|truncatewords:80}}</p>
     </div>
     <div class="col-md-5">
         {% if post.specific.image %}
