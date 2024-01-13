@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "wagtail.admin",
     "wagtail",
     "modelcluster",
+    "wagtail.contrib.legacy.richtext",
     "taggit",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -114,7 +115,7 @@ DATABASESs = {
 #     }
 # } 
 
-DATABASESsd = {
+DATABASES = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'yeshualife_db',
@@ -138,7 +139,7 @@ DATABASESsd = {
     }
 } 
 
-DATABASES = {
+DATABASESa = {
         'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'yeshualife_db',
