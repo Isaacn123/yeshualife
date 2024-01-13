@@ -21,7 +21,7 @@
 <div class="container marketing">
     {% if forloop.first %}
     <hr class="featurette-divider">
-    {% include "blog/sections/feature_section_one.html" with post=post %}
+    {% include "sections/featured.html" with post=post %}
    {% endif %}
 </div>
 {% endfor %}
