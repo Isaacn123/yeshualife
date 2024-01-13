@@ -4,9 +4,10 @@
         <div class="row align-items-center d-flex justify-content-between">
             <div class="col-12 col-md-6 pb-5 order-2 order-sm-2 ">
                 <h1 class="  text-white font-weight-bold mb-3 mt-5 display-3">{{page.specific.intro}}</h1>
-                <p class="lead text-white">{{page.body}}</p>
+                <p class="lead text-white">{{page.body|richtext}}</p>
                 <div class=" d-flex mt-3 mb-1">
-                    <a class="btn btn-danger btn-raised text-uppercase btn-lg  mt-md-3 " href="#" role="button">Donate</a>
+                    {% comment %} text-uppercase {% endcomment %}
+                    <a class="btn btn-danger btn-raised  btn-lg  mt-md-3 " href="#" role="button">Donate</a>
                 </div>
             </div>
             <div class="col-12 col-md-6 order-sm-1 order-md-2  ">
