@@ -35,7 +35,7 @@ class CarouselBlock(blocks.StructBlock):
 
 class DonationIndexPage(Page):
     intro = models.CharField(max_length=200)
-    body = RichTextField(blank=True)
+    body = models.TextField(blank=True)
 
     content_panels = Page.content_panels + [
     FieldPanel('intro'),
