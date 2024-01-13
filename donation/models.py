@@ -45,7 +45,8 @@ class DonationIndexPage(Page):
 
 class DonationPage(Page):
     date = models.DateField("Post date", null=True)
-    body = RichTextField(blank=True)
+    # body = RichTextField(blank=True)
+    body = models.TextField(blank=True)
     intro = models.CharField(max_length=200)
 
     search_fields = Page.search_fields + [
