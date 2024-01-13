@@ -33,7 +33,7 @@ class CarouselBlock(blocks.StructBlock):
     class Meta:
         icon = 'image'
 
-class DonationPageIndexPage(Page):
+class DonationIndexPage(Page):
     intro = models.CharField(max_length=200)
     body = RichTextField(blank=True)
 
