@@ -9,7 +9,12 @@
 
 {% block content %}
 {% include "nav_bar.html" %}
-{% include 'sections/header.html' %}
+{% comment %} {% for post in  page.get_children %} {% endcomment %}
+{% comment %} {% if forloop.first %} {% endcomment %}
+{% include 'sections/header.html'  with post = post %}
+{% comment %} {% endif %} {% endcomment %}
+
+{% comment %} {% endfor %} {% endcomment %}
 
 <h1>Donation</h1>
 
