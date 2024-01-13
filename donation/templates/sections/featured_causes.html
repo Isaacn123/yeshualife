@@ -2,6 +2,11 @@
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags%}
 
+{% block extra_css  %}
+<link rel="stylesheet" href="{% static "css/customcss.css" %}">
+ {% endblock  %}
+
+
 <hr class="featurette-divider">
 
 <h1>Karamoja Cry</h1>
