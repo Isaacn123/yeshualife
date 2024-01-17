@@ -33,7 +33,7 @@
       {% comment %} {% include "blog/main_content/carosel.html"  with post=post %} {% endcomment %}
     </div>
     {% endif %}
-
+  {% endfor %}
 
     <div class="featurette">
         <div class="row">
@@ -51,6 +51,7 @@
       </div>
 
     {% comment %} <pre>{{ post|pprint }}</pre> {% endcomment %}
+    {% for post in  page.get_children %}
     {% if forloop.counter == 2 %}
     {% comment %} <p>This is the second page: {{ post.title }}</p> {% endcomment %}
     <div class="container marketing">
