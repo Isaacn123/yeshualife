@@ -26,11 +26,11 @@
         {# Your code for pages excluding the first one #}
         <div class="col">
             <div class="card shadow-sm img-list-box">
-              <a href="{% pageurl post %}">{% srcset_image post.specific.image  width-{500,200} sizes="(max-width: 767px) 90vw, (max-width: 991px) 78vw, 59vw" %}</a>
+              <a href="#!">{% srcset_image post.specific.image  width-{500,200} sizes="(max-width: 767px) 90vw, (max-width: 991px) 78vw, 59vw" %}</a>
               <div class="card-body">
                 <p class="card-text">{{post.title|truncatewords:10}}</p>
                 <footer class="blockquote-footer">{{post.specific.intro|truncatewords:15}}</footer>
-                <footer class="blockquote-footer"><button type="button" class="btn btn-secondary text-white">Read More</button></footer>
+                <footer class="blockquote-footer"><a href="{% pageurl post %}" class="btn btn-secondary text-white">Read More</a></footer>
                 <p class="card-subtitle">{{post.specific.date}}</p>
               </div>
             </div>
