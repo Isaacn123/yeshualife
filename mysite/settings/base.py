@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # Application definition
 
 INSTALLED_APPS = [
-    "karamoja_response",
+    "response",
     "karamoja",
     "awards",
     "harvesting",
@@ -115,7 +115,7 @@ DATABASESs = {
 #     }
 # } 
 
-DATABASESss= {
+DATABASES= {
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'yeshualife_db',
@@ -139,7 +139,7 @@ DATABASESss= {
     }
 } 
 
-DATABASES = {
+DATABASESs = {
         'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'yeshualife_db',
