@@ -9,7 +9,7 @@
       <h2 class="featurette-heading"><a  class="blog-title-link" href="{% pageurl post %}">{{ post.title}}</a></h2>
       <p class="lead" style="font-size: 22px !important;">{{post.specific.body|richtext|truncatewords:80}}</p>
     </div>
-    <div class="col-md-5">
+  <div class="col-md-5">
         {% if post.specific.image %}
   {% comment %} {% srcset_image post.specific.image %} {% endcomment %}
   {% comment %} <a href="{% pageurl post %}">{% srcset_image post.specific.image class="image-blog-main" width-{500,500} sizes="(max-width: 500px) 90vw, (max-width: 991px) 78vw, 59vw" %}</a {% endcomment %}

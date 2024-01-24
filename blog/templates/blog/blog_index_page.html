@@ -50,7 +50,10 @@
               </div>
 
             </div>
-      </div>
+         </div>
+
+         
+ 
 
     {% comment %} <pre>{{ post|pprint }}</pre> {% endcomment %}
     {% for post in  page.get_children %}
@@ -65,8 +68,9 @@
     {% endfor %}
         
 </div>
+{% include "blog/sections/section_ds.html" %} 
 
-<section class="content-section bg-primary text-white">
+ <section class="content-section bg-primary text-white">
     <div class="container px-4 px-lg-5 text-center">
         <h2 class="mb-4">Your financial support empowers us to implement vital programs and initiatives.</h2>
         <h6 style="font-size:8px; font-weight:200;">Have questions, ideas, or just want to say hello? We'd love to hear from you!</h6>

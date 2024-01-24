@@ -47,11 +47,49 @@ class BlogIndexPage(Page):
     FieldPanel('intro')
     ]
 
+class VideoBlock(blocks.StructBlock):
+    title = blocks.CharBlock(required=True)
+    video_url = blocks.URLBlock(required=True)
+
+    class Meta:
+        icon = 'media'
+
+
+class VideoAndRichTextBlock(blocks.StructBlock):
+    title = blocks.CharBlock(required=True)
+    video_url = blocks.URLBlock(required=True)
+    rich_text_content = blocks.RichTextBlock()
+
+    class Meta:
+        icon = 'media'
 
 class BlogPage(Page):
     date = models.DateField("Post date", null=True)
+
+    # body = StreamField([
+    #     # ('video', VideoBlock()),
+    #     # ('rich_text', blocks.RichTextBlock())
+    #     ('combined', VideoAndRI)
+    # ], blank=True)
+    
+
+    # body = StreamField([
+    #     ('combined_content', VideoAndRichTextBlock()),
+    #     # other blocks here
+    # ], blank=True,use_json_field=True)
+
+    video_url = blocks.URLBlock(required=False)
+
     body = RichTextField(blank=True)
+
+    combined_content =  StreamField([
+        ('combined_content', VideoAndRichTextBlock()),
+        # other blocks here
+        ], blank=True,use_json_field=True)   
+
     intro = models.CharField(max_length=200)
+
+
 
     search_fields = Page.search_fields + [
         index.SearchField('intro'),
@@ -82,8 +120,8 @@ class BlogPage(Page):
         FieldPanel('body'),
         FieldPanel('image'),
         FieldPanel('caption'),
-
-        FieldPanel('body_content'),
+        FieldPanel('combined_content'),
+        FieldPanel('body_content'),            
         # InlinePanel('gallery_images', label="Gallery images")
     ]
 

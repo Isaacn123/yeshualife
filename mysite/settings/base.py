@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+from wagtail.embeds.oembed_providers import youtube, vimeo
+
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
@@ -98,7 +100,7 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASESs = {
+DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
@@ -116,7 +118,7 @@ DATABASESs = {
 #     }
 # } 
 
-DATABASESs= {
+DATABASESss= {
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'yeshualife_db',
@@ -140,7 +142,7 @@ DATABASESs= {
     }
 } 
 
-DATABASES = {
+DATABASESs = {
         'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'yeshualife_db',
@@ -223,9 +225,40 @@ WAGTAILSEARCH_BACKENDS = {
     }
 }
 
+my_custom_provider = {
+    'endpoint': 'https://customvideosite.com/oembed',
+    'urls': [
+        '^http(?:s)?://(?:www\\.)?customvideosite\\.com/[^#?/]+/videos/.+$',
+    ]
+}
+
+youtube = { 
+     "endpoint": "http://www.youtube.com/oembed", 
+     "urls": [ 
+         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/watch.+$", 
+         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/v/.+$", 
+         r"^http(?:s)?://youtu\\.be/.+$", 
+         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/embed.+$",
+         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/user/.+$", 
+         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/[^#?/]+#[^#?/]+/.+$", 
+         r"^http(?:s)?://m\\.youtube\\.com/index.+$", 
+         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/profile.+$", 
+         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/view_play_list.+$", 
+         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/playlist.+$" 
+     ], 
+ } 
+
+WAGTAILEMBEDS_FINDERS = [
+    {
+        'class': 'wagtail.embeds.finders.oembed',
+        'providers': [youtube, vimeo],
+    }
+]
+
+
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-WAGTAILADMIN_BASE_URL = "http://example.com"
+WAGTAILADMIN_BASE_URL = "http://yeshualifeug.com"
 
 CORS_ALLOWED_ORIGINS = [
     "http://172.20.10.2:8000",
