@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "home",
     "donation",
     "search",
+    "wagtailcodeblock",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
@@ -100,7 +101,7 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASESs = {
+DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
@@ -142,7 +143,7 @@ DATABASESs= {
     }
 } 
 
-DATABASES = {
+DATABASESs = {
         'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'yeshualife_db',
@@ -232,21 +233,6 @@ my_custom_provider = {
     ]
 }
 
-youtube = { 
-     "endpoint": "http://www.youtube.com/oembed", 
-     "urls": [ 
-         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/watch.+$", 
-         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/v/.+$", 
-         r"^http(?:s)?://youtu\\.be/.+$", 
-         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/embed.+$",
-         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/user/.+$", 
-         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/[^#?/]+#[^#?/]+/.+$", 
-         r"^http(?:s)?://m\\.youtube\\.com/index.+$", 
-         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/profile.+$", 
-         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/view_play_list.+$", 
-         r"^http(?:s)?://(?:[-\\w]+\\.)?youtube\\.com/playlist.+$" 
-     ], 
- } 
 
 WAGTAILEMBEDS_FINDERS = [
     {
@@ -255,6 +241,8 @@ WAGTAILEMBEDS_FINDERS = [
     }
 ]
 
+WAGTAILEMBEDS_RESPONSIVE_HTML = True
+WAGTAILIMAGES_MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20MB
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash

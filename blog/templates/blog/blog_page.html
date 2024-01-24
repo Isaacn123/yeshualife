@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-
-{% load wagtailcore_tags  wagtailimages_tags%}
+{% comment %} betterhtml {% endcomment %}
+{% load wagtailcore_tags  wagtailimages_tags   %}    
 
 {% block body_class %}template-blogpage{%  endblock  %}
 
@@ -34,6 +34,22 @@
                            <!-- Add this: -->
                            {% comment %} {% image page.image fill-320x240 %} {% endcomment %}
                            <p>{{ page.caption }}</p>
+
+
+                           {% for block  in page.body_video  %}
+                           
+                           {% if block.block_type == 'video' %}
+                           
+                           <div class="block-{{ block.block_type }}-{{ block.value.float }} block-{{ block.value.size }}">
+                            {% include_block block.value.video|safe %}
+                            {{ block.value.caption }}
+                            </div>
+                           
+                           {% endif %}
+                           
+                           {% endfor %}
+
+                        
                            
                         <p><a href="{{page.get_parent.url}}">Return Home</a></p>
                     </div>

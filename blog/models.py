@@ -8,12 +8,10 @@ from wagtail.images.blocks import ImageChooserBlock
 # from wagtail.admin import StreamFieldPanel
 from wagtail.fields import StreamField
 from wagtail import blocks
-
+from .blocks import InlineVideoBlock
+from wagtailcodeblock.blocks import CodeBlock
 
 # Create your models here.
-
-
-
 
 class VideoBlock(blocks.StructBlock):
     video_url = blocks.URLBlock(label='Video URL',required=False)
@@ -73,12 +71,14 @@ class BlogPage(Page):
     # ], blank=True)
     
 
-    # body = StreamField([
-    #     ('combined_content', VideoAndRichTextBlock()),
-    #     # other blocks here
-    # ], blank=True,use_json_field=True)
+    body_video = StreamField([
+        # ('paragraph',  blocks.RichTextBlock(features=['h1','h2', 'h3', 'h4', 'h5', 'bold', 'italic', 'ol','ul' ,'hr', 'link', 'document-link'])),
+        # ('code', CodeBlock(label= ('Code'))),
+        ('video', InlineVideoBlock()),
+        # other blocks here
+    ], blank=True,use_json_field=True)
 
-    video_url = blocks.URLBlock(required=False)
+    # video = InlineVideoBlock()
 
     body = RichTextField(blank=True)
 
@@ -89,8 +89,6 @@ class BlogPage(Page):
 
     intro = models.CharField(max_length=200)
 
-
-
     search_fields = Page.search_fields + [
         index.SearchField('intro'),
         index.SearchField('body')
@@ -99,6 +97,7 @@ class BlogPage(Page):
     image = models.ForeignKey(
         'wagtailimages.Image', on_delete=models.PROTECT, related_name='+',blank=True,null=True
     )
+
     caption = models.CharField(blank=True, max_length=250)
 
     # body_content = StreamField([
@@ -106,12 +105,14 @@ class BlogPage(Page):
     # ],use_json_field=True,)
 
     body_content = StreamField([
+
             ('section', blocks.StructBlock([
             ('images', blocks.ListBlock(ImageBlogListBlock(),label='Images', required=False)),
             
             ('videos', blocks.ListBlock(VideoBlock(),label='Videos',required=False,))
 
            ])),
+
     ],use_json_field=True,blank=True)
 
     content_panels = Page.content_panels + [
@@ -120,7 +121,7 @@ class BlogPage(Page):
         FieldPanel('body'),
         FieldPanel('image'),
         FieldPanel('caption'),
-        FieldPanel('combined_content'),
+        FieldPanel('body_video'),
         FieldPanel('body_content'),            
         # InlinePanel('gallery_images', label="Gallery images")
     ]
