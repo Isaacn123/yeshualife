@@ -19,7 +19,8 @@
     <div class="owl-item active" style="width: 540px; margin-right: 30px;">
         <div class="single__blog d-flex align-items-center">
         <div class="thum">
-            <img src="https://themewagon.github.io/charifit/img/news/1.png" alt="">
+            {% comment %} <img src="https://themewagon.github.io/charifit/img/news/1.png" alt=""> {% endcomment %}
+            <img {{ page.image }} class="my-custom-class" />
         </div>
         <div class="newsinfo">
             <span>{{page.date}}</span>
