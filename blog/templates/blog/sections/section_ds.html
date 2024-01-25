@@ -22,9 +22,9 @@
             {% comment %} <img src="https://themewagon.github.io/charifit/img/news/1.png" alt=""> {% endcomment %}
             {% comment %} <img src={{ post.specific.image.url }} class="my-custom-class" /> {% endcomment %}
             {% comment %} <pre>{{ post.specific.image|pprint }}</pre> {% endcomment %}
-            <pre>{{ post.specific.image.file.url|pprint }}</pre>  
+            {% comment %} <pre>{{ post.specific.image.file.url|pprint }}</pre>   {% endcomment %}
             {% comment %} {% if post.image %} {% endcomment %}
-            <img src="{{ post.specific.image }}" alt="{{ post.image.alt }}" />
+            <img src="{{ post.specific.image.file.url }}"  alt="{{ post.specific.image.alt }}" />
             {% comment %} {% endif %} {% endcomment %}
 
         </div>
