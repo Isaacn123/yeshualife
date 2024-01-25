@@ -24,7 +24,8 @@
             {% comment %} <pre>{{ post.specific.image|pprint }}</pre> {% endcomment %}
             {% comment %} <pre>{{ post.specific.image.file.url|pprint }}</pre>   {% endcomment %}
             {% comment %} {% if post.image %} {% endcomment %}
-            <img src="{{ post.specific.image.file.url }}"  alt="{{ post.specific.image.alt }}" />
+            {% comment %} {% image post.specific.image.file.url width-256 height-424 as img %} {% endcomment %}
+            <img src="{{ post.specific.image.file.url }}"  alt="{{ post.specific.image.alt }}" width="256" height="424" />
             {% comment %} {% endif %} {% endcomment %}
 
         </div>
