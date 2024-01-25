@@ -21,10 +21,10 @@
         <div class="thum">
             {% comment %} <img src="https://themewagon.github.io/charifit/img/news/1.png" alt=""> {% endcomment %}
             {% comment %} <img src={{ post.specific.image.url }} class="my-custom-class" /> {% endcomment %}
-            <pre>{{ post.specific.image|pprint }}</pre>
-            <pre>{{ post.specific|pprint }}</pre>  
+            {% comment %} <pre>{{ post.specific.image|pprint }}</pre> {% endcomment %}
+            {% comment %} <pre>{{ post.specific|pprint }}</pre>   {% endcomment %}
             {% if post.image %}
-            <img src="{{ post.image.url }}" alt="{{ post.image.alt }}" />
+            <img src="{{ post.specific.image }}" alt="{{ post.image.alt }}" />
             {% endif %}
 
         </div>
