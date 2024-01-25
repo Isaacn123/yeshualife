@@ -21,7 +21,7 @@
         <div class="thum">
             {% comment %} <img src="https://themewagon.github.io/charifit/img/news/1.png" alt=""> {% endcomment %}
             {% comment %} <img src={{ post.specific.image.url }} class="my-custom-class" /> {% endcomment %}
-            <pre>{{ post.image.url|pprint }}</pre> 
+            <pre>{{ post.image|pprint }}</pre> 
             {% if post.image %}
             <img src="{{ post.image.url }}" alt="{{ post.image.alt }}" />
             {% endif %}
