@@ -98,6 +98,15 @@ class BlogPage(Page):
         'wagtailimages.Image', on_delete=models.PROTECT, related_name='+',blank=True,null=True
     )
 
+   #secondary_image = models.ManyToManyField(
+    secondary_image = models.ForeignKey(
+        'wagtailimages.Image',
+        related_name='+',
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True
+    )
+
     caption = models.CharField(blank=True, max_length=250)
 
     # body_content = StreamField([
@@ -121,6 +130,7 @@ class BlogPage(Page):
         FieldPanel('body'),
         FieldPanel('image'),
         FieldPanel('caption'),
+        FieldPanel('secondary_image'),
         FieldPanel('body_video'),
         FieldPanel('body_content'),            
         # InlinePanel('gallery_images', label="Gallery images")
