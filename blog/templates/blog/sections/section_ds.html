@@ -14,13 +14,13 @@
         <div class="d-flex align-items-center justify-content-center">
           
             {% for post in  page.get_children %}
-            {% if forloop.counter == 2 %}
+            {% if forloop.counter == 3 %}
        
     <div class="owl-item active" style="width: 540px; margin-right: 30px;">
         <div class="single__blog d-flex align-items-center">
         <div class="thum">
             {% comment %} <img src="https://themewagon.github.io/charifit/img/news/1.png" alt=""> {% endcomment %}
-            <img {{ post.specific.image }} class="my-custom-class" />
+            <img src={{ post.specific.image }} class="my-custom-class" />
         </div>
         <div class="newsinfo">
             <span>{{page.date}}</span>
