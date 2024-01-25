@@ -20,7 +20,12 @@
         <div class="single__blog d-flex align-items-center">
         <div class="thum">
             {% comment %} <img src="https://themewagon.github.io/charifit/img/news/1.png" alt=""> {% endcomment %}
-            <img src={{ post.specific.image }} class="my-custom-class" />
+            {% comment %} <img src={{ post.specific.image.url }} class="my-custom-class" /> {% endcomment %}
+           
+            {% if post.image %}
+            <img src="{{ post.image.url }}" alt="{{ post.image.alt }}" />
+            {% endif %}
+
         </div>
         <div class="newsinfo">
             <span>{{page.date}}</span>
