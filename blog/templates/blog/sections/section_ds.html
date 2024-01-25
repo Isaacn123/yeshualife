@@ -31,11 +31,11 @@
         </div>
         <div class="newsinfo">
             <span>{{page.date}}</span>
-            <a href="single-blog.html">
+            <a href="{% pageurl post %}">
                 <h3>{{post.specific.title|truncatewords:10}}</h3>
             </a>
             <p>{{post.specific.body|richtext|truncatewords:20}}</p>
-            <a class="read_more" href="single-blog.html">Read More</a>
+            <a class="read_more" href="{% pageurl post %}">Read More</a>
         </div></div>
    </div>
 
