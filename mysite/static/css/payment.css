@@ -75,24 +75,24 @@ body{
     border: none
 }
 
-.nav-pay.nav-tabs-pay {
+.card.nav.nav-tabs {
     border: none;
     border-bottom: 2px solid #ddd
 }
 
-.nav-pay.nav-tabs-pay .nav-item-payment .nav-link-pay {
+.card.nav.nav-tabs .nav-item .nav-link {
     border: none;
     color: black;
     border-bottom: 2px solid transparent;
     font-size: 14px
 }
 
-.nav-pay.nav-tabs-pay .nav-item-payment .nav-link-pay:hover {
+.card.nav.nav-tabs .nav-item .nav-link:hover {
     border-bottom: 2px solid #3ecc6d;
     color: #05cf48
 }
 
-.nav-pay.nav-tabs-pay .nav-item-payment .nav-link-pay.active {
+.card.nav.nav-tabs .nav-item .nav-link.active {
     border: none;
     border-bottom: 2px solid #3ecc6d
 }
