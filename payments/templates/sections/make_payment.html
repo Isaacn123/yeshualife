@@ -4,52 +4,77 @@
 <link href="{% static 'css/payment.css'%}" rel="stylesheet">
 {% endblock  %}
 
-<div class="container bg-light d-md-flex align-items-center justify-content-center">
-    <div class="card box2 shadow-sm">
-        <div class="d-flex align-items-center justify-content-between p-md-5 p-4"> <span
-                class="h5 fw-bold m-0">Make a Donation</span>
-            <div class="btn btn-primary bar"><span class="fas fa-bars"></span></div>
-        </div>
-    
-        <form action="">
-            <div class="row">
-                <div class="col-12">
-                    <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Message</span>
-                        <div class="inputWithIcon"> <textarea rows="3" class="form-control fw-light" type="text"
-                                placeholder="provide a short message."></textarea> </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="d-flex flex-column ps-md-5 px-md-0 px-4 mb-4"> <span>Donation<span
-                                class="ps-1">Amount</span></span>
-                        <div class="inputWithIcon"> <input type="text" class="form-control" placeholder="500"> <span
-                                class="fas fa-money-bill"></span> </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="d-flex flex-column pe-md-5 px-md-0 px-4 mb-4"> <span>Currency</span>
-                        <div class="inputWithIcon"> 
-                            <select name="currency" class="form-select form-select-sm" id="currency">
-                                <option selected>Choose</option>
-                                <option value="UGX">Uganda Shillings</option>
-                                <option value="USD">US Dollars</option>
-                            </select>
-                            <span
-                                class="fas fa-lock">
-                            </span></div>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Name</span>
-                        <div class="inputWithIcon"> <input class="form-control text-uppercase" type="text"
-                                placeholder="Isaac Axen"> <span class="far fa-user"></span> </div>
-                    </div>
-                </div>
-                <div class="col-12 px-md-5 px-4 mt-3">
-                    <div class="btn btn-primary w-100">Pay UG5X 99.00</div>
-                </div>
+<div class="container bg-light d-md-flex align-items-center justify-content-center p-3">
+  
+
+    <div id="hide-visible-container">
+        <div class="card box2 shadow-sm m-3 ">
+            <div class="d-flex align-items-center justify-content-between p-md-5 p-4"> <span
+                    class="h5 fw-bold m-0">Make a Donation</span>
+                <div class="btn btn-primary bar"><span class="fas fa-bars"></span></div>
             </div>
-        </form>
-      
+        
+            <form action="">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Message</span>
+                            <div class="inputWithIcon"> <textarea rows="3" class="form-control fw-light" type="text"
+                                    placeholder="provide a short message."></textarea> </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex flex-column ps-md-5 px-md-0 px-4 mb-4"> <span>Donation<span
+                                    class="ps-1">Amount</span></span>
+                            <div class="inputWithIcon"> <input type="text" class="form-control" placeholder="500"> <span
+                                    class="fas fa-money-bill"></span> </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex flex-column pe-md-5 px-md-0 px-4 mb-4"> <span>Currency</span>
+                            <div class="inputWithIcon"> 
+                                <select name="currency" class="form-select form-select-sm" id="currency">
+                                    <option selected>Choose</option>
+                                    <option value="UGX">Uganda Shillings</option>
+                                    <option value="USD">US Dollars</option>
+                                </select>
+                                <span
+                                    class="fas fa-lock">
+                                </span></div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Name</span>
+                            <div class="inputWithIcon"> <input class="form-control text-uppercase" type="text"
+                                    placeholder="Isaac Axen"> <span class="far fa-user"></span> </div>
+                        </div>
+                    </div>
+                    <div class="col-12 px-md-5 px-4 mt-3">
+                        {% comment %} <div class="btn btn-primary w-100">Pay UG5X 99.00</div> {% endcomment %}
+                        <button id="my-button" class="btn btn-primary w-100" type="button">Pay UG5X 99.00</button>
+                    </div>
+                </div>
+            </form>
+          
+        </div>
+    </div>
+
+    <div id="show-hidden-container">
+ {% include "sections/showpayments.html" %}
     </div>
 </div>
+
+
+{% block extra_js %}
+{# Override this in templates to add extra javascript #}
+<script>
+ var container1 = document.getElementById('hide-visible-container');
+ var container2 = document.getElementById('show-hidden-container');
+ var button = document.getElementById('my-button');
+ button.addEventListener('click', function(){
+    alert("Button Clicked")
+    container1.style.display = "none"
+    container2.style.display = "block"
+ });
+
+</script>
+{% endblock %}
