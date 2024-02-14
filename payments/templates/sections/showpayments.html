@@ -59,26 +59,33 @@
 
 
 {% block extra_js %}
-
 <script>
-    var payform = document.getElementById("payform")
-    payform.addEventListener('submit', function(event){
-    event.preventDefeults();
 
-    var number = document.payform.phone.value;
-    if(number == null){
-        alert("Phone number can't be blank!")
-        return false;
-    }else if (!isNaN(number) && number !== ''){
-        alert("Please provide a Valid Phone number!") 
-        return false; 
-    }else{
-            // If the number is valid, allow the form to be submitted
-            payform.submit();
-        
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        var payform = document.getElementById("payform")
+        payform.addEventListener('submit', function(event){
+        event.preventDefeults();
+    
+        var number = document.getElementById('phone').value;
+        if(number == null){
+            alert("Phone number can't be blank!")
+            return false;
+        }else if (!isNaN(number) && number !== ''){
+            alert("Please provide a Valid Phone number!") 
+            return false; 
+        }else{
+                // If the number is valid, allow the form to be submitted
+                payform.submit();
+            
+        }
+    
+       }); 
 
-   });
+    });
+
+
+
+  
 </script>
 
 {% endblock %}
