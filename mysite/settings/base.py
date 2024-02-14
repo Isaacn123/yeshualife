@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     "modelcluster",
     "wagtail.contrib.legacy.richtext",
     "taggit",
+    'wagtail.api.v2',
+    "rest_framework",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -60,6 +62,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
     'corsheaders',
+    'payments'
 ]
 
 MIDDLEWARE = [
@@ -101,7 +104,7 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
+DATABASESa = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
@@ -119,7 +122,7 @@ DATABASES = {
 #     }
 # } 
 
-DATABASESs= {
+DATABASES= {
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'yeshualife_db',
@@ -143,7 +146,7 @@ DATABASESs= {
     }
 } 
 
-DATABASES = {
+DATABASESs = {
         'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'yeshualife_db',
