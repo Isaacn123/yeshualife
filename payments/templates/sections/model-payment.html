@@ -52,7 +52,9 @@
                             <div class="col-12">
                                 <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Enter Phone:</span>
                                     <div class="inputWithIcon"> 
-                        <input class="form-control text-uppercase" id="phoneid" name="phone" type="number"  placeholder="(0774-345-343)" style="font-size:11" > <span class="far fa-user"></span></div>
+                        <input class="form-control text-uppercase" id="phoneid" name="phone" type="text"  placeholder="(0774-345-343)" style="font-size:11" >
+                        <input type="text" id="numberInput" placeholder="Enter a number">
+                        <span class="far fa-user"></span></div>
                                 </div>
                             </div>
                             <div class="col-12 px-md-5 px-4 mt-3">
@@ -86,9 +88,9 @@
         number = document.getElementById("phoneid").value;
 
         console.log("number:::");
-        console.log(number);
+        console.log(number === null);
 
-    if(number == null){
+    if(number === null || number.trim() === '' ){
         alert("Phone number can't be blank!")
         return false;
     }else if (!isNaN(number) && number !== ''){
