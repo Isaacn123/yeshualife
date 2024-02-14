@@ -21,7 +21,7 @@ body{
 .card.box1 {
     width: 350px;
     height: 500px;
-    background-color: #cc7d3e;
+    background-color: #cc8e3e;
     color: #f0e3ba;
     border-radius: 0
 }
@@ -45,7 +45,7 @@ body{
 }
 
 .box2 .btn.btn-primary.bar:hover {
-    color: #baf0c3
+    color: #f0e3ba;
 }
 
 .box1 .btn.btn-primary {
