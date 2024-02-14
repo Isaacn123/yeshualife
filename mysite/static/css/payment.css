@@ -74,28 +74,28 @@ body{
     align-items: center;
     border: none
 }
-/* 
+
 .nav.nav-tabs {
     border: none;
     border-bottom: 2px solid #ddd
 }
 
-.nav.nav-tabs .nav-item .nav-link {
+.nav.nav-tabs .nav-item-payment .nav-link-pay {
     border: none;
     color: black;
     border-bottom: 2px solid transparent;
     font-size: 14px
 }
 
-.nav.nav-tabs .nav-item .nav-link:hover {
+.nav.nav-tabs .nav-item-payment .nav-link-pay:hover {
     border-bottom: 2px solid #3ecc6d;
     color: #05cf48
 }
 
-.nav.nav-tabs .nav-item .nav-link.active {
+.nav.nav-tabs .nav-item-payment .nav-link-pay.active {
     border: none;
     border-bottom: 2px solid #3ecc6d
-} */
+}
 
 .form-control {
     border: none;
