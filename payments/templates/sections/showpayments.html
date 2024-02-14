@@ -1,5 +1,8 @@
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags%}
+{% block extra_css %}
+<link href="{% static 'css/payment.css'%}" rel="stylesheet">
+{% endblock  %}
 
 <div class="container bg-light d-md-flex align-items-center">
     <div class="card box1 shadow-sm p-md-5 p-md-5 p-4">
