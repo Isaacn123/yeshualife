@@ -75,11 +75,13 @@
 
   {% block extra_js %}
   <script>
+        
 
+       
         document.addEventListener('DOMContentLoaded', function() {
-            var payform = document.getElementById("payform")
+            var form = document.getElementById("payform")
 
-            payform.addEventListener('submit', function(event){
+            form.addEventListener('submit', function(event){
             event.preventDefault();
         
             var number = document.getElementById('phone').value;
