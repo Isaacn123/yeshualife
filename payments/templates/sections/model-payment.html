@@ -79,11 +79,14 @@
     document.addEventListener('DOMContentLoaded', function(){
     
     form = document.getElementById("payform");
-  
-
+    console.log("MMLL::");
+    
     form.addEventListener('submit', function(event){
         event.preventDefault();
         number = document.getElementById("phoneid").value;
+
+        console.log("number:::");
+        console.log(number);
 
     if(number == null){
         alert("Phone number can't be blank!")
@@ -93,7 +96,7 @@
         return false; 
     }else{
             // If the number is valid, allow the form to be submitted
-            form.submit();
+           // form.submit();
         
     } 
 
