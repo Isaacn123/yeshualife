@@ -80,9 +80,10 @@
             var payform = document.getElementById("payform")
 
             payform.addEventListener('submit', function(event){
-            event.preventDefeults();
+            event.preventDefault();
         
             var number = document.getElementById('phone').value;
+            console.log(number);
             if(number == null){
                 alert("Phone number can't be blank!")
                 return false;
