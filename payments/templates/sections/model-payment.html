@@ -15,6 +15,7 @@
         <div class="modal-body">
             <div class="container bg-light d-md-flex align-items-center justify-content-center p-3">
                <form action="" method="post" id="payform">
+                {% csrf_token %}
                 <div class="card box2 shadow-sm m-3 ">
                     <div class="d-flex align-items-center justify-content-between p-md-5 p-4 mtn-background"> <span
                             class="h5 fw-bold m-0">MTN PAYMENT</span>
@@ -83,7 +84,7 @@
     form.addEventListener('submit', function(event){
         event.preventDefeults();
         number = document.getElementById("phoneid").value;
-        
+
     if(number == null){
         alert("Phone number can't be blank!")
         return false;

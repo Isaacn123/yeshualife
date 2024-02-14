@@ -23,6 +23,7 @@
                     </div>
                 
                     <form action="" id="payform" method="post">
+                        {% csrf_token %}
                         <div class="row">
                             <div class="col-12">
                                 <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Gift Amount</span>
@@ -77,7 +78,7 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             var payform = document.getElementById("payform")
-            
+
             payform.addEventListener('submit', function(event){
             event.preventDefeults();
         
