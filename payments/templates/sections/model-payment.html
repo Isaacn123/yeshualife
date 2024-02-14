@@ -1,0 +1,70 @@
+<!-- Modal -->
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags%}
+{% block extra_css %}
+<link href="{% static 'css/payment.css'%}" rel="stylesheet">
+{% endblock  %}
+
+<div class="modal fade" id="mtnModal" tabindex="-1" aria-labelledby="mtnModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="mtnModalLabel">MTN MOMO PAY</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="container bg-light d-md-flex align-items-center justify-content-center p-3">
+                <div class="card box2 shadow-sm m-3 ">
+                    <div class="d-flex align-items-center justify-content-between p-md-5 p-4 mtn-background"> <span
+                            class="h5 fw-bold m-0">MTN PAYMENT</span>
+                        <div class="btn btn-primary bar"><span class="fas fa-bars"></span></div>
+                    </div>
+                
+                    <form action="">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Gift Amount</span>
+                                    <div class="inputWithIcon"> 
+                                        <input  class="form-control fw-light" type="text"
+                                            value="500" disabled>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-column ps-md-5 px-md-0 px-4 mb-4"> <span>Donation<span
+                                            class="ps-1">Amount</span></span>
+                                    <div class="inputWithIcon"> <input type="text" class="form-control" placeholder="500"> <span
+                                            class="fas fa-money-bill"></span> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-column pe-md-5 px-md-0 px-4 mb-4"> <span>Currency</span>
+                                    <div class="inputWithIcon"> 
+                                     <input type="text" value="UGX">
+                                        <span
+                                            class="fas fa-lock">
+                                        </span></div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Name</span>
+                                    <div class="inputWithIcon"> <input class="form-control text-uppercase" type="text"
+                                            placeholder="Isaac Axen"> <span class="far fa-user"></span> </div>
+                                </div>
+                            </div>
+                            <div class="col-12 px-md-5 px-4 mt-3">
+                                <button id="my-button" class="btn btn-primary w-100" type="button">Pay UG5X 99.00</button>
+                            </div>
+                        </div>
+                    </form>
+                  
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

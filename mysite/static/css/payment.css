@@ -207,3 +207,7 @@ form .btn.btn-primary:hover {
 #show-hidden-container{
     display: none;
 }
+
+.mtn-background{
+    background-color: #ffcb00;
+}
