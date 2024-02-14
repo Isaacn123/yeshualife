@@ -9,14 +9,14 @@
 }
 
 body{
-    background-color:#3ecc6d;
+    /* background-color:#3ecc6d; */
 }
 
-.container {
+/* .container {
     margin: 20px auto;
     width: 800px;
     padding: 30px
-}
+} */
 
 .card.box1 {
     width: 350px;
@@ -74,7 +74,7 @@ body{
     align-items: center;
     border: none
 }
-
+/* 
 .nav.nav-tabs {
     border: none;
     border-bottom: 2px solid #ddd
@@ -95,7 +95,7 @@ body{
 .nav.nav-tabs .nav-item .nav-link.active {
     border: none;
     border-bottom: 2px solid #3ecc6d
-}
+} */
 
 .form-control {
     border: none;
