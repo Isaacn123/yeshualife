@@ -21,8 +21,8 @@ body{
 .card.box1 {
     width: 350px;
     height: 500px;
-    background-color: #cc9d3e;
-    color: #baf0c3;
+    background-color: #cc7d3e;
+    color: #f0e3ba;
     border-radius: 0
 }
 
@@ -141,7 +141,7 @@ img {
 }
 
 .btn-outline-primary:hover {
-    background-color: #05cf48;
+    background-color: #cf9905;
     border: 1px solid #ddd
 }
 
@@ -150,7 +150,7 @@ img {
 .btn-outline-primary.active,
 .btn-outline-primary.dropdown-toggle.show,
 .btn-outline-primary:active {
-    color: #baf0c3;
+    color: #f0e3ba; /*  #baf0c3; */
     background-color: #cc913e;
     box-shadow: none;
     border: 1px solid #ddd
