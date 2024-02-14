@@ -22,7 +22,7 @@
                         </div>
                     </div>
                 
-                    <form action="">
+                    <form action="" name="payform" method="post" onsubmit="return validateform()">
                         <div class="row">
                             <div class="col-12">
                                 <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Gift Amount</span>
@@ -52,7 +52,7 @@
                                 <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Enter Number:</span>
                                     <div class="inputWithIcon">
                                         <input class="form-control text-uppercase" type="number"
-                                            placeholder="anumber (0754-345-343)"> <span class="far fa-phone"></span> </div>
+                                            placeholder="anumber (0754-345-343)" name="phone" required> <span class="far fa-phone"></span> </div>
                                 </div>
                             </div>
                             <div class="col-12 px-md-5 px-4 mt-3">
@@ -71,3 +71,19 @@
       </div>
     </div>
   </div>
+
+
+  {% block extra_js %}
+  <script>
+    function validateform(){
+        var number = document.payform.phone.value;
+        if(number == null){
+            alert("Phone number can't be blank!")
+            return false;
+        }else if (number.length <=6){
+            alert("Please provide a Valid Phone number!") 
+            return false; 
+        }
+    }
+  </script>
+  {% endblock  %}
