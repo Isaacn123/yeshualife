@@ -78,6 +78,9 @@
   {% block extra_js %}
   <script>
     document.addEventListener('DOMContentLoaded', function(){
+
+    const currentformdata = localStorage.getItem("formData");
+    console.log("PASSED-DATA::",currentformdata);
     
     form = document.getElementById("payform");
     console.log("MMLL::");
