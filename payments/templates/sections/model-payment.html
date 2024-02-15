@@ -79,12 +79,13 @@
   <script>
     document.addEventListener('DOMContentLoaded', function(){
 
-    //const currentformdata = localStorage.getItem("formData");
+   var  formdata = document.getElementById("mtnModal");
     var formData = JSON.parse(localStorage.getItem('formData')) || {};
     console.log("PASSED-DATA::",formData);
     
     form = document.getElementById("payform");
-    console.log("MMLL::");
+    var formDataFromContainer2 = formdata.formData;
+    console.log("MMLL::",formDataFromContainer2);
     
     form.addEventListener('submit', function(event){
         event.preventDefault();
