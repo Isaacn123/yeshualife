@@ -81,14 +81,6 @@
 
     const currentformdata = localStorage.getItem("formData");
     console.log("PASSED-DATA::",currentformdata);
-
-    // Parse the data if it exists
-if (currentFormData) {
-    const formData = JSON.parse(currentFormData);
-    console.log('Current Form Data:', formData);
-} else {
-    console.log('No form data stored.');
-}
     
     form = document.getElementById("payform");
     console.log("MMLL::");
