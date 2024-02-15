@@ -77,7 +77,7 @@
         var container2 = document.getElementById('show-hidden-container');
         var form = document.getElementById('form-data');
         var button = document.getElementById('my-button');
-        var mtn = document.getElementById("mtnModal");
+        var mtn = document.getElementById("show-payment");
 
         var box1Container = document.querySelector('.box1');
 
@@ -143,6 +143,7 @@
 
                 // Update the HTML content of box1Container
                 box1Container.innerHTML = htmlContent;
+                console.log("MTN:", mtn);
                 mtn["formData"] = formData;
     
             // Alert the user to confirm the action

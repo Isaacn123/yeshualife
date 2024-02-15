@@ -4,7 +4,7 @@
 <link href="{% static 'css/payment.css'%}" rel="stylesheet">
 {% endblock  %}
 
-<div class="container bg-light d-md-flex align-items-center">
+<div id="show-payment" class="container bg-light d-md-flex align-items-center">
     <div class="card box1 shadow-sm p-md-5 p-md-5 p-4">
         <div class="fw-bolder mb-4"><span class="fas fa-dollar-sign"></span><span class="ps-1">599,00</span></div>
         <div class="d-flex flex-column">
@@ -64,8 +64,11 @@
 {% block extra_js %}
 <script>
   document.addEventListener('DOMContentLoaded', function(){
-    const currentformdata = localStorage.getItem("formData");
-    console.log("content::",currentformdata);
+    //const currentformdata = localStorage.getItem("formData");
+    //console.log("content::",currentformdata);
+    var  data = document.getElementById("mtnModal");
+    var formDataFromContainer2 = data.formData;
+    console.log("MMLL::",formDataFromContainer2);
   })
 </script>
 
