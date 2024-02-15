@@ -78,7 +78,7 @@
         var button = document.getElementById('my-button');
 
 
-        button.addEventListener('submit', function(event) {
+        button.addEventListener('click', function(event) {
         event.preventDefault();
 
                     // Get values from form inputs
@@ -86,6 +86,11 @@
         var donationAmount = document.getElementById('amount').value;
         var donationcurrency = document.getElementById('currency').value;
         var name = document.getElementById('fullname').value;
+
+
+        console.log("Form Data:", name);
+        console.log("Form Data:", donationmessage);
+        console.log("Form Data:", donationAmount);
 
 
                 // Alert the user to confirm the action
