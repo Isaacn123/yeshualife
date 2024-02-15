@@ -14,8 +14,8 @@
                 <div class="btn btn-primary bar"><span class="fas fa-bars"></span></div>
             </div>
         
-            <form action="" id="form-data" method="post">
-                {% csrf_token %}
+            <form id="form-data">
+           
                 <div class="row">
                     <div class="col-12">
                         <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Message</span>
@@ -75,10 +75,10 @@
     document.addEventListener('DOMContentLoaded', function(){
         var container1 = document.getElementById('hide-visible-container');
         var container2 = document.getElementById('show-hidden-container');
-        var button = document.getElementById('my-button');
+        var form = document.getElementById('my-button');
 
 
-        button.addEventListener('click', function(event) {
+        form.addEventListener('submit', function(event) {
         event.preventDefault();
 
                     // Get values from form inputs
@@ -106,7 +106,7 @@
                         currency: donationcurrency,
                         name: name
                     };
-        
+                                       
                     // Store the form data object in localStorage
                     localStorage.setItem('formData', JSON.stringify(formData));
         
