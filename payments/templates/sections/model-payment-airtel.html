@@ -90,12 +90,13 @@
             if(number === null || number.trim() === '' ){
                 alert("Phone number can't be blank!")
                 return false;
-            }else if (!isNaN(number) && number !== ''){
+            }else if (number !== '' && !number.match(/^\d{10}$/)){
                 alert('Please enter a valid number.'); 
                 return false; 
             }else{
                     // If the number is valid, allow the form to be submitted
-                    form.submit();
+                    //form.submit();
+                    alert("number is valid");
                 
             }
         

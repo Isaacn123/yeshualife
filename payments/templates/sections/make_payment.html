@@ -14,20 +14,22 @@
                 <div class="btn btn-primary bar"><span class="fas fa-bars"></span></div>
             </div>
         
-            <form action="">
+            <form action="" id="form-data">
                 <div class="row">
                     <div class="col-12">
                         <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Message</span>
                             <div class="inputWithIcon"> 
-                                <textarea rows="3" rows="3" maxlength="60" class="form-control fw-light" type="text"
+                                <textarea rows="3" rows="3" maxlength="60" name="message" class="form-control fw-light" type="text"
                                     placeholder="provide a short message."></textarea> </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="d-flex flex-column ps-md-5 px-md-0 px-4 mb-4"> <span>Donation<span
                                     class="ps-1">Amount</span></span>
-                            <div class="inputWithIcon"> <input type="text" class="form-control" placeholder="500"> <span
-                                    class="fas fa-money-bill"></span> </div>
+                            <div class="inputWithIcon"> 
+                                <input type="text" name="amount" class="form-control" placeholder="500"> 
+                                <span class="fas fa-money-bill"></span> 
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -45,13 +47,14 @@
                     </div>
                     <div class="col-12">
                         <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Name</span>
-                            <div class="inputWithIcon"> <input class="form-control text-uppercase" type="text"
+                            <div class="inputWithIcon"> 
+                                <input class="form-control text-uppercase" name="fullname" type="text"
                                     placeholder="Isaac Axen"> <span class="far fa-user"></span> </div>
                         </div>
                     </div>
                     <div class="col-12 px-md-5 px-4 mt-3">
                         {% comment %} <div class="btn btn-primary w-100">Pay UG5X 99.00</div> {% endcomment %}
-                        <button id="my-button" class="btn btn-primary w-100" type="button">Pay UG5X 99.00</button>
+                        <button id="my-button" class="btn btn-primary w-100" type="submit">Pay UG5X 99.00</button>
                     </div>
                 </div>
             </form>
@@ -60,7 +63,7 @@
     </div>
 
     <div id="show-hidden-container">
- {% include "sections/showpayments.html" %}
+ {% include "sections/showpayments.html" with currentformdata %}
     </div>
 </div>
 
@@ -68,14 +71,41 @@
 {% block extra_js %}
 {# Override this in templates to add extra javascript #}
 <script>
- var container1 = document.getElementById('hide-visible-container');
- var container2 = document.getElementById('show-hidden-container');
- var button = document.getElementById('my-button');
- button.addEventListener('click', function(){
-    alert("Button Clicked")
-    container1.style.display = "none"
-    container2.style.display = "block"
- });
+    document.addEventListener('DOMContentLoaded', function(){
+        var container1 = document.getElementById('hide-visible-container');
+        var container2 = document.getElementById('show-hidden-container');
+        var button = document.getElementById('form-data');
+        button.addEventListener('submit', function(event) {
+           alert("Do you want to Proceed")
+
+
+                   // Get values from form inputs
+        var message = document.getElementById('message').value;
+        var donationAmount = document.getElementById('amount').value;
+        var currency = document.getElementById('currency').value;
+        var name = document.getElementById('fullname').value;
+
+        // Construct an object with collected data
+        var formData = {
+            message: message,
+            donationAmount: donationAmount,
+            currency: currency,
+            name: name
+        };
+
+         // Store the form data object in localStorage
+         localStorage.setItem('formData', JSON.stringify(formData));
+
+         const currentformdata = localStorage.getItem("formData");
+         console.log(currentformdata)
+
+         container1.style.display = "none"
+         container2.style.display = "block"
+
+        });
+       
+
+    })
 
 </script>
 {% endblock %}
