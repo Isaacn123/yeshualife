@@ -82,10 +82,19 @@
             event.preventDefault();
     
             // Get values from form inputs
-            var donationMessage = document.getElementById('message').value;
-            var donationAmount = document.getElementById('amount').value;
-            var donationCurrency = document.getElementById('currency').value;
-            var name = document.getElementById('fullname').value;
+          //  var donationMessage = document.getElementById('message').value;
+          //  var donationAmount = document.getElementById('amount').value;
+           // var donationCurrency = document.getElementById('currency').value;
+           // var name = document.getElementById('fullname').value;
+
+                  // Make sure container1 is visible before proceeding
+        container1.style.display = 'block'; // Or apply your preferred style to make it visible
+
+        // Get values from form inputs
+        var donationMessage = document.getElementsByName('message')[0].value;
+        var donationAmount = document.getElementsByName('amount')[0].value;
+        var donationCurrency = document.getElementById('currency').value;
+        var name = document.getElementsByName('fullname')[0].value;
     
             console.log("Form Data:", name);
             console.log("Form Data:", donationMessage);
@@ -94,7 +103,7 @@
             // Alert the user to confirm the action
             if (confirm("Do you want to Proceed?")) {
                 // Hide and show containers
-                container1.style.visibility = "hidden";
+                //container1.style.visibility = "hidden";
                 container2.style.display = "block";
     
                 // Construct an object with collected data
