@@ -55,7 +55,7 @@
                     </div>
                     <div class="col-12 px-md-5 px-4 mt-3">
                         {% comment %} <div class="btn btn-primary w-100">Pay UG5X 99.00</div> {% endcomment %}
-                        <button id="my-button" class="btn btn-primary w-100" type="submit">Pay UG5X 99.00</button>
+                        <button id="my-button" class="btn btn-primary w-100" >Pay UG5X 99.00</button>
                     </div>
                 </div>
             </form>
@@ -75,10 +75,10 @@
     document.addEventListener('DOMContentLoaded', function(){
         var container1 = document.getElementById('hide-visible-container');
         var container2 = document.getElementById('show-hidden-container');
-        var form = document.getElementById('form-data');
+        var form = document.getElementById('my-button');
 
 
-        form.addEventListener('submit', function(event) {
+        form.addEventListener('click', function(event) {
         event.preventDefault();
 
                     // Get values from form inputs
