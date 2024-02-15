@@ -63,13 +63,13 @@
 
 {% block extra_js %}
 <script>
-  document.addEventListener('DOMContentLoaded', function(){
+  {% comment %} document.addEventListener('DOMContentLoaded', function(){ {% endcomment %}
     //const currentformdata = localStorage.getItem("formData");
     //console.log("content::",currentformdata);
-    var  data = document.getElementById("show-payment");
-    var formDataFromContainer2 = data.formData;
+    var mtn = document.getElementById("show-payment");
+    var formDataFromContainer2 = mtn.formData;
     console.log("MMLL::",formDataFromContainer2);
-  })
+  {% comment %} }) {% endcomment %}
 </script>
 
 {% endblock %}
