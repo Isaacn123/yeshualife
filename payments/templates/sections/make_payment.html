@@ -75,6 +75,13 @@
         var container1 = document.getElementById('hide-visible-container');
         var container2 = document.getElementById('show-hidden-container');
         var button = document.getElementById('form-data');
+
+                           // Get values from form inputs
+        var message = document.getElementById('message').value;
+        var donationAmount = document.getElementById('amount').value;
+        var currency = document.getElementById('currency').value;
+        var name = document.getElementById('fullname').value;
+        
         button.addEventListener('submit', function(event) {
 
             event.preventDefault();
@@ -83,12 +90,6 @@
           
            container1.style.display = "none"
            container2.style.display = "block"
-
-                   // Get values from form inputs
-        var message = document.getElementById('message').value;
-        var donationAmount = document.getElementById('amount').value;
-        var currency = document.getElementById('currency').value;
-        var name = document.getElementById('fullname').value;
 
         // Construct an object with collected data
         var formData = {
