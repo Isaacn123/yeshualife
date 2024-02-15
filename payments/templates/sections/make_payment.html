@@ -99,20 +99,22 @@
             console.log("Form Data:", name);
             console.log("Form Data:", donationMessage);
             console.log("Form Data:", donationAmount);
+
+              // Construct an object with collected data
+            var formData = {
+                message: donationMessage,
+                donationAmount: donationAmount,
+                currency: donationCurrency,
+                name: name
+            };
     
             // Alert the user to confirm the action
             if (confirm("Do you want to Proceed?")) {
                 // Hide and show containers
-                //container1.style.visibility = "hidden";
+                container1.style.display = "none";
                 container2.style.display = "block";
     
-                // Construct an object with collected data
-                var formData = {
-                    message: donationMessage,
-                    donationAmount: donationAmount,
-                    currency: donationCurrency,
-                    name: name
-                };
+              
     
                 // Store the form data object in localStorage
                 localStorage.setItem('formData', JSON.stringify(formData));
