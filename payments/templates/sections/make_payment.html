@@ -72,75 +72,47 @@
 {% block extra_js %}
 {# Override this in templates to add extra javascript #}
 <script>
-    document.addEventListener('DOMContentLoaded', function(){
+    document.addEventListener('DOMContentLoaded', function() {
         var container1 = document.getElementById('hide-visible-container');
         var container2 = document.getElementById('show-hidden-container');
         var form = document.getElementById('my-button');
-
-
+    
         form.addEventListener('click', function(event) {
-        event.preventDefault();
-
-                    // Get values from form inputs
-        var donationmessage = document.getElementById('message').value;
-        var donationAmount = document.getElementById('amount').value;
-        var donationcurrency = document.getElementById('currency').value;
-        var name = document.getElementById('fullname').value;
-
-
-        console.log("Form Data:", name);
-        console.log("Form Data:", donationmessage);
-        console.log("Form Data:", donationAmount);
-
-
-                // Alert the user to confirm the action
-                if (confirm("Do you want to Proceed?")) {
-                    // Hide and show containers
-                    container1.style.display = "none";
-                    container2.style.display = "block";
-        
-                    // Construct an object with collected data
-                    var formData = {
-                        message: donationmessage,
-                        donationAmount: donationAmount,
-                        currency: donationcurrency,
-                        name: name
-                    };
-
-                    // Store the form data object in localStorage
-                    localStorage.setItem('formData', JSON.stringify(formData));
-        
-                    console.log("Form Data:", formData);
-                }
-
-        
-
-           //alert("Do you want to Proceed");
-          
-           //container1.style.display = "none"
-           //container2.style.display = "block"
-
-        // Construct an object with collected data
-        //var formData = {
-         //   message: message,
-         //   donationAmount: donationAmount,
-         //   currency: currency,
-         //   name: name
-        //};
-
-        console.log("MDC", formData);
-
-         // Store the form data object in localStorage
-         //localStorage.setItem('formData', JSON.stringify(formData));
-
-        
-
-        
-
+            event.preventDefault();
+    
+            // Get values from form inputs
+            var donationMessage = document.getElementById('message').value;
+            var donationAmount = document.getElementById('amount').value;
+            var donationCurrency = document.getElementById('currency').value;
+            var name = document.getElementById('fullname').value;
+    
+            console.log("Form Data:", name);
+            console.log("Form Data:", donationMessage);
+            console.log("Form Data:", donationAmount);
+    
+            // Alert the user to confirm the action
+            if (confirm("Do you want to Proceed?")) {
+                // Hide and show containers
+                container1.style.display = "none";
+                container2.style.display = "block";
+    
+                // Construct an object with collected data
+                var formData = {
+                    message: donationMessage,
+                    donationAmount: donationAmount,
+                    currency: donationCurrency,
+                    name: name
+                };
+    
+                // Store the form data object in localStorage
+                localStorage.setItem('formData', JSON.stringify(formData));
+    
+                console.log("Form Data:", formData);
+            }
+    
+            //console.log("MDC", formData); // This line will throw an error, formData is not accessible here
         });
-       
-
-    })
-
+    });
+    
 </script>
 {% endblock %}
