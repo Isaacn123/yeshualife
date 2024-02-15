@@ -75,9 +75,10 @@
     document.addEventListener('DOMContentLoaded', function() {
         var container1 = document.getElementById('hide-visible-container');
         var container2 = document.getElementById('show-hidden-container');
-        var form = document.getElementById('my-button');
-    
-        form.addEventListener('click', function(event) {
+        var form = document.getElementById('form-data');
+        var button = document.getElementById('my-button');
+
+        button.addEventListener('click', function(event) {
             event.preventDefault();
     
             // Get values from form inputs
@@ -93,7 +94,7 @@
             // Alert the user to confirm the action
             if (confirm("Do you want to Proceed?")) {
                 // Hide and show containers
-                container1.style.display = "none";
+                container1.style.visibility = "hidden";
                 container2.style.display = "block";
     
                 // Construct an object with collected data
