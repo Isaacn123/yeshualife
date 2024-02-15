@@ -76,8 +76,13 @@
         var container2 = document.getElementById('show-hidden-container');
         var button = document.getElementById('form-data');
         button.addEventListener('submit', function(event) {
-           alert("Do you want to Proceed")
 
+            event.preventDefault();
+
+           alert("Do you want to Proceed");
+          
+           container1.style.display = "none"
+           container2.style.display = "block"
 
                    // Get values from form inputs
         var message = document.getElementById('message').value;
@@ -97,10 +102,9 @@
          localStorage.setItem('formData', JSON.stringify(formData));
 
          const currentformdata = localStorage.getItem("formData");
-         console.log(currentformdata)
+         console.log(currentformdata);
 
-         container1.style.display = "none"
-         container2.style.display = "block"
+        
 
         });
        
