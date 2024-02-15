@@ -14,7 +14,8 @@
                 <div class="btn btn-primary bar"><span class="fas fa-bars"></span></div>
             </div>
         
-            <form action="" id="form-data">
+            <form action="" id="form-data" method="post">
+                {% csrf_token %}
                 <div class="row">
                     <div class="col-12">
                         <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Message</span>
@@ -76,33 +77,56 @@
         var container2 = document.getElementById('show-hidden-container');
         var button = document.getElementById('form-data');
 
-                           // Get values from form inputs
+
+        button.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+                    // Get values from form inputs
         var message = document.getElementById('message').value;
         var donationAmount = document.getElementById('amount').value;
         var currency = document.getElementById('currency').value;
         var name = document.getElementById('fullname').value;
+
+
+                // Alert the user to confirm the action
+                if (confirm("Do you want to Proceed?")) {
+                    // Hide and show containers
+                    container1.style.display = "none";
+                    container2.style.display = "block";
         
-        button.addEventListener('submit', function(event) {
+                    // Construct an object with collected data
+                    var formData = {
+                        message: message,
+                        donationAmount: donationAmount,
+                        currency: currency,
+                        name: name
+                    };
+        
+                    // Store the form data object in localStorage
+                    localStorage.setItem('formData', JSON.stringify(formData));
+        
+                    console.log("Form Data:", formData);
+                }
 
-            event.preventDefault();
+        
 
-           alert("Do you want to Proceed");
+           //alert("Do you want to Proceed");
           
-           container1.style.display = "none"
-           container2.style.display = "block"
+           //container1.style.display = "none"
+           //container2.style.display = "block"
 
         // Construct an object with collected data
-        var formData = {
-            message: message,
-            donationAmount: donationAmount,
-            currency: currency,
-            name: name
-        };
+        //var formData = {
+         //   message: message,
+         //   donationAmount: donationAmount,
+         //   currency: currency,
+         //   name: name
+        //};
 
         console.log("MDC", formData);
 
          // Store the form data object in localStorage
-         localStorage.setItem('formData', JSON.stringify(formData));
+         //localStorage.setItem('formData', JSON.stringify(formData));
 
         
 
