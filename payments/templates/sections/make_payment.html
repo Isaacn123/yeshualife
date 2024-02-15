@@ -75,7 +75,7 @@
     document.addEventListener('DOMContentLoaded', function(){
         var container1 = document.getElementById('hide-visible-container');
         var container2 = document.getElementById('show-hidden-container');
-        var form = document.getElementById('my-button');
+        var form = document.getElementById('form-data');
 
 
         form.addEventListener('submit', function(event) {
@@ -106,7 +106,7 @@
                         currency: donationcurrency,
                         name: name
                     };
-                                       
+
                     // Store the form data object in localStorage
                     localStorage.setItem('formData', JSON.stringify(formData));
         
