@@ -4,7 +4,7 @@
 <link href="{% static 'css/payment.css'%}" rel="stylesheet">
 {% endblock  %}
 
-<div id="show-payment" class="container bg-light d-md-flex align-items-center">
+<div  class="container bg-light d-md-flex align-items-center">
     <div class="card box1 shadow-sm p-md-5 p-md-5 p-4">
         <div class="fw-bolder mb-4"><span class="fas fa-dollar-sign"></span><span class="ps-1">599,00</span></div>
         <div class="d-flex flex-column">
@@ -41,12 +41,12 @@
 
             <div class="btn-group" role="group" aria-label="Basic radio toggle button group"> 
                 
-            <button type="button" class="btn icon-btn btn-outline-primary" name="btn-mtn" data-bs-toggle="modal" data-bs-target="#mtnModal">
+            <button type="button" id="openMtnModalButton" class="btn icon-btn btn-outline-primary" name="btn-mtn" data-bs-toggle="modal" data-bs-target="#mtnModal">
                <img src="{% static 'images/New-mtn-logo.jpeg' %}" height="50" width="42" alt="" srcset="">
                 <span class="pe-1">MTN</span>
             </button>
             
-                <button type="button" class="btn icon-btn btn-outline-primary" name="btn-airtel" id="btn-airtel" data-bs-toggle="modal" data-bs-target="#airtelModal" >
+                <button type="button" id="openAirtelModalButton" class="btn icon-btn btn-outline-primary" name="btn-airtel" id="btn-airtel" data-bs-toggle="modal" data-bs-target="#airtelModal" >
                     <img src="{% static 'images/airtel_money.jpeg' %}" height="50" width="42" alt="" srcset=""> 
                         <span class="lpe-1">AIRTEL</span>
                 </button> 
@@ -63,7 +63,7 @@
 
 {% block extra_js %}
 <script>
-  {% comment %} document.addEventListener('DOMContentLoaded', function(){ {% endcomment %}
+  document.addEventListener('DOMContentLoaded', function(){
     //const currentformdata = localStorage.getItem("formData");
     //console.log("content::",currentformdata);
    function data(){
@@ -72,8 +72,11 @@
     console.log("MMLL::",formDataFromContainer2);
    }
 
-   data();
-  {% comment %} }) {% endcomment %}
+   //data()
+
+
+
+  })
 </script>
 
 {% endblock %}

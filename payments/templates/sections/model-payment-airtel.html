@@ -26,9 +26,12 @@
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-12">
-                                <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Gift Amount</span>
+                                <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Donor Name</span>
                                     <div class="inputWithIcon"> 
-                                        <input  class="form-control fw-light" type="text"
+                                        <input id="airtel-pay-fullname"  class="form-control fw-light" type="text"
+                                        value="Idaas" hidden>
+
+                                        <input id="airtel-pay-donorName"  class="form-control fw-light" type="text"
                                             value="500" disabled>
                                         </div>
                                 </div>
@@ -36,14 +39,15 @@
                             <div class="col-md-6">
                                 <div class="d-flex flex-column ps-md-5 px-md-0 px-4 mb-4"> <span>Donation<span
                                             class="ps-1">Amount</span></span>
-                                    <div class="inputWithIcon"> <input type="text" class="form-control" placeholder="500" disabled> <span
+                                    <div class="inputWithIcon">
+                                <input id="airtel-pay-donationAmount" type="text" class="form-control" placeholder="500" disabled> <span
                                             class="fas fa-money-bill"></span> </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex flex-column pe-md-5 px-md-0 px-4 mb-4"> <span>Currency</span>
                                     <div class="inputWithIcon"> 
-                                     <input type="text" value="UGX" disabled>
+                                     <input id="airtel-pay-currency" type="text" value="UGX" disabled>
                                         <span
                                             class="fas fa-lock">
                                         </span></div>
@@ -52,12 +56,15 @@
                             <div class="col-12">
                                 <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Enter Number:</span>
                                     <div class="inputWithIcon">
-                                        <input class="form-control text-uppercase" type="number"
-                                            placeholder="anumber (0754-345-343)" name="phone"> <span class="far fa-phone"></span> </div>
+                                        <input id="airtel-pay-phoneid" class="form-control text-uppercase" type="text"
+                                            placeholder="anumber (0754-345-343)" name="airtel-pay-phone"> <span class="far fa-phone"></span> 
+                                            <input id="airtel-pay-message"  class="form-control fw-light" type="text"
+                                            value="testing" hidden>
+                                        </div>
                                 </div>
                             </div>
                             <div class="col-12 px-md-5 px-4 mt-3">
-                                <button id="my-button" class="btn btn-primary w-100" type="submit">Pay UG5X 500.00</button>
+                                <button id="airtel-pay-button" class="btn btn-primary w-100" type="submit">Pay UG5X 500.00</button>
                             </div>
                         </div>
                     </form>
@@ -79,25 +86,41 @@
 
        
         document.addEventListener('DOMContentLoaded', function() {
-            var form = document.getElementById("payform")
-
-            form.addEventListener('submit', function(event){
+            var form = document.getElementById("payform");
+            var airtelbtn = document.getElementById("airtel-pay-button");
+            
+            airtelbtn.addEventListener('click', function(event){
             event.preventDefault();
         
-            var number = document.getElementById('phone').value;
+            var number = document.getElementById('airtel-pay-phoneid').value;
+            msgPayment = document.getElementById("airtel-pay-message").value;
             console.log("number:::");
             console.log(number);
             if(number === null || number.trim() === '' ){
                 alert("Phone number can't be blank!")
                 return false;
-            }else if (number !== '' && !number.match(/^\d{10}$/)){
+            }else if (number !== '' && !number.match(/^\d{10,15}$/)){
                 alert('Please enter a valid number.'); 
                 return false; 
             }else{
                     // If the number is valid, allow the form to be submitted
                     //form.submit();
-                    alert("number is valid");
-                
+                   
+
+
+
+                    console.log("MASS",msgPayment)
+
+                    var airtel_payment = {
+                        amount: document.getElementById('airtel-pay-donationAmount').value,
+                        currency:document.getElementById('airtel-pay-currency').value,
+                        fullname:document.getElementById('airtel-pay-fullname').value,
+                        message: document.getElementById('airtel-pay-message').value,
+                        phone: document.getElementById('airtel-pay-phoneid').value,
+                       }
+                       console.log("Data:AIRTEL", airtel_payment);
+
+                       alert("number is valid");
             }
         
            }); 

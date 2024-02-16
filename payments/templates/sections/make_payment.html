@@ -77,7 +77,8 @@
         var container2 = document.getElementById('show-hidden-container');
         var form = document.getElementById('form-data');
         var button = document.getElementById('my-button');
-        var mtn = document.getElementById("show-payment");
+        var mtn = document.getElementById("openMtnModalButton");
+        var airtel = document.getElementById("openAirtelModalButton");
 
         var box1Container = document.querySelector('.box1');
 
@@ -114,7 +115,7 @@
             <div class="d-flex flex-column">
                 <div class="d-flex align-items-center justify-content-between text"> 
                     <span class="">FullNames:</span>
-                    <span class="fas fa-dollar-sign"><span class="ps-1">${name}</span></span> 
+                    <span class="ps-1">${name}</span> 
                 </div>
                 <div class="d-flex align-items-center justify-content-between text"> <span class="">Currency</span>
                     <span class="fas fa-dollar-sign"><span class="ps-1">${donationCurrency}</span></span> </div>
@@ -144,8 +145,8 @@
                 // Update the HTML content of box1Container
                 box1Container.innerHTML = htmlContent;
                 console.log("MTN:", mtn);
-                mtn["formData"] = formData;
-                console.log("MTN2:", mtn.formData);
+               // mtn["formData"] = formData;
+                console.log("MTN2:", mtn);
             // Alert the user to confirm the action
             if (confirm("Do you want to Proceed?")) {
                 // Hide and show containers
@@ -157,11 +158,61 @@
                 localStorage.setItem('formData', JSON.stringify(formData));
     
                 console.log("Form Data:", formData);
+
+                
             }
+
+            paymentButtonModel(mtn,formData,"my-button-mtn");
+            paymentButtonModel(airtel,formData,"airtel-pay-button");
     
             //console.log("MDC", formData); // This line will throw an error, formData is not accessible here
         });
+
+        function paymentButtonModel(payButton,formData,btn){
+            
+
+            if(payButton.id == "openMtnModalButton"){
+                console.log("BTN",payButton);
+                payButton.addEventListener('click', function(){
+                    // Populate the form fields of the MTN modal with the form data
+                 document.getElementById('phoneid').value = ''; // Clear the phone input field
+                 document.getElementById('donorName').value = formData.name;
+                 document.getElementById('donationAmount').value = formData.donationAmount;
+                 document.getElementById('currency').value = formData.currency;
+                 document.getElementById('fullname').value = formData.name;
+                 document.getElementById('message').value = formData.message;
+         
+                 // Set the button text with the amount
+                 document.getElementById(btn).textContent = "Pay "+ formData.currency + " " + formData.donationAmount;
+                 
+                // button.textContent = "Pay "+ formData.currency + " "+ donationAmount;
+         
+                     });
+
+            }else if(payButton.id == "openAirtelModalButton"){
+                console.log("BTN",payButton);
+                payButton.addEventListener('click', function(){
+                    // Populate the form fields of the MTN modal with the form data
+                 document.getElementById('airtel-pay-phoneid').value = ''; // Clear the phone input field
+                 document.getElementById('airtel-pay-donorName').value = formData.name;
+                 document.getElementById('airtel-pay-donationAmount').value = formData.donationAmount;
+                 document.getElementById('airtel-pay-currency').value = formData.currency;
+                 document.getElementById('airtel-pay-fullname').value = formData.name;
+                 document.getElementById('airtel-pay-message').value = formData.message;
+         
+                 // Set the button text with the amount
+                 document.getElementById(btn).textContent = "Pay "+ formData.currency + " " + formData.donationAmount;
+                 
+                // button.textContent = "Pay "+ formData.currency + " "+ donationAmount;
+         
+                     });
+            }
+   
+        }
+
     });
+
+
     
 </script>
 {% endblock %}
