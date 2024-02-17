@@ -3,7 +3,6 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 import urllib, base64, uuid, json, httplib2
 
-from yeshualife.payments.tasks import get_the_token
 # Create your views here.
 reference_id = str(uuid.uuid4())
 
