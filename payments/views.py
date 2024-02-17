@@ -37,7 +37,7 @@ def apiuser(request,):
 
 ####################################
 
-@csrf_exempt   
+# @csrf_exempt   
 def generate_token_task(request):
 
     # if request.method == 'POST':
@@ -63,8 +63,10 @@ def generate_token_task(request):
             # print(data.decode("utf-8"))
 
             # conn.close()
-            response = requests.request("POST", url, headers=headers, data=payload)
-            print(response.text)
+            # response = requests.request("POST", url, headers=headers, data=payload)
+            # print(response.text)
+
+            return HttpResponse("HEllo World")
 
 
         except Exception as e:
