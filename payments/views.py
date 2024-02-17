@@ -34,6 +34,10 @@ class GetTheTokenAPIView(APIView):
                 print(data.decode("utf-8"))
 
                 conn.close()
+
+                # Return response
+                return HttpResponse(data, status=status.HTTP_200_OK)
+            
                 # response = requests.request("POST", url, headers=headers, data=payload)
                 # print(response.text)
             except Exception as e:
