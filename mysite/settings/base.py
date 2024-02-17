@@ -62,7 +62,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
     'corsheaders',
-    'payments'
+    'payments',
+    'background_task',
 ]
 
 MIDDLEWARE = [

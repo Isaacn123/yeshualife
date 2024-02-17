@@ -36,9 +36,18 @@ def apiuser(request,):
 
 ####################################
       
-def trigger_token_task(request):
-    get_the_token(repeat=60)  # Schedule the task to run every 60 seconds
-    return HttpResponse("Token task triggered successfully")
+def generate_token_task(request):
+    # get token logic code
+    conn = http.client.HTTPSConnection("sandbox.momodeveloper.mtn.com")
+    payload = ''
+    headers = {
+    'Ocp-Apim-Subscription-Key': 'd7d2a50561a34050977f2a5504cadc49',
+    'Authorization': 'Basic YWQ5NzIyMjUtMDAzYS00YmZiLTkzMmUtMTc5YjVkNDYxZDI0OjBmYTdjNzM0NjM0ZDQ3MDRiYWY0Y2I1NzUyNDNhMzhk'
+    }
+    conn.request("POST", "/collection/token/", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+    print(data.decode("utf-8"))
    
     
 

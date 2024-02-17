@@ -1,7 +1,6 @@
 import http
-from background_task import background
 
-@background(schedule=60)
+# @background(schedule=60)
 def get_the_token():
     # get token logic code
     conn = http.client.HTTPSConnection("sandbox.momodeveloper.mtn.com")
