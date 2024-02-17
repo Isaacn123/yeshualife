@@ -19,8 +19,9 @@ class GetTheTokenAPIView(APIView):
 
         if api_token:
             access_token = self.extract_api_token_key(api_token)
+            requestToPay = self.make_request_to_pay(access_token,request=request)
 
-            return access_token
+            return requestToPay
     
     def extract_api_token_key(self, response_data):
         try:
@@ -28,6 +29,7 @@ class GetTheTokenAPIView(APIView):
             response_json = json.loads(response_content)
             access_token = response_json.get('access_token')
             if access_token:
+
                 return HttpResponse(access_token)
             else:
                 return HttpResponse("No Access Token Found")
@@ -69,15 +71,8 @@ class GetTheTokenAPIView(APIView):
         else:
             # Handle non-POST requests
             return HttpResponse({"error": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-    def make_request_to_pay(self,api_token):
-        pass
-
-
-
-class RequestToPayAPIView(APIView):
-    def post(self,request):
-
-        api_access_token = GetTheTokenAPIView
+    
+    def make_request_to_pay(self,request,api_token):
 
         if request.method =="POST":
                 conn = http.client.HTTPSConnection("sandbox.momodeveloper.mtn.com")
@@ -87,7 +82,7 @@ class RequestToPayAPIView(APIView):
                 "externalId": "09898687",
                 "payer": {
                     "partyIdType": "MSISDN",
-                    "partyId": "0700186921"
+                    "partyId": "0775186921"
                 },
                 "payerMessage": "Helli am testing here",
                 "payeeNote": "Thank you for your Generousty"
@@ -98,7 +93,7 @@ class RequestToPayAPIView(APIView):
                 'X-Reference-Id': '169c8982-99e1-4799-be51-d8c98881cc8e',
                 'X-Target-Environment': 'sandbox',
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSMjU2In0.eyJjbGllbnRJZCI6ImFkOTcyMjI1LTAwM2EtNGJmYi05MzJlLTE3OWI1ZDQ2MWQyNCIsImV4cGlyZXMiOiIyMDI0LTAyLTE3VDAwOjAzOjA5LjgyNSIsInNlc3Npb25JZCI6IjhkY2Q1MDE3LTZmYzYtNGJiZS04ZDMyLTZkMmZmOTNkZmJjZiJ9.Qq1rW1KHcC2Sy0m8ZFUqG9xlNiVrjCdpn1yfEzm2S_MHz3Vru_8r0PuycIKhbzNEB-aBmvQ_uovIwPsfM6Z6KTUH6r-Iov_9408dw99UjsR8nvI7aPvw1Fi1UuxQSkU3L_06rXxRolpdydZD_OkciYzs35IWmBi68vav7IjDtgmmqJ9VGgRz3CdL75KC5rHD5IOxOdNzDxJSyB6DxHx1ZA4B611Bo1UbXa2r6V7YspTv5278vMCMgVskeqcfjoDbutMkhChKAgt5Fi2Mq8TU3QH72x40v53D7f79rpR4FnCcqIJYufzRkh3Kh_0eBf3wWJDp9KgwVo4aIDM_COhOZA'
+                'Authorization': f'Bearer {api_token}'
                 }
 
                 try:
@@ -111,9 +106,14 @@ class RequestToPayAPIView(APIView):
                     return HttpResponse({"data": data}, status=status.HTTP_201_CREATED)
                 
                 except Exception as e:
-                    return HttpResponse({"error":"Internal Server Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR);
+                    return HttpResponse({"error":"Internal Server Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
             return HttpResponse({"error":"Method not allowed!"}, status= status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+
+class RequestToPayAPIView(APIView):
+    pass
         
 def apiuser(request,):
     # reference_id = str(uuid.uuid4())
