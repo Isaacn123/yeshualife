@@ -4,9 +4,44 @@ from django.http import HttpResponse, JsonResponse
 import urllib, base64, uuid, json, httplib2
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 import requests
+from rest_framework import status
+from rest_framework.views import APIView
 
 # Create your views here.
 reference_id = str(uuid.uuid4())
+
+
+class GetTheTokenAPIView(APIView):
+
+    def post(self, request):
+        if request.method == "POST":
+            payload = {}
+            headers = {
+            'Ocp-Apim-Subscription-Key': 'd7d2a50561a34050977f2a5504cadc49',
+            'Authorization': 'Basic YWQ5NzIyMjUtMDAzYS00YmZiLTkzMmUtMTc5YjVkNDYxZDI0OjBmYTdjNzM0NjM0ZDQ3MDRiYWY0Y2I1NzUyNDNhMzhk'
+            }
+            try:
+                conn = http.client.HTTPSConnection("sandbox.momodeveloper.mtn.com")
+                conn.request("POST", "/collection/token/", payload, headers)
+
+                # Get the response
+                res = conn.getresponse()
+
+                # Read response
+                data = res.read()
+
+                # Print Decoded Response
+                print(data.decode("utf-8"))
+
+                conn.close()
+                # response = requests.request("POST", url, headers=headers, data=payload)
+                # print(response.text)
+            except Exception as e:
+                # Handle any exceptions that occur during the request
+                return httplib2.Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            # Handle non-POST requests
+            return httplib2.Response({"error": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 def apiuser(request,):
     # reference_id = str(uuid.uuid4())
