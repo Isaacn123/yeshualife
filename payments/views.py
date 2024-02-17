@@ -24,7 +24,8 @@ class GetTheTokenAPIView(APIView):
     
     def extract_api_token_key(self, response_data):
         try:
-            response_json = json.loads(response_data)
+            response_content = response_data.content.decode('utf-8')
+            response_json = json.loads(response_content)
             access_token = response_json.get('access_token')
             if access_token:
                 return access_token
