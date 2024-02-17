@@ -2,8 +2,9 @@ import http
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 import urllib, base64, uuid, json, httplib2
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 import requests
+
 # Create your views here.
 reference_id = str(uuid.uuid4())
 
@@ -36,7 +37,7 @@ def apiuser(request,):
 
 ####################################
 
-# @csrf_protect   
+@csrf_exempt   
 def generate_token_task(request):
 
     # if request.method == 'POST':
