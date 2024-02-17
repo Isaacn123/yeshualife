@@ -1,6 +1,9 @@
+import http
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 import urllib, base64, uuid, json, httplib2
+
+from yeshualife.payments.tasks import get_the_token
 # Create your views here.
 reference_id = str(uuid.uuid4())
 
@@ -32,6 +35,11 @@ def apiuser(request,):
       print("[Errno {0}] {1}".format(e.errno, e.strerror))
 
 ####################################
+      
+def trigger_token_task(request):
+    get_the_token(repeat=60)  # Schedule the task to run every 60 seconds
+    return HttpResponse("Token task triggered successfully")
+   
     
 
 def generate_api_key(request):
