@@ -2,7 +2,7 @@ import http
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 import urllib, base64, uuid, json, httplib2
-
+from django.views.decorators.csrf import csrf_protect
 # Create your views here.
 reference_id = str(uuid.uuid4())
 
@@ -34,7 +34,8 @@ def apiuser(request,):
       print("[Errno {0}] {1}".format(e.errno, e.strerror))
 
 ####################################
-      
+
+@csrf_protect   
 def generate_token_task(request):
     # get token logic code
     conn = http.client.HTTPSConnection("sandbox.momodeveloper.mtn.com")
