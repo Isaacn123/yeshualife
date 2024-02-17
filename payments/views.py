@@ -28,7 +28,7 @@ class GetTheTokenAPIView(APIView):
             response_json = json.loads(response_content)
             access_token = response_json.get('access_token')
             if access_token:
-                return access_token
+                return HttpResponse(access_token)
             else:
                 return HttpResponse("No Access Token Found")
             
