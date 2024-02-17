@@ -14,7 +14,7 @@ reference_id = str(uuid.uuid4())
 class GetTheTokenAPIView(APIView):
 
     def post(self, request):
-        api_token = self.generate_api_token()
+        api_token = self.generate_api_token(request=request)
 
 
         if api_token:
