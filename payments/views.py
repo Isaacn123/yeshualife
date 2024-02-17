@@ -19,7 +19,7 @@ class GetTheTokenAPIView(APIView):
 
         if api_token:
             access_token = self.extract_api_token_key(api_token)
-            requestToPay = self.make_request_to_pay(access_token,request=request)
+            requestToPay = self.make_request_to_pay(access_token)
 
             return requestToPay
     
