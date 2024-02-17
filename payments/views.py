@@ -36,7 +36,7 @@ class GetTheTokenAPIView(APIView):
                 conn.close()
 
                 # Return response
-                return HttpResponse(data, status=status.HTTP_200_OK)
+                return HttpResponse(data.access_token, status=status.HTTP_200_OK)
             
                 # response = requests.request("POST", url, headers=headers, data=payload)
                 # print(response.text)
