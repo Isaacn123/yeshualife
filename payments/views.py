@@ -104,7 +104,7 @@ class GetTheTokenAPIView(APIView):
                     data = res.read()
                     print(data.decode("utf-8"))
 
-                    return HttpResponse({"data": data}, status=status.HTTP_201_CREATED)
+                    return HttpResponse(data.decode("utf-8"), status=status.HTTP_201_CREATED)
                 
                 except Exception as e:
                     return HttpResponse({"error":"Internal Server Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
