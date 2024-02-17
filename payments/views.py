@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 import urllib, base64, uuid, json, httplib2
 from django.views.decorators.csrf import csrf_protect
+import requests
 # Create your views here.
 reference_id = str(uuid.uuid4())
 
@@ -35,10 +36,10 @@ def apiuser(request,):
 
 ####################################
 
-@csrf_protect   
+# @csrf_protect   
 def generate_token_task(request):
 
-    if request.method == 'POST':
+    # if request.method == 'POST':
         # get token logic code
         payload = {}
         headers = {
@@ -47,26 +48,30 @@ def generate_token_task(request):
         }
 
         try:
-            conn = http.client.HTTPSConnection("sandbox.momodeveloper.mtn.com")
-            conn.request("POST", "/collection/token/", payload, headers)
+            url = "https://sandbox.momodeveloper.mtn.com/collection/token/"
+            # conn = http.client.HTTPSConnection("sandbox.momodeveloper.mtn.com")
+            # conn.request("POST", "/collection/token/", payload, headers)
 
             # Get the response
-            res = conn.getresponse()
+            # res = conn.getresponse()
 
             #Read response
-            data = res.read()
+            # data = res.read()
 
             # Print Decoded Response
-            print(data.decode("utf-8"))
+            # print(data.decode("utf-8"))
 
-            conn.close()
+            # conn.close()
+            response = requests.request("POST", url, headers=headers, data=payload)
+            print(response.text)
+
 
         except Exception as e:
             # Handle any exceptions that occur during the request
             print("An error occurred:", e)
-    else:
+    # else:
         # Handle non-POST requests
-        return HttpResponse("Method not allowed", status=405)
+        # return HttpResponse("Method not allowed", status=405)
    
     
 
