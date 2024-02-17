@@ -38,10 +38,10 @@ class GetTheTokenAPIView(APIView):
                 # print(response.text)
             except Exception as e:
                 # Handle any exceptions that occur during the request
-                return httplib2.Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return HttpResponse({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
             # Handle non-POST requests
-            return httplib2.Response({"error": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            return HttpResponse({"error": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 def apiuser(request,):
     # reference_id = str(uuid.uuid4())
