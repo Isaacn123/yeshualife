@@ -37,6 +37,10 @@ def apiuser(request,):
 
 ####################################
 
+def get_data(request):
+    return HttpResponse("Hello World")
+
+
 # @csrf_exempt   
 def generate_token_task(request):
 
