@@ -63,7 +63,6 @@ INSTALLED_APPS = [
     "django.contrib.sitemaps",
     'corsheaders',
     'payments',
-    'background_task',
 ]
 
 MIDDLEWARE = [
