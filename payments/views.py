@@ -37,17 +37,36 @@ def apiuser(request,):
 
 @csrf_protect   
 def generate_token_task(request):
-    # get token logic code
-    conn = http.client.HTTPSConnection("sandbox.momodeveloper.mtn.com")
-    payload = ''
-    headers = {
-    'Ocp-Apim-Subscription-Key': 'd7d2a50561a34050977f2a5504cadc49',
-    'Authorization': 'Basic YWQ5NzIyMjUtMDAzYS00YmZiLTkzMmUtMTc5YjVkNDYxZDI0OjBmYTdjNzM0NjM0ZDQ3MDRiYWY0Y2I1NzUyNDNhMzhk'
-    }
-    conn.request("POST", "/collection/token/", payload, headers)
-    res = conn.getresponse()
-    data = res.read()
-    print(data.decode("utf-8"))
+
+    if request.method == 'POST':
+        # get token logic code
+        payload = {}
+        headers = {
+        'Ocp-Apim-Subscription-Key': 'd7d2a50561a34050977f2a5504cadc49',
+        'Authorization': 'Basic YWQ5NzIyMjUtMDAzYS00YmZiLTkzMmUtMTc5YjVkNDYxZDI0OjBmYTdjNzM0NjM0ZDQ3MDRiYWY0Y2I1NzUyNDNhMzhk'
+        }
+
+        try:
+            conn = http.client.HTTPSConnection("sandbox.momodeveloper.mtn.com")
+            conn.request("POST", "/collection/token/", payload, headers)
+
+            # Get the response
+            res = conn.getresponse()
+
+            #Read response
+            data = res.read()
+
+            # Print Decoded Response
+            print(data.decode("utf-8"))
+
+            conn.close()
+
+        except Exception as e:
+            # Handle any exceptions that occur during the request
+            print("An error occurred:", e)
+    else:
+        # Handle non-POST requests
+        return HttpResponse("Method not allowed", status=405)
    
     
 
