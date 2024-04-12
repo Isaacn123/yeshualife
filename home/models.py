@@ -13,10 +13,8 @@ from wagtail.images.blocks import ImageChooserBlock
 # from wagtail.admin import StreamFieldPanel
 from wagtail.fields import StreamField
 from wagtail import blocks
-# from .blocks import InlineVideoBlock
+from .blocks import InlineVideoBlock
 from wagtailcodeblock.blocks import CodeBlock
-
-from yeshualife.blog.blocks import InlineVideoBlock
 
 
 # class HomePage(Page):
