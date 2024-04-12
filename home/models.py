@@ -24,7 +24,15 @@ from wagtailcodeblock.blocks import CodeBlock
 #     content_panels = Page.content_panels + [
 #          FieldPanel('body'),
 #          FieldPanel('intro')
-#     ]
+#     
+class VideoAndRichTextBlock(blocks.StructBlock):
+    title = blocks.CharBlock(required=True)
+    video_url = blocks.URLBlock(required=True)
+    rich_text_content = blocks.RichTextBlock()
+
+    class Meta:
+        icon = 'media'
+
 
 class VideoBlock(blocks.StructBlock):
     video_url = blocks.URLBlock(label='Video URL',required=False)
@@ -108,13 +116,6 @@ class VideoBlock(blocks.StructBlock):
         icon = 'media'
 
 
-class VideoAndRichTextBlock(blocks.StructBlock):
-    title = blocks.CharBlock(required=True)
-    video_url = blocks.URLBlock(required=True)
-    rich_text_content = blocks.RichTextBlock()
-
-    class Meta:
-        icon = 'media'
 
 class HomePage(Page):
     date = models.DateField("Post date", null=True)
