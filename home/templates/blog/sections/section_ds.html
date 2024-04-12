@@ -1,0 +1,68 @@
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags%}
+
+{% block extra_css %}
+<link href="{% static 'css/customcss.css'%}" rel="stylesheet">
+{% endblock  %}
+
+
+<section class="section_padding  news__area">
+     <div class="container marketing">
+        <div class="section_title text-center mb-55">
+            <h3><span>News &amp; Updates</span></h3>
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+          
+            {% for post in  page.get_children %}
+            {% if forloop.counter == 3 or forloop.counter == 4  %}
+       
+    <div class="owl-item active" style="width: 540px; margin-right: 30px;">
+        <div class="single__blog d-flex align-items-center">
+        <div class="thum">
+            {% comment %} <img src="https://themewagon.github.io/charifit/img/news/1.png" alt=""> {% endcomment %}
+            {% comment %} <img src={{ post.specific.image.url }} class="my-custom-class" /> {% endcomment %}
+            {% comment %} <pre>{{ post.specific.image|pprint }}</pre> {% endcomment %}
+            {% comment %} <pre>{{ post.specific.image.file.url|pprint }}</pre>   {% endcomment %}
+            {% comment %} {% if post.image %} {% endcomment %}
+            {% comment %} {% image post.specific.image.file.url width-256 height-424 as img %} {% endcomment %}
+            <img src="{{ post.specific.image.file.url }}"  alt="{{ post.specific.image.alt }}" width="280" height="424" />
+            {% comment %} {% endif %} {% endcomment %}
+
+        </div>
+        <div class="newsinfo">
+            <span>{{page.date}}</span>
+            <a href="{% pageurl post %}">
+                <h3>{{post.specific.title|truncatewords:10}}</h3>
+            </a>
+            <p>{{post.specific.body|richtext|truncatewords:20}}</p>
+            <a class="read_more" href="{% pageurl post %}">Read More</a>
+        </div></div>
+   </div>
+
+      {% endif %}
+     {% endfor %}
+    
+    {% comment %} <div class="owl-item active" style="width: 540px; margin-right: 30px;">
+        <div class="single__blog d-flex align-items-center">
+        <div class="thum">
+            <img src="https://themewagon.github.io/charifit/img/news/2.png" alt="">
+        </div>
+        <div class="newsinfo">
+            <span>July 18, 2019</span>
+            <a href="single-blog.html">
+                <h3>Pure Water Is More 
+                    Essential</h3>
+            </a>
+            <p>The passage experienced a 
+                surge in popularity during the 
+                1960s when used it on their  
+                sheets, and again.</p>
+            <a class="read_more" href="single-blog.html">Read More</a>
+        </div>
+    </div>
+   </div> {% endcomment %}
+
+</div>
+            
+</div>
+</section>

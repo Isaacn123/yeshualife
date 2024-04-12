@@ -1,0 +1,17 @@
+{% extends "wagtailadmin/base.html" %}
+
+{% load static %}
+
+{% block branding_logo %}
+    <img src="{% static 'images/yeshua_logo.png' %}" alt="Yeshualife Uganda - Empowering Lives through Positive Change, such as food distribution, community gardens, or programs that address food insecurity" width="70" />
+{% endblock %}
+
+{% block branding_favicon %}
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+{% endblock %}
+
+{% block welcome_message %}
+    <h2>Welcome to YeshuaLife Dashboard!</h2>
+    {% comment %} <p>This is a custom welcome message.</p> {% endcomment %}
+{% endblock %}
+

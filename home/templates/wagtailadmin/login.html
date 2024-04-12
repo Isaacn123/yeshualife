@@ -1,0 +1,23 @@
+{% extends "wagtailadmin/login.html" %}
+{% load static %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block branding_login %}Sign in to Yeshua Life{% endblock %}
+
+{% block branding_logo %}
+
+    <div class="login-logo">
+        <img src="{% static 'images/yeshua_logo.png' %}" alt="Yeshualife Uganda - Empowering Lives through Positive Change, such as food distribution, community gardens, or programs that address food insecurity" width="60" />
+    </div>
+
+{% endblock %}
+
+{% block above_login %} If you are not YeshuaLife you should not be here! {% endblock %}
+
+{% block branding_favicon %}
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+{% endblock %}

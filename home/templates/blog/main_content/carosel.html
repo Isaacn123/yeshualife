@@ -1,0 +1,69 @@
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags%}
+
+{% block extra_css %}
+<link href="{% static 'css/carousel.css'%}" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  
+    
+
+<!-- Bootstrap core CSS -->
+<!-- <link href="/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+{% endblock  %}
+
+<div id="myCarousel" class="carousel slide" data-bs-ride="carousel" data-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+
+    {% if forloop.first %}
+          
+{% for m in post.specific.body_content %}
+
+{% for v in m.value.images %}
+    {% comment %} <a href="{% pageurl post %}"> {% endcomment %}
+    <div class="carousel-item{% if forloop.counter0 == 0 %} active{% endif %}">
+      {% comment %} <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg> {% endcomment %}
+      {% comment %} fill-1500x700 {% endcomment %}
+      {% image v.image width-600  height-600 class="d-block w-100 height-100" %}
+      <div class="container">
+        
+        <div class="carousel-caption">
+          {% comment %} <h1>Another example headline.</h1>
+          <p>Some representative placeholder content for the second slide of the carousel.</p> {% endcomment %}
+          <p><a class="btn btn-lg btn-primary my-btn" href="{% pageurl post %}">Learn more</a></p>
+        </div>
+      </div>
+    </div>
+  {% comment %} </a> {% endcomment %}
+
+
+    {% endfor %}
+
+{% endfor %}
+{% endif %}
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
+
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script>
+  
+</script>
+
+{% endblock  %}
