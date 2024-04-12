@@ -36,11 +36,69 @@ class ImageHomeListBlock(blocks.StructBlock):
     caption = blocks.CharBlock(required=False, label="Caption")
 
 class HomeIndexPage(Page):
+    
+    date = models.DateField("Post date", null=True)
+
+    body_video = StreamField([
+        ('video', InlineVideoBlock()),
+        # other blocks here
+    ], blank=True,use_json_field=True)
+
+    body = RichTextField(blank=True)
+
+    combined_content =  StreamField([
+        ('combined_content', VideoAndRichTextBlock()),
+        # other blocks here
+        ], blank=True,use_json_field=True)   
+
     intro = models.CharField(max_length=200)
 
-    content_panels = Page.content_panels + [
-    FieldPanel('intro')
+    search_fields = Page.search_fields + [
+        index.SearchField('intro'),
+        index.SearchField('body')
     ]
+
+    image = models.ForeignKey(
+        'wagtailimages.Image', on_delete=models.PROTECT, related_name='+',blank=True,null=True
+    )
+
+    secondary_image = models.ForeignKey(
+        'wagtailimages.Image',
+        related_name='+',
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True
+    )
+
+    caption = models.CharField(blank=True, max_length=250)
+
+    body_content = StreamField([
+
+            ('section', blocks.StructBlock([
+            ('images', blocks.ListBlock(ImageHomeListBlock(),label='Images', required=False)),
+            
+            ('videos', blocks.ListBlock(VideoBlock(),label='Videos',required=False,))
+
+           ])),
+
+    ],use_json_field=True,blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('date'),
+        FieldPanel('intro'),
+        FieldPanel('body'),
+        FieldPanel('image'),
+        FieldPanel('caption'),
+        FieldPanel('secondary_image'),
+        FieldPanel('body_video'),
+        FieldPanel('body_content'),            
+    ]
+#     intro = models.CharField(max_length=200)
+
+#     content_panels = Page.content_panels + [
+#     FieldPanel('intro')
+#     ]
+    
 
 class VideoBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=True)
