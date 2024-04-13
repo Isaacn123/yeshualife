@@ -65,8 +65,6 @@ class VideoBlock(blocks.StructBlock):
     class Meta:
         icon = 'media'
 
-
-
 class HomePage(Page):
     date = models.DateField("Post date", null=True)
 
