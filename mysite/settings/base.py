@@ -255,3 +255,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://172.20.10.2:8000",
     # Add other origins as needed
 ]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
