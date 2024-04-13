@@ -17,7 +17,7 @@
 </section>
 
 <div class="top-content-wrap">
-    {% include "blog/sections/top-section-updates.html" %}
+    {% include "home/sections/top-section-updates.html" %}
 </div>
 
 
@@ -41,7 +41,7 @@
             <div class="d-flex flex-column featurette justify-content-center align-items-center">
     
             <div class="col">
-                <img class="featurette-image img-fluid mx-auto"  alt="2048x338" style="width: 2048px;" src="https://res.cloudinary.com/dz3huxbpc/image/upload/v1705490390/yeshualife/KARAMOJA_WEBSITE_BUNNER_cajnoa.png" data-holder-rendered="true">
+                <img class="featurette-image img-fluid mx-auto"  alt="2048x338" style="width: 2048px;" src="https://yeshualifeug.com/media/images/KARAMOJAWEBSITEBUNNER.original.png" data-holder-rendered="true">
               </div>
 
               <div class="col text-center m-3 p-5">
@@ -55,7 +55,7 @@
          
  
 
-    {% comment %} <pre>{{ post|pprint }}</pre> {% endcomment %}
+    <pre>{{ post|pprint }}</pre>
     {% for post in  page.get_children %}
     {% if forloop.counter == 2 %}
     {% comment %} <p>This is the second page: {{ post.title }}</p> {% endcomment %}
