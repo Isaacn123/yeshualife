@@ -13,7 +13,7 @@
 
 {% include "nav_bar.html" %}
 <section class="yesh-header">
-{% include "blog/header.html" %}
+{% include "blog/header.html" %}   
 </section>
 
 <div class="top-content-wrap">
@@ -30,7 +30,7 @@
         <hr class="featurette-divider">
         {% include "blog/sections/feature_section_one.html"  with post=post %}
 
-      {% comment %} {% include "blog/main_content/carosel.html"  with post=post %} {% endcomment %}
+  {% comment %} {% include "blog/main_content/carosel.html"  with post=post %} {% endcomment %}
     </div>
     {% endif %}
   {% endfor %}
