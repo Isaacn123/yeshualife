@@ -80,4 +80,12 @@ class karamojaResponsePage(Page):
         FieldPanel('carousel')
         # InlinePanel('gallery_images', label="Gallery images")
     ]
+    def get_canonical_url(self):
+        # This assumes you're using Wagtail's built-in method to get the full URL
+        return self.full_url
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        context['canonical_url'] = self.get_canonical_url()
+        return context
 

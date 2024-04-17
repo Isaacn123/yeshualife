@@ -99,6 +99,7 @@ class HomePage(Page):
         null=True
     )
 
+
     caption = models.CharField(blank=True, max_length=250)
 
     body_content = StreamField([
@@ -122,3 +123,12 @@ class HomePage(Page):
         FieldPanel('body_video'),
         FieldPanel('body_content'),            
     ]
+    
+    def get_canonical_url(self):
+        # This assumes you're using Wagtail's built-in method to get the full URL
+        return self.full_url
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        context['canonical_url'] = self.get_canonical_url()
+        return context
