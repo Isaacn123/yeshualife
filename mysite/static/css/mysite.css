@@ -334,3 +334,7 @@ h4 {
     overflow: hidden;
     font: italic 12px Georgia, serif;
 }
+
+.donation a:visited{
+    display: none;
+}
