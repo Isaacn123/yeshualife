@@ -250,7 +250,7 @@ WAGTAILIMAGES_MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20MB
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-WAGTAILADMIN_BASE_URL = "http://yeshualifeug.com"
+WAGTAILADMIN_BASE_URL = "https://yeshualifeug.com"
 
 CORS_ALLOWED_ORIGINS = [
     "http://172.20.10.2:8000",
