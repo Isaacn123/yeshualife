@@ -5,18 +5,20 @@
 
 {% block extra_css  %}
 <link rel="stylesheet" href="{% static "css/top-section.css" %}">
+<link rel="stylesheet" href="{% static "css/solution.css" %}">
  {% endblock  %}
 
 {% block content %}
 {% include "nav_bar.html" %}
 
 <section class="yesh-header">
-{% include "karamoja_response/partial_section/header.html" %}
+{% comment %} {% include "karamoja_response/partial_section/header.html" %} {% endcomment %}
+{% include "sections/main-top-section.html" %}
 </section>
 
 <div class="top-content-wrap">
-    {% comment %} {% include "blog/sections/top-section-updates.html" %} {% endcomment %}
-    {% include "sections/main-top-section.html" %}
+    {% include "blog/sections/top-section-updates.html" %}
+    
 </div>
 {% endblock %}
 
