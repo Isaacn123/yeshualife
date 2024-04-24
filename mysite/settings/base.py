@@ -123,7 +123,7 @@ DATABASESa = {
 #     }
 # } 
 
-DATABASES= {
+DATABASESs= {
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'yeshualife_db',
@@ -147,7 +147,7 @@ DATABASES= {
     }
 } 
 
-DATABASESs = {
+DATABASES = {
         'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'yeshualife_db',
@@ -258,4 +258,4 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = True
