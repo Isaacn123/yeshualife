@@ -28,7 +28,9 @@
      {% if forloop.first %}
      {% include "sections/main-featured-section.html"   with post=post %}
 
-    {% else %}
+     {% endif %}
+
+     {% if forloop.counter == 2 %}
 
      {% include "sections/secondary-featured-section.html"   with post=post %}
 
