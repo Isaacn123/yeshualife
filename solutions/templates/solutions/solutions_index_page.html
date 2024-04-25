@@ -27,8 +27,10 @@
     {% for post in page.get_children %}
      {% if forloop.first %}
      {% include "sections/main-featured-section.html"   with post=post %}
+     {% endif %} 
+     {% endfor %}
 
-     {% else %}
+     {% comment %} {% else %}
             {% if forloop.counter == 2 %}
               <!-- Section and Container for Subsequent Items starting from the second item -->
               <section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
@@ -37,21 +39,21 @@
             {% endif %}
           
             {% include "sections/secondary-featured-section.html" with post=post only %}
-            </section>
+            </section> {% endcomment %}
 
             {% comment %} {% if forloop.last or forloop.counter0|divisibleby:2 %}
                 </div> <!-- Close the row after every two items or the last item -->
 
             {% endif %} {% endcomment %}
 
-        {% if forloop.last %}
+        {% comment %} {% if forloop.last %}
                 </div> <!-- Close the last row -->
                 </div> <!-- Close the container -->
-                </section> <!-- Close the section -->
-        {% elif forloop.counter0|divisibleby:2 %}
+                </section> <!-- Close the section --> {% endcomment %}
+        {% comment %} {% elif forloop.counter0|divisibleby:2 %}
                 </div> <!-- Close the row for every two items and start a new one -->
                  <div class="row m-0">
-        {% endif %}
+        {% endif %} {% endcomment %}
 
      {% comment %} {% endif %}
 
@@ -60,12 +62,27 @@
      {% include "sections/secondary-featured-section.html"   with post=post %}
 {% endcomment %}
 
+<section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
+    <div class="container-fluid">
+        <div class="row m-0">
+        {% for post in page.get_children %}
+          
+            {% if not forloop.first %}
+            {% include "sections/secondary-featured-section.html" with post=post only %}
+            {% if forloop.counter|divisibleby:2 %}  <!-- Ensure new row every two items -->
+                </div><div class="row m-0">
+            {% endif %}
+            
+            {% endif %}
 
-     {% endif %} 
+        {% endfor %}
 
-   
+        </div>
+    </div>
+</section>
 
-    {% endfor %}
+
+
 </div>
 
 {% endblock %}
