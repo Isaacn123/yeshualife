@@ -86,7 +86,7 @@
         {% for post in page.get_children %}
         {% if not forloop.first %}  <!-- Exclude the first item -->
             <div class="col-md-6">
-                {% include "sections/secondary-featured-section.html" with post=post only %}
+                {% include "sections/secondary-featured-section.html" with post=post %}
             </div>
         {% endif %}
     {% endfor %}
