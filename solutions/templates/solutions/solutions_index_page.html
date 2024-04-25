@@ -85,7 +85,7 @@
 <!-- Start Section for Displaying Items -->
 <section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
     <div class="container-fluid">
-        <div class="row m-0">
+        {% comment %} <div class="row m-0"> {% endcomment %}
         {% for post in page.get_children %}
         {% comment %} {% if not forloop.first %}  <!-- Exclude the first item -->
             <div class="col-md-6">
@@ -111,7 +111,7 @@
             {% endif %}
         {% endif %}
     {% endfor %}
-        </div>
+        {% comment %} </div> {% endcomment %}
     </div>
 </section>
 
