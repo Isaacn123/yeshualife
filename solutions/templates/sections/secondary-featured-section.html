@@ -3,7 +3,6 @@
 
 <section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
     <div class="container-fluid">
-      <div class="container">
         {% for item in items %}
             {% if forloop.counter0|divisibleby:2 %}
                 {% if not forloop.first %}
@@ -37,7 +36,6 @@
         {% if not items|length|divisibleby:2 %}
             </div> <!-- Ensure the div closes properly if the number of items is odd -->
         {% endif %}
-    </div>
     
     </div><!-- end of .container-->
   </section>
