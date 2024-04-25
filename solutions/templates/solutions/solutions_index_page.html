@@ -18,17 +18,16 @@
 
 <div class="top-content-wrap">
     {% include "blog/sections/top-section-updates.html" %}
-    
 </div>
 <div>
     {% include "sections/main-middle-top-section.html" %}
 </div>
 <div>
     {% for post in page.get_children %}
-     {% if forloop.first %}
-     {% include "sections/main-featured-section.html"   with post=post %}
-     {% endif %} 
-     {% endfor %}
+    {% if forloop.first %}
+       {% include "sections/main-featured-section.html"   with post=post %}
+    {% endif %}         
+    {% endfor %}
 
      {% comment %} {% else %}
             {% if forloop.counter == 2 %}
@@ -99,6 +98,16 @@
 </div>
 
 <div>
+    {% for post in page.get_children %}
+         {% if forloop.first %}
+        
+             
+            {% include "sections/featured_bottom.html" with post=post %}  
+            
+           
+         
+         {% endif %}
+    {% endfor %}
     {% comment %} {% include "sections/featured_bottom.html" %}   {% endcomment %}
 </div>
 
