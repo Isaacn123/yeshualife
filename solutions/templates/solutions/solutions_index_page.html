@@ -62,7 +62,7 @@
      {% include "sections/secondary-featured-section.html"   with post=post %}
 {% endcomment %}
 
-{% comment %} <section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
+ <section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
     <div class="container-fluid">
         <div class="row m-0">
         {% for post in page.get_children %}
@@ -79,39 +79,10 @@
 
         </div>
     </div>
-</section> {% endcomment %}
+</section> 
 
 
-<!-- Start Section for Displaying Items -->
-<section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
-    <div class="container-fluid">
-        {% comment %} <div class="row m-0"> {% endcomment %}
-        {% for post in page.get_children %}
-        {% comment %} {% if not forloop.first %}  <!-- Exclude the first item -->
-            <div class="col-md-6">
-                {% include "sections/secondary-featured-section.html" with post=post only %}
-            </div>
-        {% endif %} {% endcomment %}
 
-        {% if forloop.counter > 1 %}
-           {% if forloop.counter0|divisibleby:2 %}
-               {% if not forloop.first %}
-                         </div>
-               {% endif %}
-            <div class="row m-0">
-                {% comment %} </div><div class="row m-0"> {% endcomment %}
-           {% endif %}
-           <div class="col-md-6">
-            {% include "sections/secondary-featured-section.html" with post=post only %}
-        </div>
-
-            {% if forloop.last or forloop.counter|divisibleby:2 %}
-                <!-- Close the row after every second item or if it's the last item -->
-                </div>
-            {% endif %}
-        {% endif %}
-    {% endfor %}
-        {% comment %} </div> {% endcomment %}
     </div>
 </section>
 
