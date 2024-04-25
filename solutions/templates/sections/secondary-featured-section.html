@@ -1,7 +1,7 @@
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags%}
 
-            <div class="col-md-6">
+            {% comment %} <div class="col-md-6"> {% endcomment %}
                 <div class="position-relative overflow-hidden rounded">
                     <div class="bg-holder" style="background-image:url({% image item.specific.image fill-1920x1080 as img %}{{ img.url }});"></div><!--/.bg-holder-->
                     <div class="position-relative py-8 py-md-11">
@@ -17,5 +17,5 @@
                     </div>
                 </div>
     
-    </div><!-- end of .container-->
-  </section>
+    {% comment %} </div><!-- end of .container--> {% endcomment %}
+  {% comment %} </section> {% endcomment %}
