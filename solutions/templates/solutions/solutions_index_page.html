@@ -28,13 +28,40 @@
      {% if forloop.first %}
      {% include "sections/main-featured-section.html"   with post=post %}
 
-     {% endif %}
+     {% else %}
+            {% if forloop.counter == 2 %}
+              <!-- Section and Container for Subsequent Items starting from the second item -->
+              <section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
+                <div class="container-fluid">
+                <div class="row m-0"> <!-- Start the row for the second item -->
+            {% endif %}
+          
+            {% include "sections/secondary-featured-section.html" with post=post only %}
+            </section>
+
+            {% comment %} {% if forloop.last or forloop.counter0|divisibleby:2 %}
+                </div> <!-- Close the row after every two items or the last item -->
+
+            {% endif %} {% endcomment %}
+
+        {% if forloop.last %}
+                </div> <!-- Close the last row -->
+                </div> <!-- Close the container -->
+                </section> <!-- Close the section -->
+        {% elif forloop.counter0|divisibleby:2 %}
+                </div> <!-- Close the row for every two items and start a new one -->
+                 <div class="row m-0">
+        {% endif %}
+
+     {% comment %} {% endif %}
 
      {% if forloop.counter == 2 %}
 
      {% include "sections/secondary-featured-section.html"   with post=post %}
+{% endcomment %}
 
-     {% endif %}
+
+     {% endif %} 
 
    
 

@@ -1,17 +1,6 @@
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags%}
 
-<section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
-    <div class="container-fluid">
-      <p>Number of items: {{ items|length }}</p>
-        {% for item in items %}
-            {% if forloop.counter0|divisibleby:2 %}
-                {% if not forloop.first %}
-                    </div> <!-- Close the previous row if not the first iteration -->
-                {% endif %}
-                <div class="row m-0"> <!-- Start a new row every two items -->
-            {% endif %}
-    
             <div class="col-md-6">
                 <div class="position-relative overflow-hidden rounded">
                     <div class="bg-holder" style="background-image:url({% image item.specific.image fill-1920x1080 as img %}{{ img.url }});"></div><!--/.bg-holder-->
@@ -27,16 +16,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-    
-            {% if forloop.last %}
-                </div> <!-- Close the last row -->
-            {% endif %}
-        {% endfor %}
-        
-        {% if not items|length|divisibleby:2 %}
-            </div> <!-- Ensure the div closes properly if the number of items is odd -->
-        {% endif %}
     
     </div><!-- end of .container-->
   </section>
