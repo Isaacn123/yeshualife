@@ -85,6 +85,7 @@
 <!-- Start Section for Displaying Items -->
 <section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
     <div class="container-fluid">
+        <div class="row m-0">
         {% for post in page.get_children %}
         {% if not forloop.first %}  <!-- Exclude the first item -->
             <div class="col-md-6">
@@ -92,6 +93,7 @@
             </div>
         {% endif %}
     {% endfor %}
+        </div>
     </div>
 </section>
 
