@@ -21,20 +21,12 @@
                 {% for m in post.specific.body_content %}
 
                 {% for v in m.value.images %}
-            <div class="swiper-slide border border-light-subtle" style="width: 254.5px; margin-right: 30px;" role="group" aria-label="1 / 8" data-swiper-slide-index="0">
-                <a href="#!">
-                    <img class="rounded w-100" src="{{v.image}}" alt="">
+                
+                <div class="swiper-slide border border-light-subtle" style="width: 254.5px; margin-right: 30px;" role="group" aria-label="{{ forloop.counter }} / {{ post.specific.body_content|length }}" data-swiper-slide-index="{{ forloop.counter0 }}">
+                    <a href="#!"><img class="rounded w-100" src="{{v.image}}" alt="">
                   <div class="px-3 px-xl-5">
                     <h4 class="mt-3 fs-9 fw-bold">{{v.title}}</h4>
                     <p class="font-secondary d-inline-block text-body">{{v.caption}}</p>
-                  </div>
-                </a></div>
-                
-                <div class="swiper-slide border border-light-subtle" style="width: 254.5px; margin-right: 30px;" role="group" aria-label="2 / 8" data-swiper-slide-index="1">
-                    <a href="#!"><img class="rounded w-100" src="../assets/img/bicycle-08.jpg" alt="">
-                  <div class="px-3 px-xl-5">
-                    <h4 class="mt-3 fs-9 fw-bold">SPECIALIZED Man's Element 2.0 Hybrid Jacket</h4>
-                    <p class="font-secondary d-inline-block text-body">$200.00</p>
                   </div>
                 </a></div>
                 
