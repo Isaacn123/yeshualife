@@ -66,7 +66,6 @@
     <div class="container-fluid">
         <div class="row m-0">
         {% for post in page.get_children %}
-          
             {% if not forloop.first %}
             {% include "sections/secondary-featured-section.html" with post=post only %}
             {% if forloop.counter|divisibleby:2 %}  <!-- Ensure new row every two items -->
@@ -80,11 +79,6 @@
         </div>
     </div>
 </section> 
-
-
-
-    </div>
-</section>
 
 
 
