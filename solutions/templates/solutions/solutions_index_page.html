@@ -95,11 +95,20 @@
 
         {% if forloop.counter > 1 %}
            {% if forloop.counter0|divisibleby:2 %}
-                </div><div class="row m-0">
+               {% if not forloop.first %}
+                         </div>
+               {% endif %}
+            <div class="row m-0">
+                {% comment %} </div><div class="row m-0"> {% endcomment %}
            {% endif %}
            <div class="col-md-6">
             {% include "sections/secondary-featured-section.html" with post=post only %}
         </div>
+
+            {% if forloop.last or forloop.counter|divisibleby:2 %}
+                <!-- Close the row after every second item or if it's the last item -->
+                </div>
+            {% endif %}
         {% endif %}
     {% endfor %}
         </div>
