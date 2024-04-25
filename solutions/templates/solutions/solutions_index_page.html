@@ -24,8 +24,19 @@
     {% include "sections/main-middle-top-section.html" %}
 </div>
 <div>
-    {% include "sections/main-featured-section.html" %}
-    {% include "sections/secondary-featured-section.html" %}
+    {% for post in page.children in  %}
+     {% if forloop.first %}
+     {% include "sections/main-featured-section.html"   with post=post %}
+
+    {% else %}
+
+     {% include "sections/secondary-featured-section.html"   with post=post %}
+
+     {% endif %}
+
+   
+
+    {% endfor %}
 </div>
 
 {% endblock %}
