@@ -87,10 +87,10 @@
     <div class="container">
         {% for post in page.get_children %}
         {% if not forloop.first %}
-            {% if forloop.counter0|divisibleby:2 %}
+            {% comment %} {% if forloop.counter0|divisibleby:2 %} {% endcomment %}
                 <!-- Start a new row at every first item of a two-item pair -->
                 <div class="row m-0">
-            {% endif %}
+            {% comment %} {% endif %} {% endcomment %}
         {% endif %}
 
             <div class="col-md-6">
