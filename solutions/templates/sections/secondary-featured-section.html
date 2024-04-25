@@ -1,42 +1,43 @@
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags%}
 
-<section class="text-center pb-0" id="bicycleFeatures">
+<section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
     <div class="container-fluid">
-      <div class="row m-0">
-        <div class="col-md-6">
-          <div class="position-relative overflow-hidden rounded">
-            {% comment %} url(../assets/img/bicycle-02.jpg) {% endcomment %}
-            <div class="bg-holder" style="background-image:url({% image post.specific.image fill-1920x1080 as img %}{{ img.url }});"></div><!--/.bg-holder-->
-            <div class="position-relative py-8 py-md-11">
-              <div data-zanim-timeline="{}">
-                <div class="overflow-hidden">
-                  <h6 class="text-white ls text-uppercase" data-zanim-xs="{&quot;delay&quot;:0}" style="transform: translate(0px, 0px); opacity: 1;">{{post.title}}</h6>
+      <div class="container">
+        {% for item in items %}
+            {% if forloop.counter0|divisibleby:2 %}
+                {% if not forloop.first %}
+                    </div> <!-- Close the previous row if not the first iteration -->
+                {% endif %}
+                <div class="row m-0"> <!-- Start a new row every two items -->
+            {% endif %}
+    
+            <div class="col-md-6">
+                <div class="position-relative overflow-hidden rounded">
+                    <div class="bg-holder" style="background-image:url({% image item.specific.image fill-1920x1080 as img %}{{ img.url }});"></div><!--/.bg-holder-->
+                    <div class="position-relative py-8 py-md-11">
+                        <div data-zanim-timeline="{}">
+                            <div class="overflow-hidden">
+                                <h6 class="text-white ls text-uppercase" data-zanim-xs="{&quot;delay&quot;:0}" style="transform: translate(0px, 0px); opacity: 1;">{{ item.title }}</h6>
+                            </div>
+                            <div class="overflow-hidden">
+                                <h2 class="fs-7 fs-sm-6 text-white" data-zanim-xs="{&quot;delay&quot;:0.1}" style="transform: translate(0px, 0px); opacity: 1;">{{ item.subtitle }}</h2>
+                            </div>
+                            <div data-zanim-xs="{&quot;delay&quot;:0.2}" style="transform: translate(0px, 0px); opacity: 1;"><a class="btn btn-dark mt-4" href="{{ item.url }}">meet the new karamoja</a></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="overflow-hidden">
-                  <h2 class="fs-7 fs-sm-6 text-white" data-zanim-xs="{&quot;delay&quot;:0.1}" style="transform: translate(0px, 0px); opacity: 1;">the new karamoja</h2>
-                </div>
-                <div data-zanim-xs="{&quot;delay&quot;:0.2}" style="transform: translate(0px, 0px); opacity: 1;"><a class="btn btn-dark mt-4" href="#!">meet the new karamoja</a></div>
-              </div>
             </div>
-          </div>
-        </div>
-        <div class="col-md-6 mt-4 mt-md-0">
-          <div class="position-relative overflow-hidden rounded">
-            <div class="bg-holder" style="background-image:url(../assets/img/bicycle-01.jpg);"></div><!--/.bg-holder-->
-            <div class="position-relative py-8 py-md-11">
-              <div data-zanim-timeline="{&quot;delay&quot;:0.1}">
-                <div class="overflow-hidden">
-                  <h6 class="text-white ls text-uppercase" data-zanim-xs="{&quot;delay&quot;:0}" style="transform: translate(0px, 0px); opacity: 1;">real work. real change.</h6>
-                </div>
-                <div class="overflow-hidden">
-                  <h2 class="fs-7 fs-sm-6 text-white" data-zanim-xs="{&quot;delay&quot;:0.1}" style="transform: translate(0px, 0px); opacity: 1;">the all-new Karamoja</h2>
-                </div>
-                <div data-zanim-xs="{&quot;delay&quot;:0.2}" style="transform: translate(0px, 0px); opacity: 1;"><a class="btn btn-dark mt-4" href="#!">meet the new karamoja</a></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    
+            {% if forloop.last %}
+                </div> <!-- Close the last row -->
+            {% endif %}
+        {% endfor %}
+        
+        {% if not items|length|divisibleby:2 %}
+            </div> <!-- Ensure the div closes properly if the number of items is odd -->
+        {% endif %}
+    </div>
+    
     </div><!-- end of .container-->
   </section>
