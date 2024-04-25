@@ -62,7 +62,7 @@
      {% include "sections/secondary-featured-section.html"   with post=post %}
 {% endcomment %}
 
-<section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
+{% comment %} <section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
     <div class="container-fluid">
         <div class="row m-0">
         {% for post in page.get_children %}
@@ -78,6 +78,28 @@
         {% endfor %}
 
         </div>
+    </div>
+</section> {% endcomment %}
+
+
+<!-- Start Section for Displaying Items -->
+<section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
+    <div class="container">
+        {% for post in page.get_children %}
+            {% if forloop.counter0|divisibleby:2 %}
+                <!-- Start a new row at every first item of a two-item pair -->
+                <div class="row m-0">
+            {% endif %}
+
+            <div class="col-md-6">
+                {% include "sections/secondary-featured-section.html" with post=post only %}
+            </div>
+
+            {% if forloop.counter|divisibleby:2 or forloop.last %}
+                <!-- Close the row after every second item or if it's the last item even if alone -->
+                </div>
+            {% endif %}
+        {% endfor %}
     </div>
 </section>
 
