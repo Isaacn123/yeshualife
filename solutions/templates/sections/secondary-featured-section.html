@@ -3,7 +3,7 @@
 
 <section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
     <div class="container-fluid">
-      <p>Number of items: {{ items|length }}</p>
+      <p>Number of items: {{ post|length }}</p>
         {% for item in items %}
             {% if forloop.counter0|divisibleby:2 %}
                 {% if not forloop.first %}
