@@ -87,10 +87,19 @@
     <div class="container-fluid">
         <div class="row m-0">
         {% for post in page.get_children %}
-        {% if not forloop.first %}  <!-- Exclude the first item -->
+        {% comment %} {% if not forloop.first %}  <!-- Exclude the first item -->
             <div class="col-md-6">
                 {% include "sections/secondary-featured-section.html" with post=post only %}
             </div>
+        {% endif %} {% endcomment %}
+
+        {% if forloop.counter > 1 %}
+           {% if if forloop.counter0|divisibleby::2 %}
+                </div><div class="row m-0">
+           {% endif %}
+           <div class="col-md-6">
+            {% include "sections/secondary-featured-section.html" with post=post only %}
+        </div>
         {% endif %}
     {% endfor %}
         </div>
