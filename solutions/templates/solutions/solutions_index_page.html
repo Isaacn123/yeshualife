@@ -86,10 +86,12 @@
 <section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
     <div class="container">
         {% for post in page.get_children %}
-            {% if not forloop.first and not forloop.counter0|divisibleby:2 %}
+        {% if not forloop.first %}
+            {% if forloop.counter0|divisibleby:2 %}
                 <!-- Start a new row at every first item of a two-item pair -->
                 <div class="row m-0">
             {% endif %}
+        {% endif %}
 
             <div class="col-md-6">
                 {% include "sections/secondary-featured-section.html" with post=post only %}
