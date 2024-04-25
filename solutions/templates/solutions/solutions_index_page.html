@@ -94,7 +94,7 @@
         {% endif %} {% endcomment %}
 
         {% if forloop.counter > 1 %}
-           {% if if forloop.counter0|divisibleby::2 %}
+           {% if forloop.counter0|divisibleby:2 %}
                 </div><div class="row m-0">
            {% endif %}
            <div class="col-md-6">
