@@ -100,12 +100,9 @@
 <div>
     {% for post in page.get_children %}
          {% if forloop.first %}
-        
-             
+
             {% include "sections/featured_bottom.html" with post=post %}  
-            
-           
-         
+
          {% endif %}
     {% endfor %}
     {% comment %} {% include "sections/featured_bottom.html" %}   {% endcomment %}
