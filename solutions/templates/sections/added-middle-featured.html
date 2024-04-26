@@ -1,13 +1,23 @@
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags%}
 {% image post.specific.image height-500 fill-321x321 as img %}
+<section class="py-4" id="YeshualifeFeatures1">
+    <div class="container-fluid">
+      <div class="row m-0">
+        {% for post in page.get_children %}
+
+        {% if forloop.counter >=4 %}
 
         <div class="col-sm-6 col-lg-3">
-            <a class="d-block" href="{% pageurl post %}">
+            <a class="d-block" href="{% pageurl post%}">
                 <img class="w-100 rounded" src="{{ img.url }}" alt="" data-zanim-xs="{&quot;delay&quot;:0,&quot;animation&quot;:&quot;zoom-in&quot;}" style="filter: blur(0px); opacity: 1; transform: translate(0px, 0px);">
                 {% comment %} {% image v.image width-600  height-600 class="rounded d-block w-100 height-100" %} {% endcomment %}
             <h6 class="d-inline-block ls text-uppercase fw-normal mb-0 mt-3 text-body-secondary">Karamoja</h6>
             <h4>{{post.title|truncatewords:2}}</h4>
             <p class="text-body d-inline-block">{{post.specific.intro|truncatewords:10}}</p>
           </a></div>
-  
+         {% endif %}
+          {% endfor %}
+        </div><!-- end of .row-->
+    </div><!-- end of .container-->
+  </section>
