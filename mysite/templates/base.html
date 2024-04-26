@@ -21,7 +21,7 @@
         {% comment %} <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> {% endcomment %}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="description" content="Founded in 2014, Yeshua Life Limited is committed to transforming agriculture in Kiryandongo, Uganda. We specialize in crop production, animal husbandry, and agro-processing, and are dedicated to empowering our community through educational programs in agriculture. Recognized as the National Modern Farm of the Year in 2020, we continue to innovate and inspire sustainable development. Join us in our mission to uplift and skill the youth and women of Uganda.">
-        
+
         <!-- Open Graph / Facebook Meta Tags -->
         <meta property="og:title" content="Yeshua Life" />
         <meta property="og:description" content="Founded in 2014, Yeshua Life Limited is committed to transforming agriculture in Kiryandongo, Uganda. We specialize in crop production, animal husbandry, and agro-processing, and are dedicated to empowering our community through educational programs in agriculture. Recognized as the National Modern Farm of the Year in 2020, we continue to innovate and inspire sustainable development. Join us in our mission to uplift and skill the youth and women of Uganda." />
@@ -68,9 +68,32 @@
         {# Global javascript #}
         <script type="text/javascript" src="{% static 'js/mysite.js' %}"></script>
         <script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+        <script type="application/ld+json">
+            {
+              "@context": "http://schema.org",
+              "@type": "Organization",
+              "name": "Yeshua Life Limited",
+              "url": "https://www.yeshualifeug.com",
+              "logo": "https://www.yeshualifeug.com/static/images/yeshua_logo2.png",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+256-740-769-952",
+                "contactType": "Customer service"
+              },
+              "sameAs": [
+                "https://www.facebook.com/yeshualifeug",
+                "https://www.twitter.com/yeshualife_u",
+                "https://www.youtube.com/@yeshua-life",
+                "https://www.linkedin.com/company/yeshua-life",
+                //"https://www.instagram.com/yourprofile"
+              ]
+            }
+            </script>
+            
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}
         {% endblock %}
+
         
     </body>
 </html>
