@@ -12,7 +12,13 @@
 {% include "nav_bar.html" %}
 
 <section class="yesh-header">
-{% include "section/head_production.html" %}
+    {% for post in page.get_children %}
+    {% if forloop.counter == 1 %}
+       
+        {% include "section/head_production.html" %}
+
+  {% endif %}
+{% endfor %}
 </section> 
 
 {% comment %} {% include "section/head_production.html" %} {% endcomment %}
