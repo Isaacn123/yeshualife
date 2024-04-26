@@ -26,7 +26,8 @@
     {% for post in page.get_children %}
     {% if forloop.first %}
        {% include "sections/main-featured-section.html"   with post=post %}
-    {% endif %}         
+    {% endif %} 
+    
     {% endfor %}
 
      {% comment %} {% else %}
@@ -79,7 +80,7 @@
     </div>
 </section>  {% endcomment %}
 
-<section class="text-center pb-0" id="bicycleFeatures" style="margin-bottom: 0.8rem">
+<section class="text-center pb-0" id="KaramojaFeatures" style="margin-bottom: 0.8rem">
     <div class="container-fluid">
         <div class="row m-0">
         {% for post in page.get_children %}
@@ -88,14 +89,17 @@
                 {% include "sections/secondary-featured-section.html" with post=post %}
             </div>
         {% endif %}
+
+        {% if forloop.counter == 4 %}
+        {% include "sections/added-middle-featured.html"   with post=post %}
+        {% endif %}
     {% endfor %}
         </div>
     </div>
 </section>
-
-
-
 </div>
+
+
 
 <div>
     {% for post in page.get_children %}
