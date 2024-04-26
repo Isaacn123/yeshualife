@@ -21,6 +21,8 @@
         {% comment %} <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> {% endcomment %}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="description" content="Founded in 2014, Yeshua Life Limited is committed to transforming agriculture in Kiryandongo, Uganda. We specialize in crop production, animal husbandry, and agro-processing, and are dedicated to empowering our community through educational programs in agriculture. Recognized as the National Modern Farm of the Year in 2020, we continue to innovate and inspire sustainable development. Join us in our mission to uplift and skill the youth and women of Uganda.">
+        <meta name="robots" content="index, follow"> <!-- Use "noindex, nofollow" to prevent indexing -->
+        {% comment %} <meta property="fb:app_id" content="your_app_id_here"> {% endcomment %}
 
         <!-- Open Graph / Facebook Meta Tags -->
         <meta property="og:title" content="Yeshua Life" />
@@ -45,6 +47,10 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/mediaqueries.css' %}">
         {% comment %} <link rel="icon" type="image/png" href="/path/to/favicon.png" sizes="any"> {% endcomment %}
         <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" href="{% static 'images/favicon-32x32.png' %}"> 
+
+       <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
         <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap/dist/css/bootstrap.min.css' %}">
@@ -81,7 +87,7 @@
                 "contactType": "Customer service"
               },
               "sameAs": [
-                "https://www.facebook.com/yeshualifeug",
+                "https://www.facebook.com/yeshualifeu",
                 "https://www.twitter.com/yeshualife_u",
                 "https://www.youtube.com/@yeshua-life",
                 "https://www.linkedin.com/company/yeshua-life",
