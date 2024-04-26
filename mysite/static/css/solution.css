@@ -23918,3 +23918,11 @@ iframe.yt-video.loaded {
     left: 22%;
     top: 10%
 }
+
+.sd {
+    display: flex;        /* Enables flexbox */
+    flex-direction: column;/* Stacks flex items vertically */
+    align-items: center;   /* Centers flex items along the cross axis (horizontal centering) */
+    text-align: center;    /* Centers the text inside the child elements */
+    justify-content: center;/* Vertically centers the content (useful if there's extra vertical space) */
+}
