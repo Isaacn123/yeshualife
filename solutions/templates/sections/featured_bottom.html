@@ -23,7 +23,7 @@
                 {% for v in m.value.images %}
                 
                 <div class="swiper-slide border border-light-subtle sd" style="width: 254.5px; margin-right: 30px;" role="group" aria-label="{{ forloop.parentloop.counter }} / {{ m.value.images|length }}" data-swiper-slide-index="{{ forloop.counter0 }}">
-                    <a href="#!">
+                    <a href="#!" class="text-center">
                         {% image v.image width-600  height-600 class="rounded d-block w-100 height-100" %}
                         {% comment %} <img class="rounded w-100" src="{{v.image}}" alt=""> {% endcomment %}
                   <div class="px-3 px-xl-5">
