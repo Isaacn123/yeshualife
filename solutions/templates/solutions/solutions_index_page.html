@@ -91,9 +91,20 @@
             </div>
         {% endif %}
 
+ <section class="py-4" id="YeshualifeFeatures1">
+            <div class="container-fluid">
+              <div class="row m-0">
+
         {% if forloop.counter >= 4 %}
         {% include "sections/added-middle-featured.html"   with post=post %}
         {% endif %}
+
+    </div><!-- end of .row-->
+</div><!-- end of .container-->
+</section>
+
+
+
     {% endfor %}
         </div>
     </div>
