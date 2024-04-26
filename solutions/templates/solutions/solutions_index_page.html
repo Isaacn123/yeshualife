@@ -84,13 +84,14 @@
     <div class="container-fluid">
         <div class="row m-0">
         {% for post in page.get_children %}
-        {% if not forloop.first and not forloop.counter == 4 %}  <!-- Exclude the first item -->
+        {% comment %} {% if not forloop.first and not forloop.counter == 4 %}  <!-- Exclude the first item --> {% endcomment %}
+        {% if forloop.counter == 2 or forloop.counter == 3 %}
             <div class="col-md-6">
                 {% include "sections/secondary-featured-section.html" with post=post %}
             </div>
         {% endif %}
 
-        {% if forloop.counter == 4 %}
+        {% if forloop.counter >= 4 %}
         {% include "sections/added-middle-featured.html"   with post=post %}
         {% endif %}
     {% endfor %}
