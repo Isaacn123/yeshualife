@@ -5,10 +5,11 @@
     <div class="container-fluid">
       <div class="row m-0">
         <div class="col-sm-6 col-lg-3">
-            <a class="d-block" href="#!"><img class="w-100 rounded" src="../assets/img/bicycle-03.jpg" alt="" data-zanim-xs="{&quot;delay&quot;:0,&quot;animation&quot;:&quot;zoom-in&quot;}" style="filter: blur(0px); opacity: 1; transform: translate(0px, 0px);">
+            <a class="d-block" href="#!">
+                <img class="w-100 rounded" src="{{post.specific.image}}" alt="" data-zanim-xs="{&quot;delay&quot;:0,&quot;animation&quot;:&quot;zoom-in&quot;}" style="filter: blur(0px); opacity: 1; transform: translate(0px, 0px);">
             <h6 class="d-inline-block ls text-uppercase fw-normal mb-0 mt-3 text-body-secondary">Karamoja</h6>
-            <h4>mountain</h4>
-            <p class="text-body d-inline-block">XC, DH, trail—our mountain bikes cover every facet of riding.</p>
+            <h4>{{post.title|truncatewords:2}}</h4>
+            <p class="text-body d-inline-block">{{post.specific.intro|truncatewords:10}}</p>
           </a></div>
         </div><!-- end of .row-->
     </div><!-- end of .container-->
