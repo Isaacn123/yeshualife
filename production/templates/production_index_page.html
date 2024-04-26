@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags%}
+{% block body_class %}template-blogindexpage{% endblock  %}
+
+{% block extra_css  %}
+<link rel="stylesheet" href="{% static "css/top-section.css" %}">
+<link rel="stylesheet" href="{% static "css/solution.css" %}">
+ {% endblock  %}
+
+{% block content %}
+{% include "nav_bar.html" %}
+
+<section class="yesh-header">
+{% include "sections/main-top-section.html" %}
+</section>
+
+
+
+
+
+
+{% endblock %}
+
+{% block footer %}
+{% include "blog/footer.html" %}
+{% endblock  %}
+
+
+
