@@ -22080,6 +22080,11 @@ html[dir=rtl] .googlemap .gm-style-iw.gm-style-iw-c button[title=Close] {
     text-align: justify !important
 }
 
+.swiper-slide {
+    position: relative; /* Ensure proper alignment and sizing of children */
+    display: flex;      /* Use flexbox to align children if needed */
+}
+
 .bg-holder {
     position: absolute;
     width: 100%;
