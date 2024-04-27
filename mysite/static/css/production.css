@@ -16015,6 +16015,14 @@ textarea.form-control-lg {
         order: 6 !important
     }
 
+@media(min-width: 992px) {
+    .order-lg-2 {
+        -webkit-box-ordinal-group: 3 !important;
+        -ms-flex-order: 2 !important;
+        /* order: 2 !important; */
+    }
+}
+
     .m-lg-0 {
         margin: 0 !important
     }
