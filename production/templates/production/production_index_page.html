@@ -34,6 +34,11 @@
 {% include "section/featured_production.html" %}
 {% endfor %}
 <div class="w-100"></div>
+{% for post in page.get_children %}
+  {% if forloop.counter >= 3 %}
+  {% include "section/list_featured.html" %}
+  {% endif %}
+{% endfor %}
 
         </div>
 
