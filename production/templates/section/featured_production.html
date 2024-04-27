@@ -1,7 +1,7 @@
 
      
         <div class="w-100"></div>
-        {% if forloop.counter > 1 and forloop.counter == 2 %}
+        {% if forloop.counter > 1 and forloop.counter != 3 %}
         <div class="col-lg-6 pt-5 pt-xl-7" data-zanim-timeline="{&quot;delay&quot;:0}">
             {{ post.specific.image }}
           <div class="hoverbox"><img class="rounded img-fluid" src="#" alt="" data-zanim-xs="{&quot;animation&quot;:&quot;zoom-in&quot;,&quot;delay&quot;:0.1}" style="filter: blur(0px); opacity: 1; transform: translate(0px, 0px);">
