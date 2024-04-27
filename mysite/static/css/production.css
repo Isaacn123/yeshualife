@@ -15988,7 +15988,7 @@ textarea.form-control-lg {
     .order-lg-2 {
         -webkit-box-ordinal-group: 3 !important;
         -ms-flex-order: 2 !important;
-        order: 2 !important
+        order: 0 !important
     }
 
     .order-lg-3 {
