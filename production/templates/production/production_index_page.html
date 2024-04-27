@@ -21,6 +21,16 @@
 {% endfor %}
 </section> 
 
+<section class="text-center" id="defaultMembers">
+    <div class="container">
+
+{% for post in page.getchildren %}
+
+{% include "section/featured_production.html" %}
+{% endfor %}
+
+</div><!-- end of .container-->
+</section>
 {% comment %} {% include "section/head_production.html" %} {% endcomment %}
 
 
