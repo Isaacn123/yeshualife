@@ -30,12 +30,19 @@
         <meta property="og:url" content="https://www.yeshualifeug.com" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://yeshualifeug.com/static/images/yeshua_logo2.png" />
+
+        <meta property="og:title" content="{{ post.title }}">
+        <meta property="og:description" content="{{ post.description }}">
+        <meta property="og:image" content="{{ request.build_absolute_uri }}{{ post.image.url }}">
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="{{ request.build_absolute_uri }}">
     
         <!-- Optional: Twitter Meta Tags -->
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="Yeshua Life">
         <meta name="twitter:description" content="Established in 2014 in Kiryandongo, Uganda, Yeshua Life Limited excels in crop production, animal husbandry, and agro-processing. Winner of the 2020 National Modern Farm Award, we are dedicated to advancing agriculture and empowering local communities through skills training. #SustainableFarming #YouthEmpowerment">
-        <meta name="twitter:image" content="https://yeshualifeug.com/static/images/yeshua_logo2.png">
+        {% comment %} <meta name="twitter:image" content="https://yeshualifeug.com/static/images/yeshua_logo2.png"> {% endcomment %}
+        <meta name="twitter:image" content="{{ request.build_absolute_uri }}{{ post.image.url }}">
 
         {# Force all links in the live preview panel to be opened in a new tab #}
         {% if request.in_preview_panel %}
