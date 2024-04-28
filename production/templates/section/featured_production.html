@@ -1,6 +1,8 @@
 
 {% load wagtailcore_tags wagtailimages_tags%}
 
+{{page|safe}}
+
         {% if forloop.counter <= 2 %}
         <div class="col-lg-6 pt-5 pt-xl-7" data-zanim-timeline="{&quot;delay&quot;:0}">
           <div class="hoverbox"><img class="rounded img-fluid" src="{% image  post.specific.image fill-1920x1080 as img %}{{img.url}}" alt="{{ post.title }}" data-zanim-xs="{&quot;animation&quot;:&quot;zoom-in&quot;,&quot;delay&quot;:0.1}" style="filter: blur(0px); opacity: 1; transform: translate(0px, 0px);">
