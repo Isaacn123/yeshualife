@@ -39,13 +39,19 @@
     
         <!-- Optional: Twitter Meta Tags -->
         <meta name="twitter:card" content="summary"></meta>
-        <meta name="twitter:title" content="Yeshua Life">
-        <meta name="twitter:description" content="Established in 2014 in Kiryandongo, Uganda, Yeshua Life Limited excels in crop production, animal husbandry, and agro-processing. Winner of the 2020 National Modern Farm Award, we are dedicated to advancing agriculture and empowering local communities through skills training. #SustainableFarming #YouthEmpowerment">
+        <meta name="twitter:site" content="@nytimesbits" />
+        <meta name="twitter:creator" content="@nickbilton" />
+        <meta property="og:url" content="http://bits.blogs.nytimes.com/2011/12/08/a-twitter-for-my-sister/" />
+        <meta property="og:title" content="A Twitter for My Sister" />
+        <meta property="og:description" content="In the early days, Twitter grew so quickly that it was almost impossible to add new features because engineers spent their time trying to keep the rocket ship from stalling." />
+        <meta property="og:image" content="http://graphics8.nytimes.com/images/2011/12/08/technology/bits-newtwitter/bits-newtwitter-tmagArticle.jpg" />
+                {% comment %} <meta name="twitter:title" content="Yeshua Life">
+        <meta name="twitter:description" content="Established in 2014 in Kiryandongo, Uganda, Yeshua Life Limited excels in crop production, animal husbandry, and agro-processing. Winner of the 2020 National Modern Farm Award, we are dedicated to advancing agriculture and empowering local communities through skills training. #SustainableFarming #YouthEmpowerment"> {% endcomment %}
         {% comment %} <meta name="twitter:image" content="https://yeshualifeug.com/static/images/yeshua_logo2.png"> {% endcomment %}
         {% comment %} <meta name="twitter:image" content="{{ request.build_absolute_uri }}{{ post.specific.image }}"> {% endcomment %}
-        <meta name="twitter:card" content="summary_large_image">
+        {% comment %} <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:image" content="https://yeshualifeug.com/media/images/IMG_8508_Ps4jASW.2e16d0ba.fill-1920x1080.jpg"></meta>   
-        <meta property="og:image" content="https://yeshualifeug.com/media/images/IMG_8508_Ps4jASW.2e16d0ba.fill-1920x1080.jpg"/>  
+        <meta property="og:image" content="https://yeshualifeug.com/media/images/IMG_8508_Ps4jASW.2e16d0ba.fill-1920x1080.jpg"/>   {% endcomment %}
 
         {# Force all links in the live preview panel to be opened in a new tab #}
         {% if request.in_preview_panel %}
