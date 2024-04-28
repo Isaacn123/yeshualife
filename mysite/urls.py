@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.contrib import admin
 from .api import api_router
 from wagtail.admin import urls as wagtailadmin_urls
@@ -8,6 +8,7 @@ from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.contrib.sitemaps.views import sitemap
 from search import views as search_views
 from django.views.generic import TemplateView
+from django.views.static import serve
 
 urlpatterns = [
     path("django-admin/", admin.site.urls),
@@ -15,9 +16,16 @@ urlpatterns = [
     path("documents/", include(wagtaildocs_urls)),
     path("api/v2/", api_router.urls),
     path("search/", search_views.search, name="search"),
-    path("api_auth/", include('payments.urls')),
+    path("api_auth/", include('payments.urls')), 
     path('google334554454.html', TemplateView.as_view(template_name="google7c516833d92b99b0.html")),
 
+]
+
+urlpatterns += [
+    re_path(r'^robots.txt$', serve, {
+        'path': 'robots.txt',
+        'document_root': settings.STATIC_ROOT,
+    }),
 ]
 
 
