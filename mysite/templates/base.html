@@ -38,13 +38,14 @@
         <meta property="og:url" content="{{ request.build_absolute_uri }}">
     
         <!-- Optional: Twitter Meta Tags -->
-        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:card" content="summary"></meta>
         <meta name="twitter:title" content="Yeshua Life">
         <meta name="twitter:description" content="Established in 2014 in Kiryandongo, Uganda, Yeshua Life Limited excels in crop production, animal husbandry, and agro-processing. Winner of the 2020 National Modern Farm Award, we are dedicated to advancing agriculture and empowering local communities through skills training. #SustainableFarming #YouthEmpowerment">
         {% comment %} <meta name="twitter:image" content="https://yeshualifeug.com/static/images/yeshua_logo2.png"> {% endcomment %}
         {% comment %} <meta name="twitter:image" content="{{ request.build_absolute_uri }}{{ post.specific.image }}"> {% endcomment %}
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:image" content="https://yeshualifeug.com/media/images/IMG_8508_Ps4jASW.2e16d0ba.fill-1920x1080.jpg">     
+        <meta name="twitter:image" content="https://yeshualifeug.com/media/images/IMG_8508_Ps4jASW.2e16d0ba.fill-1920x1080.jpg"></meta>   
+        <meta property="og:image" content="https://yeshualifeug.com/media/images/IMG_8508_Ps4jASW.2e16d0ba.fill-1920x1080.jpg"/>  
 
         {# Force all links in the live preview panel to be opened in a new tab #}
         {% if request.in_preview_panel %}
