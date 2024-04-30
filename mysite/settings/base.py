@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'payments',
     'solutions',
     'production',
+    'django_social_share',
 ]
 
 MIDDLEWARE = [
