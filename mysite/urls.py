@@ -21,12 +21,12 @@ urlpatterns = [
 
 ]
 
-urlpatterns += [
-    re_path(r'^robots.txt$', serve, {
-        'path': 'robots.txt',
-        'document_root': settings.STATIC_ROOT,
-    }),
-]
+# urlpatterns += [
+#     re_path(r'^robots.txt$', serve, {
+#         'path': 'robots.txt',
+#         'document_root': settings.STATIC_ROOT,
+#     }),
+# ]
 
 
 if settings.DEBUG:
