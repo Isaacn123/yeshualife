@@ -52,7 +52,7 @@
         
         <base target="_blank">
         {% endif %}
-        <link rel="stylesheet" href="{{ request.build_absolute_uri|safe }}{{ post.image.url }}">
+        <link type="text/html" href="{{ request.build_absolute_uri|safe }}{{ post.specific.image}}">
 
         {# Global stylesheets #}
         <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
