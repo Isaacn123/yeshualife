@@ -52,7 +52,8 @@
         
         <base target="_blank">
         {% endif %}
-        <link type="text/html" href="{{ request.build_absolute_uri|safe }}{{ post.specific.image}}">
+        {{ request.build_absolute_uri|safe }}{{ post.specific.image}}
+        {% comment %} <link type="text/html" href="{{ request.build_absolute_uri|safe }}{{ post.specific.image}}"> {% endcomment %}
 
         {# Global stylesheets #}
         <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
