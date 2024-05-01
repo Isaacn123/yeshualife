@@ -23,7 +23,7 @@
     
 {% if forloop.first %}
 {% comment %} {% include "blog/main_content/carosel.html"  with post=post %} {% endcomment %}
-{% include "karamoja/partial_section/slider_cro.html"  with post=post %}
+{% comment %} {% include "karamoja/partial_section/slider_cro.html"  with post=post %} {% endcomment %}
 {% endif %}
 {% endfor %}
 
@@ -35,7 +35,8 @@
 
 
 <div class="container marketing">
-    {% include "blog/main_content/carosel.html"  with post=post %}
+    {% include "karamoja/partial_section/slider_cro.html"  with post=post %}
+    {% comment %} {% include "blog/main_content/carosel.html"  with post=post %} {% endcomment %}
         {% comment %} {% include "blog/sections/feature_section_one.html"  with post=post %} {% endcomment %}
 
       {% comment %} {% include "blog/main_content/carosel.html"  with post=post %} {% endcomment %}
