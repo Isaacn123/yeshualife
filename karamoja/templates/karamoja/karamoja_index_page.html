@@ -23,6 +23,7 @@
     
 {% if forloop.first %}
 {% comment %} {% include "blog/main_content/carosel.html"  with post=post %} {% endcomment %}
+{% include "partial_section/slider_cro.html"  with post=post %}
 {% endif %}
 {% endfor %}
 
