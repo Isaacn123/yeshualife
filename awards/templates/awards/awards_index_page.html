@@ -16,13 +16,15 @@
 
 {% include "nav_bar.html" %}
 
-<section class="yesh-header">
+{% comment %} <section class="yesh-header"> {% endcomment %}
 {% include "sections/header.html" %}
-</section>
+{% comment %} </section> {% endcomment %}
 
 {% comment %} <div class="top-content-wrap">
     {% include "blog/sections/top-section-updates.html" %}
 </div> {% endcomment %}
+
+{% include "sections/middle-section.html" %}
 
 
 {% comment %} <div class="d-flex flex-column justify-content-center align-items-center wrap-blog"></div> {% endcomment %}
