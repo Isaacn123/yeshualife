@@ -27,7 +27,7 @@
                 {{post.title|slice:"14:26"}}</span>
                 <span class="d-block py-2" data-zanim-xs="{&quot;delay&quot;:0.4,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">
                   {{post.title|slice:"26:38"}}</span></h2>
-            <img 	width="538" height="807" class="img-fluid mt-4 rounded w-100" src="{% image post.specific.image fill-100 as img%}{{img.url}}" alt="">
+            <img 	width="538" height="807" class="img-fluid mt-4 rounded w-100" src="{% image post.specific.image fill-1920x1080 as img%}{{img.url}}" alt="">
         </div>
         {% endif %}
 
