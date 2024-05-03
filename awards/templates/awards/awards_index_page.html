@@ -23,8 +23,10 @@
 {% comment %} <div class="top-content-wrap">
     {% include "blog/sections/top-section-updates.html" %}
 </div> {% endcomment %}
+ {% for post  in page.get_children %}
 
-{% include "sections/middle-section.html" %}
+{% include "sections/middle-section.html" with post=post %}
+{% endfor %}
 
 {% include "sections/about.html" %}
 
