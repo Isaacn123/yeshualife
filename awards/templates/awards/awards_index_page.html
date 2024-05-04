@@ -33,8 +33,11 @@
      </div><!-- end of .container-->
 </section>  
 
-
-{% include "sections/about.html" %}
+{% for post in page.get_children %}
+{% if forloop.counter == 3 %}
+{% include "sections/about.html" with post=post %}
+{% endif %}
+{% endfor %}
 
 {% include "sections/bottom_lists_about.html" %}
 
