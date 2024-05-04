@@ -20,10 +20,7 @@
     </div><!-- end of .container-->
   </section> {% endcomment %}
 
-
-  <section class="text-uppercase" id="EventFeatures">
-    {% for post  in page.get_children %}
-    <div class="container">
+      {% for post in page.get_children %}
       <div class="row">
         
         <div class="col-6 text-center" data-parallax="simple" data-rellax-percentage="0.5" data-rellax-speed="-1.5" style="transform: translate3d(0px, 18px, 0px);">
@@ -49,7 +46,7 @@
         </div>
       
       </div>
-    </div><!-- end of .container-->
-     {% endfor %}
-  </section>  
+      
+      {% endfor %}
+
  
