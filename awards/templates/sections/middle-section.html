@@ -20,8 +20,10 @@
     </div><!-- end of .container-->
   </section> {% endcomment %}
 
-      {% for post in page.get_children %}
+ 
       <div class="row">
+        {% for post in page.get_children %}
+          {% if forloop.counter == 1 %}
         
         <div class="col-6 text-center" data-parallax="simple" data-rellax-percentage="0.5" data-rellax-speed="-1.5" style="transform: translate3d(0px, 18px, 0px);">
           {% image post.specific.image fill-1920x1080 as img %}
@@ -34,6 +36,8 @@
           </h2>
           {% endif %}
         </div>
+
+       {% elif forloop.counter == 2 %}
         <div class="col-6">
           {% if forloop.counter == 2 %}
             <!-- Content for the second item -->
@@ -44,9 +48,10 @@
           <img class="img-fluid mt-4 rounded w-100" src="{{ img.url }}" alt="">
           {% endif %}
         </div>
-      
+            {% endif %}
+         {% endfor %}
       </div>
       
-      {% endfor %}
+   
 
  
