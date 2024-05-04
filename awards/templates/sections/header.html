@@ -9,7 +9,7 @@
   .custom-background {
     background-image: url('https://yeshualifeug.com/media/images/yeshalife-awards.original.jpg'); /* yeshualife_awards.original.jpg */ 
     background-size: cover;
-    background-position: 85% center;
+    background-position: right center;
     filter: blur(0px);
     opacity: 1;
     transform: translate(0px, 0px);
@@ -19,6 +19,11 @@
   @media (max-width: 768px) { /* Adjusts for devices with a width of 768px or less, typical for tablets and mobile devices */
     .yt-video {
       object-position: left center;
+    }
+
+    .custom-background {
+      background-position: 85% center;
+      background-size: 80%; /* Increase this value to zoom out more */
     }
   }
 </style>
