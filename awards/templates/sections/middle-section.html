@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-6 text-center" data-parallax="data-parallax" data-rellax-percentage="0.5" data-rellax-speed="-1.5" style="transform: translate3d(0px, 18px, 0px);">
-          <img class="img-fluid mb-4 rounded w-100" src="{% image post.specific.image fill-1920x1080 as img%}{{img.url}}" alt="">
+          {% comment %} <img class="img-fluid mb-4 rounded w-100" src="{% image post.specific.image fill-1920x1080 as img%}{{img.url}}" alt=""> {% endcomment %}
           {% if forloop.first %}
           <h2 class="fw-light mb-0 fs-9 fs-md-7" data-zanim-timeline="{}"><span class="overflow-hidden d-block"><span class="d-inline-block py-2" data-zanim-xs="{&quot;delay&quot;:0.1}" style="transform: translate(0px, 0px); opacity: 1;">the aesthetic of</span></span><span class="overflow-hidden d-block"><span class="d-inline-block py-2 fw-bolder" data-zanim-xs="{&quot;delay&quot;:0.2}" style="transform: translate(0px, 0px); opacity: 1;">sparrow events</span></span><span class="overflow-hidden d-block"><span class="d-inline-block py-2" data-zanim-xs="{&quot;delay&quot;:0.3}" style="transform: translate(0px, 0px); opacity: 1;">is one of</span></span><span class="overflow-hidden d-block"><span class="d-inline-block py-2 fw-bolder" data-zanim-xs="{&quot;delay&quot;:0.4}" style="transform: translate(0px, 0px); opacity: 1;">"glamour elegance"</span></span></h2>
           {% endif %}
@@ -17,3 +17,21 @@
       </div>
     </div><!-- end of .container-->
   </section>
+
+
+
+
+
+
+  <div class="row">
+    <div class="col-6 text-center" data-parallax="data-parallax" data-rellax-percentage="0.5" data-rellax-speed="-1.5" style="transform: translate3d(0px, 18px, 0px);">
+      <img class="img-fluid mb-4 rounded w-100" src="" alt="">
+      
+    </div>
+    <div class="col-6">
+      
+      <h2 class="fw-light fs-9 fs-md-7 overflow-hidden" data-zanim-timeline="{}"><span class="d-block py-2" data-zanim-xs="{&quot;delay&quot;:0.1,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">Chic</span><span class="d-block py-2 fw-bolder" data-zanim-xs="{&quot;delay&quot;:0.2,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">Timeless</span><span class="d-block py-2" data-zanim-xs="{&quot;delay&quot;:0.3,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">Exclusive</span><span class="d-block py-2" data-zanim-xs="{&quot;delay&quot;:0.4,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">Unforgettable</span></h2>
+      <img class="img-fluid mt-4 rounded w-100" src="/media/images/7540a716-3354-4335-acec-e0b96bae.2e16d0ba.fill-1920x1080.jpg" alt="">
+       
+    </div>
+  </div>
