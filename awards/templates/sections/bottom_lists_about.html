@@ -22,7 +22,7 @@
                 <div class="hoverbox">
                     <img class="rounded w-100"  src="{{img.url}}" alt="{{ post.title }}"><a class="hoverbox-content hoverbox-content-gradient p-3 justify-content-center" href="{% pageurl post %}">
                     <div class="hoverbox-bg d-flex align-items-end h-100 pb-4">
-                      <h2 class="fw-light text-white"><span class="d-inline-block">flower house</span></h2>
+                      <h2 class="fw-light text-white"><span class="d-inline-block">{{post.title|truncatechars:40}}</span></h2>
                     </div>
                   </a></div>
               </div>
@@ -49,11 +49,11 @@
   <script>
       document.addEventListener('DOMContentLoaded', function () {
           var swiper = new Swiper('.swiper', {
-              //autoplay: {
-              //    delay: 5000,
-               //   disableOnInteraction: false
-             // },
-              autoplay:false,
+              autoplay: {
+                  delay: 5000,
+                  disableOnInteraction: false
+              },
+              //autoplay:false,
               loop: true,
               spaceBetween: 25,
               effect:'false',
@@ -73,15 +73,15 @@
                   slidesPerView: 3
                 }
               }
-             // pagination: {
-             //     el: '.swiper-pagination',
-             //     clickable: true,
-             //     type: 'bullets'
-             //   },
-            //  navigation: {
-            //      nextEl: '.swiper-button-next',
-            //      prevEl: '.swiper-button-prev',
-            //  },
+              pagination: {
+                  el: '.swiper-pagination',
+                  clickable: true,
+                  type: 'bullets'
+                },
+              navigation: {
+                  nextEl: '.swiper-button-next',
+                  prevEl: '.swiper-button-prev',
+              },
           });
       });
       </script>
