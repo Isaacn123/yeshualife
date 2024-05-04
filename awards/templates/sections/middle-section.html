@@ -25,7 +25,11 @@
         <div class="col-6">
             <!-- Content for the second item -->
             <h2 class="fw-light fs-9 fs-md-7 overflow-hidden" data-zanim-timeline="{}">
-              <span class="d-block py-2" data-zanim-xs="{&quot;delay&quot;:0.1,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">Chic</span><span class="d-block py-2 fw-bolder" data-zanim-xs="{&quot;delay&quot;:0.2,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">Timeless</span><span class="d-block py-2" data-zanim-xs="{&quot;delay&quot;:0.3,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">Exclusive</span><span class="d-block py-2" data-zanim-xs="{&quot;delay&quot;:0.4,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">Unforgettable</span>
+              <span class="d-block py-2" data-zanim-xs="{&quot;delay&quot;:0.1,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">
+                {{post.title|slice:":4"}}</span><span class="d-block py-2 fw-bolder" data-zanim-xs="{&quot;delay&quot;:0.2,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">
+                  {{post.title|slice:"4:14"}}</span><span class="d-block py-2" data-zanim-xs="{&quot;delay&quot;:0.3,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">
+                    {{post.title|slice:"14:26"}}</span><span class="d-block py-2" data-zanim-xs="{&quot;delay&quot;:0.4,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">
+                      {{post.title|slice:"26:38"}}</span>
          
             </h2>
           <img class="img-fluid mt-4 rounded w-100" src="{{ img.url }}" alt="">
