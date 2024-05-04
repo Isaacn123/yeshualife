@@ -18,7 +18,7 @@
               {% for post in page.get_children %}
               {% image post.specific.image fill-448x462 as img %}
 
-              <div class="swiper-slide" role="group" aria-label="{{ forloop.counter }} / {{ page.get_children.count }}" data-swiper-slide-index="8" style="width: 448.333px;  height:462; margin-right: 25px;">
+              <div class="swiper-slide" role="group" aria-label="{{ forloop.counter }} / {{ page.get_children.count }}" data-swiper-slide-index="{{ forloop.counter0 }}" style="width: 448.333px;  height:462; margin-right: 25px;">
                 <div class="hoverbox">
                     <img class="rounded w-100"  src="{{img.url}}" alt="{{ post.title }}"><a class="hoverbox-content hoverbox-content-gradient p-3 justify-content-center" href="{% pageurl post %}">
                     <div class="hoverbox-bg d-flex align-items-end h-100 pb-4">
@@ -48,34 +48,30 @@
   
   <script>
       document.addEventListener('DOMContentLoaded', function () {
-          var swiper = new Swiper('.swiper', {
-              autoplay: {
-                  delay: 5000,
-                  disableOnInteraction: false
-              },
-              //autoplay:false,
-              loop: true,
-              //spaceBetween: 25,
-              effect:'false',
-             // slidesPerView:1,
-             // loopedSlides:5,
-             // spaceBetween: 30,
-              //breakpoints: {
-               //   576: { slidesPerView: 2 },
-              //    768: { slidesPerView: 3 },
-              //    992: { slidesPerView: 4 }
-              //},
-            
-              pagination: {
-                  el: '.swiper-pagination',
-                  clickable: true,
-                  type: 'bullets'
-                },
-              navigation: {
-                  nextEl: '.swiper-button-next',
-                  prevEl: '.swiper-button-prev',
-              },
-          });
+        var swiper = new Swiper('.swiper', {
+          autoplay: {
+              delay: 5000,
+              disableOnInteraction: false
+          },
+          loop: true,
+          slidesPerView: 1,
+          loopedSlides: 5,
+          spaceBetween: 30,
+          breakpoints: {
+              576: { slidesPerView: 2 },
+              768: { slidesPerView: 3 },
+              992: { slidesPerView: 4 }
+          },
+          pagination: {
+              el: '.swiper-pagination',
+              clickable: true,
+              type: 'bullets'
+          },
+          navigation: {
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
+          },
+      });
       });
       </script>
   {% endblock  %}
