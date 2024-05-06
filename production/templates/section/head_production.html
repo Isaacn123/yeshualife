@@ -1,12 +1,13 @@
 {% load static %}
-{% load wagtailcore_tags wagtailimages_tags%}
-
+{% load wagtailcore_tags wagtailimages_tags compress %}
+{% compress css %}
 {% block extra_css  %}
 <link rel="stylesheet" href="{% static "css/swiper-bundle.min.css" %}">
 <link href="{% static 'css/loaders.min.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'css/csv/style.css' %}" rel="stylesheet" type="text/css">
 
 {% endblock  %}
+{% endcompress %}
 <section class="py-0">
     <div class="container-fluid">
       <div class="row h-100 border-bottom">
@@ -67,7 +68,7 @@
     </div><!-- end of .container-->
   </section>
 
-
+  {% compress js %}
   {% block extra_js %}
 <script src="{% static 'js/jquery-3.6.0.slim.min.js' %}"></script>
 <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
@@ -100,3 +101,4 @@
     });
     </script>
 {% endblock  %}
+{% endcompress %}
