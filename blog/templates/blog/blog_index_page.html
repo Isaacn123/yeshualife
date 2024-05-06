@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% load wagtailcore_tags wagtailimages_tags compress %}
+{% load wagtailcore_tags wagtailimages_tags compress structured_data_tags %}
 
 {% block body_class %}template-blogindexpage{% endblock  %}
 {% compress css %}
@@ -83,6 +83,11 @@
 
 {% endblock  %}
 
+{% block extra_js %}
+<script type="application/ld+json">
+  {% json_ld_markup %}
+</script>
+{% endblock  %}
 {% block footer %}
 {% include "blog/footer.html" %}
 {% endblock  %}
