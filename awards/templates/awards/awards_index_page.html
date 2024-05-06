@@ -6,10 +6,11 @@
 
 {% comment %} /*{% block extra_css  %}  {% endcomment %}
 {% compress css %}
+{% block extra_css  %}
 <link rel="stylesheet" href="{% static "css/top-section.css" %}">
 <link rel="stylesheet" href="{% static "css/award_ss.css" %}">
 <link href="{% static 'css/csv/style.css' %}" rel="stylesheet" type="text/css">
-{% comment %} {% endblock  %} {% endcomment %}
+{% endblock  %}
 {% endcompress %}
 
 {% block  content %}
