@@ -1,12 +1,13 @@
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags%}
 
-{% block extra_css  %}
+{% comment %} {% block extra_css  %} {% endcomment %}
+{% compress css %}
 <link rel="stylesheet" href="{% static "css/swiper-bundle.min.css" %}">
 <link href="{% static 'css/loaders.min.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'css/csv/style.css' %}" rel="stylesheet" type="text/css">
-
-{% endblock  %}
+{% endcompress %}
+{% comment %} {% endblock  %} {% endcomment %}
 
 <section class="pt-2" id="EventProjects">
     <div class="container-fluid">

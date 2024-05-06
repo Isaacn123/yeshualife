@@ -1,4 +1,5 @@
-{% block extra_css %}
+{% comment %} {% block extra_css %} {% endcomment %}
+{% compress css %}
 <style>
   .yt-video {
     width: 100%; /* Ensures the image is responsive and fits the width of its container */
@@ -27,7 +28,8 @@
     }
   }
 </style>
-{% endblock extra_css %}
+{% endcompress %}
+{% comment %} {% endblock extra_css %} {% endcomment %}
 <section class="py-0">
     <div class="bg-holder custom-background"  data-zanim-md="{&quot;delay&quot;:0,&quot;animation&quot;:&quot;zoom-out&quot;}">
       {% comment %} https://www.youtube.com/embed/67Mlgq6-dGA?autoplay=1 {% endcomment %}

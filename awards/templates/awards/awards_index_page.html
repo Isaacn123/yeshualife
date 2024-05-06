@@ -4,12 +4,13 @@
 
 {% block body_class %}template-blogindexpage{% endblock  %}
 
-{% block extra_css  %}
+{% comment %} /*{% block extra_css  %}  {% endcomment %}
+{% compress css %}
 <link rel="stylesheet" href="{% static "css/top-section.css" %}">
 <link rel="stylesheet" href="{% static "css/award_ss.css" %}">
 <link href="{% static 'css/csv/style.css' %}" rel="stylesheet" type="text/css">
-{% endblock  %}
-
+{% comment %} {% endblock  %} {% endcomment %}
+{% endcompress %}
 
 {% block  content %}
 <main class="main min-vh-100" id="top">
