@@ -73,11 +73,11 @@
         <link rel="canonical" href="{{ canonical_url }}" />
         {% comment %} {% endcompress %} {% endcomment %}
          
-        {% compress css %}
+        {% comment %} {% compress css %} {% endcomment %}
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
-        {% endcompress %}
+        {% comment %} {% endcompress %} {% endcomment %}
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
