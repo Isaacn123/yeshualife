@@ -2,13 +2,14 @@
 {% load wagtailcore_tags wagtailimages_tags%}
 {% load compress %}
 
-{% comment %} {% block extra_css  %} {% endcomment %}
+{% comment %} {% endcomment %}
 {% compress css %}
+{% block extra_css  %} 
 <link rel="stylesheet" href="{% static "css/swiper-bundle.min.css" %}">
 <link href="{% static 'css/loaders.min.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'css/csv/style.css' %}" rel="stylesheet" type="text/css">
-{% endcompress %}
-{% comment %} {% endblock  %} {% endcomment %}
+{% endblock  %}{% endcompress %}
+{% comment %}  {% endcomment %}
 
 <section class="pt-2" id="EventProjects">
     <div class="container-fluid">
@@ -43,7 +44,7 @@
   </section>
 
 
-
+  {% compress js %}
   {% block extra_js %}
   <script src="{% static 'js/jquery-3.6.0.slim.min.js' %}"></script>
   <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
@@ -77,3 +78,5 @@
       });
       </script>
   {% endblock  %}
+
+  {% endcompress %}
