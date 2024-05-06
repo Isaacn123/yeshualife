@@ -127,6 +127,15 @@ h3 a:hover{
     display: grid;
 }
 
+@media screen and (max-width: 768px) {
+    /* Adjust grid layout for smaller screens */
+    .blog-content-grid {
+        grid-template-columns: 1fr; /* Change to single column layout */
+        grid-column-gap: 2rem; /* Adjust gap for smaller screens */
+        grid-row-gap: 2rem; /* Adjust gap for smaller screens */
+    }
+}
+
 
 /* footer section */
 
