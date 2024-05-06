@@ -57,6 +57,7 @@
         {% comment %} <link type="text/html" href="{{ request.build_absolute_uri|safe }}{{ post.specific.image}}"> {% endcomment %}
 
         {# Global stylesheets #}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         {% compress css %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/mediaqueries.css' %}">
@@ -65,8 +66,6 @@
         <link rel="icon" type="image/png" href="{% static 'images/favicon-32x32.png' %}"> 
 
        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
         <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap/dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
