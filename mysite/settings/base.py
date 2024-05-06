@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'payments',
     'solutions',
     'production',
+    'compressor',
     'django_social_share',
 ]
 
@@ -82,6 +83,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "mysite.urls"
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
+
 
 TEMPLATES = [
     {

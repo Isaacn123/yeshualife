@@ -5,7 +5,9 @@ certifi==2023.7.22
 charset-normalizer==3.3.2
 defusedxml==0.7.1
 Django==4.2.7
+django-appconf==1.0.6
 django-compat==1.0.15
+django-compressor==4.4
 django-cors-headers==4.3.1
 django-filter==23.3
 django-modelcluster==6.1
@@ -30,7 +32,9 @@ pillow-heif==0.13.1
 psycopg2-binary==2.9.9
 pyparsing==3.1.1
 pytz==2023.3.post1
+rcssmin==1.1.1
 requests==2.31.0
+rjsmin==1.2.1
 six==1.16.0
 soupsieve==2.5
 sqlparse==0.4.4
