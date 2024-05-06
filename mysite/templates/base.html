@@ -1,5 +1,5 @@
 {% load static wagtailcore_tags wagtailuserbar %}
-{% load compress %}
+{% comment %} {% load compress %} {% endcomment %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,7 +58,7 @@
 
         {# Global stylesheets #}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-        {% compress css %}
+        {% comment %} {% compress css %} {% endcomment %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/mediaqueries.css' %}">
         {% comment %} <link rel="icon" type="image/png" href="/path/to/favicon.png" sizes="any"> {% endcomment %}
@@ -71,7 +71,7 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 
         <link rel="canonical" href="{{ canonical_url }}" />
-        {% endcompress %}
+        {% comment %} {% endcompress %} {% endcomment %}
          
         {% compress css %}
         {% block extra_css %}
