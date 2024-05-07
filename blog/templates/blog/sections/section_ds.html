@@ -1,10 +1,11 @@
 {% load static %}
-{% load wagtailcore_tags wagtailimages_tags%}
+{% load wagtailcore_tags wagtailimages_tags compress %}
 
+{% compress css %}
 {% block extra_css %}
 <link href="{% static 'css/customcss.css'%}" rel="stylesheet">
 {% endblock  %}
-
+{% endcompress %}
 
 <section class="section_padding  news__area">
      <div class="container marketing">
