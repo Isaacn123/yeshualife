@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags compress %}
+
+{% block body_class %}template-blogindexpage{% endblock  %}
+
+{% comment %} /*{% block extra_css  %}  {% endcomment %}
+{% compress css %}
+{% block extra_css  %}
+<link rel="stylesheet" href="{% static "css/top-section.css" %}">
+<link rel="stylesheet" href="{% static "css/award_ss.css" %}">
+<link href="{% static 'css/csv/style.css' %}" rel="stylesheet" type="text/css">
+{% endblock  %}
+{% endcompress %}
+
+{% block  content %}
+<main class="main min-vh-100" id="top">
+
+{% include "nav_bar.html" %}
+
+{% comment %} <section class="yesh-header"> {% endcomment %}
+{% include "sections/header.html" %}
+{% comment %} </section> {% endcomment %}
+
+{% comment %} <div class="top-content-wrap">
+    {% include "blog/sections/top-section-updates.html" %}
+</div> {% endcomment %}
+
+
+<section class="text-uppercase" id="Features">
+      <div class="container">
+
+{% include "sections/video_section.html" %}
+
+     </div><!-- end of .container-->
+</section>  
+
+{% for post in page.get_children %}
+{% if forloop.counter == 3 %}
+{% include "sections/about.html" with post=post %}
+{% endif %}
+{% endfor %}
+
+{% include "sections/bottom_lists_about.html" %}
+
+
+
+{% comment %} <div class="d-flex flex-column justify-content-center align-items-center wrap-blog"></div> {% endcomment %}
+
+
+
+</main>
+{% endblock %}
+
+{% block footer %}
+{% include "blog/footer.html" %}
+{% endblock  %}

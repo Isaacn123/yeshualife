@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags  wagtailimages_tags%}
+
+{% block body_class %}template-blogpage{%  endblock  %}
+
+{% block content %}
+{% include "nav_bar.html" %}
+<div class="container">
+    <div class="wrapper">
+        <div class="d-flex flex-column justify-content-center align-items-center ">
+            <div class="top-back-btn">
+                <a href="{{page.get_parent.url}}" class="bac-button w-inline-block"><div class="icon-2 w-embed"><svg width="420" height="420" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.828 10.9999H20V12.9999H7.828L13.192 18.3639L11.778 19.7779L4 11.9999L11.778 4.22192L13.192 5.63592L7.828 10.9999Z" fill="currentColor"></path>
+                    </svg>
+                    </div>
+                </a>
+            </div>
+
+          <div class="content text-center">
+            <h1 class="p-3">{{page.title}}</h1>
+            {% srcset_image page.image class="image-blog-main" width-{1080,800} sizes="(max-width: 991px) 90vw, 87vw" %}
+
+            <div class="blog-metadata-large"><p class="meta"> {{page.date}}</p></div>
+          </div>
+          <section class="section blog-content-section">
+
+            <div class="container-medium">
+                <div  class="blog-content-grid">
+                    <div>{% include "blog/aside.html" %}</div>
+                    <div>
+                        <p>{{page.body|richtext}}</p>
+                       
+                           <!-- Add this: -->
+                           {% comment %} {% image page.image fill-320x240 %} {% endcomment %}
+                           <p>{{ page.caption }}</p>
+                       
+                        <p><a href="{{page.get_parent.url}}">Return Home</a></p>
+                    </div>
+                </div>
+            </div>
+
+          </section>
+        </div>
+    </div>
+</div>
+{% endblock  %}
+
+{% block footer %}
+{% include "blog/footer.html" %}
+{% endblock  %}

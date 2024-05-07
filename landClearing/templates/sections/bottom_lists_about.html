@@ -1,0 +1,82 @@
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags%}
+{% load compress %}
+
+{% comment %} {% endcomment %}
+{% compress css %}
+{% block extra_css  %} 
+<link rel="stylesheet" href="{% static "css/swiper-bundle.min.css" %}">
+<link href="{% static 'css/loaders.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/csv/style.css' %}" rel="stylesheet" type="text/css">
+{% endblock  %}{% endcompress %}
+{% comment %}  {% endcomment %}
+
+<section class="pt-2" id="EventProjects">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-12 text-center overflow-hidden">
+          <div class="swiper theme-slider px-2 mb-2 swiper-initialized swiper-horizontal swiper-backface-hidden" data-swiper="{&quot;autoplay&quot;:false,&quot;spaceBetween&quot;:25,&quot;loop&quot;:true,&quot;loopedSlides&quot;:5,&quot;slidesPerView&quot;:1,&quot;breakpoints&quot;:{&quot;576&quot;:{&quot;slidesPerView&quot;:2},&quot;992&quot;:{&quot;slidesPerView&quot;:3}}}">
+            <div class="swiper-wrapper" id="swiper-wrapper-99f7c1544db995e8" aria-live="polite">
+            
+              {% for post in page.get_children %}
+              {% image post.specific.image fill-448x462 as img %}
+
+              <div class="swiper-slide" role="group" aria-label="{{ forloop.counter }} / {{ page.get_children.count }}" data-swiper-slide-index="{{ forloop.counter0 }}" style="width: 448.333px;  height:462; margin-right: 25px;">
+                <div class="hoverbox">
+                    <img class="rounded w-100"  src="{{img.url}}" alt="{{ post.title }}"><a class="hoverbox-content hoverbox-content-gradient p-3 justify-content-center" href="{% pageurl post %}">
+                    <div class="hoverbox-bg d-flex align-items-end h-100 pb-4">
+                      <h2 class="fw-light text-white"><span class="d-inline-block">{{post.title|truncatechars:40}}</span></h2>
+                    </div>
+                  </a></div>
+              </div>
+
+              {% endfor %}
+              
+            </div>
+            <div class="swiper-nav">
+              <div class="swiper-button-next me-4" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-99f7c1544db995e8"> </div>
+              <div class="swiper-button-prev ms-4" tabindex="0" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-99f7c1544db995e8"></div>
+            </div>
+          <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div><a class="btn btn-outline-dark mt-6" href="#!">more stories here</a>
+          </div>
+      </div>
+    </div><!-- end of .container-->
+  </section>
+
+
+  {% compress js %}
+  {% block extra_js %}
+  <script src="{% static 'js/jquery-3.6.0.slim.min.js' %}"></script>
+  <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+  
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var swiper = new Swiper('.swiper', {
+          autoplay: {
+              delay: 5000,
+              disableOnInteraction: false
+          },
+          loop: true,
+          slidesPerView: 1,
+          loopedSlides: 5,
+          spaceBetween: 30,
+          breakpoints: {
+              576: { slidesPerView: 2 },
+              768: { slidesPerView: 3 },
+              992: { slidesPerView: 4 }
+          },
+          pagination: {
+              el: '.swiper-pagination',
+              clickable: true,
+              type: 'bullets'
+          },
+          navigation: {
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
+          },
+      });
+      });
+      </script>
+  {% endblock  %}
+
+  {% endcompress %}
