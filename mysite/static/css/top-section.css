@@ -436,18 +436,6 @@ p {
 } */
 
 
-@media (max-width:767px){
-    .d-flex{
-        flex-direction: column !important;
-        align-items: center I !important;
-    }
-
-    .owl-item {
-        width:100% !important;
-        margin-right:0 !important;
-    }
-}
-
 @media (min-width: 992px){
     .header-container {
         height: 100vh;

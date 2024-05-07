@@ -150,6 +150,20 @@ h1, h2, h3, h4, h5, h6 {
   transition: 0.3s;
 }
 
+
+@media (max-width:767px){
+  .d-flex{
+      flex-direction: column !important;
+      align-items: center I !important;
+  }
+
+  .owl-item {
+      width:100% !important;
+      margin-right:0 !important;
+  }
+}
+
+
 @media (max-width: 767px) {
 .news__area .single__blog .thum img {
     width: 100%;
