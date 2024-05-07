@@ -25,7 +25,7 @@
               {% for v in m.value.images %}
               {% image v.image fill-1920x1080 as img %}
               {% comment %} <pre>{{img.url}}</pre> {% endcomment %}
-              <div class="swiper-slide min-vh-lg-100 py-9 swiper-slide-next" style="width: 100%; height: 300px!important; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;" role="group" aria-label="{{ forloop.parentloop.counter }} / {{ m.value.images|length }}" data-swiper-slide-index="{{ forloop.counter0 }}">
+              <div class="swiper-slide min-vh-lg-25 py-9 swiper-slide-next" style="width: 100%; height: 300px!important; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;" role="group" aria-label="{{ forloop.parentloop.counter }} / {{ m.value.images|length }}" data-swiper-slide-index="{{ forloop.counter0 }}">
                 <div class="bg-holder" style="background-image:url({{img.url}});"></div><!--/.bg-holder-->
               </div>  
               
