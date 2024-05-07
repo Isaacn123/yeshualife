@@ -30,20 +30,18 @@
 <section class="text-uppercase" id="Features">
       <div class="container">
 
-{% include "sections/video_section.html" %}
+{% include "sections/video_section.html"  %}
 
      </div><!-- end of .container-->
 </section>  
-
-{% for post in page.get_children %}
+{% include "sections/about.html" %}
+{% comment %} {% for post in page.get_children %}
 {% if forloop.counter == 3 %}
 {% include "sections/about.html" with post=post %}
 {% endif %}
-{% endfor %}
+{% endfor %} {% endcomment %}
 
 {% include "sections/bottom_lists_about.html" %}
-
-
 
 {% comment %} <div class="d-flex flex-column justify-content-center align-items-center wrap-blog"></div> {% endcomment %}
 
