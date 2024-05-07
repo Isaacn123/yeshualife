@@ -21759,11 +21759,13 @@ html[dir=rtl] .googlemap .gm-style-iw.gm-style-iw-c button[title=Close] {
 }
 
 .theme-slider .swiper-nav .swiper-button-prev {
-    left: .5rem
+    left: .5rem;
+    transform: translateY(-50%);
 }
 
 .theme-slider .swiper-nav .swiper-button-next {
-    right: .5rem
+    right: .5rem;
+    transform: translateY(-50%);
 }
 
 .theme-slider:hover .swiper-nav [class*=swiper-],.theme-slider:focus .swiper-nav [class*=swiper-] {
