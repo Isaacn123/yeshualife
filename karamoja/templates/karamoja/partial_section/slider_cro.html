@@ -4,6 +4,16 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static "css/swiper-bundle.min.css" %}">
 <link href="{% static 'css/loaders.min.css' %}" rel="stylesheet" type="text/css">
+<style>
+  .swiper-slide {
+    height: 300px; /* Adjust this value as needed */
+}
+  @media (min-width: 992px) {
+    .min-vh-lg-100 {
+        min-height: 30vh; /* Change to a smaller value */
+    }
+}
+</style>
 {% endblock  %}
 {% endcompress %}
 <div class="col-12" data-zanim-lg="{&quot;animation&quot;:&quot;slide-left&quot;,&quot;delay&quot;:0.4}" style="transform: translate(0px, 0px); opacity: 1;">
