@@ -1,6 +1,6 @@
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags compress %}
-{%  compress css %}
+{% comment %} {%  compress css %} {% endcomment %}
 {% block extra_css %}
 <link rel="stylesheet" href="{% static "css/swiper-bundle.min.css" %}">
 <link href="{% static 'css/loaders.min.css' %}" rel="stylesheet" type="text/css">
@@ -15,7 +15,7 @@
 }
 </style>
 {% endblock  %}
-{% endcompress %}
+{% comment %} {% endcompress %} {% endcomment %}
 <div class="col-12" data-zanim-lg="{&quot;animation&quot;:&quot;slide-left&quot;,&quot;delay&quot;:0.4}" style="transform: translate(0px, 0px); opacity: 1;">
     <div class="swiper theme-slider swiper-theme swiper-fade swiper-initialized swiper-horizontal swiper-rtl swiper-watch-progress swiper-backface-hidden" data-swiper="{&quot;autoplay&quot;:{&quot;delay&quot;:5000,&quot;disableOnInteraction&quot;:false},&quot;loop&quot;:true,&quot;effect&quot;:&quot;fade&quot;,&quot;pagination&quot;:{&quot;el&quot;:&quot;.swiper-pagination&quot;,&quot;clickable&quot;:true,&quot;type&quot;:&quot;bullets&quot;}}" data-zanim-lg="{&quot;animation&quot;:&quot;zoom-out&quot;,&quot;delay&quot;:0}" style="filter: blur(0px); opacity: 1; transform: translate(0px, 0px);">
         <div class="swiper-wrapper" id="swiper-wrapper-aea78ca571cd101e0" aria-live="off" style="transition-duration: 0ms; transition-delay: 0ms;">
