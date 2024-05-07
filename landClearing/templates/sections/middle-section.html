@@ -1,16 +1,14 @@
-<section class="text-center pt-0 pb-4" id="defaultGallery">
-  <div class="container">
-    <div class="row gy-4" id="home-gallery">
+
       <div class="col-12 mb-3 mb-lg-5">
         <h2 class="fs-6 fs-sm-5"><span class="text-decoration-underline">Yeshua Life</span></h2>
       </div>
 
-
-      <div class="col-6 col-lg-4">
-        <a href="#!" data-bp="../assets/img/gallery/13-f.jpg" data-bigpicture="{&quot;gallery&quot;:&quot;#home-gallery&quot;}" data-caption="your caption"><img class="rounded img-fluid" src="../assets/img/gallery/13.jpg" alt="" data-zanim-xs="{&quot;animation&quot;:&quot;zoom-in&quot;,&quot;delay&quot;:0.1}" style="filter: blur(0px); opacity: 1; transform: translate(0px, 0px);"></a>
-      </div>
-       
-    
+    {% for post in page.get_children %}
+    {% image post.specific.image fill-1920x1080 as img %}
+    <div class="col-6 col-lg-4">
+      <a href="{% pageurl post %}" data-bp="{{img.url}}" data-bigpicture="{&quot;gallery&quot;:&quot;#home-gallery&quot;}" data-caption="your caption">
+        <img class="rounded img-fluid" src="{{img.url}}" alt="{{post.title}}" data-zanim-xs="{&quot;animation&quot;:&quot;zoom-in&quot;,&quot;delay&quot;:0.1}" style="filter: blur(0px); opacity: 1; transform: translate(0px, 0px);"></a>
     </div>
-  </div><!-- end of .container-->
-</section>
+    {% endfor %}
+     
+       
