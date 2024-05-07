@@ -40,7 +40,7 @@ class LandClearingPage(Page):
         # InlinePanel('gallery_images', label="Gallery images")
     ]
 
-class AwardsPageGalleryImage(Orderable):
+class LandClearingPageGalleryImage(Orderable):
     page = ParentalKey(LandClearingPage, on_delete=models.PROTECT, related_name='gallery_images')
     image = models.ForeignKey(
         'wagtailimages.Image', on_delete=models.PROTECT, related_name='+',blank=True,null=True
