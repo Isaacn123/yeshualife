@@ -21,7 +21,8 @@ class LandClearingIndexPage(Page):
 class LandClearingPage(Page):
 
     date = models.DateField("Post date", null=True)
-    body = RichTextField(blank=True, features=['bold', 'italic', 'link', 'embed'])
+    # features=['bold', 'italic', 'link', 'embed']
+    body = RichTextField(blank=True)
     intro = models.CharField(max_length=200)
 
     search_fields = Page.search_fields + [
