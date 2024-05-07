@@ -1,44 +1,16 @@
-{% load wagtailcore_tags  wagtailimages_tags%}
-
-      <div class="row">
-        {% for post in page.get_children %}
-          {% if forloop.counter == 1 %}
-        
-        <div class="col-6 text-center" data-parallax="simple" data-rellax-percentage="0.5" data-rellax-speed="-1.5" style="transform: translate3d(0px, 18px, 0px);">
-          {% image post.specific.image fill-1920x1080 as img %}
-          <img class="img-fluid mb-4 rounded w-100" src="{{ img.url }}" alt="">
-          <h2 class="fw-light mb-0 fs-9 fs-md-7" data-zanim-timeline="{}">
-            <!-- Animation and content for the first item -->
-            <span class="overflow-hidden d-block"><span class="d-inline-block py-2" data-zanim-xs="{&quot;delay&quot;:0.1}" style="transform: translate(0px, 0px); opacity: 1;">
-              {{post.title|slice:":14"}}</span></span>
-              <span class="overflow-hidden d-block"><span class="d-inline-block py-2 fw-bolder" data-zanim-xs="{&quot;delay&quot;:0.2}" style="transform: translate(0px, 0px); opacity: 1;">
-                {{post.title|slice:"14:29"}}</span></span>
-                <span class="overflow-hidden d-block"><span class="d-inline-block py-2" data-zanim-xs="{&quot;delay&quot;:0.3}" style="transform: translate(0px, 0px); opacity: 1;">
-                  {{post.title|slice:"29:37"}}</span></span>
-                  <span class="overflow-hidden d-block"><span class="d-inline-block py-2 fw-bolder" data-zanim-xs="{&quot;delay&quot;:0.4}" style="transform: translate(0px, 0px); opacity: 1;">
-                    "{{post.title|slice:"37:59"}}"</span></span> 
-          </h2>
-        </div>
-
-       {% elif forloop.counter == 2 %}
-       {% image post.specific.image fill-1920x1080 as img %}
-        <div class="col-6">
-            <!-- Content for the second item -->
-            <h2 class="fw-light fs-9 fs-md-7 overflow-hidden" data-zanim-timeline="{}">
-              <span class="d-block py-2" data-zanim-xs="{&quot;delay&quot;:0.1,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">
-                {{post.title|slice:":3"}}</span><span class="d-block py-2 fw-bolder" data-zanim-xs="{&quot;delay&quot;:0.2,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">
-                  {{post.title|slice:"3:16"}}</span><span class="d-block py-2" data-zanim-xs="{&quot;delay&quot;:0.3,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">
-                    {{post.title|slice:"16:25"}}</span><span class="d-block py-2" data-zanim-xs="{&quot;delay&quot;:0.4,&quot;animation&quot;:&quot;slide-right&quot;}" style="transform: translate(0px, 0px); opacity: 1;">
-                      {{post.title|slice:"25:38"}}</span>
-         
-            </h2>
-          <img class="img-fluid mt-4 rounded w-100" src="{{ img.url }}" alt="">
-      
-        </div>
-            {% endif %}
-         {% endfor %}
+<section class="text-center pt-0 pb-4" id="defaultGallery">
+  <div class="container">
+    <div class="row gy-4" id="home-gallery">
+      <div class="col-12 mb-3 mb-lg-5">
+        <h2 class="fs-6 fs-sm-5"><span class="text-decoration-underline">Yeshua Life</span></h2>
       </div>
-      
-   
 
- 
+
+      <div class="col-6 col-lg-4">
+        <a href="#!" data-bp="../assets/img/gallery/13-f.jpg" data-bigpicture="{&quot;gallery&quot;:&quot;#home-gallery&quot;}" data-caption="your caption"><img class="rounded img-fluid" src="../assets/img/gallery/13.jpg" alt="" data-zanim-xs="{&quot;animation&quot;:&quot;zoom-in&quot;,&quot;delay&quot;:0.1}" style="filter: blur(0px); opacity: 1; transform: translate(0px, 0px);"></a>
+      </div>
+       
+    
+    </div>
+  </div><!-- end of .container-->
+</section>

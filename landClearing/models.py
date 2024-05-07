@@ -6,6 +6,11 @@ from wagtail.search import index
 from modelcluster.fields import ParentalKey
 # Create your models here.
 
+from wagtail.admin.rich_text.editors.draftail.features import register_embed_handler
+from wagtail.embeds.embeds import get_embed
+
+register_embed_handler('youtube', get_embed)
+
 class LandClearingIndexPage(Page):
     intro = models.CharField(max_length=200)
 
@@ -17,8 +22,9 @@ class LandClearingIndexPage(Page):
 
 
 class LandClearingPage(Page):
+
     date = models.DateField("Post date", null=True)
-    body = RichTextField(blank=True)
+    body = RichTextField(blank=True, features=['bold', 'italic', 'link', 'embed'])
     intro = models.CharField(max_length=200)
 
     search_fields = Page.search_fields + [

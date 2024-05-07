@@ -210,6 +210,12 @@ STATICFILES_FINDERS = [
     'compressor.finders.CompressorFinder',
 ]
 
+WAGTAIL_EMBEDS_FINDERS = [
+    {
+        'class': 'wagtail.embeds.finders.oembed',
+    }
+]
+
 STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, "static")
 ]
