@@ -34,12 +34,15 @@
     {% if forloop.first %}
 
 
-<div class="container marketing">
+{% comment %} <div class="container marketing"> {% endcomment %}
+    <div class="container-fluid"> <!-- Use container-fluid for full width -->
+        <div class="row">
     {% include "karamoja/partial_section/slider_cro.html"  with post=post %}
     {% comment %} {% include "blog/main_content/carosel.html"  with post=post %} {% endcomment %}
         {% comment %} {% include "blog/sections/feature_section_one.html"  with post=post %} {% endcomment %}
 
       {% comment %} {% include "blog/main_content/carosel.html"  with post=post %} {% endcomment %}
+        </div>
     </div>
     {% endif %}
 
