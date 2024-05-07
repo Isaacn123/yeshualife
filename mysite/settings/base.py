@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'production',
     'compressor',
     'django_social_share',
+    'landClearing'
 ]
 
 MIDDLEWARE = [
