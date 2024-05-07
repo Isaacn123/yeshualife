@@ -2,13 +2,13 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
       <div class="col-12 mb-3 mb-lg-5">
-        <h2 class="fs-6 fs-sm-5"><span class="text-decoration-underline">Yeshua Life</span></h2>
+        <h2 class="fs-6 fs-sm-5"><span class="text-decoration-underline">Yeshua Inovation</span></h2>
       </div>
 
     {% for post in page.get_children %}
     {% image post.specific.image fill-1920x1080 as img %}
     <div class="col-6 col-lg-4">
-      <a href="{% pageurl post %}" data-bp="{{img.url}}" data-bigpicture="{&quot;gallery&quot;:&quot;#home-gallery&quot;}" data-caption="your caption">
+      <a href="{% pageurl post %}" data-bp="{{img.url}}" data-bigpicture="{&quot;gallery&quot;:&quot;#home-gallery&quot;}" data-caption="{{post.specific.intro}}">
         <img class="rounded img-fluid" src="{{img.url}}" alt="{{post.title}}" data-zanim-xs="{&quot;animation&quot;:&quot;zoom-in&quot;,&quot;delay&quot;:0.1}" style="filter: blur(0px); opacity: 1; transform: translate(0px, 0px);"></a>
     </div>
     {% endfor %}
