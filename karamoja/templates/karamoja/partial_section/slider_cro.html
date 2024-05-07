@@ -5,14 +5,14 @@
 <link rel="stylesheet" href="{% static "css/swiper-bundle.min.css" %}">
 <link href="{% static 'css/loaders.min.css' %}" rel="stylesheet" type="text/css">
 <style>
-  .swiper-slide {
+  {% comment %} .swiper-slide {
     height: 300px; /* Adjust this value as needed */
-}
-  @media (min-width: 992px) {
+} {% endcomment %}
+  {% comment %} @media (min-width: 992px) {
     .min-vh-lg-100 {
         min-height: 30vh Im !important; /* Change to a smaller value */
     }
-}
+} {% endcomment %}
 </style>
 {% endblock  %}
 {% comment %} {% endcompress %} {% endcomment %}
