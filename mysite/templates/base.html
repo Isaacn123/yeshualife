@@ -53,7 +53,7 @@
         <meta property="og:image" content="{{  request.build_absolute_uri}}">
         <!-- Debugging: Print the image URL -->
         {% comment %} {% image page.image fill-800x600 as img %} {% endcomment %}
-        <div>Debug Image URL REAL: {{  request.build_absolute_uri|safe}}{{img.url }}</div>
+        <div>Debug Image URL REAL: {{ request.build_absolute_uri img.url }}</div>
         {% else %}
         <meta property="og:image" content="{{ request.build_absolute_uri|default:'' }}{% static 'images/yeshua_logo2.png' %}">
         <!-- Debugging: Print fallback image URL -->
