@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 
 from wagtail.embeds.oembed_providers import youtube, vimeo
+# from django_htmlmin. import HtmlMinifyMiddleware
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
