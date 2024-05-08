@@ -62,8 +62,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 
-        {% comment %} {% compress css %} {% endcomment %}
+        {% compress css %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
+        {% endcompress %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/mediaqueries.css' %}">
         {% comment %} {% endcompress %} {% endcomment %}
         {% comment %} <link rel="icon" type="image/png" href="/path/to/favicon.png" sizes="any"> {% endcomment %}
