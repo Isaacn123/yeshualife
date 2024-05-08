@@ -79,6 +79,8 @@
           width: 100%;
           {% comment %} height: 400px; /* Adjust based on your design */
           object-fit: cover; {% endcomment %}
+          margin-left: auto;
+          margin-right: auto;
           height: auto;  /* Maintain aspect ratio */
           display: block; /* Remove any default margin or padding */
           max-width: 100%; /* Make sure it does not stretch beyond its original size */
@@ -87,7 +89,8 @@
 
       @media (min-width: 996px) {
     .image-blog-main {
-        width: 75% !important;
+        width: 85% !important;
+        text-center:
         height: 500px!important; /* Or whatever height makes sense for your layout */
         object-fit: cover!important; /* Use this to cover the area if the aspect ratio doesn't match */
     }
