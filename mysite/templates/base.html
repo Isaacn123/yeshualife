@@ -74,6 +74,16 @@
         {% comment %} {% endcompress %} {% endcomment %}
          
         {% comment %} {% compress css %} {% endcomment %}
+     <style>
+        .image-blog-main {
+          width: 100%;
+          {% comment %} height: 400px; /* Adjust based on your design */
+          object-fit: cover; {% endcomment %}
+          height: auto;  /* Maintain aspect ratio */
+          display: block; /* Remove any default margin or padding */
+          max-width: 100%; /* Make sure it does not stretch beyond its original size */
+      }
+  </style>
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
