@@ -51,7 +51,7 @@
         {% if page.image %}
         <meta property="og:image" content="{% image page.main_image fill-800x600 %}">
         <!-- Debugging: Print the image URL -->
-        <div>Debug Image URL: {% image page.main_image fill-800x600 as img %}{{ img.url }}</div>
+        <div>Debug Image URL REAL: {% image page.image fill-800x600 as img %}{{ img.url }}</div>
         {% else %}
         <meta property="og:image" content="{% static 'images/yeshua_logo2.png' %}">
         <!-- Debugging: Print fallback image URL -->
