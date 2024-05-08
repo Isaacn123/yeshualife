@@ -15,19 +15,19 @@ from django.urls import reverse
 
 # Create your models here.
 
-class LatestEntriesFeed(Feed):
-    title = "Yeshua Life Latest Posts"
-    link = reverse.lazy("blog:index")
-    description = "Updates on new posts and Articles from Yeshua Life"
+# class LatestEntriesFeed(Feed):
+#     title = "Yeshua Life Latest Posts"
+#     link = reverse.lazy("blog:index")
+#     description = "Updates on new posts and Articles from Yeshua Life"
 
-    def items(self):
-        return BlogPage.objects.order_by('-published_date')[:5]
-    def item_title(self,item):
-        return item.title
-    def item_description(self, item):
-        return item.intro
-    def item_link(self,item):
-        return reverse.lazy('blog:detail', args=[item.slug])
+#     def items(self):
+#         return BlogPage.objects.order_by('-published_date')[:5]
+#     def item_title(self,item):
+#         return item.title
+#     def item_description(self, item):
+#         return item.intro
+#     def item_link(self,item):
+#         return reverse.lazy('blog:detail', args=[item.slug])
 
 
 class VideoBlock(blocks.StructBlock):

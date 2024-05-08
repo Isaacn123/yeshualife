@@ -20,7 +20,7 @@ urlpatterns = [
     path("search/", search_views.search, name="search"),
     path("api_auth/", include('payments.urls')), 
     path('google334554454.html', TemplateView.as_view(template_name="google7c516833d92b99b0.html")),
-    path('feeds/latest/', LatestEntriesFeed(), name='latest_feed'),
+    # path('feeds/latest/', LatestEntriesFeed(), name='latest_feed'),
 
 ]
 
