@@ -86,8 +86,19 @@
           max-width: 100%; /* Make sure it does not stretch beyond its original size */
       }
       /* Add this media query to adjust the height for screens wider than 996px */
-
+    .richtext-image {
+        width: 100%; /* Ensure it takes up the full width of its container */
+        height: auto; /* Default to auto to maintain aspect ratio */
+        display: block; /* Remove any default margin or padding */
+        max-width: 100%; /* Make sure it does not stretch beyond its original size */
+    }
+      @media (min-width: 768px) {
+      
+      }
       @media (min-width: 996px) {
+        .richtext-image {
+          height: 533px!important;
+        }
     .image-blog-main {
         width: 85% !important;
         height: 500px!important; /* Or whatever height makes sense for your layout */
