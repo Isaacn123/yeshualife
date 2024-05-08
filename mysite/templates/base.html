@@ -57,6 +57,7 @@
         <!-- Debugging: Print the image URL -->
         {% comment %} {% image page.image fill-800x600 as img %}  <div>Debug Image URL REAL: https://www.yeshualifeug.com{{ full_url}}</div> {% endcomment %}
         {% comment %} {% endwith %} {% endcomment %}
+        <div>Debug Fallback Image URL: {{page.intro}}</div>
         {% else %}
         <meta property="og:image" content="https://www.yeshualifeug.com{% static 'images/yeshua_logo2.png' %}">
         <!-- Debugging: Print fallback image URL -->
