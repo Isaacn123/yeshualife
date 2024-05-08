@@ -50,7 +50,7 @@
 
         {% if page.image %}
         {% image page.image fill-800x600 as img %}
-        {% with full_url=request.build_absolute_uri img.url %}
+        {% with full_url=request.build_absolute_uri|add:img.url %}
         <meta property="og:image" content="{{  request.build_absolute_uri}}">
         <!-- Debugging: Print the image URL -->
         {% comment %} {% image page.image fill-800x600 as img %} {% endcomment %}
