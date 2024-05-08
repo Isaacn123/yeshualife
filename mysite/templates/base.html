@@ -23,6 +23,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="description" content="Founded in 2014, Yeshua Life Limited is committed to transforming agriculture in Kiryandongo, Uganda. We specialize in crop production, animal husbandry, and agro-processing, and are dedicated to empowering our community through educational programs in agriculture. Recognized as the National Modern Farm of the Year in 2020, we continue to innovate and inspire sustainable development. Join us in our mission to uplift and skill the youth and women of Uganda.">
         <meta name="robots" content="index, follow"> <!-- Use "noindex, nofollow" to prevent indexing -->
+        <meta name="keywords" content="Agriculture, Karamoja, Yeshua Life, Uganda">
+        <meta name="author" content="Yeshua Life Limited">
         {% comment %} <meta property="fb:app_id" content="your_app_id_here"> {% endcomment %}
 
         <!-- Open Graph / Facebook Meta Tags -->
@@ -53,14 +55,12 @@
         {% comment %} {% with full_url=request.build_absolute_uri|add:img.url %} {% endcomment %}
         <meta property="og:image" content="https://www.yeshualifeug.com{{img.url}}">
         <!-- Debugging: Print the image URL -->
-        {% comment %} {% image page.image fill-800x600 as img %} {% endcomment %}
-        <div>Debug Image URL REAL: https://www.yeshualifeug.com{{ full_url}}</div>
-        <meta property="og:image" content="https://www.yeshualifeug.com{% static 'images/yeshua_logo2.png' %}">
+        {% comment %} {% image page.image fill-800x600 as img %}  <div>Debug Image URL REAL: https://www.yeshualifeug.com{{ full_url}}</div> {% endcomment %}
         {% comment %} {% endwith %} {% endcomment %}
         {% else %}
         <meta property="og:image" content="https://www.yeshualifeug.com{% static 'images/yeshua_logo2.png' %}">
         <!-- Debugging: Print fallback image URL -->
-        <div>Debug Fallback Image URL: {% static 'images/yeshua_logo2.png' %}</div>
+        <div>Debug Fallback Image URL: {{page.intro}}</div>
     {% endif %}
 
         {# Force all links in the live preview panel to be opened in a new tab #}
