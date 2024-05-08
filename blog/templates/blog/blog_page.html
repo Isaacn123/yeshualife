@@ -26,6 +26,12 @@
         overflow: hidden;
         font: italic 12px Georgia, serif;
     }
+
+    .image-blog-main {
+        width: 100%;
+        height: 400px; /* Adjust based on your design */
+        object-fit: cover;
+    }
 </style>
 {% endblock  %}
 {% block content %}
@@ -43,7 +49,7 @@
 
           <div class="content text-center">
             <h1 class="p-3">{{page.title}}</h1>
-            {% srcset_image page.image class="image-blog-main" width-{1080,800} sizes="(max-width: 991px) 90vw, 87vw" %}
+            {% srcset_image page.image class="image-blog-main" width-{1080,800} sizes="(max-width: 991px) 90vw, 87vw" style="width:100%; height:auto;" alt="Descriptive Alt Text" %}
 
             <div class="blog-metadata-large"><p class="meta"> {{page.date}}</p></div>
           </div>
