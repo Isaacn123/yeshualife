@@ -25,6 +25,10 @@
         <meta name="robots" content="index, follow"> <!-- Use "noindex, nofollow" to prevent indexing -->
         <meta name="keywords" content="Agriculture, Karamoja, Yeshua Life, Uganda, Yeshua">
         <meta name="author" content="Yeshua Life Limited">
+        <meta name="msapplication-TileColor" content="#da532c"/>
+        <meta name="theme-color" content="#ffffff"/>
+        <meta name="robots" content="NOODP, NOYDIR"/>
+        <meta name="version" content="1.0.1+5"/>
         {% comment %} <meta property="fb:app_id" content="your_app_id_here"> {% endcomment %}
         <!-- Open Graph / Facebook Meta Tags -->
         <meta property="og:url" content="https://www.yeshualifeug.com" />
@@ -78,10 +82,14 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap/dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+        <link rel="canonical"  href="https://www.yeshualifeug.com"/>
+        <link data-testid="en-hreflang-tag" rel="alternate" hrefLang="en" href="https://www.yeshualifeug.com"/>
+        <link data-testid="en-gb-hreflang-tag" rel="alternate" hrefLang="en-gb" href="https://www.yeshualifeug.com"/>
 
-        {% compress css %}
+
+        {% comment %} {% compress css %} {% endcomment %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
-        {% endcompress %}
+        {% comment %} {% endcompress %} {% endcomment %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/mediaqueries.css' %}">
         {% comment %} {% endcompress %} {% endcomment %}
         {% comment %} <link rel="icon" type="image/png" href="/path/to/favicon.png" sizes="any"> {% endcomment %}
