@@ -16,7 +16,7 @@
             {% endblock %}
         </title>
         {% comment %} {% block minify_head %} {% endcomment %}
-        {% minify %}
+        {% minify_html %}
         {% if page.search_description %}
         <meta name="description" content="{{ page.search_description }}" />
         {% endif %}
@@ -154,7 +154,7 @@
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
         {% comment %} {% endcompress %} {% endcomment %}
-        {% endminify %}
+        {% endminify_html %}
         {% comment %} {% endblock %} {% endcomment %}
     </head>
 
