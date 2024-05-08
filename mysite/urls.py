@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.urls import include, path, re_path
 from django.contrib import admin
+
+from yeshualife.blog.models import LatestEntriesFeed
 from .api import api_router
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
@@ -18,6 +20,7 @@ urlpatterns = [
     path("search/", search_views.search, name="search"),
     path("api_auth/", include('payments.urls')), 
     path('google334554454.html', TemplateView.as_view(template_name="google7c516833d92b99b0.html")),
+    path('feeds/latest/', LatestEntriesFeed(), name='latest_feed'),
 
 ]
 

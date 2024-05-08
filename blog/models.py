@@ -10,8 +10,25 @@ from wagtail.fields import StreamField
 from wagtail import blocks
 from .blocks import InlineVideoBlock
 from wagtailcodeblock.blocks import CodeBlock
+from django.contrib.syndication.views import Feed
+from django.urls import reverse
 
 # Create your models here.
+
+class LatestEntriesFeed(Feed):
+    title = "Yeshua Life Latest Posts"
+    link = reverse.lazy("blog:index")
+    description = "Updates on new posts and Articles from Yeshua Life"
+
+    def items(self):
+        return BlogPage.objects.order_by('-published_date')[:5]
+    def item_title(self,item):
+        return item.title
+    def item_description(self, item):
+        return item.intro
+    def item_link(self,item):
+        return reverse.lazy('blog:detail', args=[item.slug])
+
 
 class VideoBlock(blocks.StructBlock):
     video_url = blocks.URLBlock(label='Video URL',required=False)

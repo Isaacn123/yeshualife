@@ -23,10 +23,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="description" content="Founded in 2014, Yeshua Life Limited is committed to transforming agriculture in Kiryandongo, Uganda. We specialize in crop production, animal husbandry, and agro-processing, and are dedicated to empowering our community through educational programs in agriculture. Recognized as the National Modern Farm of the Year in 2020, we continue to innovate and inspire sustainable development. Join us in our mission to uplift and skill the youth and women of Uganda.">
         <meta name="robots" content="index, follow"> <!-- Use "noindex, nofollow" to prevent indexing -->
-        <meta name="keywords" content="Agriculture, Karamoja, Yeshua Life, Uganda">
+        <meta name="keywords" content="Agriculture, Karamoja, Yeshua Life, Uganda, Yeshua">
         <meta name="author" content="Yeshua Life Limited">
         {% comment %} <meta property="fb:app_id" content="your_app_id_here"> {% endcomment %}
-
         <!-- Open Graph / Facebook Meta Tags -->
         <meta property="og:url" content="https://www.yeshualifeug.com" />
         <meta property="og:type" content="website" />
@@ -38,15 +37,6 @@
         <meta name="twitter:title" content="Yeshua Life">
         <meta name="twitter:site" content="@yeshualife_info" />
         {% comment %} <meta name="twitter:creator" content="@nickbilton" /> {% endcomment %}
-
-                {% comment %} <meta name="twitter:title" content="Yeshua Life">
-        <meta name="twitter:description" content="Established in 2014 in Kiryandongo, Uganda, Yeshua Life Limited excels in crop production, animal husbandry, and agro-processing. Winner of the 2020 National Modern Farm Award, we are dedicated to advancing agriculture and empowering local communities through skills training. #SustainableFarming #YouthEmpowerment"> {% endcomment %}
-        {% comment %} <meta name="twitter:image" content="https://yeshualifeug.com/static/images/yeshua_logo2.png"> {% endcomment %}
-        {% comment %} <meta name="twitter:image" content="{{ request.build_absolute_uri }}{{ post.specific.image }}"> {% endcomment %}
-        {% comment %} <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:image" content="https://yeshualifeug.com/media/images/IMG_8508_Ps4jASW.2e16d0ba.fill-1920x1080.jpg"></meta>   
-        <meta property="og:image" content="https://yeshualifeug.com/media/images/IMG_8508_Ps4jASW.2e16d0ba.fill-1920x1080.jpg"/>   {% endcomment %}
-
         {% if page.image %}
         {% image page.image fill-800x600 as img %}
         {% comment %} {% with full_url=request.build_absolute_uri|add:img.url %} {% endcomment %}
@@ -81,6 +71,9 @@
         {% comment %} <link type="text/html" href="{{ request.build_absolute_uri|safe }}{{ post.specific.image}}"> {% endcomment %}
 
         {# Global stylesheets #}
+
+        <link rel="alternate" type="application/rss+xml" title="Yeshua Life Latest Posts" href="{% url 'latest_feed' %}" />
+
 
         <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap/dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
