@@ -52,7 +52,7 @@
         {% image page.image fill-800x600 as img %}
         <meta property="og:image" content="{{ request.build_absolute_uri img.url }}">
         <!-- Debugging: Print the image URL -->
-        {% image page.image fill-800x600 as img %}
+        {% comment %} {% image page.image fill-800x600 as img %} {% endcomment %}
         <div>Debug Image URL REAL: {{ request.build_absolute_uri img.url }}</div>
         {% else %}
         <meta property="og:image" content="{{ request.build_absolute_uri|default:'' }}{% static 'images/yeshua_logo2.png' %}">
