@@ -69,7 +69,7 @@ INSTALLED_APPS = [
     'compressor',
     'django_social_share',
     'landClearing',
-    'django_htmlmin',
+    # 'django_htmlmin',
 ]
 
 MIDDLEWARE = [
