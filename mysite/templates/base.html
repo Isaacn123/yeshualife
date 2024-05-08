@@ -53,17 +53,19 @@
         {% if page.image %}
         {% image page.image fill-800x600 as img %}
         {% comment %} {% with full_url=request.build_absolute_uri|add:img.url %} {% endcomment %}
-        <meta property="og:image" content="https://www.yeshualifeug.com{{img.url}}">
-        <meta property="og:description" content="{{page.intro}}">
-        <meta property="og:title" content="{{page.title}}">
+        <meta property="og:image" content="https://www.yeshualifeug.com{{img.url}}" />
+        <meta property="og:description" content="{{page.intro}}" />
+        <meta property="og:title" content="{{page.title}}" />
+        <meta name="twitter:description" content="{{page.intro}}" />
+        <meta name="twitter:image" content="https://www.yeshualifeug.com{{img.url}}" />
         <!-- Debugging: Print the image URL -->
         {% comment %} {% image page.image fill-800x600 as img %}  <div>Debug Image URL REAL: https://www.yeshualifeug.com{{ full_url}}</div> {% endcomment %}
         {% comment %} {% endwith %} {% endcomment %}
-        <div>Debug Fallback Image URL: {{page.intro}}</div>
+        {% comment %} <div>Debug Fallback Image URL: {{page.intro}}</div> {% endcomment %}
         {% else %}
         <meta property="og:image" content="https://www.yeshualifeug.com{% static 'images/yeshua_logo2.png' %}">
         <!-- Debugging: Print fallback image URL -->
-        <div>Debug Fallback Image URL: {{page.intro}}</div>
+        {% comment %} <div>Debug Fallback Image URL: {{page.intro}}</div> {% endcomment %}
     {% endif %}
 
         {# Force all links in the live preview panel to be opened in a new tab #}
