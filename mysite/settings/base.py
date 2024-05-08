@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'compressor',
     'django_social_share',
     'landClearing',
+    'htmlmin',
     # 'django_htmlmin',
 ]
 
@@ -107,6 +108,9 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
+            'libraries': {
+                'htmlmin': 'django_htmlmin.templatetags.htmlmin',
+            },
         },
     },
 ]

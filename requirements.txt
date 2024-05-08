@@ -22,6 +22,7 @@ et-xmlfile==1.1.0
 filetype==1.2.0
 gunicorn==21.2.0
 html5lib==1.1
+htmlmin==0.1.12
 httplib2==0.22.0
 idna==3.4
 l18n==2021.3
