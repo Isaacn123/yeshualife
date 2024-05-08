@@ -2,7 +2,7 @@ from django.conf import settings
 from django.urls import include, path, re_path
 from django.contrib import admin
 
-from yeshualife.blog.models import LatestEntriesFeed
+# from yeshualife.blog.models import LatestEntriesFeed
 from .api import api_router
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
