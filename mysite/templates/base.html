@@ -48,6 +48,16 @@
         <meta name="twitter:image" content="https://yeshualifeug.com/media/images/IMG_8508_Ps4jASW.2e16d0ba.fill-1920x1080.jpg"></meta>   
         <meta property="og:image" content="https://yeshualifeug.com/media/images/IMG_8508_Ps4jASW.2e16d0ba.fill-1920x1080.jpg"/>   {% endcomment %}
 
+        {% if page.main_image %}
+        <meta property="og:image" content="{% image page.main_image fill-800x600 %}">
+        <!-- Debugging: Print the image URL -->
+        <div>Debug Image URL: {% image page.main_image fill-800x600 as img %}{{ img.url }}</div>
+        {% else %}
+        <meta property="og:image" content="{% static 'images/yeshua_logo2.png' %}">
+        <!-- Debugging: Print fallback image URL -->
+        <div>Debug Fallback Image URL: {% static 'images/yeshua_logo2.png' %}</div>
+    {% endif %}
+
         {# Force all links in the live preview panel to be opened in a new tab #}
         {% if request.in_preview_panel %}
         
