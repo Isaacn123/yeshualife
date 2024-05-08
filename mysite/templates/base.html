@@ -62,10 +62,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 
-        {% compress css %}
+        {% comment %} {% compress css %} {% endcomment %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/mediaqueries.css' %}">
-        {% endcompress %}
+        {% comment %} {% endcompress %} {% endcomment %}
         {% comment %} <link rel="icon" type="image/png" href="/path/to/favicon.png" sizes="any"> {% endcomment %}
         <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
         <link rel="icon" type="image/png" href="{% static 'images/favicon-32x32.png' %}"> 
