@@ -109,7 +109,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
             ],
             'libraries': {
-                'htmlmin': 'django_htmlmin.templatetags.htmlmin',
+                # 'htmlmin': 'django_htmlmin.templatetags.htmlmin',
             },
         },
     },
