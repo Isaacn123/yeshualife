@@ -85,7 +85,7 @@ MIDDLEWARE = [
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     # 'htmlmin.middleware.HtmlMinifyMiddleware',
     # 'htmlmin.middleware.MarkRequestMiddleware',
-    'django_htmlmin',
+    'htmlmin',
     # "wagtail.contrib.sitemaps.middleware.SitemapMiddleware",
 ]
 
@@ -110,7 +110,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
             ],
             'libraries': {
-                'htmlmin': 'django_htmlmin.templatetags.htmlmin',
+                # 'htmlmin': 'django_htmlmin.templatetags.htmlmin',
             },
         },
     },
