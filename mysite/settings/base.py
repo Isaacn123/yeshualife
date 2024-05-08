@@ -69,7 +69,7 @@ INSTALLED_APPS = [
     'compressor',
     'django_social_share',
     'landClearing',
-    'htmlmin',
+    # 'htmlmin',
     # 'django_htmlmin',
 ]
 
@@ -85,7 +85,6 @@ MIDDLEWARE = [
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     # 'htmlmin.middleware.HtmlMinifyMiddleware',
     # 'htmlmin.middleware.MarkRequestMiddleware',
-    'htmlmin',
     # "wagtail.contrib.sitemaps.middleware.SitemapMiddleware",
 ]
 

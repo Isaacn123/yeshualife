@@ -4,6 +4,7 @@ from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import RichTextField
 from wagtail.search import index
 from modelcluster.fields import ParentalKey
+
 # Create your models here.
 
 class AwardsIndexPage(Page):
