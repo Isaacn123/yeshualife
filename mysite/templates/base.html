@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags wagtailuserbar %}
+{% load static wagtailcore_tags wagtailuserbar compress %}
 {% comment %} {% load compress %} {% endcomment %}
 
 <!DOCTYPE html>
@@ -57,23 +57,28 @@
         {% comment %} <link type="text/html" href="{{ request.build_absolute_uri|safe }}{{ post.specific.image}}"> {% endcomment %}
 
         {# Global stylesheets #}
+
+        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap/dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-        {% comment %} {% compress css %} {% endcomment %}
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+
+        {% compress css %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/mediaqueries.css' %}">
+        {% endcompress %}
         {% comment %} <link rel="icon" type="image/png" href="/path/to/favicon.png" sizes="any"> {% endcomment %}
         <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
         <link rel="icon" type="image/png" href="{% static 'images/favicon-32x32.png' %}"> 
 
        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
 
-        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap/dist/css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+
 
         <link rel="canonical" href="{{ canonical_url }}" />
         {% comment %} {% endcompress %} {% endcomment %}
          
         {% comment %} {% compress css %} {% endcomment %}
+        {% compress  css %}
      <style>
         .image-blog-main {
           width: 100%;
@@ -115,6 +120,7 @@
     }
 }
   </style>
+  {% endcompress %}
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
@@ -129,6 +135,7 @@
         </main>
       {% block footer %}{% endblock  %}
         {# Global javascript #}
+        {% compress js %}
         <script type="text/javascript" src="{% static 'js/mysite.js' %}"></script>
         <script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
         <script type="application/ld+json">
@@ -152,7 +159,7 @@
               ]
             }
             </script>
-            
+            {% endcompress %}
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}
         {% endblock %}
