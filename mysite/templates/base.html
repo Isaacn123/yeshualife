@@ -92,9 +92,13 @@
         display: block; /* Remove any default margin or padding */
         max-width: 100%; /* Make sure it does not stretch beyond its original size */
     }
-      @media (min-width:767px) {
+
+    {% comment %} h1 {
+      font-size: 1rem; /* Adjust to your preference for mobile views */
+    } {% endcomment %}
+      @media (max-width:767px) {
       h1{
-        font-size: 1.1rem !important;
+        font-size: 0.8rem !important;
       }
       .p-3{
         padding: .5rem !important;
