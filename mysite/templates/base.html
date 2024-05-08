@@ -55,6 +55,7 @@
         <!-- Debugging: Print the image URL -->
         {% comment %} {% image page.image fill-800x600 as img %} {% endcomment %}
         <div>Debug Image URL REAL: https://www.yeshualifeug.com{{ full_url}}</div>
+        <meta property="og:image" content="https://www.yeshualifeug.com{% static 'images/yeshua_logo2.png' %}">
         {% comment %} {% endwith %} {% endcomment %}
         {% else %}
         <meta property="og:image" content="https://www.yeshualifeug.com{% static 'images/yeshua_logo2.png' %}">
