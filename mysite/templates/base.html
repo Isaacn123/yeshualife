@@ -49,12 +49,13 @@
         <meta property="og:image" content="https://yeshualifeug.com/media/images/IMG_8508_Ps4jASW.2e16d0ba.fill-1920x1080.jpg"/>   {% endcomment %}
 
         {% if page.image %}
-        <meta property="og:image" content="{% image page.main_image fill-800x600 %}">
+        {% image page.image fill-800x600 as img %}
+        <meta property="og:image" content="{{ request.build_absolute_uri img.url }}">
         <!-- Debugging: Print the image URL -->
         {% image page.image fill-800x600 as img %}
         <div>Debug Image URL REAL: {{ request.build_absolute_uri img.url }}</div>
         {% else %}
-        <meta property="og:image" content="{{request.build_absolute_uri '{% static 'images/yeshua_logo2.png' %}' }}">
+        <meta property="og:image" content="{{ request.build_absolute_uri|default:'' }}{% static 'images/yeshua_logo2.png' %}">
         <!-- Debugging: Print fallback image URL -->
         <div>Debug Fallback Image URL: {% static 'images/yeshua_logo2.png' %}</div>
     {% endif %}
