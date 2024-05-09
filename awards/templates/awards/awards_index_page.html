@@ -58,9 +58,11 @@
 </script>
 {% endblock  %}
 {% endcompress %} {% endcomment %}
+{% compress js %}
 {% block extra_js %}
 <script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
 {% endblock  %}
+{% endcompress %}
 {% block footer %}
 {% include "blog/footer.html" %}
 {% endblock  %}
