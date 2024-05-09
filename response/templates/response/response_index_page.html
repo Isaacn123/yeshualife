@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
-{% load wagtailcore_tags wagtailimages_tags%}
+{% load wagtailcore_tags wagtailimages_tags compress %}
 
 {% block body_class %}template-blogindexpage{% endblock  %}
-
+{% compress css %}
 {% block extra_css %}
 <link rel="stylesheet" href="{% static "css/top-section.css" %}">
 {% endblock %}
-
+{% endcompress %}
 
 {% block  content %}
 
@@ -44,7 +44,11 @@
 
 
 {% endblock  %}
-
+{% compress js %}
+{% block extra_js %}
+<script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+{% endblock  %}
+{% endcompress %}
 {% block footer %}
 {% include "blog/footer.html" %}
 {% endblock  %}
