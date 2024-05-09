@@ -16,7 +16,7 @@
     </svg></div></a>
     {% comment %} <a fs-socialshare-element="twitter" href="href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title }}%20 - %20&via=@yeshualife_info&hashtags=#yeshualifeug" target="_blank"" class="social-share-link w-inline-block"> {% endcomment %}
     <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text=*{{ post.title|urlencode }}*%20🔹%20{{ post.specific.body|striphtml|truncatewords:17|urlencode}}&via=yeshualife_info&hashtags=#yeshualifeug" target="_blank" class="social-share-link w-inline-block">
-        <a class="text-white"  href="https://twitter.com/intent/tweet?text=*{{ post.title|urlencode }}*%20🔹%20{{ post.specific.body|striphtml|truncatewords:17|urlencode}}&url={{ request.build_absolute_uri|urlencode }}">
+        {% comment %} <a class="text-white"  href="https://twitter.com/intent/tweet?text=*{{ post.title|urlencode }}*%20🔹%20{{ post.specific.body|striphtml|truncatewords:17|urlencode}}&url={{ request.build_absolute_uri|urlencode }}"> {% endcomment %}
 
         {% comment %} href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title }}%20 - %20Title&via=@yeshualife_info&hashtags=#yeshualifeug" target="_blank" {% endcomment %}
         <div class="social-share-icon w-embed">
