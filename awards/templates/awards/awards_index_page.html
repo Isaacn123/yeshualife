@@ -51,13 +51,13 @@
 
 </main>
 {% endblock %}
-{% compress js %}
+{% comment %} {% compress js %}
 {% block extra_js %}
 <script type="application/ld+json">
   {% json_ld_markup %}
 </script>
 {% endblock  %}
-{% endcompress %}
+{% endcompress %} {% endcomment %}
 {% block footer %}
 {% include "blog/footer.html" %}
 {% endblock  %}
