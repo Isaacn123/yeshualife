@@ -83,13 +83,13 @@
 
 
 {% endblock  %}
-{% comment %} {% compress js %}
+{% compress js %}
 {% block extra_js %}
 <script type="application/ld+json">
   {% json_ld_markup %}
 </script>
 {% endblock  %}
-{% endcompress %} {% endcomment %}
+{% endcompress %}
 {% block footer %}
 {% include "blog/footer.html" %}
 {% endblock  %}
