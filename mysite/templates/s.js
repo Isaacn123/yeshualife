@@ -43,4 +43,106 @@
       }
     ]
     </script>
+
+
+
+    <script type="application/ld+json" class="yoast-schema-graph">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://yeshualifeug.com/",
+          "url": "https://yeshualifeug.com/",
+          "name": "YeshuaLife's Commitment to Ending Hunger in Karamoja - yeshualifeug.com",
+          "isPartOf": {
+            "@id": "https://yeshualifeug.com/#website"
+          },
+          "about": {
+            "url": "https://yeshualifeug.com/"
+          },
+          "primaryImageOfPage": {
+            "url": "https://yeshualifeug.com/static/images/karamoja_re.jpg"
+          },
+          "image": {
+            "url": "https://yeshualifeug.com/static/images/karamoja_re.jpg"
+          },
+          "thumbnailUrl": "https://yeshualifeug.com/static/images/yeshua_logo_nav.png",
+          "datePublished": "2024-03-15T14:38:21+00:00",
+          "dateModified": "2024-03-05T07:32:30+00:00",
+          "description": "Established in 2014 in Kiryandongo, Uganda, Yeshua Life Limited excels in crop production, animal husbandry, and agro-processing. Winner of the 2020 National Modern Farm Award, we are dedicated to advancing agriculture and empowering local communities through skills training. #SustainableFarming #YouthEmpowerment",
+          "breadcrumb": {
+            "url": "https://yeshualifeug.com/"
+          },
+          "inLanguage": "en-GB",
+          "potentialAction": [
+            {
+              "@type": "ReadAction",
+              "target": [
+                "https://yeshualifeug.com/"
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "ImageObject",
+          "inLanguage": "en-GB",
+          "@id": "https://yeshualifeug.com/",
+          "url": "https://yeshualifeug.com/static/images/karamoja_re.jpg",
+          "contentUrl": "https://yeshualifeug.com/static/images/yeshua_logo_nav.png"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://yeshualifeug.com/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home"
+            }
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://yeshualifeug.com/#website",
+          "url": "https://yeshualifeug.com/",
+          "name": "yeshua life",
+          "description": "YeshuaLife's Commitment to Ending Hunger in Karamoja",
+          "publisher": {
+            "@id": "https://yeshualifeug.com/#organization"
+          },
+          "potentialAction": [
+            {
+              "@type": "SearchAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://yeshualifeug.com/?s={search_term_string}"
+              },
+              "query-input": "required name=search_term_string"
+            }
+          ],
+          "inLanguage": "en-GB"
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://yeshualifeug.com/#OurResponse",
+          "name": "yeshualifeug.com",
+          "url": "https://yeshualifeug.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "inLanguage": "en-GB",
+            "@id": "https://yeshualifeug.com/#/schema/logo/image/",
+            "url": "https://yeshualifeug.com/static/images/yeshua_logo_nav.png",
+            "contentUrl": "https://yeshualifeug.com/static/images/yeshua_logo_nav.png"
+            "width": 500,
+            "height": 500,
+            "caption": "yeshualifeug.com"
+          },
+          "image": {
+            "@id": "https://yeshualifeug.com/#/schema/logo/image/"
+          }
+        }
+      ]
+    }
+  </script> 
     
