@@ -15,13 +15,26 @@
             {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
             {% endblock %}
         </title>
+<!-- Other meta tags -->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="google-site-verification" content="MM5LnFFTdPmXh1OJByK_c0yr9sP64Fc99LbIG0Ez_dk">
+<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <meta name="robots" content="index, follow">
 <meta name="robots" content="max-image-preview:large">
 <meta name="robots" content="max-video-preview:0">
+<meta name="keywords" content="Agriculture, Karamoja, Yeshua Life, Uganda, Yeshua">
+<meta name="author" content="Yeshua Life Limited">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="NOODP, NOYDIR">
+<meta name="version" content="1.0.1+5">
+<meta property="og:url" content="https://www.yeshualifeug.com">
 <meta property="fb:app_id" content="481811027543846">
 <meta property="og:type" content="website">
+
   <!-- Open Graph Meta Tags -->
   {% if page.image %}
   <meta property="og:image" content="https://www.yeshualifeug.com{{img.url}}">
@@ -48,20 +61,6 @@
   <meta name="twitter:description" content="Established in 2014 in Kiryandongo, Uganda, Yeshua Life Limited excels in crop production, animal husbandry, and agro-processing. Winner of the 2020 National Modern Farm Award, we are dedicated to advancing agriculture and empowering local communities through skills training. #SustainableFarming #YouthEmpowerment">
   <meta name="twitter:image" content="https://yeshualifeug.com/static/images/yeshua_logo2.png">
 {% endif %}
-
-<!-- Other meta tags -->
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="google-site-verification" content="MM5LnFFTdPmXh1OJByK_c0yr9sP64Fc99LbIG0Ez_dk">
-<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="robots" content="index, follow">
-<meta name="keywords" content="Agriculture, Karamoja, Yeshua Life, Uganda, Yeshua">
-<meta name="author" content="Yeshua Life Limited">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
-<meta name="robots" content="NOODP, NOYDIR">
-<meta name="version" content="1.0.1+5">
-<meta property="og:url" content="https://www.yeshualifeug.com">
 
 <!-- CSS and other resources -->
 <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap/dist/css/bootstrap.min.css' %}">
