@@ -37,6 +37,7 @@
 
   <!-- Open Graph Meta Tags -->
   {% if page.image %}
+  {% image page.image fill-800x600 as img %}
   <meta property="og:image" content="https://www.yeshualifeug.com{{img.url}}">
   <meta property="og:description" content="{{page.intro}}">
   <meta property="og:title" content="{{page.title}}">
@@ -47,6 +48,7 @@
 {% endif %}
 
 {% if page.image %}
+{% image page.image fill-800x600 as img %}
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Yeshua Life">
   <meta name="twitter:site" content="@yeshualife_info">
