@@ -56,11 +56,13 @@
 
 {% if not page.image %}
   <meta property="og:title" content="Yeshua Life">
+  <meta property="og:type" content="website" />
   <meta property="og:description" content="Founded in 2014, Yeshua Life Limited is committed to transforming agriculture in Kiryandongo, Uganda. We specialize in crop production, animal husbandry, and agro-processing, and are dedicated to empowering our community through educational programs in agriculture. Recognized as the National Modern Farm of the Year in 2020, we continue to innovate and inspire sustainable development. Join us in our mission to uplift and skill the youth and women of Uganda.">
   <meta property="og:image" content="https://www.yeshualifeug.com{% static 'images/yeshua_logo2.png' %}">
   <meta name="twitter:description" content="Established in 2014 in Kiryandongo, Uganda, Yeshua Life Limited excels in crop production, animal husbandry, and agro-processing. Winner of the 2020 National Modern Farm Award, we are dedicated to advancing agriculture and empowering local communities through skills training. #SustainableFarming #YouthEmpowerment">
   <meta name="twitter:image" content="https://yeshualifeug.com/static/images/yeshua_logo2.png">
-{% endif %}
+
+  {% endif %}
 
 <!-- CSS and other resources -->
 <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap/dist/css/bootstrap.min.css' %}">
