@@ -33,53 +33,9 @@
 <meta name="version" content="1.0.1+5">
 <meta property="og:url" content="https://www.yeshualifeug.com" />
 <meta property="fb:app_id" content="481811027543846" />
-<meta property="og:type" content="website" />
-<meta name="facebook-domain-verification" content="of1mw2em3gz45ycjzsxoro85gpobt6" />
 
-  <!-- Open Graph Meta Tags -->
-  {% if page.image %}
-  {% image page.image fill-800x600 as img %}
-  <meta property="og:image" content="https://www.yeshualifeug.com{{img.url}}">
-  <meta property="og:description" content="{{page.intro}}">
-  <meta property="og:title" content="{{page.title}}">
-{% endif %}
-
-{% if page.search_description %}
-  <meta property="og:description" content="{{page.intro}}">
-{% endif %}
-
-{% if page.image %}
-{% image page.image fill-800x600 as img %}
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Yeshua Life">
-  <meta name="twitter:site" content="@yeshualife_info">
-  <meta name="twitter:description" content="{{page.intro}}">
-  <meta name="twitter:image" content="https://www.yeshualifeug.com{{img.url}}">
-{% endif %}
-
-{% if not page.image %}
-  <meta property="og:title" content="Yeshua Life">
-  {% comment %} <meta property="og:type" content="website" />
-  <meta property="og:description" content="Founded in 2014, Yeshua Life Limited is committed to transforming agriculture in Kiryandongo, Uganda. We specialize in crop production, animal husbandry, and agro-processing, and are dedicated to empowering our community through educational programs in agriculture. Recognized as the National Modern Farm of the Year in 2020, we continue to innovate and inspire sustainable development. Join us in our mission to uplift and skill the youth and women of Uganda.">
-  <meta property="og:image" content="https://www.yeshualifeug.com{% static 'images/yeshua_logo2.png' %}">
-  <meta name="twitter:description" content="Established in 2014 in Kiryandongo, Uganda, Yeshua Life Limited excels in crop production, animal husbandry, and agro-processing. Winner of the 2020 National Modern Farm Award, we are dedicated to advancing agriculture and empowering local communities through skills training. #SustainableFarming #YouthEmpowerment">
-  <meta name="twitter:image" content="https://yeshualifeug.com/static/images/yeshua_logo2.png"> {% endcomment %}
-
-  {% endif %}
-
-<!-- CSS and other resources -->
-<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap/dist/css/bootstrap.min.css' %}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
-<link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'css/mediaqueries.css' %}">
-<link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
-<link rel="icon" type="image/png" href="{% static 'images/favicon-32x32.png' %}">
-<link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
-
-<link rel="canonical" href="https://www.yeshualifeug.com">
 <script async defer src="https://accounts.google.com/gsi/client"></script><script async defer src="https://apis.google.com/js/platform.js"></script><meta content="index, follow"name="robots"><meta content="max-image-preview:large" name="robots"><meta content="max-video-preview:0" name="robots"><meta content="481811027543846" property="fb:app_id">
-     {% comment %} {% image page.image fill-800x600 as img %}<meta property="og:image" content="https://www.yeshualifeug.com{{img.url}}"><meta property="og:description" content="{{page.intro}}"><meta property="og:title" content="{{page.title}}">
+     {% image page.image fill-800x600 as img %}<meta property="og:image" content="https://www.yeshualifeug.com{{img.url}}"><meta property="og:description" content="{{page.intro}}"><meta property="og:title" content="{{page.title}}">
      {% if page.search_description %}<meta name="description" content="{{ page.search_description }}">{% endif %}<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google-site-verification" content="MM5LnFFTdPmXh1OJByK_c0yr9sP64Fc99LbIG0Ez_dk"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
      <meta name="robots" content="index, follow">
      <meta name="keywords" content="Agriculture, Karamoja, Yeshua Life, Uganda, Yeshua">
