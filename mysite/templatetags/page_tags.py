@@ -3,7 +3,7 @@ from blog.models import BlogPage
 
 register = template.Library()
 
-@register.simple_tag()
+@register.simple_tag
 def get_page_posts(page_id,default_image_url=None):
     try:
         page = BlogPage.objects.get(id=page_id)
