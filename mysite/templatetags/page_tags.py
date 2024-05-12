@@ -9,11 +9,11 @@ def get_page_posts(page_id,default_image_url=None):
     try:
         page = BlogPage.objects.get(page_ptr_id=page_id)
         image = Image.objects.get(id=page.image_id)
-        image_url = image.file
+        image_url = image.file.url
         return {
             'title':page.title,
             'description':page.intro,
-            'image_url': 'media/{{image_url}}'
+            'image_url': image_url
 
         }
     except BlogPage.DoesNotExist as e:
