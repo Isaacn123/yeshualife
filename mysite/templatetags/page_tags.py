@@ -14,5 +14,7 @@ def get_page_posts(page_id,default_image_url=None):
             'image_url': image_url
 
         }
-    except BlogPage.DoesNotExist:
-        return None
+    except BlogPage.DoesNotExist as e:
+        return {
+            "Error":e
+        }
