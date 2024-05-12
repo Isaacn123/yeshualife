@@ -20,7 +20,8 @@
 {% if page_data %}
     <p>Page data: {{ page_data }}</p>
     {% else %}
-    <p>ERROR data: {{ page_data }}</p>
+    <p>ERROR data: {{ page_data }}{{page.get_parent.url}}</p>
+
     {% endif %}
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="google-site-verification" content="MM5LnFFTdPmXh1OJByK_c0yr9sP64Fc99LbIG0Ez_dk">
