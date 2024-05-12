@@ -6,7 +6,7 @@ register = template.Library()
 @register.simple_tag
 def get_page_posts(page_id,default_image_url=None):
     try:
-        page = BlogPage.objects.get(id=2)
+        page = BlogPage.objects.get(page_ptr_id=2)
         image_url = page.image if page.image else default_image_url
         return {
             'title':page.title,
