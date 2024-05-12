@@ -13,7 +13,7 @@ def get_page_posts(page_id,default_image_url=None):
         return {
             'title':page.title,
             'description':page.intro,
-            'image_url': page.image.file.url
+            'image_url': page.image
 
         }
     except BlogPage.DoesNotExist as e:
