@@ -18,7 +18,7 @@
 <!-- Other meta tags -->
 {% get_page_posts page.page_ptr_id as page_data %}
     {% if page_data %}
-    <p>Page data: {{ page_data }}</p>
+    {% comment %} <p>Page data: {{ page_data }}</p> {% endcomment %}
     {% endif %}
 
 <meta name="viewport" content="width=device-width,initial-scale=1">
