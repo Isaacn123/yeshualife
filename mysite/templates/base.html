@@ -16,7 +16,7 @@
             {% endblock %}
         </title>
 <!-- Other meta tags -->
-{% get_page_posts page.page_ptr_id default_image_url="static/images/yeshua_logo2.png" as page_data %}
+{% get_page_posts page.page_ptr_id  as page_data %}
     {% if page_data %}
     <p>Page data: {{ page_data }}</p>
     {% endif %}
