@@ -17,12 +17,11 @@
         </title>
 <!-- Other meta tags -->
 {% get_page_posts 1 default_image_url="static/images/yeshua_logo2.png" as page_data %}
-{% if page_data %}
+    {% if page_data %}
     <p>Page data: {{ page_data }}</p>
-    {% else %}
-    <p>ERROR data: {{ page_data }}{{page.get_parent.url}}</p>
-
     {% endif %}
+    <p>ERROR data: {{ page_data }}{{page.page_ptr_id}}</p>
+
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="google-site-verification" content="MM5LnFFTdPmXh1OJByK_c0yr9sP64Fc99LbIG0Ez_dk">
 <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
