@@ -28,14 +28,16 @@
 <meta name="version" content="1.0.1+5">
 <!-- Open Graph / Facebook Meta Tags -->
 <!-- Open Graph / Facebook Meta Tags -->
-{% if page.image %}
+
 <meta property="og:url" content="https://www.yeshualifeug.com">
 <meta property="og:type" content="website">
+<meta property="fb:app_id" content="481811027543846">
+{% if page.image %}
 <meta property="og:title" content="{{ page.title }}">
 <meta property="og:description" content="{{ page.intro }}">
 {% image page.image fill-800x600 as img %}
 <meta property="og:image" content="https://www.yeshualifeug.com{{ img.url }}">
-<meta property="fb:app_id" content="481811027543846">
+
 
 <!-- Twitter Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
