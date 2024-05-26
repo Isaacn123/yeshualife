@@ -27,17 +27,20 @@
 <meta name="theme-color" content="#ffffff">
 <meta name="version" content="1.0.1+5">
 <!-- Open Graph / Facebook Meta Tags -->
-<!-- Open Graph / Facebook Meta Tags -->
-
 <meta property="og:url" content="https://www.yeshualifeug.com">
 <meta property="og:type" content="website">
 <meta property="fb:app_id" content="481811027543846">
+
+{% if page.search_description %}
+<meta name="description" content="{{ page.search_description }}">
+
+{% endif %}
 {% if page.image %}
 <meta property="og:title" content="{{ page.title }}">
 <meta property="og:description" content="{{ page.intro }}">
 {% image page.image fill-800x600 as img %}
 <meta property="og:image" content="https://www.yeshualifeug.com{{ img.url }}">
-
+<meta property="ia:markup_url" content="{{ request.build_absolute_uri }}">
 
 <!-- Twitter Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
