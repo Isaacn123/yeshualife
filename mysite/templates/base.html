@@ -50,7 +50,8 @@
 <meta name="twitter:site" content="@yeshualife_info">
 
 {% else %}
-    <meta property="og:title" content="{{ page.title }}">
+  {% get_page_posts page.page_ptr_id as page_data %}
+    <meta property="og:title" content="{{ page_data.title }}">
     <meta property="og:description" content="{{ page.search_description }}">
     <meta property="og:image" content="https://www.yeshualifeug.com{% static 'images/yeshua_logo2.png' %}"> <!-- Use a default image if page.image is not available -->
     <meta name="twitter:description" content="{{ page.search_description }}">
@@ -77,9 +78,10 @@
 
      {% compress  css %}
      <style>
-        .image-blog-main {
+      .image-blog-main {
           width: 100%;
-          {% comment %} height: 400px; /* Adjust based on your design */
+          {% comment %} 
+          height: 400px; /* Adjust based on your design */
           object-fit: cover; {% endcomment %}
           margin-left: auto;
           margin-right: auto;
