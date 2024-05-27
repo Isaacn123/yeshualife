@@ -27,21 +27,21 @@
 <meta name="theme-color" content="#ffffff">
 <meta name="version" content="1.0.1+5">
 <!-- Open Graph / Facebook Meta Tags -->
-
+<meta property="og:url" content="{{request.build_absolute_uri}}">
+<meta property="og:type" content="website">
+<meta property="fb:app_id" content="481811027543846">
 
 {% if page.search_description %}
 <meta name="description" content="{{ page.search_description }}">
-
 {% endif %}
-{% if page.image %}
-<meta property="og:url" content="https://www.yeshualifeug.com">
-<meta property="og:type" content="website">
-<meta property="fb:app_id" content="481811027543846">
 <meta property="og:title" content="{{ page.title }}">
 <meta property="og:description" content="{{ page.intro }}">
+
+{% if page.image %}
 {% image page.image fill-800x600 as img %}
 <meta property="og:image" content="https://www.yeshualifeug.com{{ img.url }}">
-<meta property="ia:markup_url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image:alt" content="{{ page.image.title }}">
+{% endif %}
 
 <!-- Twitter Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
@@ -50,11 +50,8 @@
 <meta name="twitter:image" content="https://www.yeshualifeug.com{{ img.url }}">
 <meta name="twitter:site" content="@yeshualife_info">
 
-{% else %}
+{% if not page.image %}
   {% get_page_posts page.page_ptr_id as page_data %}
-    <meta property="og:url" content="https://www.yeshualifeug.com">
-    <meta property="og:type" content="website">
-    <meta property="fb:app_id" content="481811027543846">
     <meta property="og:title" content="{{ page_data.title }}">
     <meta property="og:description" content="{{ page_data.description }}">
     <meta property="og:image" content="https://www.yeshualifeug.com{% static 'images/yeshua_logo2.png' %}"> <!-- Use a default image if page.image is not available -->
