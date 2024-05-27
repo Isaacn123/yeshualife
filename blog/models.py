@@ -57,9 +57,12 @@ class ImageBlogListBlock(blocks.StructBlock):
 
 class BlogIndexPage(Page):
     intro = models.CharField(max_length=200)
-
+    image = models.ForeignKey(
+        'wagtailimages.Image', on_delete=models.PROTECT, related_name='+',blank=True,null=True
+    )
     content_panels = Page.content_panels + [
-    FieldPanel('intro')
+    FieldPanel('intro'),
+    FieldPanel('image'),
     ]
 
 class VideoBlock(blocks.StructBlock):

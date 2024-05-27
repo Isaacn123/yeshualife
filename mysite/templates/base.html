@@ -52,8 +52,8 @@
 
 {% if not page.image %}
   {% get_page_posts page.page_ptr_id as page_data %}
-    <meta property="og:title" content="{{ page_data.title }}">
-    <meta property="og:description" content="{{ page_data.description }}">
+    <meta property="og:title" content="{{ page.title }}">
+    <meta property="og:description" content="{{ page.search_description }}">
     <meta property="og:image" content="https://www.yeshualifeug.com{% static 'images/yeshua_logo2.png' %}"> <!-- Use a default image if page.image is not available -->
     <meta name="twitter:description" content="{{ page.search_description }}">
     <meta name="twitter:image" content="https://www.yeshualifeug.com{% static 'images/yeshua_logo2.png' %}"> <!-- Use a default image if page.image is not available -->

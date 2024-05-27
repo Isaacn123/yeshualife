@@ -33,9 +33,13 @@ class CarouselBlock(blocks.StructBlock):
 class karamojaResponseIndexPage(Page):
     intro = models.CharField(max_length=200)
     body = RichTextField(blank=True)
+    image = models.ForeignKey(
+        'wagtailimages.Image', on_delete=models.PROTECT, related_name='+',blank=True,null=True
+    )
 
     content_panels = Page.content_panels + [
     FieldPanel('intro'),
+    FieldPanel('image'),
     FieldPanel('body')
     ]
 

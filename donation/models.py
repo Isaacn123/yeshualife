@@ -36,9 +36,13 @@ class CarouselBlock(blocks.StructBlock):
 class DonationIndexPage(Page):
     intro = models.CharField(max_length=200)
     body = models.TextField(blank=True)
+    image = models.ForeignKey(
+        'wagtailimages.Image', on_delete=models.PROTECT, related_name='+',blank=True,null=True
+    )
 
     content_panels = Page.content_panels + [
     FieldPanel('intro'),
+    FieldPanel('image'),
     FieldPanel('body')
     ]
 
