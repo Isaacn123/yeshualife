@@ -2,13 +2,13 @@
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags compress %}
 {% block body_class %}template-blogindexpage{% endblock  %}
-{% comment %} {% compress css %} {% endcomment %}
+{% compress css %}
 {% block extra_css  %}
 <link rel="stylesheet" href="{% static "css/top-section.css" %}">
 <link rel="stylesheet" href="{% static "css/production.css" %}">
  {% endblock  %}
 
- {% comment %} {% endcompress %} {% endcomment %}
+ {% endcompress %}
 {% block content %}
 {% include "nav_bar.html" %}
 
