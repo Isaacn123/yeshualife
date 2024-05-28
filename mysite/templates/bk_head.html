@@ -99,7 +99,10 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ page.title }}">
 <meta name="twitter:description" content="{{ page.intro }}">
+{% if page.image %}
+{% image page.image fill-800x600 as img %}
 <meta name="twitter:image" content="https://www.yeshualifeug.com{{ img.url }}">
+{% endif %}
 <meta name="twitter:site" content="@yeshualife_info">
 
 {% if not page.image %}
