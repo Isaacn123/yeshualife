@@ -73,13 +73,7 @@
 
 .dropdown {
   display: none; /* Hide dropdown by default */
-  {% comment %} position: absolute;
-  top: 100%;
-  left: 0; {% endcomment %}
   background-color: #444;
-  list-style: none;
-  padding: 0;
-  margin: 0;
 }
 
 .nav-item .dropdown li {
@@ -101,10 +95,8 @@
 /* Media Query for Mobile */
 @media (max-width: 768px) {
  
-
   .dropdown {
     display: block;
-    /* position: static;  Make dropdowns static on mobile */
   }
 }
 
