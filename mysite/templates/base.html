@@ -73,9 +73,9 @@
 
 .dropdown {
   display: none; /* Hide dropdown by default */
-  position: absolute;
+  {% comment %} position: absolute;
   top: 100%;
-  left: 0;
+  left: 0; {% endcomment %}
   background-color: #444;
   list-style: none;
   padding: 0;
@@ -104,7 +104,7 @@
 
   .dropdown {
     display: block;
-    position: static; /* Make dropdowns static on mobile */
+    /* position: static;  Make dropdowns static on mobile */
   }
 }
 
