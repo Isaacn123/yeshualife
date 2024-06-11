@@ -46,11 +46,18 @@
 {% endblock  %}
 {% comment %} {% compress js %}<script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
 {% endcompress %} {% endcomment %}
-{% block extra_js %}
+{% comment %} {% block extra_js %}
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+{% endblock  %} {% endcomment %}
 
+{% compress js %}
+{% block extra_js %}
+<script type="application/ld+json">
+  {% json_ld_markup %}
+</script>
 {% endblock  %}
+{% endcompress %}
 
 {% block footer %}
 {% include "blog/footer.html" %}
