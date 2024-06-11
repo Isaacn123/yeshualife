@@ -118,6 +118,7 @@
       {% block footer %}{% endblock  %}
         {# Global javascript #}
         {% compress js %}
+        <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/mysite.js' %}"></script>
         <script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
         <script type="application/ld+json">
