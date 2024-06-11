@@ -53,9 +53,15 @@
 
 
 {% endblock %}
+{% compress js %}
 {% block extra_js %}
+<script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
 {% endblock  %}
+{% endcompress %}
+{% comment %} {% block extra_js %}
+<script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+{% endblock  %} {% endcomment %}
 {% comment %} {% compress js %}
 {% block extra_js %}
 <script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
