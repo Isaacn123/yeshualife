@@ -44,12 +44,12 @@
 
 
 {% endblock  %}
-<script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-{% comment %} {% compress js %}
+{% comment %} {% compress js %}<script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+{% endcompress %} {% endcomment %}
 {% block extra_js %}
 <script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
 {% endblock  %}
-{% endcompress %} {% endcomment %}
+
 {% block footer %}
 {% include "blog/footer.html" %}
 {% endblock  %}
