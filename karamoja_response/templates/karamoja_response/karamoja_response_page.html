@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load wagtailcore_tags  wagtailimages_tags%}
+{% load wagtailcore_tags  wagtailimages_tags compress%}
 
 {% block body_class %}template-blogpage{%  endblock  %}
 
@@ -46,12 +46,14 @@
 </div>
 {% endblock  %}
 
-{% compress js %}
+
 {% block extra_js %}
+{% compress js %}
 <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-{% endblock  %}
 {% endcompress %}
+{% endblock  %}
+
 
 {% block footer %}
 {% include "blog/footer.html" %}
