@@ -46,6 +46,15 @@
 </div>
 {% endblock  %}
 
+
+{% block extra_js %}
+{% compress js %}
+<script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+{% endcompress %}
+{% endblock  %}
+
+
 {% block footer %}
 {% include "blog/footer.html" %}
 {% endblock  %}
