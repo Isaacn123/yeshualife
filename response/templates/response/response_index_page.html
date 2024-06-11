@@ -53,9 +53,8 @@
 
 {% compress js %}
 {% block extra_js %}
-<script type="application/ld+json">
-  {% json_ld_markup %}
-</script>
+<script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
 {% endblock  %}
 {% endcompress %}
 
