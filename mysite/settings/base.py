@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'compressor',
     'django_social_share',
     'landClearing',
+    'contact'
     # 'htmlmin',
     # 'django_htmlmin',
 ]
