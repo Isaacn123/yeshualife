@@ -5,7 +5,7 @@
         {% comment %} width: 1403px; {% endcomment %}
       {% comment %} <iframe class="yt-video loaded" data-youtube-embed="{&quot;videoId&quot;:&quot;x4LRLFGrliw&quot;,&quot;startSeconds&quot;:24,&quot;endSeconds&quot;:245}" style="width: 100%; height: 850.1875px; min-height: 570px; min-width: 1013.333333px;" frameborder="0" allowfullscreen="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" title="The World Of Mountain Bike [4K]" width="640" height="360" src="./Sparrow _ Look like an expert right from the start_files/x4LRLFGrliw.html" id="widget2"></iframe> {% endcomment %}
 
-<iframe class="yt-video loaded" 
+{% comment %} <iframe class="yt-video loaded" 
 style="width: 100%; height: 850.1875px; min-height: 570px; min-width: 1013.333333px;" 
 frameborder="0" 
 allowfullscreen 
@@ -15,7 +15,11 @@ title="Local Video"
 width="640" 
 height="360" 
 src="{% static 'images/bg-video-yeshualife.mp4' %}" 
-id="widget2">
+id="widget2"> {% endcomment %}
+<video width="100%" height="850" controls>
+  <source src="{% static 'images/bg-video-yeshualife.mp4' %}" type="video/mp4">
+  {% comment %} Your browser does not support the video tag. {% endcomment %}
+</video>
 </iframe>
     </div><!--/.bg-holder-->
     <div class="container">
