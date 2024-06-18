@@ -16,7 +16,7 @@ width="640"
 height="360" 
 src="{% static 'images/bg-video-yeshualife.mp4' %}" 
 id="widget2"> {% endcomment %}
-<video width="100%" height="850" autoplay>
+<video width="100%" height="850" playsinline preload autoplay muted loop post>
   <source src="{% static 'images/bg-video-yeshualife.mp4' %}" type="video/mp4">
   {% comment %} Your browser does not support the video tag. {% endcomment %}
 </video>
