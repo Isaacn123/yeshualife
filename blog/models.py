@@ -13,6 +13,9 @@ from wagtailcodeblock.blocks import CodeBlock
 from django.contrib.syndication.views import Feed
 from django.urls import reverse
 
+# Imports Models
+from awards.models import AwardsPage
+
 # Create your models here.
 
 # class LatestEntriesFeed(Feed):
@@ -178,3 +181,5 @@ class BlogPage(Page):
 #         FieldPanel('caption'),
 #     ]
 
+def get_latest_awards(self):
+    return AwardsPage.objects.live().order_by('-first_published_at')[:5]

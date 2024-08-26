@@ -39,6 +39,16 @@
     {% endif %}
   {% endfor %}
 
+
+
+
+  <h2>Latest Awards Updates</h2>
+<ul>
+    {% for award in page.get_latest_awards %}
+        <li><a href="{{ award.url }}">{{ award.title }}</a></li>
+    {% endfor %}
+</ul>
+
    
          <div class="container marketing">
             <hr class="featurette-divider">
