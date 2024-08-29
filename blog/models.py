@@ -11,11 +11,6 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.fields import StreamField
 from wagtail import blocks
 
-from yeshualife.harvesting.models import HarvestingPage
-from yeshualife.karamoja_response.models import karamojaResponsePage
-from yeshualife.landClearing.models import LandClearingPage
-from yeshualife.production.models import ProductionPage
-from yeshualife.solutions.models import SolutionsPage
 from .blocks import InlineVideoBlock
 from wagtailcodeblock.blocks import CodeBlock
 from django.contrib.syndication.views import Feed
@@ -23,6 +18,11 @@ from django.urls import reverse
 
 # Imports Models
 from awards.models import AwardsPage
+from harvesting.models import HarvestingPage
+from karamoja_response.models import karamojaResponsePage
+from landClearing.models import LandClearingPage
+from production.models import ProductionPage
+from solutions.models import SolutionsPage
 
 # Create your models here.
 
