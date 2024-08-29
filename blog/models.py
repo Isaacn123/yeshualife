@@ -89,7 +89,7 @@ class BlogIndexPage(Page):
         response_page = karamojaResponsePage.objects.live().order_by('-first_published_at')[:2]
         production_page = ProductionPage.objects.live().order_by('-first_published_at')[:1]
         solution_page = SolutionsPage.objects.live().order_by('-first_published_at')[:1]
-        landClearing_page = LandClearingPage.live().order_by('-first_published_at')[:2]
+        landClearing_page = LandClearingPage.objects.live().order_by('-first_published_at')[:2]
 
 
         # combined the querysets
