@@ -34,7 +34,7 @@ class AwardsPage(Page):
     'paragraph':{'min_num': 6},
     'image': {'max_num': 5},
     'video':{'max_num': 5},
-}
+},use_json_field=True
     )
     intro = models.CharField(max_length=200)
 
