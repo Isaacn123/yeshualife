@@ -24,7 +24,8 @@ class AwardsIndexPage(Page):
 
 class AwardsPage(Page):
     date = models.DateField("Post date", null=True)
-    body = StreamField([
+    body = blocks.RichTextBlock()
+    body_bs = StreamField([
         ('heading', blocks.CharBlock(form_classname="title")),
         ('paragraph', blocks.RichTextBlock()),
         ('image', blocks.ChooserBlock()),
