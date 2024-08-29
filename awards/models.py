@@ -24,9 +24,17 @@ class AwardsIndexPage(Page):
 
 class AwardsPage(Page):
     date = models.DateField("Post date", null=True)
-    body = StreamField(
-        ('paragraph',blocks.RichTextBlock()),
+    body = StreamField([
+        ('heading', blocks.CharBlock(form_classname="title")),
+        ('paragraph', blocks.RichTextBlock()),
+        ('image', blocks.ChooserBlock()),
         ('video',blocks.EmailBlock())
+    ],block_counts={
+    'heading': {'min_num': 1},
+    'paragraph':{'min_num': 6},
+    'image': {'max_num': 5},
+    'video':{'max_num': 5},
+}
     )
     intro = models.CharField(max_length=200)
 
@@ -43,6 +51,7 @@ class AwardsPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('date'),
         FieldPanel('intro'),
+        FieldPanel('body'),
         FieldPanel('body'),
         FieldPanel('image'),
         FieldPanel('caption'),
