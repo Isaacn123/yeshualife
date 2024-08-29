@@ -24,8 +24,10 @@
     {% include "blog/sections/top-section-updates.html" %}
 </div>
 
-
-{% comment %} {% for page in combined_pages %}
+<div class="d-flex flex-column justify-content-center align-items-center wrap-blog">
+    Latest Updates
+</div>
+{% for page in combined_pages %}
     {% if forloop.length == 2 %}
         {% if forloop.first %}
             {% include "latest_updates/section_one_update.html" with page=page %}
@@ -43,7 +45,7 @@
         {% endif %}
     {% endif %}
    
-{% endfor %} {% endcomment %}
+{% endfor %} 
 
 
 <div class="d-flex flex-column justify-content-center align-items-center wrap-blog">
@@ -59,16 +61,6 @@
     </div>
     {% endif %}
   {% endfor %}
-
-
-
-
-  <h2>Latest Awards Updates</h2>
-<ul>
-    {% for award in page.get_latest_awards %}
-        <li><a href="{{ award.url }}">{{ award.title }}</a></li>
-    {% endfor %}
-</ul>
 
    
          <div class="container marketing">
