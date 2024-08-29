@@ -13,7 +13,8 @@
                     <div data-zanim-timeline="{}">
                         <div class="overflow-hidden">
                             <h6 class="text-white ls text-uppercase" data-zanim-xs="{&quot;delay&quot;:0}">
-                                {{ page.title }}
+                                {% comment %} {{ page.title }} {% endcomment %}
+                                Yeshua Life
                             </h6>
                         </div>
                         <div class="overflow-hidden">
@@ -22,7 +23,7 @@
                             </h2>
                         </div>
                         <div data-zanim-xs="{&quot;delay&quot;:0.2}">
-                            <a class="btn btn-dark mt-4" href="{{ page.url }}">meet the new {{ page.title }}</a>
+                            <a class="btn btn-dark mt-4" href="{{ page.url }}">{{ page.title }}</a>
                         </div>
                     </div>
                 </div>
