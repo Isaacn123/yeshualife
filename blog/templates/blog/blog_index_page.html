@@ -39,7 +39,7 @@
         {% if forloop.first %}
             {% include "latest_updates/section_one_update.html" with page=page %}
         {% elif forloop.counter == 2  %}
-            {% include "latest_updates/section_two_update.html" with pages=combined_pages|slice:"1:2"%}
+            {% include "latest_updates/section_two_update.html" with pages=combined_pages|slice:"1:3"%}
         {% elif forloop.counter == 3  %}
             {% include "latest_updates/section_three_update.html"  with pages=combined_pages|slice:"3:" %}
         {% endif %}
