@@ -5,6 +5,8 @@ from wagtail.fields import RichTextField
 from wagtail.search import index
 from modelcluster.fields import ParentalKey
 
+from wagtail import blocks
+from wagtail.fields import StreamField
 # Create your models here.
 
 class AwardsIndexPage(Page):
@@ -22,7 +24,10 @@ class AwardsIndexPage(Page):
 
 class AwardsPage(Page):
     date = models.DateField("Post date", null=True)
-    body = RichTextField(blank=True)
+    body = StreamField(
+        ('paragraph',blocks.RichTextBlock()),
+        ('video',blocks.EmailBlock())
+    )
     intro = models.CharField(max_length=200)
 
     search_fields = Page.search_fields + [
