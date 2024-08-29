@@ -24,7 +24,7 @@ class AwardsIndexPage(Page):
 
 class AwardsPage(Page):
     date = models.DateField("Post date", null=True)
-    body = blocks.RichTextBlock()
+    body = RichTextField(blank=True)
     body_bs = StreamField([
         ('heading', blocks.CharBlock(form_classname="title")),
         ('paragraph', blocks.RichTextBlock()),
@@ -52,7 +52,6 @@ class AwardsPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('date'),
         FieldPanel('intro'),
-        FieldPanel('body'),
         FieldPanel('body'),
         FieldPanel('image'),
         FieldPanel('caption'),
