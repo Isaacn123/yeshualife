@@ -85,7 +85,7 @@ class BlogIndexPage(Page):
 
         #pages initialization
         awards_pages = AwardsPage.objects.live().order_by('-first_published_at')[:2]
-        harvesting_page = HarvestingPage.objects.live().order_by('-first_published_at')[:2]
+        # harvesting_page = HarvestingPage.objects.live().order_by('-first_published_at')[:2]
         response_page = karamojaResponsePage.objects.live().order_by('-first_published_at')[:2]
         production_page = ProductionPage.objects.live().order_by('-first_published_at')[:1]
         solution_page = SolutionsPage.objects.live().order_by('-first_published_at')[:1]
@@ -94,7 +94,7 @@ class BlogIndexPage(Page):
 
         # combined the querysets
         _combined_pages = sorted(
-            chain(awards_pages,landClearing_page,harvesting_page,production_page,solution_page, response_page),
+            chain(awards_pages,landClearing_page,production_page,solution_page, response_page),
             key=lambda page: page.first_published_at,
             reverse=True
         )
