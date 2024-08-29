@@ -25,18 +25,18 @@ class AwardsIndexPage(Page):
 class AwardsPage(Page):
     date = models.DateField("Post date", null=True)
     body = RichTextField(blank=True)
-    body_bs = StreamField([
-        ('heading', blocks.CharBlock(form_classname="title")),
-        ('paragraph', blocks.RichTextBlock()),
-        ('image', blocks.ChooserBlock()),
-        ('video',blocks.EmailBlock())
-    ],block_counts={
-    'heading': {'min_num': 1},
-    'paragraph':{'min_num': 6},
-    'image': {'max_num': 5},
-    'video':{'max_num': 5},
-},use_json_field=True
-    )
+#     body_bs = StreamField([
+#         ('heading', blocks.CharBlock(form_classname="title")),
+#         ('paragraph', blocks.RichTextBlock()),
+#         ('image', blocks.ChooserBlock()),
+#         ('video',blocks.EmailBlock())
+#     ],block_counts={
+#     'heading': {'min_num': 1},
+#     'paragraph':{'min_num': 6},
+#     'image': {'max_num': 5},
+#     'video':{'max_num': 5},
+# },use_json_field=True
+#     )
     intro = models.CharField(max_length=200)
 
     search_fields = Page.search_fields + [
