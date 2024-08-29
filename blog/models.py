@@ -1,4 +1,6 @@
+from itertools import chain
 from django.db import models
+from django.shortcuts import render
 from wagtail.models import Page,Orderable
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import RichTextField
@@ -8,6 +10,12 @@ from wagtail.images.blocks import ImageChooserBlock
 # from wagtail.admin import StreamFieldPanel
 from wagtail.fields import StreamField
 from wagtail import blocks
+
+from yeshualife.harvesting.models import HarvestingPage
+from yeshualife.karamoja_response.models import karamojaResponsePage
+from yeshualife.landClearing.models import LandClearingPage
+from yeshualife.production.models import ProductionPage
+from yeshualife.solutions.models import SolutionsPage
 from .blocks import InlineVideoBlock
 from wagtailcodeblock.blocks import CodeBlock
 from django.contrib.syndication.views import Feed
@@ -67,6 +75,36 @@ class BlogIndexPage(Page):
     FieldPanel('intro'),
     FieldPanel('image'),
     ]
+    def get_latest_awards(self):
+        latest_awards = AwardsPage.objects.live().order_by('-first_published_at')[:5]
+        # latest_karamoja = Karam
+        print("Latest awards:", latest_awards) 
+        return latest_awards
+    
+    def get_combined_pages(self):
+
+        #pages initialization
+        awards_pages = AwardsPage.objects.live().order_by('-first_published_at')[:2]
+        harvesting_page = HarvestingPage.objects.live().order_by('-first_published_at')[:2]
+        response_page = karamojaResponsePage.objects.live().order_by('-first_published_at')[:2]
+        production_page = ProductionPage.objects.live().order_by('-first_published_at')[:1]
+        solution_page = SolutionsPage.objects.live().order_by('-first_published_at')[:1]
+        landClearing_page = LandClearingPage.live().order_by('-first_published_at')[:2]
+
+
+        # combined the querysets
+        _combined_pages = sorted(
+            chain(awards_pages,landClearing_page,harvesting_page,production_page,solution_page, response_page),
+            key=lambda page: page.first_published_at,
+            reverse=True
+        )
+
+        return _combined_pages
+
+    def serve(self,request):
+        context = self.get_context(request=request)
+        context['combined_pages'] = self.get_combined_pages()
+        return render(request,'blog/blog_index_page.html', context)  
 
 class VideoBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=True)

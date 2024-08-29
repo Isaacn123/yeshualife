@@ -1,0 +1,21 @@
+{% load static %}
+{% load wagtailcore_tags  wagtailimages_tags%}
+<section class="text-center py-0 overflow-hidden" id="bicycleCta">
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col px-4">
+          <div class="position-relative overflow-hidden rounded">
+            
+            <div class="bg-holder overlay" style="background-image: url(&quot;{% image page.specific.image fill-1920x1080 as img %}{{img.url}}&quot;); transform: translate3d(0px, 56px, 0px);" data-parallax="" data-rellax-percentage="0.5" data-rellax-speed="-3">
+
+            </div><!--/.bg-holder-->
+            <div class="position-relative py-8 py-md-11" data-zanim-timeline="{}">
+              <h2 class="fs-5 text-white px-4 px-sm-0 display-4 mb-4" data-zanim-xs="{&quot;delay&quot;:0.1}" style="transform: translate(0px, 0px); opacity: 1;">{{page.title}}</h2>
+              <div data-zanim-xs="{&quot;delay&quot;:0.2}" style="transform: translate(0px, 0px); opacity: 1;"><a class="btn btn-outline-light border-2 mt-3" href="#!">the fear schredder</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- end of .container-->
+  </section>

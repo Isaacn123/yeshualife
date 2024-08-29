@@ -1,0 +1,71 @@
+{% load static %}
+{% load wagtailcore_tags  wagtailimages_tags%}
+
+<section class="text-center pt-4 pb-0" id="bicycleFeatures">
+    <div class="container-fluid">
+      <div class="row m-0">
+
+        {% for page in pages %}
+        <div class="col-md-6 {% if forloop.counter > 2 %}mt-4 mt-md-0{% endif %}">
+            <div class="position-relative overflow-hidden rounded">
+                <div class="bg-holder" style="background-image:url('{% image page.specific.image fill-1920x1080 as img %}{{ img.url }}');"></div><!--/.bg-holder-->
+                <div class="position-relative py-8 py-md-11">
+                    <div data-zanim-timeline="{}">
+                        <div class="overflow-hidden">
+                            <h6 class="text-white ls text-uppercase" data-zanim-xs="{&quot;delay&quot;:0}">
+                                {{ page.title }}
+                            </h6>
+                        </div>
+                        <div class="overflow-hidden">
+                            <h2 class="fs-7 fs-sm-6 text-white" data-zanim-xs="{&quot;delay&quot;:0.1}">
+                                {{ page.specific.subtitle }} <!-- Example: subtitle field from your model -->
+                            </h2>
+                        </div>
+                        <div data-zanim-xs="{&quot;delay&quot;:0.2}">
+                            <a class="btn btn-dark mt-4" href="{{ page.url }}">meet the new {{ page.title }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% comment %} {% if forloop.counter|divisibleby:2 and not forloop.last %}
+            </div> <!-- close row -->
+            <div class="row m-0 mt-4"> <!-- open new row -->
+        {% endif %} {% endcomment %}
+    {% endfor %}
+        {% comment %} {% for page in combined_pages|slice:":2" %}
+        {% if forloop.counter == 2 or forloop.counter == 3 %}
+        <div class="col-md-6 {% if forloop.counter > 3  %}mt-4 mt-md-0{% endif %}">
+            <div class="position-relative overflow-hidden rounded">
+                <div class="bg-holder" style="background-image:url('{% image page.specific.image fill-1920x1080 as img %}{{ img.url }}');"></div><!--/.bg-holder-->
+                <div class="position-relative py-8 py-md-11">
+                    <div data-zanim-timeline="{}">
+                        <div class="overflow-hidden">
+                            <h6 class="text-white ls text-uppercase" data-zanim-xs="{&quot;delay&quot;:0}">
+                                {{ page.title }}
+                            </h6>
+                        </div>
+                        <div class="overflow-hidden">
+                            <h2 class="fs-7 fs-sm-6 text-white" data-zanim-xs="{&quot;delay&quot;:0.1}">
+                                {{ page.specific.subtitle }} <!-- Use a field from your model -->
+                            </h2>
+                        </div>
+                        <div data-zanim-xs="{&quot;delay&quot;:0.2}">
+                            <a class="btn btn-dark mt-4" href="{{ page.url }}">meet the new {{ page.title }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+
+       {% if forloop.counter|divisibleby:2 and not forloop.last %}
+            </div> <!-- close row -->
+            <div class="row m-0 mt-4">
+        {% endif %} 
+        {% endif %}
+    {% endfor %} {% endcomment %}
+      </div>
+    </div>
+    <!-- end of .container-->
+  </section>
