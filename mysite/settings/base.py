@@ -281,5 +281,8 @@ CORS_ALLOWED_ORIGINS = [
     # Add other origins as needed
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://sandbox.momodeveloper.mtn.com',  # Replace with the actual domain
+]
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
