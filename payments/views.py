@@ -7,13 +7,16 @@ import requests
 from rest_framework import status
 from rest_framework.views import APIView
 from decouple import config
+import os
+from dotenv import load_dotenv
 
 # Create your views here.
 reference_id = str(uuid.uuid4())
 
-OCP_APIM_SUB_KEY = config('OCP_APIM_SUB_KEY')
-MTN_API_KEY = config('MTN_API_KEY')
-X_REFERENCE_ID = config('X_REFERENCE_ID')
+load_dotenv()
+OCP_APIM_SUB_KEY = os.getenv('OCP_APIM_SUB_KEY')
+MTN_API_KEY = os.getenv('MTN_API_KEY')
+X_REFERENCE_ID = os.getenv('X_REFERENCE_ID')
 class GetTheTokenAPIView(APIView):
 
     def post(self, request):
