@@ -232,3 +232,15 @@ def initiate_payment(request):
         'Content-Type': 'application/json',
         'Ocp-Apim-Subscription-Key': subscription_key,
     }
+
+@csrf_exempt 
+def pyament_callback(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            print(data)
+
+            return JsonResponse({"status": "success"}, status=200)
+        except Exception as e:
+            return JsonResponse({"status":"error", "message":str(e)}, status=400)
+    return JsonResponse({"status":"error","message":"Invalid request method"}, status=405)
