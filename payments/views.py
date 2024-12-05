@@ -6,11 +6,14 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt
 import requests
 from rest_framework import status
 from rest_framework.views import APIView
+from decouple import config
 
 # Create your views here.
 reference_id = str(uuid.uuid4())
 
-
+OCP_APIM_SUB_KEY = config('OCP_APIM_SUB_KEY')
+MTN_API_KEY = config('MTN_API_KEY')
+X_REFERENCE_ID = config('X_REFERENCE_ID')
 class GetTheTokenAPIView(APIView):
 
     def post(self, request):
@@ -43,7 +46,7 @@ class GetTheTokenAPIView(APIView):
         if request.method == "POST":
             payload = {}
             headers = {
-            'Ocp-Apim-Subscription-Key': 'd7d2a50561a34050977f2a5504cadc49',
+            'Ocp-Apim-Subscription-Key': OCP_APIM_SUB_KEY,
             'Authorization': 'Basic YWQ5NzIyMjUtMDAzYS00YmZiLTkzMmUtMTc5YjVkNDYxZDI0OjBmYTdjNzM0NjM0ZDQ3MDRiYWY0Y2I1NzUyNDNhMzhk'
             }
             try:
@@ -90,8 +93,8 @@ class GetTheTokenAPIView(APIView):
                 })
 
                 headers = {
-                'Ocp-Apim-Subscription-Key': 'd7d2a50561a34050977f2a5504cadc49',
-                'X-Reference-Id': '169c8982-99e1-4799-be51-d8c98881cc8e',
+                'Ocp-Apim-Subscription-Key': OCP_APIM_SUB_KEY,
+                'X-Reference-Id': X_REFERENCE_ID,
                 'X-Target-Environment': 'sandbox',
                 'Content-Type': 'application/json',
                 'Authorization': f'Bearer {api_token}'
@@ -156,7 +159,7 @@ def generate_token_task(request):
         # get token logic code
         payload = {}
         headers = {
-        'Ocp-Apim-Subscription-Key': 'd7d2a50561a34050977f2a5504cadc49',
+        'Ocp-Apim-Subscription-Key': OCP_APIM_SUB_KEY,
         'Authorization': 'Basic YWQ5NzIyMjUtMDAzYS00YmZiLTkzMmUtMTc5YjVkNDYxZDI0OjBmYTdjNzM0NjM0ZDQ3MDRiYWY0Y2I1NzUyNDNhMzhk'
         }
 

@@ -10,7 +10,6 @@ django-compat==1.0.15
 django-compressor==4.4
 django-cors-headers==4.3.1
 django-filter==23.3
-django-htmlmin==0.11.0
 django-modelcluster==6.1
 django-permissionedforms==0.1
 django-social-share==2.3.0
@@ -33,6 +32,7 @@ Pillow==10.1.0
 pillow-heif==0.13.1
 psycopg2-binary==2.9.9
 pyparsing==3.1.1
+python-decouple==3.8
 pytz==2023.3.post1
 rcssmin==1.1.1
 requests==2.31.0
