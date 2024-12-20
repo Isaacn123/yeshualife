@@ -17,6 +17,13 @@ load_dotenv()
 OCP_APIM_SUB_KEY = os.getenv('OCP_APIM_SUB_KEY')
 MTN_API_KEY = os.getenv('MTN_API_KEY')
 X_REFERENCE_ID = os.getenv('X_REFERENCE_ID')
+MOMO_API_BASE_URL = os.getenv('MOMO_API_BASE_URL')
+MOMO_API_BASE_URL_SANDBOX = os.getenv('MOMO_API_BASE_URL_SANDBOX')
+CALLBACK_URL = os.getenv("CALLBACK_URL")
+X_TARGET_ENVIROMENT_PROD =  os.getenv("X_TARGET_ENVIROMENT_PROD")
+MOMO_PRIMARY_KEY_SUBSCRIPTION_PRODUCTION = os.getenv("MOMO_PRIMARY_KEY_SUBSCRIPTION_PRODUCTION")
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1')
+
 class GetTheTokenAPIView(APIView):
 
     def post(self, request):
@@ -53,7 +60,7 @@ class GetTheTokenAPIView(APIView):
             'Authorization': 'Basic YWQ5NzIyMjUtMDAzYS00YmZiLTkzMmUtMTc5YjVkNDYxZDI0OjBmYTdjNzM0NjM0ZDQ3MDRiYWY0Y2I1NzUyNDNhMzhk'
             }
             try:
-                conn = http.client.HTTPSConnection("sandbox.momodeveloper.mtn.com")
+                conn = http.client.HTTPSConnection(MOMO_API_BASE_URL)
                 conn.request("POST", "/collection/token/", payload, headers)
 
                 # Get the response
@@ -82,10 +89,10 @@ class GetTheTokenAPIView(APIView):
     def make_request_to_pay(self,request,api_token):
 
         if request.method =="POST":
-                conn = http.client.HTTPSConnection("sandbox.momodeveloper.mtn.com")
+                conn = http.client.HTTPSConnection(MOMO_API_BASE_URL)
                 payload = json.dumps({
                 "amount": "1.0",
-                "currency": "EUR",
+                "currency": "UGX",
                 "externalId": "09898687",
                 "payer": {
                     "partyIdType": "MSISDN",
@@ -98,7 +105,7 @@ class GetTheTokenAPIView(APIView):
                 headers = {
                 'Ocp-Apim-Subscription-Key': OCP_APIM_SUB_KEY,
                 'X-Reference-Id': X_REFERENCE_ID,
-                'X-Target-Environment': 'sandbox',
+                'X-Target-Environment': X_TARGET_ENVIROMENT_PROD,
                 'Content-Type': 'application/json',
                 'Authorization': f'Bearer {api_token}'
                 }
@@ -132,7 +139,7 @@ def apiuser(request,):
     'Ocp-Apim-Subscription-Key': 'a247ad4411304f3bb624580ffe0922b9',#'<put-your-primary-subscription-id here>',
   }  
     params = urllib.urlencode({})
-    calback_url = 'http://myapp.com/momoapi/callback'
+    calback_url = CALLBACK_URL #'http://myapp.com/momoapi/callback'
     body = json.dumps({
         "providerCallbackHost":calback_url
     })
@@ -167,7 +174,7 @@ def generate_token_task(request):
         }
 
         try:
-            url = "https://sandbox.momodeveloper.mtn.com/collection/token/"
+            url = MOMO_API_BASE_URL + "/collection/token/" #"https://sandbox.momodeveloper.mtn.com/collection/token/"
             # conn = http.client.HTTPSConnection("sandbox.momodeveloper.mtn.com")
             # conn.request("POST", "/collection/token/", payload, headers)
 
@@ -202,7 +209,7 @@ def generate_api_key(request):
     'Content-Type': 'application/json',
     'Ocp-Apim-Subscription-Key': 'a247ad4411304f3bb624580ffe0922b9'}
    
-   calback_url = 'http://myapp.com/momoapi/callback'
+   calback_url = CALLBACK_URL
    params = urllib.urlencode({ })
    body = json.dumps({"providerCallbackHost": calback_url})
    try:
@@ -227,8 +234,8 @@ def initiate_payment(request):
     token = ''
     print(apiuser)
     reference_id = ''
-    calback_url = 'http://myapp.com/momoapi/callback' #Call back Url
-    subscription_key = 'your_subscription_key'
+    calback_url = CALLBACK_URL #'http://myapp.com/momoapi/callback' #Call back Url
+    subscription_key = MOMO_PRIMARY_KEY_SUBSCRIPTION_PRODUCTION #'your_subscription_key'
 
     headers = {
         'Authorization': 'Bearer ' + token,

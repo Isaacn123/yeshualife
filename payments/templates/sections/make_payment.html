@@ -39,7 +39,7 @@
                                 <select name="currency" class="form-select form-select-sm" id="currency">
                                     <option selected>Choose</option>
                                     <option value="UGX">Uganda Shillings</option>
-                                    <option value="USD">US Dollars</option>
+                                   <!-- <option value="USD">US Dollars</option>-->
                                 </select>
                                 <span
                                     class="fas fa-lock">
@@ -76,13 +76,15 @@
         var container1 = document.getElementById('hide-visible-container');
         var container2 = document.getElementById('show-hidden-container');
         var form = document.getElementById('form-data');
-        var button = document.getElementById('my-button');
+        var buttonContinue = document.getElementById('my-button');
         var mtn = document.getElementById("openMtnModalButton");
         var airtel = document.getElementById("openAirtelModalButton");
+        var donationAmount = document.getElementsByName('amount')[0].value;
+        var donationCurrency = document.getElementById('currency').value;
 
         var box1Container = document.querySelector('.box1');
-
-        button.addEventListener('click', function(event) {
+        buttonContinue.innerHTML = donationAmount + donationCurrency
+        buttonContinue.addEventListener('click', function(event) {
             event.preventDefault();
     
             // Get values from form inputs
