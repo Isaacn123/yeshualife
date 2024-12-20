@@ -139,8 +139,9 @@
 function apiCall(data){
     const url = "/pay"
 
-    fetch(url, 
-    method: "POST"
+    fetch(url,
+    { 
+    method: "POST",
     headers: {
         'Content-Type': 'application/json'
     },
@@ -152,6 +153,7 @@ function apiCall(data){
             "phone_number": data['phone_number'],
             "payermessage": data['message']
         })
+    })
         .then(response => response.json())  // Parse the response JSON
         .then(data => {
             console.log('API Response:', data);
@@ -170,7 +172,6 @@ function apiCall(data){
             console.error('Error calling /pay API:', error);
             alert('There was an error processing your payment.');
         });
-    )
 
 }
 
