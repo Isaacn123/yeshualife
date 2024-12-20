@@ -87,6 +87,7 @@
     document.addEventListener('DOMContentLoaded', function(){
 
    var  mtnbutton = document.getElementById("my-button-mtn");
+   const modalElement = document.getElementById('mtnModal');
     var formData = JSON.parse(localStorage.getItem('formData')) || {};
     const modal = new bootstrap.Modal(modalElement);
     console.log("PASSED-DATA::",formData);
