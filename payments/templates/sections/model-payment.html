@@ -88,6 +88,7 @@
 
    var  mtnbutton = document.getElementById("my-button-mtn");
     var formData = JSON.parse(localStorage.getItem('formData')) || {};
+    const modal = new bootstrap.Modal(modalElement);
     console.log("PASSED-DATA::",formData);
     
     form = document.getElementById("payform");
@@ -118,6 +119,7 @@
             // If the number is valid, allow the form to be submitted
            // form.submit();
            console.log("MASS",msgPayment)
+           modal.hide();
            var mtn_payment = {
             amount: document.getElementById('donationAmount').value,
             currency:document.getElementById('currency').value,
@@ -125,12 +127,35 @@
             message: document.getElementById('message').value,
             phone: document.getElementById('phoneid').value,
            }
-           console.log("Data:MTN", mtn_payment);
-           alert("number is valid");
+           console.log("Data:MTN", mtn_payment['amount']);
+           alert("Continue..");
+
+           
         
     } 
 
 });
+
+function apiCall(){
+    const url = "/pay"
+
+    fetch(url, 
+    method: "POST"
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(
+        {
+            "amount": ,
+            "currency": "UGX",
+            "txt_ref": "some_ref_value",
+            "phone_number": "256775186921",
+            "payermessage": "amtesting"
+        }
+    )
+    )
+
+}
 
     });
   </script>
