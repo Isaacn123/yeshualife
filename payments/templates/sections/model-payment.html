@@ -128,7 +128,7 @@
             message: document.getElementById('message').value,
             phone: document.getElementById('phoneid').value,
            }
-           console.log("Data:MTN", mtn_payment['amount']);
+           
            alert("Continue..");
 
            data  ={
@@ -138,7 +138,7 @@
             "phone_number": mtn_payment["phone"],
             "payermessage":mtn_payment["message"]
            }
-
+           console.log("Data:MTN",data);
            apiCall(data)
         
     } 
