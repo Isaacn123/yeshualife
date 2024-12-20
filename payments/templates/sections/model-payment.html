@@ -158,12 +158,25 @@ function apiCall(data){
         {
             "amount": data['amount'] ,
             "currency": data['currency'],
-            "txt_ref": data['ref'],
+            "txt_ref": data['txt_ref'],
             "phone_number": data['phone_number'],
             "payermessage": data['message']
         })
     })
-        .then(response => response.json())  // Parse the response JSON
+        .then( response => {
+            //response => response.json()
+
+            if(!response.ok){
+                return Promise.reject("API call failed with status: " + response.status);
+            }
+            const contentType = response.headers.get('Content-Type');
+            if (contentType && contentType.includes('application/json')) {
+                return response.json();  // Parse the response JSON
+            } else {
+                // Handle the case where the response is not JSON (e.g., HTML error page)
+                return Promise.reject('Expected JSON response but got: ' + contentType);
+            }
+        })  // Parse the response JSON
         .then(data => {
             console.log('API Response:', data);
 
@@ -174,7 +187,8 @@ function apiCall(data){
                 console.log("Payment processed successfully!")
             } else {
                 // Handle failure
-                alert('Payment failed: ' + data.message);
+                //alert('Payment failed: ' + data.message);
+                console.log('Payment failed: ', data.message)
             }
         })
         .catch(error => {
