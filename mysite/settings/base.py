@@ -278,6 +278,8 @@ WAGTAILADMIN_BASE_URL = "https://yeshualifeug.com"
 
 CORS_ALLOWED_ORIGINS = [
     "http://172.20.10.2:8000",
+    "https://yeshualifeug.com",
+    "https://pay.yeshualifeug.com"
     # Add other origins as needed
 ]
 
