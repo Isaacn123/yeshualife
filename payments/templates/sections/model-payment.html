@@ -131,6 +131,14 @@
            console.log("Data:MTN", mtn_payment['amount']);
            alert("Continue..");
 
+           data  ={
+            "amount": mtn_payment['amount'],
+            "currency": mtn_payment["currency"],
+            "txt_ref": "some_ref_value",
+            "phone_number": mtn_payment["phone"],
+            "payermessage":mtn_payment["message"]
+           }
+
            apiCall(data)
         
     } 
