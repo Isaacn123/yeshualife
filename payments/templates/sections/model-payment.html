@@ -182,7 +182,8 @@ function apiCall(data){
                 console.log('Payment failed:', data.message);
             } else if (data.status === 'PENDING') {
                 alert('Payment is pending, please wait...');
-                window.location.href = '/payments/pending';
+                console.log("Response: Data", data)
+                loadModalContent()
                 // Optionally, you can trigger a retry or another action to re-check the status
                 pollPaymentStatus(data.ref);
             }
@@ -195,6 +196,25 @@ function apiCall(data){
 
 }
 
+
+// Function to fetch content from '/payments/pending' and inject into the modal
+function loadModalContent() {
+    // Fetch the HTML content from the backend route
+    fetch('https://pay.yeshualifeug.com/pending')  // Adjust with your backend endpoint
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load content');
+            }
+            return response.text();  // Get the HTML content
+        })
+        .then(html => {
+            // Inject the fetched HTML content into the current page
+            document.body.insertAdjacentHTML('beforeend', html); // This appends the modal HTML to the body
+        })
+        .catch(error => {
+            console.error('Error fetching modal content:', error);
+        });
+}
     });
   </script>
   {% endblock  %}
