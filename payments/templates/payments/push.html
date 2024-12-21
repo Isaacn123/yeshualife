@@ -1,0 +1,73 @@
+<!-- push.html -->
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags%}
+{% block extra_css %}
+<link href="{% static 'css/payment.css'%}" rel="stylesheet">
+{% endblock  %}
+
+{% block content %}
+    <!-- Button trigger modal -->
+   <!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalLong">
+        Launch demo modal
+    </button> -->
+      
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modelheader">
+
+              <h5 class="modal-title fs-5 text-center" id="exampleModalLongTitle">Check Your phone !</h5>
+              
+            </div>
+            <div class="modal-body">
+              <div class="progress" role="progressbar" aria-label="Success example"   aria-valuemin="0" aria-valuemax="100">
+                <div id="modalProgressBar" class="progress-bar bg-success" style="width: 0%">0%</div>
+              </div>
+             <p id="statusMessage" >We are verifying your transaction. Please wait while we confirm your payment. A notification has been sent to your phone!</p>
+            </div>
+
+            <div class="modal-footer">
+              <!-- <button id="cancelbtn" type="button" class="btn btn-danger" data-dismiss="modal">Cancel this Payment</button> -->
+              <button id="successbtn" type="button" class="btn btn-success" >I have Completed the payment</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  window.addEventListener("DOMContentLoaded", (event) => {
+    var myModal = new bootstrap.Modal(document.getElementById(
+      'exampleModalLong'
+    ));
+    myModal.show();
+  });
+
+  var modalProgressBar = document.getElementById('modalProgressBar');
+  var btnCancel = document.getElementById('cancelbtn');
+  var btnSuccess = document.getElementById('successbtn');
+  var statusMessage = document.getElementById('statusMessage'); 
+  var progress = 0;
+  btnSuccess.setAttribute('disabled', true); 
+  function updateModalProgress(){
+    
+    if (progress < 100){
+      progress += 5;
+      modalProgressBar.style.width = progress + '%';
+      modalProgressBar.setAttribute('aria-valuenow', progress);
+      modalProgressBar.innerHTML = progress + '%';
+      
+    }
+    
+    if (progress == 100){
+      statusMessage.innerHTML = "Transaction Successful!. Thank you for your donation!";
+      btnSuccess.removeAttribute('disabled');
+    }
+  }
+
+  setInterval(updateModalProgress,600);
+</script>
+{% endblock  %}

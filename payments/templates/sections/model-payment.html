@@ -169,27 +169,24 @@ function apiCall(data){
             if(!response.ok){
                 return Promise.reject("API call failed with status: " + response.status);
             }
-            const contentType = response.headers.get('Content-Type');
-            if (contentType && contentType.includes('application/json')) {
-                return response.json();  // Parse the response JSON
-            } else {
-                // Handle the case where the response is not JSON (e.g., HTML error page)
-                return Promise.reject('Expected JSON response but got: ' + contentType);
-            }
+            return response.json();
         })  // Parse the response JSON
         .then(data => {
             console.log('API Response:', data);
-
-            if (data.status === 'success') {
-                // Show success message or take appropriate action
-                //alert('Payment processed successfully!');
-                // Optionally, redirect the user or update the UI here
-                console.log("Payment processed successfully!")
-            } else {
-                // Handle failure
-                //alert('Payment failed: ' + data.message);
-                console.log('Payment failed: ', data.message)
+         
+            if (data.status === 'SUCCESSFUL') {
+                alert('Payment processed successfully!');
+                // Optionally, redirect or update the UI accordingly
+            } else if (data.status === 'failure') {
+                alert('Payment failed: ' + data.message);
+                console.log('Payment failed:', data.message);
+            } else if (data.status === 'PENDING') {
+                alert('Payment is pending, please wait...');
+                window.location.href = '/payments/pending';
+                // Optionally, you can trigger a retry or another action to re-check the status
+                pollPaymentStatus(data.ref);
             }
+          
         })
         .catch(error => {
             console.error('Error calling /pay API:', error);

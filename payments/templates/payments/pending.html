@@ -1,0 +1,72 @@
+<!-- pending.html -->
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags%}
+{% block extra_css %}
+<link href="{% static 'css/payment.css'%}" rel="stylesheet">
+{% endblock  %} 
+
+{% block content %}
+    <!-- Button trigger modal -->
+   <!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalLong">
+        Launch demo modal
+    </button> -->
+      
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modelheader">
+
+              <h5 class="modal-title fs-5 text-center" id="exampleModalLongTitle">Check Your phone !</h5>
+              
+            </div>
+            <div class="modal-body">
+              <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="75"  aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar bg-success" style="width: 75%">75%</div>
+              </div>
+             <p>There is a notification sent to your phone. complete the donation now!</p>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel this Payment</button>
+              <button type="button" class="btn btn-success">I have Completed the payment</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  window.addEventListener("DOMContentLoaded", (event) => {
+    var myModal = new bootstrap.Modal(document.getElementById(
+      'exampleModalLong'
+    ));
+    myModal.show();
+  });
+
+  var modalProgressBar = document.getElementById('modalProgressBar');
+  var progress = 0;
+
+  function updateModalProgress(){
+    if (progress < 100){
+      progress += 25;
+      modalProgressBar.style.width = progress + '%';
+      modalProgressBar.setAttribute('aria-valuenow', progress);
+      modalProgressBar.innerHTML = progress + '%';
+    }
+  }
+
+  setInterval(updateModalProgress,1000);
+</script>
+{% endblock  %}
+
+
+
+
+
+
+
+
+
