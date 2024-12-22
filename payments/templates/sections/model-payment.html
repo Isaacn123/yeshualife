@@ -131,8 +131,7 @@
             // If the number is valid, allow the form to be submitted
            // form.submit();
            console.log("MASS",msgPayment)
-            modal.hide();
-            showmodalPending();
+           
            var mtn_payment = {
             amount: document.getElementById('donationAmount').value,
             currency:document.getElementById('currency').value,
@@ -196,6 +195,9 @@ function apiCall(data){
                 alert('Payment is pending, please wait...');
                 console.log("Payment is pending, please wait...")
                 console.log("Response: Data", data)
+
+                modal.hide();
+                showmodalPending();
               
                 //loadModalContent()
                 // Optionally, you can trigger a retry or another action to re-check the status
