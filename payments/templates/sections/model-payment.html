@@ -228,14 +228,14 @@
               } else if (data.status === 'PENDING') {
                   alert('Payment is pending, please wait...');
                   console.log("Payment is pending, please wait...")
-                  console.log("Response: Data", data)
+                  console.log("Response: Data", data.ref)
     
                  // hideModal(); // Hide the current modal
                   //showModalPending(); // Show the pending modal
                 
                   //loadModalContent()
                   // Optionally, you can trigger a retry or another action to re-check the status
-                  pollPaymentStatus(data.ref);
+                  //pollPaymentStatus(data.ref);
                   pollPaymentStatus(data.ref);
               }
             
