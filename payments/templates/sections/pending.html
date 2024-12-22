@@ -1,16 +1,4 @@
-<!-- pending.html -->
-{% load static %}
-{% load wagtailcore_tags wagtailimages_tags%}
-{% block extra_css %}
-<link href="{% static 'css/payment.css'%}" rel="stylesheet">
-{% endblock  %} 
-
-{% block content %}
-    <!-- Button trigger modal -->
-   <!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalLong">
-        Launch demo modal
-    </button> -->
-      
+<!-- pending.html --> 
       <!-- Modal -->
       <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -34,8 +22,6 @@
           </div>
         </div>
       </div>
-    
-{% endblock %}
 
 {% block extra_js %}
 <script>
