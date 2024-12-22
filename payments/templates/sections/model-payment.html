@@ -259,7 +259,7 @@
 
      // Polling function for payment status (this can be adjusted or omitted)
      function pollPaymentStatus(ref) {
-      setInterval(function () {
+      const intervalId =  setInterval(function () {
           fetch(`https://pay.yeshualifeug.com/status/${ref}`)
           .then(response => response.json())
           .then(data => {
