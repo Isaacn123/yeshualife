@@ -20,7 +20,7 @@
                     <div class="col-12">
                         <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Message</span>
                             <div class="inputWithIcon"> 
-                                <textarea rows="3" rows="3" maxlength="60" name="message" class="form-control fw-light" type="text"
+                                <textarea id="message_id" rows="3" rows="3" maxlength="60" name="message" class="form-control fw-light" type="text"
                                     placeholder="provide a short message."></textarea> </div>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                         <div class="d-flex flex-column ps-md-5 px-md-0 px-4 mb-4"> <span>Donation<span
                                     class="ps-1">Amount</span></span>
                             <div class="inputWithIcon"> 
-                                <input type="text" name="amount" class="form-control" placeholder="Enter amount" required> 
+                                <input id="amount_id" type="text" name="amount" class="form-control" placeholder="Enter amount" required> 
                                 <span class="fas fa-money-bill"></span> 
                             </div>
                         </div>
@@ -49,13 +49,13 @@
                     <div class="col-12">
                         <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Name</span>
                             <div class="inputWithIcon"> 
-                                <input class="form-control text-uppercase" name="fullname" type="text"
+                                <input id="name_id" class="form-control text-uppercase" name="fullname" type="text"
                                     placeholder="enter your name" required> <span class="far fa-user"></span> </div>
                         </div>
                     </div>
                     <div class="col-12 px-md-5 px-4 mt-3">
                         {% comment %} <div class="btn btn-primary w-100">Pay UG5X 99.00</div> {% endcomment %}
-                        <button id="my-button" class="btn btn-primary w-100" >Proceed</button>
+                        <button id="my-button" type="submit" class="btn btn-primary w-100" >Proceed</button>
                     </div>
                 </div>
             </form>
@@ -93,6 +93,33 @@
        // buttonContinue.innerHTML = donationAmount + donationCurrency
         buttonContinue.addEventListener('click', function(event) {
             event.preventDefault();
+
+
+           // number = document.getElementById("phone_id").value;
+            amount = document.getElementById("amount_id").value;
+            msgPayment = document.getElementById("message_id").value;
+            currency = document.getElementById('currency').value
+            name = document.getElementById('name_id').value
+      
+            console.log("MASS",msgPayment)
+      
+            console.log("number:::",number);
+           // console.log(number === null);
+           console.log("PASSED-DATA::",formData);
+      
+        if(amount === null || amount.trim() === '' ){
+            alert("Amount can't be blank!")
+            return false;
+        }else if (currency === '' || currency === 'Choose') {  // Assuming 'Choose' is the default value in the select box
+            alert("Please select a valid currency.");
+            return false;
+        }else  if(name === null || name.trim() === '' ){
+            alert("Name can't be blank!")
+            return false;
+        }else  if(msgPayment === null || msgPayment.trim() === '' ){
+            alert("Message can't be blank!")
+            return false;
+        }
     
             // Get values from form inputs
           //  var donationMessage = document.getElementById('message').value;
