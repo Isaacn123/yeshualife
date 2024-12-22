@@ -279,7 +279,7 @@
               if (data.status === 'SUCCESSFUL') {
                  // alert('Payment processed successfully!');
                
-                 showModalAndStartProgress();
+                 
                   // Optionally, redirect or update the UI accordingly
 
                   btnSuccess.addEventListener('click', (event)=>{
@@ -324,6 +324,7 @@
                   // modalSuccess.show(); // Show success modal
                   modalPending.hide(); // Hide pending modal
                   modalSuccess.show(); // Show success modal
+                  showModalAndStartProgress();
                   console.log("Payment processed successfully!")
                    clearInterval(intervalId); 
                   // alert("Payment was successful!");
