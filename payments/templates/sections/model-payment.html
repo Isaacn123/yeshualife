@@ -182,8 +182,10 @@ function apiCall(data){
                 console.log('Payment failed:', data.message);
             } else if (data.status === 'PENDING') {
                 alert('Payment is pending, please wait...');
+                console.log("Payment is pending, please wait...")
                 console.log("Response: Data", data)
-                loadModalContent()
+                {% include "sections/pending.html" %}
+                //loadModalContent()
                 // Optionally, you can trigger a retry or another action to re-check the status
                 pollPaymentStatus(data.ref);
             }
