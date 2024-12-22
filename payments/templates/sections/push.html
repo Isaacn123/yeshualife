@@ -30,7 +30,10 @@
   var modalProgressBar = document.getElementById('modalProgressBar');
   var btnCancel = document.getElementById('cancelbtn');
   var btnSuccess = document.getElementById('successbtn');
-  var statusMessage = document.getElementById('statusMessage'); 
+  var statusMessage = document.getElementById('statusMessage');
+  const modalpush = document.getElementById("exampleModalPush");
+  const push = new bootstrap.Modal(modalpush);
+
   var progress = 0;
   btnSuccess.setAttribute('disabled', true); 
   function updateModalProgress(){
@@ -46,6 +49,9 @@
     if (progress == 100){
       statusMessage.innerHTML = "Transaction Successful!. Thank you for your donation!";
       btnSuccess.removeAttribute('disabled');
+      btnSuccess.addEventListener('click', (event)=>{
+        push.hide();
+      })
     }
   }
 

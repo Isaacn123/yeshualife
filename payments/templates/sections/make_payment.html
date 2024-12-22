@@ -106,8 +106,11 @@
             console.log("number:::",amount);
            // console.log(number === null);
            console.log("PASSED-DATA::",formData);
-      
-        if(amount === null || amount.trim() === '' ){
+
+        if(msgPayment === null || msgPayment.trim() === '' ){
+            alert("Message can't be blank!")
+            return false;
+        }else  if(amount === null || amount.trim() === '' ){
             alert("Amount can't be blank!")
             return false;
         }else if (currency === '' || currency === 'Choose') {  // Assuming 'Choose' is the default value in the select box
@@ -116,17 +119,7 @@
         }else  if(name === null || name.trim() === '' ){
             alert("Name can't be blank!")
             return false;
-        }else  if(msgPayment === null || msgPayment.trim() === '' ){
-            alert("Message can't be blank!")
-            return false;
         }
-    
-            // Get values from form inputs
-          //  var donationMessage = document.getElementById('message').value;
-          //  var donationAmount = document.getElementById('amount').value;
-           // var donationCurrency = document.getElementById('currency').value;
-           // var name = document.getElementById('fullname').value;
-
                   // Make sure container1 is visible before proceeding
         container1.style.display = 'block'; // Or apply your preferred style to make it visible
 
