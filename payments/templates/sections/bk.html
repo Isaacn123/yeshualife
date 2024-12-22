@@ -1,0 +1,134 @@
+{% block extra_js %}
+<script>
+  
+  function showmodalPending(){
+          var myModal = new bootstrap.Modal(document.getElementById(
+            'exampleModalLong'
+          ));
+          myModal.show();
+  }
+
+  function hideModal() {
+      var modal = new bootstrap.Modal(document.getElementById('mtnModal'));
+      modal.hide();
+    }
+
+  document.addEventListener('DOMContentLoaded', function(){
+
+ var  mtnbutton = document.getElementById("my-button-mtn");
+ const modalElement = document.getElementById('mtnModal');
+  var formData = JSON.parse(localStorage.getItem('formData')) || {};
+  const modal = new bootstrap.Modal(modalElement);
+  console.log("PASSED-DATA::",formData);
+  
+  form = document.getElementById("payform");
+
+
+  mtnbutton.addEventListener('click', function(event){
+      event.preventDefault();
+      number = document.getElementById("phoneid").value;
+
+      msgPayment = document.getElementById("message").value;
+
+      console.log("MASS",msgPayment)
+
+      console.log("number:::",number);
+     // console.log(number === null);
+     console.log("PASSED-DATA::",formData);
+
+  if(number === null || number.trim() === '' ){
+      alert("Phone number can't be blank!")
+      return false;
+     // /^\d{10}$|^\d{15}$/   both 10 and 15
+     // /^\d{10}$/   ten digits only
+     // /^\d{10,15}$/  numbers between 10 and 15
+  }else if (number !== '' && !number.match(/^\d{10,15}$/)){
+      alert('Please enter a valid number.'); 
+      return false; 
+  }else{
+          // If the number is valid, allow the form to be submitted
+         // form.submit();
+         console.log("MASS",msgPayment)
+         
+         var mtn_payment = {
+          amount: document.getElementById('donationAmount').value,
+          currency:document.getElementById('currency').value,
+          fullname:document.getElementById('fullname').value,
+          message: document.getElementById('message').value,
+          phone: document.getElementById('phoneid').value,
+         }
+         
+         alert("Continue..");
+
+         data  ={
+          "amount": mtn_payment['amount'],
+          "currency": mtn_payment["currency"],
+          "txt_ref": "some_ref_value",
+          "phone_number": mtn_payment["phone"],
+          "payermessage":mtn_payment["message"]
+         }
+         console.log("Data:MTN",data);
+         apiCall(data)
+      
+  } 
+
+});
+
+function apiCall(data){
+  const url = "https://pay.yeshualifeug.com/pay";
+
+  fetch(url,
+  { 
+  method: "POST",
+  headers: {
+      'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(
+      {
+          "amount": data['amount'] ,
+          "currency": data['currency'],
+          "txt_ref": data['txt_ref'],
+          "phone_number": data['phone_number'],
+          "payermessage": data['message']
+      })
+  })
+      .then( response => {
+          //response => response.json()
+
+          if(!response.ok){
+              return Promise.reject("API call failed with status: " + response.status);
+          }
+          return response.json();
+      })  // Parse the response JSON
+      .then(data => {
+          console.log('API Response:', data);
+       
+          if (data.status === 'SUCCESSFUL') {
+              alert('Payment processed successfully!');
+              // Optionally, redirect or update the UI accordingly
+          } else if (data.status === 'failure') {
+              alert('Payment failed: ' + data.message);
+              console.log('Payment failed:', data.message);
+          } else if (data.status === 'PENDING') {
+              alert('Payment is pending, please wait...');
+              console.log("Payment is pending, please wait...")
+              console.log("Response: Data", data)
+
+              hideModal(); // Hide the current modal
+              showModalPending(); // Show the pending modal
+            
+              //loadModalContent()
+              // Optionally, you can trigger a retry or another action to re-check the status
+              pollPaymentStatus(data.ref);
+          }
+        
+      })
+      .catch(error => {
+          console.error('Error calling /pay API:', error);
+          alert('There was an error processing your payment.');
+      });
+
+}
+
+</script>
+{% endblock  %}

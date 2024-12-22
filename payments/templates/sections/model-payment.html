@@ -85,155 +85,130 @@
 
   {% block extra_js %}
   <script>
-    
-    function showmodalPending(){
-            var myModal = new bootstrap.Modal(document.getElementById(
-              'exampleModalLong'
-            ));
-            myModal.show();
-    }
-
-    function hideModal() {
-        var modal = new bootstrap.Modal(document.getElementById('mtnModal'));
-        modal.hide();
+      function showModalPending() {
+          // Ensure this modal is correctly targeted
+          var myModalPending = new bootstrap.Modal(document.getElementById('mtnModalPending'));
+          myModalPending.show();  // Show the pending payment modal
       }
-
-    document.addEventListener('DOMContentLoaded', function(){
-
-   var  mtnbutton = document.getElementById("my-button-mtn");
-   const modalElement = document.getElementById('mtnModal');
-    var formData = JSON.parse(localStorage.getItem('formData')) || {};
-    const modal = new bootstrap.Modal(modalElement);
-    console.log("PASSED-DATA::",formData);
-    
-    form = document.getElementById("payform");
-
-
-    mtnbutton.addEventListener('click', function(event){
-        event.preventDefault();
-        number = document.getElementById("phoneid").value;
-
-        msgPayment = document.getElementById("message").value;
-
-        console.log("MASS",msgPayment)
-
-        console.log("number:::",number);
-       // console.log(number === null);
-       console.log("PASSED-DATA::",formData);
-
-    if(number === null || number.trim() === '' ){
-        alert("Phone number can't be blank!")
-        return false;
-       // /^\d{10}$|^\d{15}$/   both 10 and 15
-       // /^\d{10}$/   ten digits only
-       // /^\d{10,15}$/  numbers between 10 and 15
-    }else if (number !== '' && !number.match(/^\d{10,15}$/)){
-        alert('Please enter a valid number.'); 
-        return false; 
-    }else{
-            // If the number is valid, allow the form to be submitted
-           // form.submit();
-           console.log("MASS",msgPayment)
-           
-           var mtn_payment = {
-            amount: document.getElementById('donationAmount').value,
-            currency:document.getElementById('currency').value,
-            fullname:document.getElementById('fullname').value,
-            message: document.getElementById('message').value,
-            phone: document.getElementById('phoneid').value,
-           }
-           
-           alert("Continue..");
-
-           data  ={
-            "amount": mtn_payment['amount'],
-            "currency": mtn_payment["currency"],
-            "txt_ref": "some_ref_value",
-            "phone_number": mtn_payment["phone"],
-            "payermessage":mtn_payment["message"]
-           }
-           console.log("Data:MTN",data);
-           apiCall(data)
-        
-    } 
-
-});
-
-function apiCall(data){
-    const url = "https://pay.yeshualifeug.com/pay";
-
-    fetch(url,
-    { 
-    method: "POST",
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(
-        {
-            "amount": data['amount'] ,
-            "currency": data['currency'],
-            "txt_ref": data['txt_ref'],
-            "phone_number": data['phone_number'],
-            "payermessage": data['message']
-        })
-    })
-        .then( response => {
-            //response => response.json()
-
-            if(!response.ok){
-                return Promise.reject("API call failed with status: " + response.status);
-            }
-            return response.json();
-        })  // Parse the response JSON
-        .then(data => {
-            console.log('API Response:', data);
-         
-            if (data.status === 'SUCCESSFUL') {
-                alert('Payment processed successfully!');
-                // Optionally, redirect or update the UI accordingly
-            } else if (data.status === 'failure') {
-                alert('Payment failed: ' + data.message);
-                console.log('Payment failed:', data.message);
-            } else if (data.status === 'PENDING') {
-                alert('Payment is pending, please wait...');
-                console.log("Payment is pending, please wait...")
-                console.log("Response: Data", data)
-
-                hideModal(); // Hide the current modal
-                showModalPending(); // Show the pending modal
-              
-                //loadModalContent()
-                // Optionally, you can trigger a retry or another action to re-check the status
-                pollPaymentStatus(data.ref);
-            }
-          
-        })
-        .catch(error => {
-            console.error('Error calling /pay API:', error);
-            alert('There was an error processing your payment.');
-        });
-
-}
-
-
-// Function to fetch content from '/payments/pending' and inject into the modal
-function loadModalContent() {
-    // Fetch the HTML content from the backend route
-    fetch('https://pay.yeshualifeug.com/pending')  // Adjust with your backend endpoint
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load content');
-            }
-            return response.text();  // Get the HTML content
-        })
-        .then(html => {
-            // Inject the fetched HTML content into the current page
-            document.body.insertAdjacentHTML('beforeend', html); // This appends the modal HTML to the body
-        })
-        .catch(error => {
-            console.error('Error fetching modal content:', error);
-        });
-}
-    });
+  
+      function hideModal() {
+          // Ensure you hide the current modal correctly
+          var modal = new bootstrap.Modal(document.getElementById('mtnModal')); // Hide the first modal
+          modal.hide();
+      }
+  
+      document.addEventListener('DOMContentLoaded', function() {
+          var mtnButton = document.getElementById("my-button-mtn"); // Assuming the ID for your button
+          const modalElement = document.getElementById('mtnModal'); // The first modal you want to hide
+          const modal = new bootstrap.Modal(modalElement);
+  
+          console.log("DOM loaded and formData:", formData);
+  
+          var formData = JSON.parse(localStorage.getItem('formData')) || {}; // Fetch stored form data if any
+          const form = document.getElementById("payform");
+  
+          mtnButton.addEventListener('click', function(event) {
+              event.preventDefault();
+              var number = document.getElementById("phoneid").value;  // Get phone number
+              var msgPayment = document.getElementById("message").value;  // Get message
+  
+              console.log("Phone Number:", number);
+              console.log("Message:", msgPayment);
+  
+              if (number === null || number.trim() === '') {
+                  alert("Phone number can't be blank!");
+                  return false;
+              } else if (number !== '' && !number.match(/^\d{10,15}$/)) {
+                  alert('Please enter a valid number.');
+                  return false;
+              } else {
+                  // Prepare payment data and make API call
+                  var mtnPayment = {
+                      amount: document.getElementById('donationAmount').value,
+                      currency: document.getElementById('currency').value,
+                      fullname: document.getElementById('fullname').value,
+                      message: document.getElementById('message').value,
+                      phone: document.getElementById('phoneid').value,
+                  };
+  
+                  console.log("Payment Data:", mtnPayment);
+  
+                  var data = {
+                      "amount": mtnPayment['amount'],
+                      "currency": mtnPayment["currency"],
+                      "txt_ref": "some_ref_value", // This is placeholder. Make sure to replace with the actual reference.
+                      "phone_number": mtnPayment["phone"],
+                      "payermessage": mtnPayment["message"]
+                  };
+  
+                  console.log("Data to API:", data);
+  
+                  apiCall(data);
+              }
+          });
+  
+          function apiCall(data) {
+              const url = "https://pay.yeshualifeug.com/pay";
+  
+              fetch(url, {
+                  method: "POST",
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(data) // Send the data in the body
+              })
+                  .then(response => {
+                      if (!response.ok) {
+                          return Promise.reject("API call failed with status: " + response.status);
+                      }
+                      return response.json();  // Parse JSON response
+                  })
+                  .then(data => {
+                      console.log('API Response:', data);
+  
+                      if (data.status === 'SUCCESSFUL') {
+                          alert('Payment processed successfully!');
+                          // Optionally, redirect or update the UI accordingly
+                      } else if (data.status === 'FAILURE') {
+                          alert('Payment failed: ' + data.message);
+                          console.log('Payment failed:', data.message);
+                      } else if (data.status === 'PENDING') {
+                          alert('Payment is pending, please wait...');
+                          console.log("Payment is pending, please wait...");
+  
+                          hideModal(); // Hide the current modal
+                          showModalPending(); // Show the pending modal
+                          
+                          pollPaymentStatus(data.ref); // Poll the payment status using the reference
+                      }
+                  })
+                  .catch(error => {
+                      console.error('Error calling /pay API:', error);
+                      alert('There was an error processing your payment.');
+                  });
+          }
+  
+          function pollPaymentStatus(ref) {
+              // Example polling function to check payment status every 5 seconds
+              setInterval(function () {
+                  fetch(`/status/${ref}`)
+                      .then(response => response.json())
+                      .then(data => {
+                          if (data.status === 'SUCCESSFUL') {
+                              alert("Payment was successful!");
+                              // Update UI accordingly or redirect the user
+                          } else if (data.status === 'FAILURE') {
+                              alert("Payment failed: " + data.message);
+                          } else if (data.status === 'PENDING') {
+                              console.log("Payment is still pending, checking again...");
+                          }
+                      })
+                      .catch(error => {
+                          console.error('Error polling payment status:', error);
+                      });
+              }, 5000); // Poll every 5 seconds
+          }
+      });
   </script>
-  {% endblock  %}
+  {% endblock %}
+  
