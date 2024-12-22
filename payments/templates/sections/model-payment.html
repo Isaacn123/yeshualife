@@ -75,13 +75,36 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          {% comment %} <button type="button" class="btn btn-primary">Save changes</button> {% endcomment %}
+          <!--  <button type="button" class="btn btn-primary">Save changes</button> -->
         </div>
       </div>
     </div>
   </div>
 
-  {% include "sections/pending.html" %}
+  <!-- {% include "sections/pending.html" %} -->
+
+  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modelheader">
+
+          <h5 class="modal-title fs-5 text-center" id="exampleModalLongTitle">Check Your phone !</h5>
+          
+        </div>
+        <div class="modal-body">
+          <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="75"  aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar bg-success" style="width: 75%">75%</div>
+          </div>
+         <p>There is a notification sent to your phone. complete the donation now!</p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel this Payment</button>
+          <button type="button" class="btn btn-success">I have Completed the payment</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   {% block extra_js %}
   <script>
