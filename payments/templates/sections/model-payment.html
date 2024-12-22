@@ -87,13 +87,16 @@
   <script>
     
     function showmodalPending(){
-        window.addEventListener("DOMContentLoaded", (event) => {
             var myModal = new bootstrap.Modal(document.getElementById(
               'exampleModalLong'
             ));
             myModal.show();
-          });
     }
+
+    function hideModal() {
+        var modal = new bootstrap.Modal(document.getElementById('mtnModal'));
+        modal.hide();
+      }
 
     document.addEventListener('DOMContentLoaded', function(){
 
@@ -196,8 +199,8 @@ function apiCall(data){
                 console.log("Payment is pending, please wait...")
                 console.log("Response: Data", data)
 
-                modal.hide();
-                showmodalPending();
+                hideModal(); // Hide the current modal
+                showModalPending(); // Show the pending modal
               
                 //loadModalContent()
                 // Optionally, you can trigger a retry or another action to re-check the status
