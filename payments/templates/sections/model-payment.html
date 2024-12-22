@@ -57,7 +57,7 @@
                             <div class="col-12">
                                 <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Enter Phone:</span>
                                     <div class="inputWithIcon"> 
-                        <input class="form-control text-uppercase" id="phoneid" name="phone" type="text"  placeholder="(0774-345-343)" style="font-size:11" >
+                        <input class="form-control text-uppercase" id="phoneid" name="phone" type="text"  placeholder="Enter Phone" style="font-size:11" >
                         <input id="message"  class="form-control fw-light" type="text"
                         value="testing" hidden>
                         <span class="far fa-user"></span></div>
@@ -158,13 +158,17 @@
                // If the number is valid, allow the form to be submitted
               // form.submit();
               console.log("MASS",msgPayment)
+
+              var phoneNumber = document.getElementById('phoneid').value.startsWith('0') 
+              ? '256' + document.getElementById('phoneid').value.substring(1) 
+              : document.getElementById('phoneid').value;
               
               var mtn_payment = {
                amount: document.getElementById('donationAmount').value,
                currency:document.getElementById('currency').value,
                fullname:document.getElementById('fullname').value,
                message: document.getElementById('message').value,
-               phone: document.getElementById('phoneid').value,
+               phone: phoneNumber,
               }
               
               alert("Continue..");
@@ -262,10 +266,11 @@
                    alert("Payment was successful!");
 
               } else if (data.status === 'FAILURE') {
-                  alert("Payment failed: " + data.message);
+                 
                   modalPending.hide(); // Optionally hide the pending modal
                   clearInterval(intervalId); 
-                  
+                  alert("Payment failed: " + data.message);
+
               } else if (data.status === 'PENDING') {
                   console.log("Payment is still pending...");
               }
@@ -274,6 +279,13 @@
               console.error('Error polling payment status:', error);
           });
       }, 5000); // Poll every 5 seconds
+
+          // Stop the polling after 60 seconds
+    setTimeout(function () {
+      clearInterval(intervalId);  // Stop polling after 60 seconds
+      alert("Payment status check timed out after 60 seconds.");
+      modalPending.hide(); // Optionally, hide the pending modal
+  }, 60000); // 
   }
 
     });
