@@ -100,7 +100,10 @@
       document.addEventListener('DOMContentLoaded', function() {
           var mtnButton = document.getElementById("my-button-mtn"); // Assuming the ID for your button
           const modalElement = document.getElementById('mtnModal'); // The first modal you want to hide
+          const modalPendingElement = document.getElementById('mtnModalPending'); // The pending modal element
+          
           const modal = new bootstrap.Modal(modalElement);
+          const modalPending = new bootstrap.Modal(modalPendingElement);
   
           console.log("DOM loaded and formData:", formData);
   
@@ -176,10 +179,13 @@
                           alert('Payment is pending, please wait...');
                           console.log("Payment is pending, please wait...");
   
-                          hideModal(); // Hide the current modal
-                          showModalPending(); // Show the pending modal
+                         // hideModal(); // Hide the current modal
+                         // showModalPending(); // Show the pending modal
+
+                         modal.hide(); // Hide main modal
+                         modalPending.show(); // Show pending modal
                           
-                          pollPaymentStatus(data.ref); // Poll the payment status using the reference
+                        //  pollPaymentStatus(data.ref); // Poll the payment status using the reference
                       }
                   })
                   .catch(error => {
