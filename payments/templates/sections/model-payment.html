@@ -158,6 +158,8 @@
                   };
   
                   console.log("Payment Data:", mtnPayment);
+
+                  modal.hide(); // Hide main modal
   
                   var data = {
                       "amount": mtnPayment['amount'],
@@ -205,7 +207,7 @@
                          // hideModal(); // Hide the current modal
                          // showModalPending(); // Show the pending modal
 
-                         modal.hide(); // Hide main modal
+                        
                          modalPending.show(); // Show pending modal
                           
                         //  pollPaymentStatus(data.ref); // Poll the payment status using the reference
