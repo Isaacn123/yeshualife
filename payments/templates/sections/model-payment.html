@@ -278,9 +278,7 @@
            
               if (data.status === 'SUCCESSFUL') {
                  // alert('Payment processed successfully!');
-                 modalPending.hide(); // Hide pending modal
-                 modalSuccess.show(); // Show success modal
-                 console.log("Payment processed successfully!")
+               
                  showModalAndStartProgress();
                   // Optionally, redirect or update the UI accordingly
 
@@ -324,8 +322,11 @@
                   
                   // modalPending.hide(); // Hide pending modal
                   // modalSuccess.show(); // Show success modal
+                  modalPending.hide(); // Hide pending modal
+                  modalSuccess.show(); // Show success modal
+                  console.log("Payment processed successfully!")
                    clearInterval(intervalId); 
-                   alert("Payment was successful!");
+                  // alert("Payment was successful!");
 
               } else if (data.status === 'FAILURE') {
                  
