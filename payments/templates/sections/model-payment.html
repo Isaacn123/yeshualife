@@ -127,6 +127,20 @@
           
           const modal = new bootstrap.Modal(modalElement);
           const modalPending = new bootstrap.Modal(modalPendingElement);
+
+              // Check if the modal exists before initializing it
+            if (modalElement) {
+                const modal = new bootstrap.Modal(modalElement);
+            } else {
+                console.error('mtnModal is missing in the DOM.');
+            }
+            
+            if (modalPendingElement) {
+                const modalPending = new bootstrap.Modal(modalPendingElement); // Initialize the pending modal
+            } else {
+                console.error('mtnModalPending is missing in the DOM.');
+            }
+
   
           console.log("DOM loaded and formData:", formData);
   
