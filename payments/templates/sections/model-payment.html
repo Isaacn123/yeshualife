@@ -114,21 +114,26 @@
       var  mtnbutton = document.getElementById("my-button-mtn");
       const modalElement = document.getElementById('mtnModal');
        var formData = JSON.parse(localStorage.getItem('formData')) || {};
+
+     
        
        console.log("PASSED-DATA::",formData);
        
        const modalPendingElement = document.getElementById('exampleModalLong'); // The pending modal element
        const modalSuccessElement = document.getElementById('exampleModalPush'); // The success modal element
+       const modalpush = document.getElementById("exampleModalPush");
+
     
       // const modalPending = new bootstrap.Modal(modalPendingElement);
       // const modal = new bootstrap.Modal(modalElement);
 
 
           // Initialize modals
+    const push = new bootstrap.Modal(modalpush);
     const modal =  new bootstrap.Modal(modalElement);
     const modalPending =  new bootstrap.Modal(modalPendingElement) ;
     const modalSuccess = new bootstrap.Modal(modalSuccessElement);
-
+    const btnSuccess = document.getElementById('successbtn');
        
        form = document.getElementById("payform");
      
@@ -229,8 +234,16 @@
               console.log('API Response:', data);
            
               if (data.status === 'SUCCESSFUL') {
-                  alert('Payment processed successfully!');
+                 // alert('Payment processed successfully!');
+                 modalPending.hide(); // Hide pending modal
+                 modalSuccess.show(); // Show success modal
+                 console.log("Payment processed successfully!")
                   // Optionally, redirect or update the UI accordingly
+
+                  btnSuccess.addEventListener('click', (event)=>{
+                    push.hide();
+                    modalSuccess.hide(); 
+                  })
               } else if (data.status === 'failure') {
                   alert('Payment failed: ' + data.message);
                   console.log('Payment failed:', data.message);
@@ -265,8 +278,8 @@
           .then(data => {
               if (data.status === 'SUCCESSFUL') {
                   
-                   modalPending.hide(); // Hide pending modal
-                   modalSuccess.show(); // Show success modal
+                  // modalPending.hide(); // Hide pending modal
+                  // modalSuccess.show(); // Show success modal
                    clearInterval(intervalId); 
                    alert("Payment was successful!");
 
