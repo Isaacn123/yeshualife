@@ -125,9 +125,9 @@
 
 
           // Initialize modals
-    const modal = modalElement ? new bootstrap.Modal(modalElement) : null;
-    const modalPending = modalPendingElement ? new bootstrap.Modal(modalPendingElement) : null;
-    const modalSuccess = modalSuccessElement ? new bootstrap.Modal(modalSuccessElement) : null;
+    const modal =  new bootstrap.Modal(modalElement);
+    const modalPending =  new bootstrap.Modal(modalPendingElement) ;
+    const modalSuccess = new bootstrap.Modal(modalSuccessElement);
 
        
        form = document.getElementById("payform");
@@ -181,8 +181,8 @@
              // modalPending.show();
               
             // Hide the main modal (if it's visible) and show the pending modal
-            if (modal) modal.hide();  // Hide the main modal
-            if (modalPending) modalPending.show();  // Show the pending modal
+            modal.hide();  // Hide the main modal
+            modalPending.show();  // Show the pending modal
 
               apiCall(data)
            
