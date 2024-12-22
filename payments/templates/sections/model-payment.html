@@ -109,6 +109,54 @@
 
   {% block extra_js %}
   <script>
+
+
+     // Initialize modal and progress elements
+  var modalProgressBar = document.getElementById('modalProgressBar');
+  var btnCancel = document.getElementById('cancelbtn');
+  var btnSuccess = document.getElementById('successbtn');
+  var statusMessage = document.getElementById('statusMessage');
+  const modalpush = document.getElementById("exampleModalPush");
+  const push = new bootstrap.Modal(modalpush);
+
+  var progress = 0;
+
+  // Disable the success button initially
+  btnSuccess.setAttribute('disabled', true);
+
+  // Update progress bar function
+  function updateModalProgress() {
+    if (progress < 100) {
+      progress += 5;
+      modalProgressBar.style.width = progress + '%';
+      modalProgressBar.setAttribute('aria-valuenow', progress);
+      modalProgressBar.innerHTML = progress + '%';
+    }
+
+    // When progress reaches 100%
+    if (progress === 100) {
+      statusMessage.innerHTML = "Transaction Successful!. Thank you for your donation!";
+      btnSuccess.removeAttribute('disabled');
+    }
+  }
+
+  // Show the modal and start the progress bar update
+  function showModalAndStartProgress() {
+    // Show the modal
+    push.show();
+
+    // Start the interval to update progress
+    var intervalId = setInterval(updateModalProgress, 600); // Update every 600ms (0.6 seconds)
+
+    // Optional: Stop polling after 60 seconds
+    setTimeout(function() {
+      clearInterval(intervalId);  // Stop polling after 60 seconds
+      alert("Payment status check timed out after 60 seconds.");
+      modalpush.hide(); // Optionally, hide the modal if the process timed out
+    }, 60000); // Timeout after 60 seconds
+  }
+
+
     document.addEventListener('DOMContentLoaded', function(){
 
       var  mtnbutton = document.getElementById("my-button-mtn");
@@ -238,6 +286,7 @@
                  modalPending.hide(); // Hide pending modal
                  modalSuccess.show(); // Show success modal
                  console.log("Payment processed successfully!")
+                 showModalAndStartProgress();
                   // Optionally, redirect or update the UI accordingly
 
                   btnSuccess.addEventListener('click', (event)=>{

@@ -23,36 +23,3 @@
         </div>
       </div>
     
-
-{% block extra_js %}
-<script>
-
-  var modalProgressBar = document.getElementById('modalProgressBar');
-  var btnCancel = document.getElementById('cancelbtn');
-  var btnSuccess = document.getElementById('successbtn');
-  var statusMessage = document.getElementById('statusMessage');
-  const modalpush = document.getElementById("exampleModalPush");
-  const push = new bootstrap.Modal(modalpush);
-
-  var progress = 0;
-  btnSuccess.setAttribute('disabled', true); 
-  function updateModalProgress(){
-    
-    if (progress < 100){
-      progress += 5;
-      modalProgressBar.style.width = progress + '%';
-      modalProgressBar.setAttribute('aria-valuenow', progress);
-      modalProgressBar.innerHTML = progress + '%';
-      
-    }
-    
-    if (progress == 100){
-      statusMessage.innerHTML = "Transaction Successful!. Thank you for your donation!";
-      btnSuccess.removeAttribute('disabled');
-     
-    }
-  }
-
-  setInterval(updateModalProgress,600);
-</script>
-{% endblock  %}
