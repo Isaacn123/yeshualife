@@ -81,9 +81,20 @@
     </div>
   </div>
 
+  {% include "sections/pending.html" %}
 
   {% block extra_js %}
   <script>
+    
+    function showmodalPending(){
+        window.addEventListener("DOMContentLoaded", (event) => {
+            var myModal = new bootstrap.Modal(document.getElementById(
+              'exampleModalLong'
+            ));
+            myModal.show();
+          });
+    }
+
     document.addEventListener('DOMContentLoaded', function(){
 
    var  mtnbutton = document.getElementById("my-button-mtn");
@@ -121,6 +132,7 @@
            // form.submit();
            console.log("MASS",msgPayment)
             modal.hide();
+            showmodalPending();
            var mtn_payment = {
             amount: document.getElementById('donationAmount').value,
             currency:document.getElementById('currency').value,
@@ -184,7 +196,7 @@ function apiCall(data){
                 alert('Payment is pending, please wait...');
                 console.log("Payment is pending, please wait...")
                 console.log("Response: Data", data)
-                {% include "sections/pending.html" %}
+              
                 //loadModalContent()
                 // Optionally, you can trigger a retry or another action to re-check the status
                 pollPaymentStatus(data.ref);

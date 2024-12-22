@@ -23,31 +23,6 @@
         </div>
       </div>
 
-{% block extra_js %}
-<script>
-  window.addEventListener("DOMContentLoaded", (event) => {
-    var myModal = new bootstrap.Modal(document.getElementById(
-      'exampleModalLong'
-    ));
-    myModal.show();
-  });
-
-  var modalProgressBar = document.getElementById('modalProgressBar');
-  var progress = 0;
-
-  function updateModalProgress(){
-    if (progress < 100){
-      progress += 25;
-      modalProgressBar.style.width = progress + '%';
-      modalProgressBar.setAttribute('aria-valuenow', progress);
-      modalProgressBar.innerHTML = progress + '%';
-    }
-  }
-
-  setInterval(updateModalProgress,1000);
-</script>
-{% endblock  %}
-
 
 
 
