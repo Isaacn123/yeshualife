@@ -82,6 +82,7 @@
   </div>
 
   <!--{% include "sections/pending.html" %}-->
+  {% include "sections/push.html" %}
 
   <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -113,11 +114,20 @@
       var  mtnbutton = document.getElementById("my-button-mtn");
       const modalElement = document.getElementById('mtnModal');
        var formData = JSON.parse(localStorage.getItem('formData')) || {};
-       const modal = new bootstrap.Modal(modalElement);
+       
        console.log("PASSED-DATA::",formData);
        
        const modalPendingElement = document.getElementById('exampleModalLong'); // The pending modal element
-       const modalPending = new bootstrap.Modal(modalPendingElement);
+       const modalSuccessElement = document.getElementById('exampleModalPush'); // The success modal element
+    
+      // const modalPending = new bootstrap.Modal(modalPendingElement);
+      // const modal = new bootstrap.Modal(modalElement);
+
+
+          // Initialize modals
+    const modal = modalElement ? new bootstrap.Modal(modalElement) : null;
+    const modalPending = modalPendingElement ? new bootstrap.Modal(modalPendingElement) : null;
+    const modalSuccess = modalSuccessElement ? new bootstrap.Modal(modalSuccessElement) : null;
 
        
        form = document.getElementById("payform");
@@ -167,8 +177,13 @@
                "payermessage":mtn_payment["message"]
               }
               console.log("Data:MTN",data);
-              modal.hide(); 
-              modalPending.show();
+             // modal.hide(); 
+             // modalPending.show();
+              
+            // Hide the main modal (if it's visible) and show the pending modal
+            if (modal) modal.hide();  // Hide the main modal
+            if (modalPending) modalPending.show();  // Show the pending modal
+
               apiCall(data)
            
        } 
@@ -215,11 +230,12 @@
                   console.log("Payment is pending, please wait...")
                   console.log("Response: Data", data)
     
-                  hideModal(); // Hide the current modal
-                  showModalPending(); // Show the pending modal
+                 // hideModal(); // Hide the current modal
+                  //showModalPending(); // Show the pending modal
                 
                   //loadModalContent()
                   // Optionally, you can trigger a retry or another action to re-check the status
+                  pollPaymentStatus(data.ref);
                   pollPaymentStatus(data.ref);
               }
             
@@ -230,6 +246,30 @@
           });
     
     }
+
+
+     // Polling function for payment status (this can be adjusted or omitted)
+     function pollPaymentStatus(ref) {
+      setInterval(function () {
+          fetch(`/status/${ref}`)
+          .then(response => response.json())
+          .then(data => {
+              if (data.status === 'SUCCESSFUL') {
+                  alert("Payment was successful!");
+                  if (modalPending) modalPending.hide(); // Hide pending modal
+                  if (modalSuccess) modalSuccess.show(); // Show success modal
+              } else if (data.status === 'FAILURE') {
+                  alert("Payment failed: " + data.message);
+                  if (modalPending) modalPending.hide(); // Optionally hide the pending modal
+              } else if (data.status === 'PENDING') {
+                  console.log("Payment is still pending...");
+              }
+          })
+          .catch(error => {
+              console.error('Error polling payment status:', error);
+          });
+      }, 5000); // Poll every 5 seconds
+  }
 
     });
   </script>
