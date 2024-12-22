@@ -255,12 +255,17 @@
           .then(response => response.json())
           .then(data => {
               if (data.status === 'SUCCESSFUL') {
-                  alert("Payment was successful!");
+                  
                    modalPending.hide(); // Hide pending modal
                    modalSuccess.show(); // Show success modal
+                   clearInterval(intervalId); 
+                   alert("Payment was successful!");
+
               } else if (data.status === 'FAILURE') {
                   alert("Payment failed: " + data.message);
                   modalPending.hide(); // Optionally hide the pending modal
+                  clearInterval(intervalId); 
+                  
               } else if (data.status === 'PENDING') {
                   console.log("Payment is still pending...");
               }
