@@ -256,11 +256,11 @@
           .then(data => {
               if (data.status === 'SUCCESSFUL') {
                   alert("Payment was successful!");
-                  if (modalPending) modalPending.hide(); // Hide pending modal
-                  if (modalSuccess) modalSuccess.show(); // Show success modal
+                   modalPending.hide(); // Hide pending modal
+                   modalSuccess.show(); // Show success modal
               } else if (data.status === 'FAILURE') {
                   alert("Payment failed: " + data.message);
-                  if (modalPending) modalPending.hide(); // Optionally hide the pending modal
+                  modalPending.hide(); // Optionally hide the pending modal
               } else if (data.status === 'PENDING') {
                   console.log("Payment is still pending...");
               }
