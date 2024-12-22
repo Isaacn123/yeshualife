@@ -151,6 +151,10 @@
           // /^\d{10}$|^\d{15}$/   both 10 and 15
           // /^\d{10}$/   ten digits only
           // /^\d{10,15}$/  numbers between 10 and 15
+       } // Check if the currency is selected (not the default value)
+       else if (currency === '' || currency === 'Choose') {  // Assuming 'Choose' is the default value in the select box
+           alert("Please select a valid currency.");
+           return false;
        }else if (number !== '' && !number.match(/^\d{10,15}$/)){
            alert('Please enter a valid number.'); 
            return false; 
