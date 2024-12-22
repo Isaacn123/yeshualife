@@ -82,6 +82,13 @@
         var donationAmount = document.getElementsByName('amount')[0].value;
         var donationCurrency = document.getElementById('currency').value;
 
+
+        const modalElement = document.getElementById('mtnModal'); // The first modal you want to hide
+        const modalPendingElement = document.getElementById('mtnModalPending'); // The pending modal element
+        
+        const modal = new bootstrap.Modal(modalElement);
+        const modalPending = new bootstrap.Modal(modalPendingElement);
+
         var box1Container = document.querySelector('.box1');
         buttonContinue.innerHTML = donationAmount + donationCurrency
         buttonContinue.addEventListener('click', function(event) {
