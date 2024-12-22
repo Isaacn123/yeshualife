@@ -116,6 +116,10 @@
        const modal = new bootstrap.Modal(modalElement);
        console.log("PASSED-DATA::",formData);
        
+       const modalPendingElement = document.getElementById('mtnModalPending'); // The pending modal element
+       const modalPending = new bootstrap.Modal(modalPendingElement);
+
+       
        form = document.getElementById("payform");
      
      
@@ -163,7 +167,8 @@
                "payermessage":mtn_payment["message"]
               }
               console.log("Data:MTN",data);
-             // modal.hide(); 
+              modal.hide(); 
+              modalPending.show();
               apiCall(data)
            
        } 
