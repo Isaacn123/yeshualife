@@ -226,7 +226,7 @@
                   alert('Payment failed: ' + data.message);
                   console.log('Payment failed:', data.message);
               } else if (data.status === 'PENDING') {
-                  alert('Payment is pending, please wait...');
+                  //alert('Payment is pending, please wait...');
                   console.log("Payment is pending, please wait...")
                   console.log("Response: Data", data.ref)
     
@@ -251,7 +251,7 @@
      // Polling function for payment status (this can be adjusted or omitted)
      function pollPaymentStatus(ref) {
       setInterval(function () {
-          fetch(`/status/${ref}`)
+          fetch(`https://pay.yeshualifeug.com/status/${ref}`)
           .then(response => response.json())
           .then(data => {
               if (data.status === 'SUCCESSFUL') {
