@@ -508,3 +508,20 @@ p {
           
       }
    
+/* ///// Header payments */
+
+.custom-heading {
+    font-size: 3rem; /* Default size for larger screens */
+  }
+  
+  @media (max-width: 768px) {
+    .custom-heading {
+      font-size: 4rem; /* Larger size for smaller screens */
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .custom-heading {
+      font-size: 5rem; /* Even larger for extra small screens */
+    }
+  }
