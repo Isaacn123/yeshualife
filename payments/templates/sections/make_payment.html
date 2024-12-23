@@ -218,24 +218,26 @@
          
                      });
 
-            }else if(payButton.id == "openAirtelModalButton"){
-                console.log("BTN",payButton);
-                payButton.addEventListener('click', function(){
-                    // Populate the form fields of the MTN modal with the form data
-                 document.getElementById('airtel-pay-phoneid').value = ''; // Clear the phone input field
-                 document.getElementById('airtel-pay-donorName').value = formData.name;
-                 document.getElementById('airtel-pay-donationAmount').value = formData.donationAmount;
-                 document.getElementById('airtel-pay-currency').value = formData.currency;
-                 document.getElementById('airtel-pay-fullname').value = formData.name;
-                 document.getElementById('airtel-pay-message').value = formData.message;
-         
-                 // Set the button text with the amount
-                 document.getElementById(btn).textContent = "Pay "+ formData.currency + " " + formData.donationAmount;
-                 
-                // button.textContent = "Pay "+ formData.currency + " "+ donationAmount;
-         
-                     });
             }
+            
+            ////else if(payButton.id == "openAirtelModalButton"){
+              //  console.log("BTN",payButton);
+              //  payButton.addEventListener('click', function(){
+               //     // Populate the form fields of the MTN modal with the form data
+               //  document.getElementById('airtel-pay-phoneid').value = ''; // Clear the phone input field
+               //  document.getElementById('airtel-pay-donorName').value = formData.name;
+               //  document.getElementById('airtel-pay-donationAmount').value = formData.donationAmount;
+               //  document.getElementById('airtel-pay-currency').value = formData.currency;
+                // document.getElementById('airtel-pay-fullname').value = formData.name;
+                // document.getElementById('airtel-pay-message').value = formData.message;
+         
+               //  // Set the button text with the amount
+               //  document.getElementById(btn).textContent = "Pay "+ formData.currency + " " + formData.donationAmount;
+                 
+                // // button.textContent = "Pay "+ formData.currency + " "+ donationAmount;
+         
+                  //   });
+       // }
    
         }
 
