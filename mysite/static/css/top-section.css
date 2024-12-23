@@ -516,7 +516,7 @@ p {
   
   @media (max-width: 768px) {
     .custom-heading {
-      font-size: 4rem; /* Larger size for smaller screens */
+      font-size: 5rem; /* Larger size for smaller screens */
     }
   }
   
