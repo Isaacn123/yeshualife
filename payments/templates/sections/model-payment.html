@@ -120,7 +120,7 @@
   var progress = 0;
 
   // Disable the success button initially
-  btnSuccess.setAttribute('disabled', true);
+  btnSuccess.setAttribute('enable', true);
 
   // Update progress bar function
   function updateModalProgress() {
@@ -197,9 +197,6 @@
        if(number === null || number.trim() === '' ){
            alert("Phone number can't be blank!")
            return false;
-          // /^\d{10}$|^\d{15}$/   both 10 and 15
-          // /^\d{10}$/   ten digits only
-          // /^\d{10,15}$/  numbers between 10 and 15
        } // Check if the currency is selected (not the default value)
        else if (currency === '' || currency === 'Choose') {  // Assuming 'Choose' is the default value in the select box
            alert("Please select a valid currency.");
@@ -210,6 +207,11 @@
        }else{
                // If the number is valid, allow the form to be submitted
               // form.submit();
+
+              if (number.startsWith('0')) {
+                number = '256' + number.slice(1);
+            }
+
               console.log("MASS",msgPayment)
 
               var phoneNumber = document.getElementById('phoneid').value.startsWith('0') 
@@ -286,7 +288,7 @@
                     push.hide();
                     modalSuccess.hide(); 
                   })
-              } else if (data.status === 'failure') {
+              } else if (data.status === 'Failure') {
                   alert('Payment failed: ' + data.message);
                   console.log('Payment failed:', data.message);
               } else if (data.status === 'PENDING') {
@@ -329,7 +331,7 @@
                    clearInterval(intervalId); 
                   // alert("Payment was successful!");
 
-              } else if (data.status === 'FAILURE') {
+              } else if (data.status === 'FAILED') {
                  
                   modalPending.hide(); // Optionally hide the pending modal
                   clearInterval(intervalId); 
