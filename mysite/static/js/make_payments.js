@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Construct HTML content with collected data
         var htmlContent = `
-        <div class="fw-bolder mb-4"><span class="fas fa-dollar-sign"></span><span class="ps-1">${donationAmount}.00</span></div>
+        <div class="fw-bolder mb-4"><span class="ps-1">${donationAmount|intcomma }.00 UGX</span></div>
         <div class="d-flex flex-column">
             <div class="d-flex align-items-center justify-content-between text"> 
                 <span class="">FullNames:</span>
