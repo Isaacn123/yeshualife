@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
              document.getElementById('message').value = formData.message;
      
              // Set the button text with the amount
-             document.getElementById(btn).textContent = "Pay "+ formData.currency + " " + formData.donationAmount;
+             document.getElementById(btn).textContent = 'Give ' + Number(formData.donationAmount).toLocaleString() + ' UGX';
              
             // button.textContent = "Pay "+ formData.currency + " "+ donationAmount;
 
