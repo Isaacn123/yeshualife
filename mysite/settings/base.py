@@ -92,6 +92,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "mysite.urls"
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
+
 # HTML_MINIFY = True
 
 
@@ -140,7 +141,7 @@ DATABASESn = {
 #     }
 # } 
 
-DATABASESx = {
+DATABASES = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'yeshualife_db',
@@ -164,7 +165,7 @@ DATABASESx = {
     }
 } 
 
-DATABASES = {
+DATABASESx = {
         'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'yeshualife_db',
@@ -241,7 +242,9 @@ STATIC_URL = "/static/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
-
+COMPRESS_ROOT = STATIC_ROOT  # This should be the same as STATIC_ROOT
+COMPRESS_URL = STATIC_URL  # This should be the same as STATIC_URL
+COMPRESS_OUTPUT_DIR = 'CACHE'  # Directory where the compressed files will go
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "mysite"
@@ -286,5 +289,5 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = [
     'https://sandbox.momodeveloper.mtn.com',  # Replace with the actual domain
 ]
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = True

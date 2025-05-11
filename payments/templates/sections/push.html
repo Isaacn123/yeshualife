@@ -5,7 +5,7 @@
           <div class="modal-content">
             <div class="modelheader">
 
-              <h5 class="modal-title fs-5 text-center" id="exampleModalLongTitle">Your Transaction is Being Verifie!</h5>
+              <h5 class="modal-title fs-5 text-center" id="exampleModalLongTitle">Request is Being Verified!</h5>
               
             </div>
             <div class="modal-body">
@@ -23,4 +23,15 @@
           </div>
         </div>
       </div>
+
+
+      <script>
+
+     document.getElementById('successbtn').addEventListener('click', function(){
+      const showsuccess = bootstrap.Modal.getInstance(document.getElementById('exampleModalPush'));
+      showsuccess.hide();
+      //document.querySelector('.modal-backdrop')?.remove();
+ 
+     });
+    </script>
     
