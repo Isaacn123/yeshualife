@@ -141,7 +141,7 @@ DATABASESn = {
 #     }
 # } 
 
-DATABASES = {
+DATABASESs = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'yeshualife_db',
@@ -165,7 +165,7 @@ DATABASES = {
     }
 } 
 
-DATABASESx = {
+DATABASES = {
         'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'yeshualife_db',
@@ -289,5 +289,5 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = [
     'https://sandbox.momodeveloper.mtn.com',  # Replace with the actual domain
 ]
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
