@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Construct HTML content with collected data
         var htmlContent = `
-        <div class="fw-bolder mb-4"><span class="ps-1">${donationAmount|intcomma }.00 UGX</span></div>
+        <div class="fw-bolder mb-4"><span class="ps-1">${Number(donationAmount).toLocaleString()}.00 UGX</span></div>
         <div class="d-flex flex-column">
             <div class="d-flex align-items-center justify-content-between text"> 
                 <span class="">FullNames:</span>
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
              document.getElementById('phoneid').value = ''; // Clear the phone input field
              document.getElementById('donorName').value = formData.name;
              document.getElementById('donationAmount').value = formData.donationAmount;
-             document.getElementById('my-button-mtn').textContent = 'Give ' + formData.donationAmount + ' UGX';
+             document.getElementById('my-button-mtn').textContent = 'Give ' + Number(formData.donationAmount).toLocaleString() + ' UGX';
              document.getElementById('currency').value = formData.currency;
              document.getElementById('fullname').value = formData.name;
              document.getElementById('message').value = formData.message;
