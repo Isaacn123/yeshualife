@@ -93,6 +93,27 @@
             var formData = JSON.parse(localStorage.getItem('formData')) || {};
             console.log("AIRTEL-PASSED-DATA::", formData);
             
+            // Populate modal fields with data from main form when modal opens
+            const airtelModal = document.getElementById('airtelModal');
+            airtelModal.addEventListener('show.bs.modal', function() {
+                // Get values from main form
+                const amount = document.getElementById('donationAmount')?.value || '';
+                const currency = document.getElementById('currency')?.value || 'UGX';
+                const donorName = document.getElementById('donorName')?.value || '';
+                const message = document.getElementById('message')?.value || '';
+                
+                // Update modal fields
+                document.getElementById('airtel-pay-donationAmount').value = amount;
+                document.getElementById('airtel-pay-currency').value = currency;
+                document.getElementById('airtel-pay-donorName').value = donorName;
+                document.getElementById('airtel-pay-fullname').value = donorName;
+                document.getElementById('airtel-pay-message').value = message;
+                
+                // Update button text with actual amount
+                const button = document.getElementById('airtel-pay-button');
+                button.textContent = `Pay ${currency} ${amount}`;
+            });
+            
             airtelbtn.addEventListener('click', function(event){
             event.preventDefault();
         
