@@ -89,6 +89,39 @@
             var form = document.getElementById("payform");
             var airtelbtn = document.getElementById("airtel-pay-button");
             
+            // Add independent Airtel button handler like MTN has
+            var airtelModalButton = document.getElementById("openAirtelModalButton");
+            if(airtelModalButton) {
+                airtelModalButton.addEventListener('click', function() {
+                    // Get current form data from main form
+                    var currentFormData = {
+                        message: document.getElementsByName('message')[0]?.value || '',
+                        donationAmount: document.getElementsByName('amount')[0]?.value || '',
+                        currency: 'UGX',
+                        name: document.getElementsByName('fullname')[0]?.value || ''
+                    };
+                    
+                    console.log("Airtel button clicked, form data:", currentFormData);
+                    
+                    if(!currentFormData.donationAmount) {
+                        alert('Please enter a donation amount first!');
+                        return;
+                    }
+                    
+                    // Populate Airtel modal fields
+                    document.getElementById('airtel-pay-phoneid').value = '';
+                    document.getElementById('donorName').value = currentFormData.name;
+                    document.getElementById('donationAmount').value = currentFormData.donationAmount;
+                    document.getElementById('currency').value = currentFormData.currency;
+                    document.getElementById('fullname').value = currentFormData.name;
+                    document.getElementById('message').value = currentFormData.message;
+                    document.getElementById('airtel-pay-button').textContent = 'Give ' + Number(currentFormData.donationAmount).toLocaleString() + ' UGX';
+                    
+                    // Store in localStorage for consistency
+                    localStorage.setItem('formData', JSON.stringify(currentFormData));
+                });
+            }
+            
             // Get form data from localStorage like MTN modal does
             var formData = JSON.parse(localStorage.getItem('formData')) || {};
             console.log("AIRTEL-PASSED-DATA::", formData);

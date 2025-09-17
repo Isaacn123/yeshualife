@@ -104,29 +104,6 @@ document.addEventListener('DOMContentLoaded', function() {
         paymentButtonModel(mtn,formData,"my-button-mtn");
 
         paymentButtonModel(airtel,formData,"airtel-pay-button");
-        
-        // Add event listener for when Airtel modal is about to show
-        const airtelModalElement = document.getElementById('airtelModal');
-        if(airtelModalElement) {
-            airtelModalElement.addEventListener('show.bs.modal', function() {
-                // Get the latest form data from localStorage
-                var currentFormData = JSON.parse(localStorage.getItem('formData')) || {};
-                console.log("Airtel modal opening, form data:", currentFormData);
-                
-                if(currentFormData.donationAmount) {
-                    // Populate the Airtel modal fields
-                    document.getElementById('airtel-pay-phoneid').value = ''; 
-                    document.getElementById('donorName').value = currentFormData.name || '';
-                    document.getElementById('donationAmount').value = currentFormData.donationAmount;
-                    document.getElementById('currency').value = currentFormData.currency || 'UGX';
-                    document.getElementById('fullname').value = currentFormData.name || '';
-                    document.getElementById('message').value = currentFormData.message || '';
-                    
-                    // Update button text
-                    document.getElementById('airtel-pay-button').textContent = 'Give ' + Number(currentFormData.donationAmount).toLocaleString() + ' UGX';
-                }
-            });
-        }
 
         //console.log("MDC", formData); // This line will throw an error, formData is not accessible here
     });
