@@ -89,6 +89,10 @@
             var form = document.getElementById("payform");
             var airtelbtn = document.getElementById("airtel-pay-button");
             
+            // Get form data from localStorage like MTN modal does
+            var formData = JSON.parse(localStorage.getItem('formData')) || {};
+            console.log("AIRTEL-PASSED-DATA::", formData);
+            
             airtelbtn.addEventListener('click', function(event){
             event.preventDefault();
         
@@ -112,10 +116,10 @@
                     console.log("MASS",msgPayment)
 
                     var airtel_payment = {
-                        amount: document.getElementById('airtel-pay-donationAmount').value,
-                        currency:document.getElementById('airtel-pay-currency').value,
-                        fullname:document.getElementById('airtel-pay-fullname').value,
-                        message: document.getElementById('airtel-pay-message').value,
+                        amount: document.getElementById('donationAmount').value,
+                        currency: document.getElementById('currency').value,
+                        fullname: document.getElementById('donorName').value,
+                        message: document.getElementById('message').value,
                         phone: document.getElementById('airtel-pay-phoneid').value,
                        }
                        console.log("Data:AIRTEL", airtel_payment);
@@ -142,8 +146,8 @@
       
           "amount": data['amount'] ,
           "currency": data['currency'],
-          "txt_ref": data['txt_ref'],
-          "phone_number": data['phone_number'],
+          "txt_ref": "airtel_ref_value",
+          "phone_number": data['phone'],
           "payermessage": data['message']
         })
     }
