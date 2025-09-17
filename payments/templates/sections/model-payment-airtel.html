@@ -119,6 +119,10 @@
                     
                     // Store in localStorage for consistency
                     localStorage.setItem('formData', JSON.stringify(currentFormData));
+                    
+                    // Open the Airtel modal
+                    const airtelModal = new bootstrap.Modal(document.getElementById('airtelModal'));
+                    airtelModal.show();
                 });
             }
             
