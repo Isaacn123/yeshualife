@@ -105,14 +105,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         paymentButtonModel(airtel,formData,"airtel-pay-button");
         
-        // Direct Airtel button handler (outside the continue button logic)
-        if(airtel) {
-            airtel.addEventListener('click', function() {
-                console.log("Airtel button clicked directly!");
-                
+        // Add event listener for when Airtel modal is about to show
+        const airtelModalElement = document.getElementById('airtelModal');
+        if(airtelModalElement) {
+            airtelModalElement.addEventListener('show.bs.modal', function() {
                 // Get the latest form data from localStorage
                 var currentFormData = JSON.parse(localStorage.getItem('formData')) || {};
-                console.log("Current form data:", currentFormData);
+                console.log("Airtel modal opening, form data:", currentFormData);
                 
                 if(currentFormData.donationAmount) {
                     // Populate the Airtel modal fields
@@ -125,16 +124,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Update button text
                     document.getElementById('airtel-pay-button').textContent = 'Give ' + Number(currentFormData.donationAmount).toLocaleString() + ' UGX';
-                    
-                    // Show the modal
-                    const airtelModal = new bootstrap.Modal(document.getElementById('airtelModal'));
-                    airtelModal.show();
-                } else {
-                    alert('Please fill out the form and click Continue first!');
                 }
             });
-        } else {
-            console.log("Airtel button not found!");
         }
 
         //console.log("MDC", formData); // This line will throw an error, formData is not accessible here
