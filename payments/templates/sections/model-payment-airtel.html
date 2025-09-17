@@ -121,9 +121,58 @@
                        console.log("Data:AIRTEL", airtel_payment);
 
                        alert("number is valid");
+                       airtelCallApi(airtel_payment);
             }
         
            }); 
+
+         
+         
+         
+           function airtelCallApi(data){
+  const url = "https://pay.yeshualifeug.com/airtel-pay";
+
+  fetch(url,
+    {
+       method:"POST",
+       headers:{
+         'Content-Type': 'application/json'
+       },
+       body:JSON.stringify({
+      
+          "amount": data['amount'] ,
+          "currency": data['currency'],
+          "txt_ref": data['txt_ref'],
+          "phone_number": data['phone_number'],
+          "payermessage": data['message']
+        })
+    }
+  ).then( response =>{
+    if(!response.ok){
+        return Promise.reject("API call failed with status: " + response.status);
+    }
+    return response.json();
+
+  }).then(data =>{
+
+    console.log('API Response:', data);
+
+    if (data.status_code === 'TS'){
+        alert('Payment processed successfully!');
+    } else{
+        alert('Payment failed: ' + data.message);
+        console.log("Payment not successful or status missing. ");
+        console.log("ERROR CODE: {status_code!r}",data.status_code)
+    }
+
+  }).catch(error =>{
+
+    console.error('Error calling /airtel-pay API:', error);
+    alert('There was an error processing your payment.');
+  });
+
+}
+
     
         });
     
