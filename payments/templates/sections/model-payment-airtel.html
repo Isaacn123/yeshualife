@@ -28,10 +28,10 @@
                             <div class="col-12">
                                 <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Donor Name</span>
                                     <div class="inputWithIcon"> 
-                                        <input id="fullname"  class="form-control fw-light" type="text"
+                                        <input id="airtel-fullname"  class="form-control fw-light" type="text"
                                         value="Guest User" hidden>
 
-                                        <input id="donorName"  class="form-control fw-light" type="text"
+                                        <input id="airtel-donorName"  class="form-control fw-light" type="text"
                                             value="" disabled>
                                         </div>
                                 </div>
@@ -40,14 +40,14 @@
                                 <div class="d-flex flex-column ps-md-5 px-md-0 px-4 mb-4"> <span>Donation<span
                                             class="ps-1">Amount</span></span>
                                     <div class="inputWithIcon">
-                                <input id="donationAmount" type="text" class="form-control" placeholder="500" disabled> <span
+                                <input id="airtel-donationAmount" type="text" class="form-control" placeholder="500" disabled> <span
                                             class="fas fa-money-bill"></span> </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex flex-column pe-md-5 px-md-0 px-4 mb-4"> <span>Currency</span>
                                     <div class="inputWithIcon"> 
-                                     <input id="currency" type="text" value="UGX" disabled>
+                                     <input id="airtel-currency" type="text" value="UGX" disabled>
                                         <span
                                             class="fas fa-lock">
                                         </span></div>
@@ -58,7 +58,7 @@
                                     <div class="inputWithIcon">
                                         <input id="airtel-pay-phoneid" class="form-control text-uppercase" type="text"
                                             placeholder="anumber (0754-345-343)" name="airtel-pay-phone"> <span class="far fa-phone"></span> 
-                                            <input id="message"  class="form-control fw-light" type="text"
+                                            <input id="airtel-message"  class="form-control fw-light" type="text"
                                             value="karamoja seed" hidden>
                                         </div>
                                 </div>
@@ -110,11 +110,11 @@
                     
                     // Populate Airtel modal fields
                     document.getElementById('airtel-pay-phoneid').value = '';
-                    document.getElementById('donorName').value = currentFormData.name;
-                    document.getElementById('donationAmount').value = currentFormData.donationAmount;
-                    document.getElementById('currency').value = currentFormData.currency;
-                    document.getElementById('fullname').value = currentFormData.name;
-                    document.getElementById('message').value = currentFormData.message;
+                    document.getElementById('airtel-donorName').value = currentFormData.name;
+                    document.getElementById('airtel-donationAmount').value = currentFormData.donationAmount;
+                    document.getElementById('airtel-currency').value = currentFormData.currency;
+                    document.getElementById('airtel-fullname').value = currentFormData.name;
+                    document.getElementById('airtel-message').value = currentFormData.message;
                     document.getElementById('airtel-pay-button').textContent = 'Give ' + Number(currentFormData.donationAmount).toLocaleString() + ' UGX';
                     
                     // Store in localStorage for consistency
@@ -134,7 +134,7 @@
             event.preventDefault();
         
             var number = document.getElementById('airtel-pay-phoneid').value;
-            msgPayment = document.getElementById("message").value;
+            msgPayment = document.getElementById("airtel-message").value;
             console.log("number:::");
             console.log(number);
             if(number === null || number.trim() === '' ){
@@ -153,10 +153,10 @@
                     console.log("MASS",msgPayment)
 
                     var airtel_payment = {
-                        amount: document.getElementById('donationAmount').value,
-                        currency: document.getElementById('currency').value,
-                        fullname: document.getElementById('donorName').value,
-                        message: document.getElementById('message').value,
+                        amount: document.getElementById('airtel-donationAmount').value,
+                        currency: document.getElementById('airtel-currency').value,
+                        fullname: document.getElementById('airtel-donorName').value,
+                        message: document.getElementById('airtel-message').value,
                         phone: document.getElementById('airtel-pay-phoneid').value,
                        }
                        console.log("Data:AIRTEL", airtel_payment);
