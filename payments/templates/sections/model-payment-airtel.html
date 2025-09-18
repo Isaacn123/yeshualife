@@ -155,15 +155,39 @@
             airtelbtn.addEventListener('click', function(event){
             event.preventDefault();
         
-            var number = document.getElementById('airtel-pay-phoneid').value;
+            var rawNumber = document.getElementById('airtel-pay-phoneid').value;
+            
+            // Clean the phone number before processing (UI remains unchanged)
+            function cleanPhoneNumber(phoneNumber) {
+                let cleaned = phoneNumber;
+                
+                // Remove all non-digit characters
+                cleaned = cleaned.replace(/\D/g, '');
+                
+                // Remove common prefixes
+                if(cleaned.startsWith('256')) {
+                    cleaned = cleaned.substring(3); // Remove 256
+                } else if(cleaned.startsWith('0')) {
+                    cleaned = cleaned.substring(1); // Remove leading 0
+                }
+                
+                // Limit to 9 digits max (for 7XX or 9XX format)
+                if(cleaned.length > 9) {
+                    cleaned = cleaned.substring(0, 9);
+                }
+                
+                return cleaned;
+            }
+            
+            var number = cleanPhoneNumber(rawNumber);
             msgPayment = document.getElementById("airtel-message").value;
-            console.log("number:::");
-            console.log(number);
+            console.log("Raw number input:", rawNumber);
+            console.log("Cleaned number:", number);
             if(number === null || number.trim() === '' ){
                 alert("Phone number can't be blank!")
                 return false;
-            }else if (number !== '' && !number.match(/^\d{10,15}$/)){
-                alert('Please enter a valid number.'); 
+            }else if (number.length < 9){
+                alert('Please enter a valid number with at least 9 digits.'); 
                 return false; 
             }else{
                     // If the number is valid, allow the form to be submitted
