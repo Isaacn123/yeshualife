@@ -90,6 +90,24 @@
             var form = document.getElementById("payform");
             var airtelbtn = document.getElementById("airtel-pay-button");
             
+            // Fix backdrop issue for Airtel modal close buttons
+            const airtelModal = document.getElementById('airtelModal');
+            const airtelCloseButtons = airtelModal.querySelectorAll('[data-bs-dismiss="modal"]');
+            
+            airtelCloseButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove any lingering backdrop
+                    setTimeout(() => {
+                        document.querySelector('.modal-backdrop')?.remove();
+                    }, 300);
+                });
+            });
+            
+            // Also handle when modal is hidden programmatically
+            airtelModal.addEventListener('hidden.bs.modal', function() {
+                document.querySelector('.modal-backdrop')?.remove();
+            });
+            
             // Add independent Airtel button handler like MTN has
             var airtelModalButton = document.getElementById("openAirtelModalButton");
             if(airtelModalButton) {
