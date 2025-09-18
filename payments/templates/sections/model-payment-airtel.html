@@ -96,9 +96,12 @@
             
             airtelCloseButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    // Remove any lingering backdrop
+                    // Remove any lingering backdrop and restore body scroll
                     setTimeout(() => {
                         document.querySelector('.modal-backdrop')?.remove();
+                        document.body.style.overflow = '';
+                        document.body.style.paddingRight = '';
+                        document.body.classList.remove('modal-open');
                     }, 300);
                 });
             });
@@ -106,6 +109,9 @@
             // Also handle when modal is hidden programmatically
             airtelModal.addEventListener('hidden.bs.modal', function() {
                 document.querySelector('.modal-backdrop')?.remove();
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+                document.body.classList.remove('modal-open');
             });
             
             // Add independent Airtel button handler like MTN has
