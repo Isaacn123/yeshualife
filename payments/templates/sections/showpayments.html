@@ -18,11 +18,11 @@
                     </div>
                     <div class="card-body p-4">
                         <div class="text-center mb-4">
-                            <div class="display-6 fw-bold text-primary mb-2">
+                            <div class="display-6 fw-bold mb-2" style="color: #cc9f3e;">
                                 <i class="fas fa-dollar-sign"></i>
                                 <span class="box1">599.00</span>
                             </div>
-                            <span class="badge bg-light text-dark px-3 py-2 rounded-pill">UGX</span>
+                            <span class="badge px-3 py-2 rounded-pill" style="background-color: #f0e3ba; color: #cc9f3e;">UGX</span>
                         </div>
                         
                         <div class="donation-details">
@@ -62,7 +62,7 @@
                                     <small class="text-muted d-block">Need Help?</small>
                                     <small class="fw-semibold">24/7 Support</small>
                                 </div>
-                                <button class="btn btn-outline-primary btn-sm rounded-circle" style="width: 40px; height: 40px;">
+                                <button class="btn btn-sm rounded-circle" style="width: 40px; height: 40px; background-color: #cc9f3e; border: 1px solid #cc9f3e; color: white;">
                                     <i class="fas fa-headset"></i>
                                 </button>
                             </div>
@@ -91,17 +91,17 @@
                         <!-- Payment Method Tabs -->
                         <ul class="nav nav-pills nav-fill mb-4" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active rounded-3 fw-semibold" href="#mobile-payment" data-bs-toggle="pill">
+                                <a class="nav-link active rounded-3 fw-semibold text-white" href="#mobile-payment" data-bs-toggle="pill" style="background-color: #cc9f3e; border-color: #cc9f3e;">
                                     <i class="fas fa-mobile-alt me-2"></i>Mobile Money
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link rounded-3 fw-semibold text-muted" href="#card-payment" data-bs-toggle="pill">
+                                <a class="nav-link rounded-3 fw-semibold text-muted" href="#card-payment" data-bs-toggle="pill" style="background-color: transparent;">
                                     <i class="fas fa-credit-card me-2"></i>Credit Card
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link rounded-3 fw-semibold text-muted" href="#other-payment" data-bs-toggle="pill">
+                                <a class="nav-link rounded-3 fw-semibold text-muted" href="#other-payment" data-bs-toggle="pill" style="background-color: transparent;">
                                     <i class="fas fa-ellipsis-h me-2"></i>More
                                 </a>
                             </li>
@@ -113,30 +113,30 @@
                                 <div class="row g-3">
                                     <div class="col-sm-6">
                                         <button type="button" id="openMtnModalButton" name="btn-mtn" 
-                                            class="btn btn-outline-warning w-100 p-4 rounded-4 border-2 position-relative payment-method-btn"
-                                            style="transition: all 0.3s ease; min-height: 120px;">
+                                            class="btn btn-outline-warning w-100 p-3 rounded-3 border-2 position-relative payment-method-btn"
+                                            style="transition: all 0.3s ease; min-height: 80px;">
                                             <div class="d-flex flex-column align-items-center">
-                                                <img src="{% static 'images/New-mtn-logo.jpeg' %}" height="50" width="60" alt="MTN Mobile Money" class="mb-2">
-                                                <span class="fw-bold text-dark">MTN MoMo</span>
-                                                <small class="text-muted mt-1">Mobile Money</small>
+                                                <img src="{% static 'images/New-mtn-logo.jpeg' %}" height="35" width="45" alt="MTN Mobile Money" class="mb-1">
+                                                <span class="fw-bold text-dark" style="font-size: 0.9rem;">MTN MoMo</span>
+                                                <small class="text-muted" style="font-size: 0.75rem;">Mobile Money</small>
                                             </div>
-                                            <div class="position-absolute top-0 end-0 p-2">
-                                                <i class="fas fa-check-circle text-success d-none payment-selected"></i>
+                                            <div class="position-absolute top-0 end-0 p-1">
+                                                <i class="fas fa-check-circle text-success d-none payment-selected" style="font-size: 0.9rem;"></i>
                                             </div>
                                         </button>
                                     </div>
                                     
                                     <div class="col-sm-6">
                                         <button type="button" id="openAirtelModalButton" name="btn-airtel"
-                                            class="btn btn-outline-danger w-100 p-4 rounded-4 border-2 position-relative payment-method-btn"
-                                            style="transition: all 0.3s ease; min-height: 120px;">
+                                            class="btn btn-outline-danger w-100 p-3 rounded-3 border-2 position-relative payment-method-btn"
+                                            style="transition: all 0.3s ease; min-height: 80px;">
                                             <div class="d-flex flex-column align-items-center">
-                                                <img src="{% static 'images/airtel_money.jpeg' %}" height="50" width="60" alt="Airtel Money" class="mb-2">
-                                                <span class="fw-bold text-dark">Airtel Money</span>
-                                                <small class="text-muted mt-1">Mobile Money</small>
+                                                <img src="{% static 'images/airtel_money.jpeg' %}" height="35" width="45" alt="Airtel Money" class="mb-1">
+                                                <span class="fw-bold text-dark" style="font-size: 0.9rem;">Airtel Money</span>
+                                                <small class="text-muted" style="font-size: 0.75rem;">Mobile Money</small>
                                             </div>
-                                            <div class="position-absolute top-0 end-0 p-2">
-                                                <i class="fas fa-check-circle text-success d-none payment-selected"></i>
+                                            <div class="position-absolute top-0 end-0 p-1">
+                                                <i class="fas fa-check-circle text-success d-none payment-selected" style="font-size: 0.9rem;"></i>
                                             </div>
                                         </button>
                                     </div>
@@ -144,7 +144,7 @@
                                 
                                 <div class="mt-4 p-3 bg-light rounded-3">
                                     <div class="d-flex align-items-center">
-                                        <i class="fas fa-info-circle text-primary me-2"></i>
+                                        <i class="fas fa-info-circle me-2" style="color: #cc9f3e;"></i>
                                         <small class="text-muted">Select your preferred mobile money provider to proceed with payment</small>
                                     </div>
                                 </div>
