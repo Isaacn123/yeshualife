@@ -1,19 +1,19 @@
 {% load wagtailcore_tags%}
 
 {% comment %} <section class="pt-5 pb-5 mt-0 align-items-center d-flex bg-dark" style="min-height: 100vh; background-size: cover; background-image: url(&quot;https://images.unsplash.com/photo-1517216015940-049a2d4e2da4?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=14035a7d76df29c4697de036fcd005ce&quot;);"> {% endcomment %}
-    <section class="pt-5 pb-5 mt-0 align-items-center d-flex bg-dark" style="min-height: 100vh; background-size: cover; background-position: center center; background-image: url('https://res.cloudinary.com/dbcvnjdbb/image/upload/v1710951446/yeshualife/gy2mkoanw2bevn0uggzu.jpg');">
-    <div class="container ">
+    <section class="pt-3 pt-md-5 pb-3 pb-md-5 mt-0 align-items-center d-flex bg-dark" style="min-height: 60vh; min-height-md: 100vh; background-size: cover; background-position: center center; background-image: url('https://res.cloudinary.com/dbcvnjdbb/image/upload/v1710951446/yeshualife/gy2mkoanw2bevn0uggzu.jpg');">
+    <div class="container px-3 px-md-3">
         <div class="row align-items-center d-flex justify-content-between">
-            <div class="col-12 col-md-6 pb-5 order-2 order-sm-2 ">
-                <h1 class="  text-white font-weight-bold mb-3 mt-5 display-3 display-3 display-sm-1 display-md-2 display-lg-3 custom-heading">{{page.specific.intro}}</h1>
-                <p class="lead text-white">{{ page.specific.body}}</p>
-                <div class=" d-flex mt-3 mb-1">
+            <div class="col-12 col-md-6 pb-3 pb-md-5 order-2 order-md-1">
+                <h1 class="text-white fw-bold mb-3 mt-2 mt-md-5" style="font-size: 1.8rem; font-size-md: 3rem; line-height: 1.2;">{{page.specific.intro}}</h1>
+                <p class="text-white mb-3" style="font-size: 1rem; font-size-md: 1.25rem;">{{ page.specific.body}}</p>
+                <div class="d-flex mt-2 mt-md-3 mb-1">
                     {% comment %} text-uppercase {% endcomment %}
                     {% comment %} <a class="btn btn-danger btn-raised  btn-lg  mt-md-3  text-uppercase" href="/payments" role="button">Donate now</a> {% endcomment %}
                 </div>
             </div>
-            <div class="col-12 col-md-6 order-sm-1 order-md-2  ">
-                <div class="icon-wrap text-primary d-flex justify-content-md-center my-3">
+            <div class="col-12 col-md-6 order-1 order-md-2">
+                <div class="icon-wrap text-primary d-flex justify-content-center justify-content-md-center my-2 my-md-3">
                     {% comment %} <button href="#" class="icon d-flex border-0 align-items-center justify-content-center bg-white text-dark shadow-lg rounded-circle " style="width:70px; height:70px">
                         <i class=" fa fa-play fa-lg ml-1"></i>
                     </button> {% endcomment %}

@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var donationCurrency = document.getElementById('currency').value;
 
 
-    var box1Container = document.querySelector('.box1');
+    var box1Container = document.querySelector('.summary-amount');
    // buttonContinue.innerHTML = donationAmount + donationCurrency
     buttonContinue.addEventListener('click', function(event) {
         event.preventDefault();
