@@ -169,7 +169,7 @@
                         if(data) {
                             airtelStatusIcon.textContent = '✅';
                             airtelStatusIconName.textContent = '✅';
-                            const name = data['family_name'] + " " + data['given_name'];
+                            const name = data['first_name'] + " " + data['last_name'];
                             document.getElementById('airtel-donorName').value = name;
                             airtelPayButton.disabled = false;
                             console.log("AIRTEL names", name);
