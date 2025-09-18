@@ -4,56 +4,156 @@
 <link href="{% static 'css/payment.css'%}" rel="stylesheet">
 {% endblock  %}
 
-<div  class="container bg-light d-md-flex align-items-center">
-    <div class="card box1 shadow-sm p-md-5 p-md-5 p-4">
-        <div class="fw-bolder mb-4"><span class="fas fa-dollar-sign"></span><span class="ps-1">599,00</span></div>
-        <div class="d-flex flex-column">
-            <div class="d-flex align-items-center justify-content-between text"> 
-                <span class="">Currency</span>
-                <span class="fas fa-dollar-sign"><span class="ps-1">UGX</span></span> 
+<div class="container bg-light d-flex justify-content-center p-4">
+    <div class="w-100" style="max-width: 1000px;">
+        <div class="row g-4">
+            <!-- Summary Card -->
+            <div class="col-lg-5">
+                <div class="card shadow-lg border-0 rounded-4 h-100">
+                    <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #cc9f3e 0%, #cc913e 100%);">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-receipt me-2"></i>
+                            Donation Summary
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <div class="display-6 fw-bold text-primary mb-2">
+                                <i class="fas fa-dollar-sign"></i>
+                                <span class="box1">599.00</span>
+                            </div>
+                            <span class="badge bg-light text-dark px-3 py-2 rounded-pill">UGX</span>
+                        </div>
+                        
+                        <div class="donation-details">
+                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <span class="text-muted">
+                                    <i class="fas fa-coins me-2"></i>Amount
+                                </span>
+                                <span class="fw-semibold">599.00 UGX</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <span class="text-muted">
+                                    <i class="fas fa-percentage me-2"></i>Tax
+                                </span>
+                                <span class="fw-semibold">0 UGX</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <span class="text-muted">
+                                    <i class="fas fa-calendar me-2"></i>Date
+                                </span>
+                                <span class="fw-semibold" id="donation-date">Today</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 p-3 bg-light rounded-3">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-quote-left text-muted me-2 mt-1"></i>
+                                <div class="flex-grow-1">
+                                    <p class="mb-1 fw-medium">Your Message:</p>
+                                    <p class="mb-0 text-muted fst-italic" id="donation-message">Hello thanks am Donating</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-top">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <small class="text-muted d-block">Need Help?</small>
+                                    <small class="fw-semibold">24/7 Support</small>
+                                </div>
+                                <button class="btn btn-outline-primary btn-sm rounded-circle" style="width: 40px; height: 40px;">
+                                    <i class="fas fa-headset"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="d-flex align-items-center justify-content-between text mb-4"> <span>Tax</span> <span
-                    class="fas fa-dollar-sign"><span class="ps-1">0</span></span> </div>
-            <div class="border-bottom mb-4"></div>
-            <div class="d-flex flex-column mb-4"> <span class="far fa-file-alt text"><span class="ps-2">Message
-                        ID:</span></span> <span class="ps-3">Hello thanks am Donating</span> </div>
-            <div class="d-flex flex-column mb-5"> <span class="far fa-calendar-alt text">
-                <span class="ps-2">Date:</span></span> <span class="ps-3">22 july,2018</span> </div>
-            <div class="d-flex align-items-center justify-content-between text mt-5">
-                <div class="d-flex flex-column text"> <span>Customer Support:</span> <span>online chat 24/7</span>
+            <!-- Payment Methods Card -->
+            <div class="col-lg-7">
+                <div class="card shadow-lg border-0 rounded-4 h-100">
+                    <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #cc9f3e 0%, #cc913e 100%);">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h5 class="mb-0 fw-bold">
+                                <i class="fas fa-credit-card me-2"></i>
+                                Payment Methods
+                            </h5>
+                            <div class="btn btn-outline-light btn-sm">
+                                <i class="fas fa-shield-alt me-1"></i>
+                                Secure
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <!-- Payment Method Tabs -->
+                        <ul class="nav nav-pills nav-fill mb-4" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active rounded-3 fw-semibold" href="#mobile-payment" data-bs-toggle="pill">
+                                    <i class="fas fa-mobile-alt me-2"></i>Mobile Money
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link rounded-3 fw-semibold text-muted" href="#card-payment" data-bs-toggle="pill">
+                                    <i class="fas fa-credit-card me-2"></i>Credit Card
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link rounded-3 fw-semibold text-muted" href="#other-payment" data-bs-toggle="pill">
+                                    <i class="fas fa-ellipsis-h me-2"></i>More
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- Payment Options -->
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="mobile-payment">
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <button type="button" id="openMtnModalButton" name="btn-mtn" 
+                                            class="btn btn-outline-warning w-100 p-4 rounded-4 border-2 position-relative payment-method-btn"
+                                            style="transition: all 0.3s ease; min-height: 120px;">
+                                            <div class="d-flex flex-column align-items-center">
+                                                <img src="{% static 'images/New-mtn-logo.jpeg' %}" height="50" width="60" alt="MTN Mobile Money" class="mb-2">
+                                                <span class="fw-bold text-dark">MTN MoMo</span>
+                                                <small class="text-muted mt-1">Mobile Money</small>
+                                            </div>
+                                            <div class="position-absolute top-0 end-0 p-2">
+                                                <i class="fas fa-check-circle text-success d-none payment-selected"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="col-sm-6">
+                                        <button type="button" id="openAirtelModalButton" name="btn-airtel"
+                                            class="btn btn-outline-danger w-100 p-4 rounded-4 border-2 position-relative payment-method-btn"
+                                            style="transition: all 0.3s ease; min-height: 120px;">
+                                            <div class="d-flex flex-column align-items-center">
+                                                <img src="{% static 'images/airtel_money.jpeg' %}" height="50" width="60" alt="Airtel Money" class="mb-2">
+                                                <span class="fw-bold text-dark">Airtel Money</span>
+                                                <small class="text-muted mt-1">Mobile Money</small>
+                                            </div>
+                                            <div class="position-absolute top-0 end-0 p-2">
+                                                <i class="fas fa-check-circle text-success d-none payment-selected"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 p-3 bg-light rounded-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-info-circle text-primary me-2"></i>
+                                        <small class="text-muted">Select your preferred mobile money provider to proceed with payment</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="btn btn-primary rounded-circle"><span class="fas fa-comment-alt"></span></div>
             </div>
         </div>
-    </div>
-    <div class="card box2 shadow-sm">
-        <div class="d-flex align-items-center justify-content-between p-md-5 p-4"> <span
-                class="h5 fw-bold m-0">Payment methods</span>
-            <div class="btn btn-primary bar"><span class="fas fa-bars"></span></div>
-        </div>
-        <ul class="nav nav-tabs mb-3 px-md-4 px-2">
-            <li class="nav-item"> <a class="nav-link px-2 active" aria-current="page" href="#">Mobile Payment</a> </li>
-            <li class="nav-item"> <a class="nav-link px-2" href="#">Credit Card</a> </li>
-            <li class="nav-item ms-auto"> <a class="nav-link px-2" href="#">+ More</a> </li>
-        </ul>
-        <div class="px-md-5 px-4 mb-4 d-flex align-items-center justify-content-center h-50 p-3">
-
-            <div class="btn-group" role="group" aria-label="Basic radio toggle button group"> 
-                {% comment %} data-bs-toggle="modal" data-bs-target="#mtnModal" {% endcomment %}
-            <button type="button" id="openMtnModalButton" class="btn icon-btn btn-outline-primary" name="btn-mtn" >
-               <img src="{% static 'images/New-mtn-logo.jpeg' %}" height="50" width="42" alt="" srcset="">
-                <span class="pe-1">MTN</span>
-            </button>
-            <!-- id="openAirtelModalButton" -->
-                <button type="button"  class="btn icon-btn btn-outline-primary" name="btn-airtel" id="openAirtelModalButton" >
-                    <img src="{% static 'images/airtel_money.jpeg' %}" height="50" width="42" alt="" srcset=""> 
-                        <span class="lpe-1">AIRTEL</span>
-                </button> 
-                
-                </div>
-        </div>
-   
     </div>
 </div>
 

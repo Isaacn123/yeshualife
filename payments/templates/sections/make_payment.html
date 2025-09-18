@@ -6,43 +6,69 @@
 <link href="{% static 'css/payment.css'%}" rel="stylesheet">
 {% endblock  %}
 
-<div class="container bg-light d-flex flex-column align-items-center justify-content-center p-3">
-  
-
-    <div id="hide-visible-container">
-        <div class="card box2 shadow-sm m-0 W-100">
-            <div class="d-flex align-items-center justify-content-between p-md-5 p-4"> <span
-                    class="h5 fw-bold m-0">Make a Donation</span>
-                {% comment %} <div class="btn btn-primary bar"><span class="fas fa-bars"></span></div> {% endcomment %}
+<div class="container bg-light d-flex flex-column align-items-center justify-content-center p-4">
+    
+    <div id="hide-visible-container" class="w-100" style="max-width: 600px;">
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+            <!-- Header with gradient -->
+            <div class="card-header bg-gradient text-white text-center py-4" style="background: linear-gradient(135deg, #cc9f3e 0%, #cc913e 100%);">
+                <h3 class="mb-0 fw-bold">
+                    <i class="fas fa-heart me-2"></i>
+                    Make a Donation
+                </h3>
+                <p class="mb-0 mt-2 opacity-90">Your generosity makes a difference</p>
             </div>
         
-            <form id="form-data">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Donation<span
-                                    class="ps-1">Amount</span></span>
-                            <div class="inputWithIcon"> 
-                                <input id="amount_id" type="number" name="amount" class="form-control" placeholder="Enter amount" required> 
-                               
+            <div class="card-body p-md-5 p-4">
+                <form id="form-data">
+                    <div class="row g-4">
+                        <!-- Amount Input -->
+                        <div class="col-12">
+                            <div class="form-floating mb-2">
+                                <input id="amount_id" type="number" name="amount" class="form-control form-control-lg border-2 rounded-3" placeholder="Enter amount" required style="font-size: 1.1rem; padding-top: 1.625rem;">
+                                <label for="amount_id" class="text-muted">
+                                    <i class="fas fa-dollar-sign me-2"></i>Donation Amount (UGX)
+                                </label>
+                            </div>
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Minimum donation: 1,000 UGX
+                            </small>
+                        </div>
+
+                        <!-- Message Input -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea id="message_id" rows="3" maxlength="60" name="message" 
+                                    class="form-control border-2 rounded-3" placeholder="Provide a short message" 
+                                    style="min-height: 100px; resize: none;"></textarea>
+                                <label for="message_id" class="text-muted">
+                                    <i class="fas fa-message me-2"></i>Your Message (Optional)
+                                </label>
+                            </div>
+                            <div class="d-flex justify-content-between mt-1">
+                                <small class="text-muted">Share why you're giving today</small>
+                                <small class="text-muted"><span id="char-count">0</span>/60</small>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Message</span>
-                                <div class="inputWithIcon"> 
-                                    <textarea id="message_id" rows="3" maxlength="60" 
-                                    name="message" class="form-control fw-light"
-                                    placeholder="Provide a short message."></textarea>
-                                    </div>
-                            </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-12 mt-4">
+                            <button id="my-button" type="submit" class="btn btn-lg w-100 text-white fw-bold py-3 rounded-3 position-relative overflow-hidden" 
+                                style="background: linear-gradient(135deg, #cc9f3e 0%, #cc913e 100%); border: none; transition: all 0.3s ease;">
+                                <span class="btn-text">
+                                    <i class="fas fa-arrow-right me-2"></i>
+                                    Proceed to Give
+                                </span>
+                                <div class="btn-loading d-none">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    Processing...
+                                </div>
+                            </button>
                         </div>
-                    <div class="col-12 px-md-5 px-4 mt-3">
-                        {% comment %} <div class="btn btn-primary w-100">Pay UG5X 99.00</div> {% endcomment %}
-                        <button id="my-button" type="submit" class="btn btn-primary w-100" >Proceed to Give</button>
                     </div>
-                </div>
-            </form>
-          
+                </form>
+            </div>
         </div>
     </div>
 
@@ -57,4 +83,122 @@
 {% compress js %}
 <script type="text/javascript" src="{% static 'js/make_payments.js' %}"></script>
 {% endcompress %}
+
+<script>
+// Enhanced interactions for the beautified form
+document.addEventListener('DOMContentLoaded', function() {
+    // Character counter for message textarea
+    const messageInput = document.getElementById('message_id');
+    const charCount = document.getElementById('char-count');
+    
+    if (messageInput && charCount) {
+        messageInput.addEventListener('input', function() {
+            const count = this.value.length;
+            charCount.textContent = count;
+            
+            // Change color based on character count
+            if (count > 50) {
+                charCount.style.color = '#dc3545'; // Red when approaching limit
+            } else {
+                charCount.style.color = '#6c757d'; // Default gray
+            }
+        });
+    }
+    
+    // Amount input formatting
+    const amountInput = document.getElementById('amount_id');
+    if (amountInput) {
+        amountInput.addEventListener('input', function() {
+            // Remove non-numeric characters except decimal point
+            let value = this.value.replace(/[^\d.]/g, '');
+            
+            // Ensure only one decimal point
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts.slice(1).join('');
+            }
+            
+            this.value = value;
+        });
+        
+        // Format number with commas on blur
+        amountInput.addEventListener('blur', function() {
+            if (this.value) {
+                const num = parseFloat(this.value);
+                if (!isNaN(num)) {
+                    // Update summary display
+                    updateDonationSummary(num, messageInput.value);
+                }
+            }
+        });
+    }
+    
+    // Payment method button interactions
+    const paymentButtons = document.querySelectorAll('.payment-method-btn');
+    paymentButtons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '';
+        });
+        
+        button.addEventListener('click', function() {
+            // Remove selection from other buttons
+            paymentButtons.forEach(btn => {
+                btn.querySelector('.payment-selected').classList.add('d-none');
+                btn.classList.remove('border-success');
+            });
+            
+            // Add selection to clicked button
+            this.querySelector('.payment-selected').classList.remove('d-none');
+            this.classList.add('border-success');
+        });
+    });
+    
+    // Update donation summary function
+    function updateDonationSummary(amount, message) {
+        const summaryAmount = document.querySelector('.box1');
+        const summaryMessage = document.getElementById('donation-message');
+        const donationDate = document.getElementById('donation-date');
+        
+        if (summaryAmount) {
+            summaryAmount.textContent = amount.toLocaleString() + '.00';
+        }
+        
+        if (summaryMessage && message) {
+            summaryMessage.textContent = message || 'Thank you for your generous donation';
+        }
+        
+        if (donationDate) {
+            donationDate.textContent = new Date().toLocaleDateString();
+        }
+    }
+    
+    // Enhanced button loading state
+    const proceedButton = document.getElementById('my-button');
+    if (proceedButton) {
+        proceedButton.addEventListener('click', function(e) {
+            const btnText = this.querySelector('.btn-text');
+            const btnLoading = this.querySelector('.btn-loading');
+            
+            if (btnText && btnLoading) {
+                btnText.classList.add('d-none');
+                btnLoading.classList.remove('d-none');
+                this.disabled = true;
+                
+                // Re-enable after processing (handled by main script)
+                setTimeout(() => {
+                    btnText.classList.remove('d-none');
+                    btnLoading.classList.add('d-none');
+                    this.disabled = false;
+                }, 2000);
+            }
+        });
+    }
+});
+</script>
 {% endblock %}
