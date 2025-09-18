@@ -98,6 +98,12 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 charCount.style.color = '#6c757d'; // Default gray
             }
+            
+            // Update message in summary in real-time
+            const summaryMessage = document.getElementById('donation-message');
+            if (summaryMessage) {
+                summaryMessage.textContent = this.value || 'Enter your message above';
+            }
         });
     }
     

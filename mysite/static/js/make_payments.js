@@ -78,8 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     name: name
                 };
 
-            // Update the HTML content of box1Container
-            // box1Container.innerHTML = htmlContent;
+            // Update the HTML content of box1Container - REMOVED
             console.log("MTN:", mtn);
            // mtn["formData"] = formData;
             console.log("MTN2:", mtn);
