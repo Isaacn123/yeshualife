@@ -170,18 +170,20 @@
                         body: JSON.stringify(requestBody)
                     })
                     .then(res => res.json())
-                    .then(data => {
+                    .then(response => {
                         console.log("AIRTEL returned..");
-                        console.log(data);
-                        if(data) {
+                        console.log(response);
+                        if(response && response.data && response.status && response.status.success) {
                             airtelStatusIcon.textContent = '✅';
                             airtelStatusIconName.textContent = '✅';
-                            const name = data['first_name'] + " " + data['last_name'];
+                            const userData = response.data;
+                            const name = userData['first_name'] + " " + userData['last_name'];
                             document.getElementById('airtel-donorName').value = name;
                             airtelPayButton.disabled = false;
                             console.log("AIRTEL names", name);
                         } else {
                             airtelStatusIcon.textContent = '❌';
+                            console.log("AIRTEL: User not found or API error");
                         }
                     })
                     .catch(err => {
