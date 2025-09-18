@@ -159,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateDonationSummary(amount, message) {
         const summaryAmount = document.querySelector('.box1');
         const summaryMessage = document.getElementById('donation-message');
-        const donationDate = document.getElementById('donation-date');
         
         if (summaryAmount) {
             summaryAmount.textContent = amount.toLocaleString() + '.00';
@@ -169,9 +168,13 @@ document.addEventListener('DOMContentLoaded', function() {
             summaryMessage.textContent = message || 'Thank you for your generous donation';
         }
         
-        // if (donationDate) {
-        //     donationDate.textContent = new Date().toLocaleDateString();
-        // }
+        // Update other amount displays in the new layout
+        const amountElements = document.querySelectorAll('.fw-semibold');
+        amountElements.forEach(el => {
+            if (el.textContent.includes('599.00 UGX')) {
+                el.textContent = amount.toLocaleString() + '.00 UGX';
+            }
+        });
     }
     
     // Enhanced button loading state

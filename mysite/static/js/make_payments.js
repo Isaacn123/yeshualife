@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
 
             // Update the HTML content of box1Container
-            box1Container.innerHTML = htmlContent;
+            // box1Container.innerHTML = htmlContent;
             console.log("MTN:", mtn);
            // mtn["formData"] = formData;
             console.log("MTN2:", mtn);
