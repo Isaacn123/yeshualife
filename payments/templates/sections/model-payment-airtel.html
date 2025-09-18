@@ -138,30 +138,36 @@
             const airtelPhoneInput = document.getElementById('airtel-pay-phoneid');
             
             function checkAirtelNumberAndCallApi(phone) {
-                console.log("AIRTEL-PHONE", phone);
+                console.log("AIRTEL-PHONE input:", phone);
                 const cleaned = phone.replace(/\D/g, '');
-                console.log("AIRTEL-PHONE-clean", cleaned);
+                console.log("AIRTEL-PHONE after removing non-digits:", cleaned);
                 
                 let trimmed = cleaned;
                 if(cleaned.startsWith('0')) {
+                    console.log("AIRTEL: Removing leading 0");
                     trimmed = cleaned.slice(1);
                 } else if(cleaned.startsWith('256')) {
+                    console.log("AIRTEL: Removing 256 prefix");
                     trimmed = cleaned.slice(3);
                 }
+                console.log("AIRTEL-PHONE final trimmed:", trimmed);
                 
                 if(trimmed.length === 9) {
                     airtelStatusIcon.innerHTML = '<span class="loader"></span>';
                     console.log("--AIRTEL-NUM.length", trimmed.length);
+                    console.log("--AIRTEL-SENDING to API:", trimmed);
+                    
+                    const requestBody = {
+                        phonenumber: trimmed
+                    };
+                    console.log("--AIRTEL-REQUEST-BODY:", JSON.stringify(requestBody));
                     
                     fetch(`https://pay.yeshualifeug.com/airtel-userinfo`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({
-                            // phonenumber: '256' + trimmed
-                            phonenumber: trimmed
-                        })
+                        body: JSON.stringify(requestBody)
                     })
                     .then(res => res.json())
                     .then(data => {
