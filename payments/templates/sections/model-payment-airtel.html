@@ -327,8 +327,8 @@
 
     console.log('AIRTEL API Response:', data);
 
-    if (data.status === 'SUCCESSFUL') {
-        // Hide pending modal and show success modal
+    if (data.status === 'TS') {
+        // TS = Transaction Success
         const pendingModalInstance = bootstrap.Modal.getInstance(document.getElementById('pendingModalLong'));
         pendingModalInstance.hide();
         
@@ -337,40 +337,36 @@
             successModal.show();
         }, 500);
         
-        console.log('AIRTEL Payment processed successfully!');
-    } else if (data.status === 'FAILED' || data.status === 'failure') {
-        // Hide pending modal and show error
+        console.log('AIRTEL Payment processed successfully! (TS)');
+    } else if (data.status === 'TF' || data.status === 'TE') {
+        // TF = Transaction Failed, TE = Transaction Expired
         const pendingModalInstance = bootstrap.Modal.getInstance(document.getElementById('pendingModalLong'));
         pendingModalInstance.hide();
         
-        alert('AIRTEL Payment failed: ' + (data.message || 'Unknown error'));
-        console.log('AIRTEL Payment failed:', data.message);
-    } else if (data.status === 'PENDING') {
-        console.log("AIRTEL Payment is pending, please wait...")
+        alert('AIRTEL Payment failed: ' + (data.message || (data.status === 'TF' ? 'Transaction Failed' : 'Transaction Expired')));
+        console.log('AIRTEL Payment failed:', data.status, data.message);
+    } else if (data.status === 'TIP') {
+        // TIP = Transaction in Progress
+        console.log("AIRTEL Payment is in progress (TIP), please wait...")
         console.log("AIRTEL Response: Data", data)
     
         console.log("AIRTEL Ref", data.ref);
         // Start polling for payment status
         pollAirtelPaymentStatus(data.ref);
+    } else if (data.status === 'TA') {
+        // TA = Transaction Ambiguous - needs polling
+        console.log("AIRTEL Payment status is ambiguous (TA), starting polling...")
+        console.log("AIRTEL Response: Data", data)
+    
+        console.log("AIRTEL Ref", data.ref);
+        pollAirtelPaymentStatus(data.ref);
     } else {
-        // Handle other status codes like 'TS' if still used
-        if (data.status_code === 'TS'){
-            // Hide pending modal and show success modal
-            const pendingModalInstance = bootstrap.Modal.getInstance(document.getElementById('pendingModalLong'));
-            pendingModalInstance.hide();
-            
-            setTimeout(() => {
-                const successModal = new bootstrap.Modal(document.getElementById('exampleModalPush'));
-                successModal.show();
-            }, 500);
-        } else {
-            const pendingModalInstance = bootstrap.Modal.getInstance(document.getElementById('pendingModalLong'));
-            pendingModalInstance.hide();
-            
-            alert('AIRTEL Payment failed: ' + (data.message || 'Unknown error'));
-            console.log("AIRTEL Payment not successful or status missing. ");
-            console.log("AIRTEL ERROR CODE:", data.status_code)
-        }
+        // Unknown status
+        const pendingModalInstance = bootstrap.Modal.getInstance(document.getElementById('pendingModalLong'));
+        pendingModalInstance.hide();
+        
+        alert('AIRTEL Payment status unknown: ' + (data.status || 'No status'));
+        console.log("AIRTEL Unknown status:", data.status, data);
     }
 
   }).catch(error =>{
@@ -393,8 +389,8 @@ function pollAirtelPaymentStatus(ref) {
         .then(data => {
             console.log('AIRTEL STATUS-PAY:', data.status);
             
-            if (data.status === 'SUCCESSFUL') {
-                // Hide pending modal and show success modal
+            if (data.status === 'TS') {
+                // TS = Transaction Success
                 const pendingModalInstance = bootstrap.Modal.getInstance(document.getElementById('pendingModalLong'));
                 pendingModalInstance.hide();
 
@@ -403,20 +399,21 @@ function pollAirtelPaymentStatus(ref) {
                     successModal.show();
                 }, 500);
                 
-                console.log("AIRTEL Payment processed successfully!")
+                console.log("AIRTEL Payment processed successfully! (TS)")
                 clearInterval(intervalId); 
 
-            } else if (data.status === 'FAILED') {
-                // Hide pending modal and show error
+            } else if (data.status === 'TF' || data.status === 'TE') {
+                // TF = Transaction Failed, TE = Transaction Expired
                 const pendingModalInstance = bootstrap.Modal.getInstance(document.getElementById('pendingModalLong'));
                 pendingModalInstance.hide();
                 
                 clearInterval(intervalId); 
-                alert("AIRTEL Payment failed: " + (data.message || 'Unknown error'));
+                alert("AIRTEL Payment failed: " + (data.message || (data.status === 'TF' ? 'Transaction Failed' : 'Transaction Expired')));
 
-            } else if (data.status === 'PENDING') {
-                console.log("AIRTEL Payment is still pending...");
-                // Keep the pending modal showing
+            } else if (data.status === 'TIP' || data.status === 'TA') {
+                // TIP = Transaction in Progress, TA = Transaction Ambiguous
+                console.log("AIRTEL Payment is still in progress (" + data.status + ")...");
+                // Keep the pending modal showing and continue polling
             }
         })
         .catch(error => {
