@@ -83,8 +83,6 @@
   {% block extra_js %}
   <script>
         
-
-       
         document.addEventListener('DOMContentLoaded', function() {
             var form = document.getElementById("payform");
             var airtelbtn = document.getElementById("airtel-pay-button");
@@ -130,6 +128,30 @@
             var formData = JSON.parse(localStorage.getItem('formData')) || {};
             console.log("AIRTEL-PASSED-DATA::", formData);
             
+            // Add phone number input guard
+            const phoneInput = document.getElementById('airtel-pay-phoneid');
+            if(phoneInput) {
+                phoneInput.addEventListener('input', function() {
+                    let value = this.value;
+                    
+                    // Remove all non-digit characters
+                    value = value.replace(/\D/g, '');
+                    
+                    // Remove common prefixes
+                    if(value.startsWith('256')) {
+                        value = value.substring(3); // Remove 256
+                    } else if(value.startsWith('0')) {
+                        value = value.substring(1); // Remove leading 0
+                    }
+                    // Limit to 9 digits max (for 7XX or 9XX format)
+                    if(value.length > 9) {
+                        value = value.substring(0, 9);
+                    }
+                    
+                    this.value = value;
+                });
+            }
+
             airtelbtn.addEventListener('click', function(event){
             event.preventDefault();
         
