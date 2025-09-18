@@ -63,10 +63,14 @@ document.addEventListener('DOMContentLoaded', function() {
             <span class="ps-1">0</span></span> </div>
             <div class="border-bottom mb-4"></div>
             <div class="d-flex flex-column mb-4"> <span class="far fa-file-alt text"><span class="ps-2">Message
-            :</span></span> <span class="ps-3">${donationMessage}</span> </div>
-            <div class="d-flex flex-column mb-5">
-           </div>
-      
+                        ID:</span></span> <span class="ps-3">${donationMessage}</span> </div>
+            <div class="d-flex flex-column mb-5"> <span class="far fa-calendar-alt text">
+                <span class="ps-2">Date:</span></span> <span class="ps-3">${new Date().toDateString()}</span> </div>
+            <div class="d-flex align-items-center justify-content-between text mt-5">
+                <div class="d-flex flex-column text"> <span>Customer Support:</span> <span>online chat 24/7</span>
+                </div>
+                <div class="btn btn-primary rounded-circle"><span class="fas fa-comment-alt"></span></div>
+            </div>
         </div>
     `;
 
