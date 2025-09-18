@@ -159,7 +159,8 @@
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            phonenumber: '256' + trimmed
+                            // phonenumber: '256' + trimmed
+                            phonenumber: trimmed
                         })
                     })
                     .then(res => res.json())
