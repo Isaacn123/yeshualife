@@ -1,0 +1,32 @@
+<div class="gs-card">
+  <div class="gs-card-head">
+    <h3 class="gs-h3">{{ title }}</h3>
+  </div>
+  <div class="gs-card-body">
+    {% if blocks %}
+      <div class="gs-block-list">
+        {% for b in blocks %}
+          <div class="gs-block">
+            <div class="gs-block-top">
+              <div class="gs-block-title">{{ b.title }}</div>
+              {% if b.link_url %}
+                <a class="gs-block-link" href="{{ b.link_url }}">Explore</a>
+              {% endif %}
+            </div>
+            {% if b.image_url %}
+              <div class="gs-block-image-wrap">
+                <img src="{{ b.image_url }}" alt="{{ b.title }}" class="gs-block-image">
+              </div>
+            {% endif %}
+            {% if b.body %}
+              <div class="gs-block-body">{{ b.body }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="gs-empty">No content yet.</div>
+    {% endif %}
+  </div>
+</div>
+

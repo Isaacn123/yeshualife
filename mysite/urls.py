@@ -19,6 +19,7 @@ urlpatterns = [
     path("api/v2/", api_router.urls),
     path("search/", search_views.search, name="search"),
     path("api_auth/", include('payments.urls')), 
+    path("", include("global_solutions.urls")),
     path('google334554454.html', TemplateView.as_view(template_name="google7c516833d92b99b0.html")),
     # path('feeds/latest/', LatestEntriesFeed(), name='latest_feed'),
 

@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load static compress %}
+
+{% block body_class %}template-globalsolutions{% endblock %}
+
+{% block extra_css %}
+  {{ block.super }}
+  {% compress css %}
+  <link rel="stylesheet" href="{% static 'global_solutions/global_solutions.css' %}">
+  {% endcompress %}
+{% endblock %}
+
+{% block content %}
+{% include "nav_bar.html" %}
+
+<section class="gs-hero">
+  <div class="container gs-hero-inner">
+    <div class="gs-hero-copy">
+      <h1 class="gs-title">{{ hero_title }}</h1>
+      {% if hero_subtitle %}
+        <p class="gs-subtitle">{{ hero_subtitle }}</p>
+      {% endif %}
+    </div>
+    {% if hero_image_url %}
+      <div class="gs-hero-media">
+        <img src="{{ hero_image_url }}" alt="{{ hero_title }}" class="gs-hero-image">
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="gs-section">
+  <div class="container">
+    <div class="gs-section-header">
+      <h2 class="gs-h2">Feeding • Preachings • Learning</h2>
+      <p class="gs-muted">Fresh clips uploaded continuously.</p>
+    </div>
+
+    <div class="row gs-triple">
+      <div class="col-lg-4">
+        <div class="gs-card">
+          <div class="gs-card-head">
+            <h3 class="gs-h3">Feeding</h3>
+          </div>
+          <div class="gs-card-body">
+            {% include "global_solutions/partials/video_grid.html" with videos=feeds empty_text="No feeding clips yet." %}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="gs-card">
+          <div class="gs-card-head">
+            <h3 class="gs-h3">Preachings</h3>
+          </div>
+          <div class="gs-card-body">
+            {% include "global_solutions/partials/video_grid.html" with videos=preachings empty_text="No preachings yet." %}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="gs-card">
+          <div class="gs-card-head">
+            <h3 class="gs-h3">Learning</h3>
+          </div>
+          <div class="gs-card-body">
+            {% include "global_solutions/partials/video_grid.html" with videos=learning empty_text="No learning clips yet." %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gs-section gs-alt">
+  <div class="container">
+    <div class="gs-section-header">
+      <h2 class="gs-h2">Wealth Creation • Healings</h2>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Wealth Creation" blocks=blocks_by_category.wealth_creation %}</div>
+      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Healings" blocks=blocks_by_category.healings %}</div>
+    </div>
+  </div>
+</section>
+
+<section class="gs-section">
+  <div class="container">
+    <div class="gs-section-header">
+      <h2 class="gs-h2">Innovations • Advancement</h2>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Innovations" blocks=blocks_by_category.innovations %}</div>
+      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Advancement" blocks=blocks_by_category.advancement %}</div>
+    </div>
+  </div>
+</section>
+
+<section class="gs-section gs-alt">
+  <div class="container">
+    <div class="gs-section-header">
+      <h2 class="gs-h2">Integration • Power</h2>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Integration" blocks=blocks_by_category.integration %}</div>
+      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Power" blocks=blocks_by_category.power %}</div>
+    </div>
+  </div>
+</section>
+
+<section class="gs-section">
+  <div class="container">
+    <div class="gs-section-header">
+      <h2 class="gs-h2">Education • Knowledge</h2>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Education" blocks=blocks_by_category.education %}</div>
+      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Knowledge" blocks=blocks_by_category.knowledge %}</div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  {% compress js %}
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
+  <script type="text/javascript" src="{% static 'global_solutions/global_solutions.js' %}"></script>
+  {% endcompress %}
+{% endblock %}
+
+{% block footer %}
+  {% include "blog/footer.html" %}
+{% endblock %}
+

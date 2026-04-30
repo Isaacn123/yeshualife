@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static compress %}
+
+{% block body_class %}template-gs-upload{% endblock %}
+
+{% block extra_css %}
+  {{ block.super }}
+  {% compress css %}
+  <style>
+    .gsu-wrap{padding:1.3rem 0;}
+    .gsu-card{background:#fff;border:1px solid rgba(17,24,39,.10);border-radius:14px;box-shadow:0 10px 30px rgba(2,6,23,.06);overflow:hidden;}
+    .gsu-card h1{margin:0;font-weight:800;letter-spacing:-0.02em;}
+    .gsu-head{padding:1rem;border-bottom:1px solid rgba(17,24,39,.10);background:linear-gradient(180deg, rgba(2,6,23,.03) 0%, rgba(2,6,23,0) 100%);}
+    .gsu-body{padding:1rem;}
+    .gsu-row{display:grid;grid-template-columns: 1fr 1fr;gap:1rem;}
+    @media (max-width: 992px){.gsu-row{grid-template-columns:1fr;}}
+    .gsu-field label{font-weight:800;margin-bottom:.35rem;}
+    .gsu-help{color:#6b7280;font-size:.95rem;margin-top:.35rem;}
+    .gsu-status{padding:.7rem .9rem;border-radius:12px;background:#f8fafc;border:1px solid rgba(17,24,39,.10);font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; white-space: pre-wrap;}
+    .gsu-btn{font-weight:800;}
+    .gsu-progress{height: 10px;}
+  </style>
+  {% endcompress %}
+{% endblock %}
+
+{% block content %}
+{% include "nav_bar.html" %}
+
+<div class="container gsu-wrap">
+  <div class="gsu-card">
+    <div class="gsu-head">
+      <h1>Global Solutions Upload Center</h1>
+      <div class="gsu-help">Uploads go directly to Backblaze B2 (multipart), then you process to HLS for fast playback.</div>
+    </div>
+    <div class="gsu-body">
+      <div class="gsu-row">
+        <div>
+          <div class="gsu-field mb-3">
+            <label class="form-label">Type</label>
+            <select class="form-select" id="gsu-kind">
+              <option value="feeding">Feeding</option>
+              <option value="preaching">Preachings</option>
+              <option value="learning">Learning</option>
+            </select>
+          </div>
+          <div class="gsu-field mb-3">
+            <label class="form-label">Title</label>
+            <input class="form-control" id="gsu-title" placeholder="Clip title">
+          </div>
+          <div class="gsu-field mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" id="gsu-description" rows="3" placeholder="Optional description"></textarea>
+          </div>
+          <div class="gsu-field mb-3">
+            <label class="form-label">Video file</label>
+            <input class="form-control" id="gsu-file" type="file" accept="video/*">
+            <div class="gsu-help">Recommended: MP4 (H.264 + AAC). Large files are supported via multipart upload.</div>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary gsu-btn" id="gsu-upload-btn" type="button">Upload to B2</button>
+            <button class="btn btn-outline-primary gsu-btn" id="gsu-process-btn" type="button" disabled>Mark for Processing</button>
+          </div>
+          <div class="mt-3">
+            <div class="progress gsu-progress">
+              <div class="progress-bar" id="gsu-progress" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="gsu-field mb-2">
+            <label class="form-label">Status</label>
+            <div class="gsu-status" id="gsu-status">Ready.</div>
+          </div>
+          <div class="gsu-help">
+            After you click “Mark for Processing”, run the worker on your server:
+            <div class="mt-2"><code>python manage.py process_global_solutions_videos</code></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  {% compress js %}
+  <script type="text/javascript" src="{% static 'global_solutions/uploader.js' %}"></script>
+  {% endcompress %}
+{% endblock %}
+
+{% block footer %}
+  {% include "blog/footer.html" %}
+{% endblock %}
+

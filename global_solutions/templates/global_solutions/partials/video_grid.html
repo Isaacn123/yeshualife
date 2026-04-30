@@ -1,0 +1,25 @@
+{% if videos %}
+  <div class="gs-video-grid">
+    {% for v in videos %}
+      <article class="gs-video">
+        <div class="gs-video-frame">
+          <video
+            class="gs-video-el"
+            controls
+            preload="metadata"
+            playsinline
+            data-hls-src="{{ v.hls_master_manifest_url }}"
+            {% if v.poster_image_url %}poster="{{ v.poster_image_url }}"{% endif %}
+          ></video>
+        </div>
+        <div class="gs-video-meta">
+          <div class="gs-video-title">{{ v.title }}</div>
+          {% if v.description %}<div class="gs-video-desc">{{ v.description }}</div>{% endif %}
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="gs-empty">{{ empty_text }}</div>
+{% endif %}
+
