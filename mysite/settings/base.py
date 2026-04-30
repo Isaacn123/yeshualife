@@ -143,7 +143,7 @@ DATABASESn = {
 #     }
 # } 
 
-DATABASES = {
+DATABASESx = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'yeshualife_db',
@@ -167,7 +167,7 @@ DATABASES = {
     }
 } 
 
-DATABASESx = {
+DATABASES = {
         'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'yeshualife_db',
