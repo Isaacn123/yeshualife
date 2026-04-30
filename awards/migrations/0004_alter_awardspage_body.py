@@ -12,9 +12,25 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='awardspage',
-            name='body',
-            field=wagtail.fields.StreamField([('heading', wagtail.blocks.CharBlock(form_classname='title')), ('paragraph', wagtail.blocks.RichTextBlock()), ('image', wagtail.blocks.ChooserBlock()), ('video', wagtail.blocks.EmailBlock())], use_json_field=True),
-        ),
+        # NOTE:
+        # This migration attempts to convert `AwardsPage.body` from RichTextField (TEXT)
+        # to StreamField(use_json_field=True) (JSON). On MySQL this fails when existing
+        # rows contain non-JSON text/HTML, raising:
+        #   OperationalError: Invalid JSON text ...
+        #
+        # Kept as a no-op (commented out) so other migrations can run.
+        #
+        # migrations.AlterField(
+        #     model_name='awardspage',
+        #     name='body',
+        #     field=wagtail.fields.StreamField(
+        #         [
+        #             ('heading', wagtail.blocks.CharBlock(form_classname='title')),
+        #             ('paragraph', wagtail.blocks.RichTextBlock()),
+        #             ('image', wagtail.blocks.ChooserBlock()),
+        #             ('video', wagtail.blocks.EmailBlock()),
+        #         ],
+        #         use_json_field=True,
+        #     ),
+        # ),
     ]
