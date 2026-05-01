@@ -197,7 +197,7 @@
         processBtn.disabled = true;
         setStatus("Marking for processing...");
         await postForm("/global-solutions/api/videos/" + currentVideoId + "/process/start/", {});
-        setStatus("Marked PROCESSING. Run: python manage.py process_global_solutions_videos");
+        setStatus("Marked PROCESSING. It will be processed automatically.");
       } catch (e) {
         setStatus("Error: " + (e && e.message ? e.message : String(e)));
       } finally {

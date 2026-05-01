@@ -19,6 +19,20 @@ from wagtail.embeds.oembed_providers import youtube, vimeo
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
+#
+# Load environment variables from .env (if present).
+#
+# This is used in production too, so you can configure secrets like Backblaze B2
+# without editing systemd/gunicorn service files.
+#
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv(os.path.join(BASE_DIR, ".env"))
+except Exception:
+    # If python-dotenv isn't installed or .env is missing, continue normally.
+    pass
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/

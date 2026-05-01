@@ -31,20 +31,24 @@ Set these in your server environment (not in git):
 Optional:
 - `FFMPEG_BIN` (default: `ffmpeg`)
 
-## Upload & processing flow
+## Upload & processing flow (no manual commands)
 
-1. Visit `/global-solutions/upload/` as a staff user.
+1. Visit the upload center as a staff user (recommended: Wagtail admin menu).
 2. Choose type (Feeding/Preachings/Learning), set title, select file, click **Upload to B2**.
 3. Click **Mark for Processing**.
-4. On your server (where ffmpeg is installed), run:
+4. A background worker converts MP4 → **HLS**, uploads HLS back to B2, and marks the clip **READY**.
 
-```bash
-python manage.py process_global_solutions_videos
-```
-
-When processing completes, the clip becomes **READY** and will show on `/global-solutions/`.
+When processing completes, the clip will show on `/global-solutions/`.
 
 ## ffmpeg requirement
 
 The processing command requires **ffmpeg** available on the server PATH (or via `FFMPEG_BIN`).
+
+## Running the background worker (server setup, one-time)
+
+Run this as a long-running process (e.g. systemd):
+
+```bash
+python manage.py process_global_solutions_videos_worker
+```
 
