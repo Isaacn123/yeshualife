@@ -4,6 +4,66 @@
   function setStatus(text) { $("gsu-status").textContent = text; }
   function setProgress(pct) { $("gsu-progress").style.width = pct + "%"; }
 
+  function bytesToSize(bytes) {
+    if (!bytes && bytes !== 0) return "";
+    var units = ["B", "KB", "MB", "GB", "TB"];
+    var i = 0;
+    var num = bytes;
+    while (num >= 1024 && i < units.length - 1) { num = num / 1024; i++; }
+    return (Math.round(num * 10) / 10) + " " + units[i];
+  }
+
+  function baseName(filename) {
+    var name = filename || "";
+    // Remove path fragments just in case
+    name = name.split("/").pop().split("\\").pop();
+    // Remove extension
+    var idx = name.lastIndexOf(".");
+    if (idx > 0) name = name.substring(0, idx);
+    return name;
+  }
+
+  function ensureFilesContainer() {
+    return $("gsu-files");
+  }
+
+  function renderFileRow(file) {
+    var wrap = ensureFilesContainer();
+    if (!wrap) return null;
+    var row = document.createElement("div");
+    row.className = "gsu-file-row";
+    row.dataset.filename = file.name;
+
+    var top = document.createElement("div");
+    top.className = "gsu-file-top";
+
+    var name = document.createElement("div");
+    name.className = "gsu-file-name";
+    name.textContent = file.name;
+
+    var meta = document.createElement("div");
+    meta.className = "gsu-file-meta";
+    meta.textContent = bytesToSize(file.size);
+
+    top.appendChild(name);
+    top.appendChild(meta);
+
+    var status = document.createElement("div");
+    status.className = "gsu-file-status";
+    status.textContent = "Queued";
+
+    row.appendChild(top);
+    row.appendChild(status);
+    wrap.appendChild(row);
+    return row;
+  }
+
+  function setRowStatus(row, text) {
+    if (!row) return;
+    var el = row.querySelector(".gsu-file-status");
+    if (el) el.textContent = text;
+  }
+
   function csrfToken() {
     var name = "csrftoken=";
     var parts = document.cookie.split(";");
@@ -28,7 +88,7 @@
     return json;
   }
 
-  async function uploadMultipart(videoId, file) {
+  async function uploadMultipart(videoId, file, onPartProgress) {
     setStatus("Creating multipart upload...");
     var create = await postForm("/global-solutions/api/videos/" + videoId + "/b2/multipart/create/", {
       filename: file.name,
@@ -58,7 +118,9 @@
       if (!etag) throw new Error("Missing ETag from part upload response.");
       parts.push({ PartNumber: part, ETag: etag });
 
-      setProgress(Math.round((part / totalParts) * 100));
+      var pct = Math.round((part / totalParts) * 100);
+      setProgress(pct);
+      if (onPartProgress) onPartProgress(pct, part, totalParts);
     }
 
     setStatus("Completing upload...");
@@ -75,32 +137,53 @@
   document.addEventListener("DOMContentLoaded", function () {
     var uploadBtn = $("gsu-upload-btn");
     var processBtn = $("gsu-process-btn");
+    var clearBtn = $("gsu-clear-btn");
     var currentVideoId = null;
 
     uploadBtn.addEventListener("click", async function () {
       try {
         var kind = $("gsu-kind").value;
-        var title = $("gsu-title").value.trim();
+        var titleBase = $("gsu-title").value.trim();
         var description = $("gsu-description").value.trim();
-        var file = $("gsu-file").files[0];
+        var filesList = $("gsu-file").files;
+        var files = [];
+        for (var i = 0; i < filesList.length; i++) files.push(filesList[i]);
 
-        if (!title) throw new Error("Title is required.");
-        if (!file) throw new Error("Select a video file to upload.");
+        if (!files.length) throw new Error("Select one or more video files to upload.");
 
         uploadBtn.disabled = true;
         processBtn.disabled = true;
         setProgress(0);
+        setStatus("Preparing uploads...");
 
-        setStatus("Creating video record...");
-        var created = await postForm("/global-solutions/api/videos/create/", {
-          kind: kind,
-          title: title,
-          description: description,
-        });
-        currentVideoId = created.video_id;
+        var wrap = ensureFilesContainer();
+        if (wrap) wrap.innerHTML = "";
+        var rows = files.map(renderFileRow);
 
-        await uploadMultipart(currentVideoId, file);
+        for (var idx = 0; idx < files.length; idx++) {
+          var file = files[idx];
+          var row = rows[idx];
+          var derived = baseName(file.name);
+          var title = titleBase ? (files.length > 1 ? (titleBase + " - " + derived) : titleBase) : derived;
+
+          setRowStatus(row, "Creating video record...");
+          setStatus("Creating video record (" + (idx + 1) + " / " + files.length + ") ...");
+          var created = await postForm("/global-solutions/api/videos/create/", {
+            kind: kind,
+            title: title,
+            description: description,
+          });
+          currentVideoId = created.video_id;
+
+          setRowStatus(row, "Uploading...");
+          await uploadMultipart(currentVideoId, file, function (pct) {
+            setRowStatus(row, "Uploading... " + pct + "%");
+          });
+          setRowStatus(row, "Uploaded. Ready to mark PROCESSING.");
+        }
+
         processBtn.disabled = false;
+        setStatus("All uploads complete. You can mark the last upload for processing.");
       } catch (e) {
         setStatus("Error: " + (e && e.message ? e.message : String(e)));
       } finally {
@@ -121,6 +204,15 @@
         processBtn.disabled = false;
       }
     });
+
+    if (clearBtn) {
+      clearBtn.addEventListener("click", function () {
+        var wrap = ensureFilesContainer();
+        if (wrap) wrap.innerHTML = "";
+        setProgress(0);
+        setStatus("Ready.");
+      });
+    }
   });
 })();
 

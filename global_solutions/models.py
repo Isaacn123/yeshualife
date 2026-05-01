@@ -10,6 +10,7 @@ from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page
 from wagtail.search import index
+from wagtail.snippets.models import register_snippet
 
 
 def build_global_solutions_public_context() -> dict:
@@ -47,6 +48,7 @@ def build_global_solutions_public_context() -> dict:
     }
 
 
+@register_snippet
 class GlobalSolutionsSettings(models.Model):
     """
     Singleton-ish settings for the Global Solutions page.
@@ -69,6 +71,14 @@ class GlobalSolutionsSettings(models.Model):
     def __str__(self) -> str:
         return "Global Solutions Settings"
 
+    panels = [
+        FieldPanel("page_title"),
+        FieldPanel("hero_title"),
+        FieldPanel("hero_subtitle"),
+        FieldPanel("hero_image_url"),
+        FieldPanel("seo_description"),
+    ]
+
 
 class GlobalSolutionsBlockCategory(models.TextChoices):
     WEALTH_CREATION = "wealth_creation", "Wealth Creation"
@@ -81,6 +91,7 @@ class GlobalSolutionsBlockCategory(models.TextChoices):
     KNOWLEDGE = "knowledge", "Knowledge"
 
 
+@register_snippet
 class GlobalSolutionsBlock(models.Model):
     category = models.CharField(max_length=32, choices=GlobalSolutionsBlockCategory.choices)
     title = models.CharField(max_length=200)
@@ -103,6 +114,16 @@ class GlobalSolutionsBlock(models.Model):
     def __str__(self) -> str:
         return f"{self.get_category_display()}: {self.title}"
 
+    panels = [
+        FieldPanel("category"),
+        FieldPanel("title"),
+        FieldPanel("body"),
+        FieldPanel("image_url"),
+        FieldPanel("link_url"),
+        FieldPanel("sort_order"),
+        FieldPanel("is_active"),
+    ]
+
 
 class GlobalSolutionsVideoKind(models.TextChoices):
     FEEDING = "feeding", "Feeding"
@@ -119,6 +140,7 @@ class GlobalSolutionsVideoStatus(models.TextChoices):
     FAILED = "failed", "Failed"
 
 
+@register_snippet
 class GlobalSolutionsVideo(models.Model):
     """
     Stores metadata + B2 object keys/URLs for a single uploaded clip.
@@ -170,6 +192,24 @@ class GlobalSolutionsVideo(models.Model):
 
     def __str__(self) -> str:
         return f"{self.get_kind_display()}: {self.title}"
+
+    panels = [
+        FieldPanel("kind"),
+        FieldPanel("title"),
+        FieldPanel("description"),
+        FieldPanel("published_at"),
+        FieldPanel("is_active"),
+        FieldPanel("sort_order"),
+        FieldPanel("status"),
+        FieldPanel("last_error"),
+        FieldPanel("original_b2_key"),
+        FieldPanel("original_content_type"),
+        FieldPanel("original_size_bytes"),
+        FieldPanel("hls_master_manifest_key"),
+        FieldPanel("hls_master_manifest_url"),
+        FieldPanel("poster_image_url"),
+        FieldPanel("duration_seconds"),
+    ]
 
 
 class GlobalSolutionsIndexPage(Page):

@@ -1,0 +1,97 @@
+{% extends "wagtailadmin/base.html" %}
+{% load static %}
+
+{% block titletag %}Global Solutions Upload{% endblock %}
+
+{% block extra_css %}
+  {{ block.super }}
+  <style>
+    .gsu-wrap{padding:1.3rem 0;}
+    .gsu-card{background:#fff;border:1px solid rgba(17,24,39,.10);border-radius:14px;box-shadow:0 10px 30px rgba(2,6,23,.06);overflow:hidden;}
+    .gsu-card h1{margin:0;font-weight:800;letter-spacing:-0.02em;}
+    .gsu-head{padding:1rem;border-bottom:1px solid rgba(17,24,39,.10);background:linear-gradient(180deg, rgba(2,6,23,.03) 0%, rgba(2,6,23,0) 100%);}
+    .gsu-body{padding:1rem;}
+    .gsu-row{display:grid;grid-template-columns: 1fr 1fr;gap:1rem;}
+    @media (max-width: 992px){.gsu-row{grid-template-columns:1fr;}}
+    .gsu-field label{font-weight:800;margin-bottom:.35rem;}
+    .gsu-help{color:#6b7280;font-size:.95rem;margin-top:.35rem;}
+    .gsu-status{padding:.7rem .9rem;border-radius:12px;background:#f8fafc;border:1px solid rgba(17,24,39,.10);font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; white-space: pre-wrap;}
+    .gsu-btn{font-weight:800;}
+    .gsu-progress{height: 10px;}
+    .gsu-files{margin-top:.75rem; display:flex; flex-direction:column; gap:.5rem;}
+    .gsu-file-row{border:1px solid rgba(17,24,39,.10); background:#fff; border-radius:10px; padding:.55rem .7rem;}
+    .gsu-file-top{display:flex; justify-content:space-between; gap:.75rem; align-items:baseline;}
+    .gsu-file-name{font-weight:800; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+    .gsu-file-meta{color:#6b7280; font-size:.9rem; white-space:nowrap;}
+    .gsu-file-status{margin-top:.25rem; color:#374151; font-size:.95rem;}
+  </style>
+{% endblock %}
+
+{% block content %}
+  {% include "wagtailadmin/shared/header.html" with title="Global Solutions Upload Center" icon="upload" %}
+
+  <div class="nice-padding gsu-wrap">
+    <div class="gsu-card">
+      <div class="gsu-head">
+        <h1>Global Solutions Upload Center</h1>
+        <div class="gsu-help">Uploads go directly to Backblaze B2 (multipart), then you process to HLS for fast playback.</div>
+      </div>
+      <div class="gsu-body">
+        <div class="gsu-row">
+          <div>
+            <div class="gsu-field field mb-3">
+              <label>Type</label>
+              <select class="w-field__input" id="gsu-kind">
+                <option value="feeding">Feeding</option>
+                <option value="preaching">Preachings</option>
+                <option value="learning">Learning</option>
+              </select>
+            </div>
+            <div class="gsu-field field mb-3">
+              <label>Title (optional)</label>
+              <input class="w-field__input" id="gsu-title" placeholder="If blank, filename will be used">
+              <div class="gsu-help">For multiple files: title becomes “Title - Filename”.</div>
+            </div>
+            <div class="gsu-field field mb-3">
+              <label>Description (optional)</label>
+              <textarea class="w-field__input" id="gsu-description" rows="3" placeholder="Optional description"></textarea>
+            </div>
+            <div class="gsu-field field mb-3">
+              <label>Video file(s)</label>
+              <input class="w-field__input" id="gsu-file" type="file" accept="video/*" multiple>
+              <div class="gsu-help">Large files are supported via multipart upload. Uploads run one-by-one for reliability.</div>
+            </div>
+            <div style="display:flex; gap:.6rem; align-items:center; flex-wrap:wrap;">
+              <button class="button button-primary gsu-btn" id="gsu-upload-btn" type="button">Upload selected files</button>
+              <button class="button gsu-btn" id="gsu-process-btn" type="button" disabled>Mark last uploaded for Processing</button>
+              <button class="button button-secondary gsu-btn" id="gsu-clear-btn" type="button">Clear list</button>
+            </div>
+            <div class="mt-3">
+              <div class="progress gsu-progress" style="background:#e5e7eb; border-radius:999px; overflow:hidden;">
+                <div class="progress-bar" id="gsu-progress" style="height: 10px; width:0%; background:#0ea5e9;"></div>
+              </div>
+            </div>
+
+            <div class="gsu-files" id="gsu-files"></div>
+          </div>
+          <div>
+            <div class="gsu-field field mb-2">
+              <label>Status</label>
+              <div class="gsu-status" id="gsu-status">Ready.</div>
+            </div>
+            <div class="gsu-help">
+              After you click “Mark for Processing”, run the worker on your server:
+              <div class="mt-2"><code>python manage.py process_global_solutions_videos</code></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% static 'global_solutions/uploader.js' %}"></script>
+{% endblock %}
+
