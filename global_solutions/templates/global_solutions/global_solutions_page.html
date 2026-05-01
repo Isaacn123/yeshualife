@@ -146,8 +146,8 @@
 
 {% block extra_js %}
   {{ block.super }}
-  {% compress js %}
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
+  {% compress js %}
   <script type="text/javascript" src="{% static 'global_solutions/global_solutions.js' %}"></script>
   {% endcompress %}
 {% endblock %}
