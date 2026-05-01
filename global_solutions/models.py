@@ -6,6 +6,11 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
+from wagtail.admin.panels import FieldPanel
+from wagtail.fields import RichTextField
+from wagtail.models import Page
+from wagtail.search import index
+
 
 class GlobalSolutionsSettings(models.Model):
     """
@@ -130,4 +135,80 @@ class GlobalSolutionsVideo(models.Model):
 
     def __str__(self) -> str:
         return f"{self.get_kind_display()}: {self.title}"
+
+
+class GlobalSolutionsIndexPage(Page):
+    """
+    Parent page for the Global Solutions section (listing / hub).
+    Hub body content still uses Global Solutions settings, blocks, and videos.
+    """
+
+    intro = models.CharField(max_length=200)
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        on_delete=models.PROTECT,
+        related_name="+",
+        blank=True,
+        null=True,
+    )
+
+    subpage_types = ["global_solutions.GlobalSolutionsPage"]
+
+    content_panels = Page.content_panels + [
+        FieldPanel("intro"),
+        FieldPanel("image"),
+    ]
+
+    class Meta:
+        verbose_name = "Global Solutions index page"
+
+    template = "global_solutions/global_solutions_page.html"
+
+    def get_context(self, request, *args, **kwargs):
+        from .views import build_global_solutions_public_context
+
+        context = super().get_context(request, *args, **kwargs)
+        context.update(build_global_solutions_public_context())
+        # Child article pages (single-item views live at each child URL).
+        context["global_solutions_articles"] = list(
+            GlobalSolutionsPage.objects.child_of(self).live().public().order_by("-first_published_at")
+        )
+        return context
+
+
+class GlobalSolutionsPage(Page):
+    """Child article-style page under Global Solutions (same pattern as Awards page)."""
+
+    parent_page_types = ["global_solutions.GlobalSolutionsIndexPage"]
+
+    date = models.DateField("Post date", null=True, blank=True)
+    body = RichTextField(blank=True, null=True)
+    intro = models.CharField(max_length=200)
+
+    search_fields = Page.search_fields + [
+        index.SearchField("intro"),
+        index.SearchField("body"),
+    ]
+
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        on_delete=models.PROTECT,
+        related_name="+",
+        blank=True,
+        null=True,
+    )
+    caption = models.CharField(blank=True, max_length=250)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("date"),
+        FieldPanel("intro"),
+        FieldPanel("body"),
+        FieldPanel("image"),
+        FieldPanel("caption"),
+    ]
+
+    class Meta:
+        verbose_name = "Global Solutions page"
+
+    template = "global_solutions/global_solutions_detail_page.html"
 

@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_GET, require_POST
@@ -28,19 +27,12 @@ class PageLike:
     image: None = None
 
 
-@require_GET
-def global_solutions_page(request):
+def build_global_solutions_public_context() -> dict:
+    """Template context for the public Global Solutions page (blocks, videos, hero)."""
     settings_obj = GlobalSolutionsSettings.objects.first()
     page_title = (settings_obj.page_title if settings_obj else "Global Solutions").strip() or "Global Solutions"
     hero_title = (settings_obj.hero_title if settings_obj else page_title).strip() or page_title
     hero_subtitle = (settings_obj.hero_subtitle if settings_obj else "").strip()
-
-    page = PageLike(
-        title=page_title,
-        seo_title=page_title,
-        intro=hero_subtitle,
-        search_description=(settings_obj.seo_description if settings_obj else "").strip(),
-    )
 
     blocks_qs = GlobalSolutionsBlock.objects.filter(is_active=True)
     blocks_by_category: dict[str, list[GlobalSolutionsBlock]] = {}
@@ -61,20 +53,15 @@ def global_solutions_page(request):
         videos_qs.filter(kind=GlobalSolutionsVideoKind.LEARNING).order_by("-published_at", "sort_order")[:12]
     )
 
-    return render(
-        request,
-        "global_solutions/global_solutions_page.html",
-        {
-            "page": page,
-            "hero_title": hero_title,
-            "hero_subtitle": hero_subtitle,
-            "hero_image_url": (settings_obj.hero_image_url if settings_obj else "").strip(),
-            "blocks_by_category": blocks_by_category,
-            "feeds": feeds,
-            "preachings": preachings,
-            "learning": learning,
-        },
-    )
+    return {
+        "hero_title": hero_title,
+        "hero_subtitle": hero_subtitle,
+        "hero_image_url": (settings_obj.hero_image_url if settings_obj else "").strip(),
+        "blocks_by_category": blocks_by_category,
+        "feeds": feeds,
+        "preachings": preachings,
+        "learning": learning,
+    }
 
 
 # --------------------------

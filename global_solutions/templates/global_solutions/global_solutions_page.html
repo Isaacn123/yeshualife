@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static compress %}
+{% load static compress wagtailcore_tags %}
 
 {% block body_class %}template-globalsolutions{% endblock %}
 
@@ -118,6 +118,29 @@
     </div>
   </div>
 </section>
+
+{% if global_solutions_articles %}
+<section class="gs-section gs-alt" aria-labelledby="gs-articles-heading">
+  <div class="container">
+    <div class="gs-section-header">
+      <h2 id="gs-articles-heading" class="gs-h2">Articles &amp; updates</h2>
+      <p class="gs-muted">Individual stories and posts from Global Solutions.</p>
+    </div>
+    <ul class="list-unstyled row g-3">
+      {% for article in global_solutions_articles %}
+        <li class="col-md-6 col-lg-4">
+          <article class="gs-card h-100">
+            <div class="gs-card-body">
+              <h3 class="gs-h3"><a href="{% pageurl article %}">{{ article.title }}</a></h3>
+              {% if article.intro %}<p class="gs-muted mb-0">{{ article.intro }}</p>{% endif %}
+            </div>
+          </article>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
 
 {% endblock %}
 

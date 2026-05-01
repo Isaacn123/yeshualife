@@ -7,7 +7,6 @@ app_name = "global_solutions"
 
 
 urlpatterns = [
-    path("global-solutions/", views.global_solutions_page, name="page"),
     path("global-solutions/upload/", views.upload_center, name="upload_center"),
     # Staff-only API for direct-to-B2 uploads + processing triggers
     path(
