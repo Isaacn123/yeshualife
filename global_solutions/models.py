@@ -179,7 +179,7 @@ class GlobalSolutionsIndexPage(Page):
 class GlobalSolutionsPage(Page):
     """Child article-style page under Global Solutions (same pattern as Awards page)."""
 
-    parent_page_types = ["global_solutions.GlobalSolutionsIndexPage"]
+    # parent_page_types = ["global_solutions.GlobalSolutionsIndexPage"]
 
     date = models.DateField("Post date", null=True, blank=True)
     body = RichTextField(blank=True, null=True)
@@ -210,5 +210,5 @@ class GlobalSolutionsPage(Page):
     class Meta:
         verbose_name = "Global Solutions page"
 
-    template = "global_solutions/global_solutions_detail_page.html"
+    # template = "global_solutions/global_solutions_detail_page.html"
 
