@@ -1,0 +1,37 @@
+{% load static %}
+<div class="w-panel__wrapper">
+  <div class="w-panel__header">
+    <h2 class="w-panel__heading w-panel__heading--label">{{ self.heading|default:"Video upload" }}</h2>
+  </div>
+  <div class="w-panel__content">
+    {% if video_id %}
+      <p class="help">
+        Upload goes straight to your configured B2 bucket (large files use multipart). Keys, URLs, size, and HLS fields are filled by the server after upload and processing — you do not enter those manually.
+      </p>
+      <div
+        id="gs-snippet-root"
+        class="gs-snippet-upload"
+        data-video-id="{{ video_id }}"
+      >
+        <div class="gs-snippet-upload__field">
+          <label class="w-field__label" for="gsu-file">Video file</label>
+          <input id="gsu-file" class="w-field__input" type="file" accept="video/*">
+          <p class="help">Recommended: MP4 (H.264 + AAC).</p>
+        </div>
+        <div class="gs-snippet-upload__actions">
+          <button type="button" class="button" id="gsu-upload-btn">Upload to B2</button>
+          <button type="button" class="button button-secondary" id="gsu-process-btn" disabled>Mark for processing</button>
+        </div>
+        <div class="gs-snippet-upload__progress" style="max-width:28rem;margin-top:0.75rem;">
+          <div id="gsu-progress" style="width:0%;height:8px;background:#007d7e;border-radius:4px;"></div>
+        </div>
+        <div class="gs-snippet-upload__status help" id="gsu-status" style="margin-top:0.75rem;">Ready.</div>
+      </div>
+      <script src="{% static 'global_solutions/uploader.js' %}"></script>
+    {% else %}
+      <p class="help">
+        <strong>Save this snippet once</strong> (title, type, and description are enough). After it has been saved, return here to upload the video file; metadata from B2 and transcoding will appear automatically after upload and processing.
+      </p>
+    {% endif %}
+  </div>
+</div>

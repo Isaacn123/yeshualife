@@ -15,6 +15,11 @@ urlpatterns = [
         name="create_video",
     ),
     path(
+        "global-solutions/api/videos/<uuid:video_id>/meta/",
+        views.update_video_meta,
+        name="update_video_meta",
+    ),
+    path(
         "global-solutions/api/videos/<uuid:video_id>/b2/multipart/create/",
         views.b2_create_multipart_upload,
         name="b2_create_multipart",

@@ -6,11 +6,15 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
-from wagtail.admin.panels import FieldPanel
+from django.utils.html import format_html
+
+from wagtail.admin.panels import FieldPanel, HelpPanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
+
+from .wagtail_panels import GlobalSolutionsVideoB2UploadPanel
 
 
 def build_global_solutions_public_context() -> dict:
@@ -194,21 +198,42 @@ class GlobalSolutionsVideo(models.Model):
         return f"{self.get_kind_display()}: {self.title}"
 
     panels = [
-        FieldPanel("kind"),
-        FieldPanel("title"),
-        FieldPanel("description"),
-        FieldPanel("published_at"),
-        FieldPanel("is_active"),
-        FieldPanel("sort_order"),
-        FieldPanel("status"),
-        FieldPanel("last_error"),
-        FieldPanel("original_b2_key"),
-        FieldPanel("original_content_type"),
-        FieldPanel("original_size_bytes"),
-        FieldPanel("hls_master_manifest_key"),
-        FieldPanel("hls_master_manifest_url"),
-        FieldPanel("poster_image_url"),
-        FieldPanel("duration_seconds"),
+        HelpPanel(
+            heading="How this video works",
+            content=format_html(
+                "<p>Videos are stored in Backblaze B2 and transcoded to HLS. Use <strong>Video upload</strong> below "
+                "to send the file from this screen; storage keys, manifest URLs, size, and duration are filled in "
+                "automatically by the server. B2 credentials stay in environment settings, not in the editor.</p>"
+                '<p>You can still use the <a href="{}">standalone upload center</a> if you prefer that workflow.</p>',
+                "/global-solutions/upload/",
+            ),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("kind"),
+                FieldPanel("title"),
+                FieldPanel("description"),
+                FieldPanel("published_at"),
+                FieldPanel("is_active"),
+                FieldPanel("sort_order"),
+            ],
+            heading="Details",
+        ),
+        GlobalSolutionsVideoB2UploadPanel(heading="Video upload"),
+        MultiFieldPanel(
+            [
+                FieldPanel("status", read_only=True),
+                FieldPanel("last_error", read_only=True),
+                FieldPanel("original_b2_key", read_only=True),
+                FieldPanel("original_content_type", read_only=True),
+                FieldPanel("original_size_bytes", read_only=True),
+                FieldPanel("hls_master_manifest_key", read_only=True),
+                FieldPanel("hls_master_manifest_url", read_only=True),
+                FieldPanel("poster_image_url", read_only=True),
+                FieldPanel("duration_seconds", read_only=True),
+            ],
+            heading="Storage & playback (automatic)",
+        ),
     ]
 
 

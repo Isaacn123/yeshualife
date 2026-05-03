@@ -79,6 +79,43 @@ def create_video_record(request):
 
 @require_POST
 @staff_member_required
+def update_video_meta(request, video_id):
+    """
+    Sync kind/title/description from the Wagtail snippet form before B2 multipart upload.
+    Not used for B2 credentials (those stay server-side).
+    """
+    video = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
+    kind = (request.POST.get("kind") or "").strip()
+    title = (request.POST.get("title") or "").strip()
+    description = (request.POST.get("description") or "").strip()
+
+    if kind not in {k for k, _ in GlobalSolutionsVideoKind.choices}:
+        return JsonResponse({"error": "Invalid kind"}, status=400)
+    if not title:
+        return JsonResponse({"error": "title is required"}, status=400)
+
+    if video.status in (GlobalSolutionsVideoStatus.PROCESSING, GlobalSolutionsVideoStatus.READY):
+        return JsonResponse({"error": "Cannot edit metadata while processing or ready."}, status=400)
+    if video.status == GlobalSolutionsVideoStatus.UPLOADING:
+        return JsonResponse({"error": "Cannot edit metadata during active upload."}, status=400)
+
+    if video.status == GlobalSolutionsVideoStatus.UPLOADED:
+        if kind != video.kind:
+            return JsonResponse({"error": "Cannot change type after upload."}, status=400)
+        video.title = title
+        video.description = description
+        video.save(update_fields=["title", "description", "updated_at"])
+        return JsonResponse({"ok": True})
+
+    video.kind = kind
+    video.title = title
+    video.description = description
+    video.save(update_fields=["kind", "title", "description", "updated_at"])
+    return JsonResponse({"ok": True})
+
+
+@require_POST
+@staff_member_required
 def b2_create_multipart_upload(request, video_id):
     video = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
 

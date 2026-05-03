@@ -1,8 +1,15 @@
 (function () {
   function $(id) { return document.getElementById(id); }
 
-  function setStatus(text) { $("gsu-status").textContent = text; }
-  function setProgress(pct) { $("gsu-progress").style.width = pct + "%"; }
+  function setStatus(text) {
+    var el = $("gsu-status");
+    if (el) el.textContent = text;
+  }
+
+  function setProgress(pct) {
+    var bar = $("gsu-progress");
+    if (bar) bar.style.width = pct + "%";
+  }
 
   function bytesToSize(bytes) {
     if (!bytes && bytes !== 0) return "";
@@ -15,9 +22,7 @@
 
   function baseName(filename) {
     var name = filename || "";
-    // Remove path fragments just in case
     name = name.split("/").pop().split("\\").pop();
-    // Remove extension
     var idx = name.lastIndexOf(".");
     if (idx > 0) name = name.substring(0, idx);
     return name;
@@ -96,7 +101,7 @@
     });
 
     var uploadId = create.upload_id;
-    var partSize = 10 * 1024 * 1024; // 10MB
+    var partSize = 10 * 1024 * 1024;
     var totalParts = Math.ceil(file.size / partSize);
     var parts = [];
 
@@ -130,21 +135,98 @@
       size_bytes: String(file.size),
     });
 
-    setStatus("Upload complete. You can now mark for processing.");
+    setStatus("Upload complete. You can mark for processing.");
     return true;
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function snippetFormValue(name) {
+    var el = document.querySelector("[name=\"" + name + "\"]");
+    if (!el) return "";
+    return (el.value || "").trim();
+  }
+
+  async function syncSnippetMeta(videoId) {
+    var kind = snippetFormValue("kind");
+    var title = snippetFormValue("title");
+    var description = snippetFormValue("description");
+    if (!title) throw new Error("Enter a title in the Details section above (you can save the form after upload if you prefer).");
+    if (!kind) throw new Error("Choose a type (kind) in the Details section.");
+    await postForm("/global-solutions/api/videos/" + videoId + "/meta/", {
+      kind: kind,
+      title: title,
+      description: description,
+    });
+  }
+
+  function initSnippet(snippetRoot) {
     var uploadBtn = $("gsu-upload-btn");
     var processBtn = $("gsu-process-btn");
+    if (!uploadBtn || !processBtn) return;
+
+    var currentVideoId = snippetRoot.getAttribute("data-video-id");
+    if (!currentVideoId) return;
+
+    uploadBtn.addEventListener("click", async function () {
+      try {
+        var filesList = $("gsu-file").files;
+        if (!filesList || !filesList.length) throw new Error("Select a video file to upload.");
+
+        uploadBtn.disabled = true;
+        processBtn.disabled = true;
+        setProgress(0);
+        setStatus("Syncing title and type from this form…");
+
+        await syncSnippetMeta(currentVideoId);
+
+        var file = filesList[0];
+        setStatus("Uploading…");
+        await uploadMultipart(currentVideoId, file, function (pct) {
+          setStatus("Uploading… " + pct + "%");
+        });
+
+        setStatus("Upload complete. Reloading…");
+        window.location.reload();
+      } catch (e) {
+        setStatus("Error: " + (e && e.message ? e.message : String(e)));
+      } finally {
+        uploadBtn.disabled = false;
+      }
+    });
+
+    processBtn.addEventListener("click", async function () {
+      if (!currentVideoId) return;
+      try {
+        processBtn.disabled = true;
+        setStatus("Marking for processing…");
+        await postForm("/global-solutions/api/videos/" + currentVideoId + "/process/start/", {});
+        setStatus("Marked for processing. Reloading…");
+        window.location.reload();
+      } catch (e) {
+        setStatus("Error: " + (e && e.message ? e.message : String(e)));
+      } finally {
+        processBtn.disabled = false;
+      }
+    });
+  }
+
+  function initStandalone() {
+    var uploadBtn = $("gsu-upload-btn");
+    var processBtn = $("gsu-process-btn");
+    if (!uploadBtn || !processBtn) return;
+
     var clearBtn = $("gsu-clear-btn");
     var currentVideoId = null;
 
     uploadBtn.addEventListener("click", async function () {
       try {
-        var kind = $("gsu-kind").value;
-        var titleBase = $("gsu-title").value.trim();
-        var description = $("gsu-description").value.trim();
+        var kindEl = $("gsu-kind");
+        var titleEl = $("gsu-title");
+        var descEl = $("gsu-description");
+        if (!kindEl || !titleEl) return;
+
+        var kind = kindEl.value;
+        var titleBase = titleEl.value.trim();
+        var description = descEl ? descEl.value.trim() : "";
         var filesList = $("gsu-file").files;
         var files = [];
         for (var i = 0; i < filesList.length; i++) files.push(filesList[i]);
@@ -213,6 +295,14 @@
         setStatus("Ready.");
       });
     }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var snippetRoot = document.getElementById("gs-snippet-root");
+    if (snippetRoot && snippetRoot.getAttribute("data-video-id")) {
+      initSnippet(snippetRoot);
+      return;
+    }
+    initStandalone();
   });
 })();
-
