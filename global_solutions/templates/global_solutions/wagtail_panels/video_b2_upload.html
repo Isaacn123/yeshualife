@@ -5,6 +5,7 @@
   </div>
   <div class="w-panel__content">
     {% if video_id %}
+      {{ gs_video_api_urls|json_script:"gs-video-api-urls" }}
       <p class="help">
         Upload goes straight to your configured B2 bucket (large files use multipart). Keys, URLs, size, and HLS fields are filled by the server after upload and processing — you do not enter those manually.
       </p>

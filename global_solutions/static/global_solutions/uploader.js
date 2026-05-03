@@ -79,6 +79,46 @@
     return "";
   }
 
+  /** Fallback when ``#gs-video-api-urls`` is missing (older templates). */
+  function defaultVideoApiUrls(videoId) {
+    var base = "/global-solutions/api/videos/" + videoId;
+    return {
+      create: "/global-solutions/api/videos/create/",
+      meta: base + "/meta/",
+      b2_create: base + "/b2/multipart/create/",
+      b2_part_url: base + "/b2/multipart/part-url/",
+      b2_complete: base + "/b2/multipart/complete/",
+      process: base + "/process/start/",
+    };
+  }
+
+  function parseVideoApiUrlsJson() {
+    var el = $("gs-video-api-urls");
+    if (!el || !el.textContent) return null;
+    try {
+      return JSON.parse(el.textContent);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /**
+   * Expand Django ``json_script`` map: if it contains ``_placeholder`` UUID, swap in ``videoId``.
+   * Snippet maps from the server have no placeholder and are returned as-is.
+   */
+  function expandVideoApiUrlMap(map, videoId) {
+    if (!map) return defaultVideoApiUrls(videoId);
+    var ph = map._placeholder;
+    if (!ph) return map;
+    var out = {};
+    Object.keys(map).forEach(function (k) {
+      if (k === "_placeholder") return;
+      var v = map[k];
+      out[k] = typeof v === "string" ? v.split(ph).join(videoId) : v;
+    });
+    return out;
+  }
+
   async function postForm(url, data) {
     var body = new URLSearchParams();
     Object.keys(data).forEach(function (k) { body.append(k, data[k]); });
@@ -89,13 +129,22 @@
       credentials: "same-origin",
     });
     var json = await resp.json().catch(function () { return {}; });
-    if (!resp.ok) throw new Error(json.error || ("Request failed: " + resp.status));
+    if (!resp.ok) {
+      var msg = json.error || ("Request failed: " + resp.status);
+      try {
+        if (resp.url) msg += " — " + resp.url;
+      } catch (e2) { /* ignore */ }
+      if (resp.status === 404) {
+        msg += " (404: URL not routed on this server — deploy latest code and ensure /global-solutions/ reaches Django.)";
+      }
+      throw new Error(msg);
+    }
     return json;
   }
 
-  async function uploadMultipart(videoId, file, onPartProgress) {
+  async function uploadMultipart(file, urls, onPartProgress) {
     setStatus("Creating multipart upload...");
-    var create = await postForm("/global-solutions/api/videos/" + videoId + "/b2/multipart/create/", {
+    var create = await postForm(urls.b2_create, {
       filename: file.name,
       content_type: file.type || "video/mp4",
     });
@@ -111,7 +160,7 @@
       var blob = file.slice(start, end);
 
       setStatus("Uploading part " + part + " / " + totalParts + " (" + Math.round((end / file.size) * 100) + "%) ...");
-      var presign = await postForm("/global-solutions/api/videos/" + videoId + "/b2/multipart/part-url/", {
+      var presign = await postForm(urls.b2_part_url, {
         upload_id: uploadId,
         part_number: String(part),
       });
@@ -129,7 +178,7 @@
     }
 
     setStatus("Completing upload...");
-    await postForm("/global-solutions/api/videos/" + videoId + "/b2/multipart/complete/", {
+    await postForm(urls.b2_complete, {
       upload_id: uploadId,
       parts: JSON.stringify(parts),
       size_bytes: String(file.size),
@@ -145,13 +194,13 @@
     return (el.value || "").trim();
   }
 
-  async function syncSnippetMeta(videoId) {
+  async function syncSnippetMeta(urls) {
     var kind = snippetFormValue("kind");
     var title = snippetFormValue("title");
     var description = snippetFormValue("description");
     if (!title) throw new Error("Enter a title in the Details section above (you can save the form after upload if you prefer).");
     if (!kind) throw new Error("Choose a type (kind) in the Details section.");
-    await postForm("/global-solutions/api/videos/" + videoId + "/meta/", {
+    await postForm(urls.meta, {
       kind: kind,
       title: title,
       description: description,
@@ -171,16 +220,19 @@
         var filesList = $("gsu-file").files;
         if (!filesList || !filesList.length) throw new Error("Select a video file to upload.");
 
+        var tpl = parseVideoApiUrlsJson();
+        var urls = expandVideoApiUrlMap(tpl, currentVideoId);
+
         uploadBtn.disabled = true;
         processBtn.disabled = true;
         setProgress(0);
         setStatus("Syncing title and type from this form…");
 
-        await syncSnippetMeta(currentVideoId);
+        await syncSnippetMeta(urls);
 
         var file = filesList[0];
         setStatus("Uploading…");
-        await uploadMultipart(currentVideoId, file, function (pct) {
+        await uploadMultipart(file, urls, function (pct) {
           setStatus("Uploading… " + pct + "%");
         });
 
@@ -196,9 +248,11 @@
     processBtn.addEventListener("click", async function () {
       if (!currentVideoId) return;
       try {
+        var tpl = parseVideoApiUrlsJson();
+        var urls = expandVideoApiUrlMap(tpl, currentVideoId);
         processBtn.disabled = true;
         setStatus("Marking for processing…");
-        await postForm("/global-solutions/api/videos/" + currentVideoId + "/process/start/", {});
+        await postForm(urls.process, {});
         setStatus("Marked for processing. Reloading…");
         window.location.reload();
       } catch (e) {
@@ -216,6 +270,7 @@
 
     var clearBtn = $("gsu-clear-btn");
     var currentVideoId = null;
+    var urlTpl = parseVideoApiUrlsJson();
 
     uploadBtn.addEventListener("click", async function () {
       try {
@@ -242,6 +297,8 @@
         if (wrap) wrap.innerHTML = "";
         var rows = files.map(renderFileRow);
 
+        var createUrl = (urlTpl && urlTpl.create) ? urlTpl.create : defaultVideoApiUrls("00000000-0000-0000-0000-000000000000").create;
+
         for (var idx = 0; idx < files.length; idx++) {
           var file = files[idx];
           var row = rows[idx];
@@ -250,15 +307,17 @@
 
           setRowStatus(row, "Creating video record...");
           setStatus("Creating video record (" + (idx + 1) + " / " + files.length + ") ...");
-          var created = await postForm("/global-solutions/api/videos/create/", {
+          var created = await postForm(createUrl, {
             kind: kind,
             title: title,
             description: description,
           });
           currentVideoId = created.video_id;
 
+          var urls = expandVideoApiUrlMap(urlTpl, currentVideoId);
+
           setRowStatus(row, "Uploading...");
-          await uploadMultipart(currentVideoId, file, function (pct) {
+          await uploadMultipart(file, urls, function (pct) {
             setRowStatus(row, "Uploading... " + pct + "%");
           });
           setRowStatus(row, "Uploaded. Ready to mark PROCESSING.");
@@ -276,9 +335,10 @@
     processBtn.addEventListener("click", async function () {
       if (!currentVideoId) return;
       try {
+        var urls = expandVideoApiUrlMap(urlTpl, currentVideoId);
         processBtn.disabled = true;
         setStatus("Marking for processing...");
-        await postForm("/global-solutions/api/videos/" + currentVideoId + "/process/start/", {});
+        await postForm(urls.process, {});
         setStatus("Marked PROCESSING. It will be processed automatically.");
       } catch (e) {
         setStatus("Error: " + (e && e.message ? e.message : String(e)));

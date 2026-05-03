@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_GET, require_POST
 
+from .api_urls import video_api_urls_placeholder_map
 from .b2 import b2_public_url, get_b2_s3_client
 from .models import (
     GlobalSolutionsSettings,
@@ -51,6 +52,7 @@ def upload_center(request):
             "page": page,
             "hero_title": "Global Solutions Upload Center",
             "hero_subtitle": (settings_obj.hero_subtitle if settings_obj else "").strip(),
+            "gs_video_api_urls_placeholder": video_api_urls_placeholder_map(),
         },
     )
 
