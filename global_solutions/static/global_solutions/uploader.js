@@ -128,13 +128,19 @@
       body: body,
       credentials: "same-origin",
     });
-    var json = await resp.json().catch(function () { return {}; });
+    var text = await resp.text();
+    var json = {};
+    try {
+      if (text) json = JSON.parse(text);
+    } catch (e) {
+      json = {};
+    }
     if (!resp.ok) {
-      var msg = json.error || ("Request failed: " + resp.status);
+      var msg = (json && json.error) || ("Request failed: " + resp.status);
       try {
         if (resp.url) msg += " — " + resp.url;
       } catch (e2) { /* ignore */ }
-      if (resp.status === 404 && !json.error) {
+      if (resp.status === 404 && !(json && json.error)) {
         msg +=
           " If this persists after deploy, open GET /global-solutions/api/ok/ while logged in as staff " +
           "(should return JSON). If that 404s too, nginx is not sending /global-solutions/ to Django.";
