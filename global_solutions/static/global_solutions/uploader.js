@@ -134,8 +134,10 @@
       try {
         if (resp.url) msg += " — " + resp.url;
       } catch (e2) { /* ignore */ }
-      if (resp.status === 404) {
-        msg += " (404: URL not routed on this server — deploy latest code and ensure /global-solutions/ reaches Django.)";
+      if (resp.status === 404 && !json.error) {
+        msg +=
+          " If this persists after deploy, open GET /global-solutions/api/ok/ while logged in as staff " +
+          "(should return JSON). If that 404s too, nginx is not sending /global-solutions/ to Django.";
       }
       throw new Error(msg);
     }

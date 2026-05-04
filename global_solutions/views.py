@@ -79,6 +79,16 @@ def create_video_record(request):
     return JsonResponse({"video_id": str(v.id)})
 
 
+@require_GET
+@staff_member_required
+def api_deploy_check(request):
+    """
+    Lightweight probe so production can confirm ``global_solutions`` URLs are deployed
+    (visit while logged in as staff): GET /global-solutions/api/ok/
+    """
+    return JsonResponse({"ok": True, "global_solutions_api": "mounted"})
+
+
 @require_POST
 @staff_member_required
 def update_video_meta(request, video_id):
@@ -86,7 +96,18 @@ def update_video_meta(request, video_id):
     Sync kind/title/description from the Wagtail snippet form before B2 multipart upload.
     Not used for B2 credentials (those stay server-side).
     """
-    video = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
+    try:
+        video = GlobalSolutionsVideo.objects.get(pk=video_id)
+    except GlobalSolutionsVideo.DoesNotExist:
+        return JsonResponse(
+            {
+                "error": (
+                    "No Global Solutions video row exists for this id in the database. "
+                    "Save the snippet again on this server, or deploy/run migrations if the table is missing."
+                ),
+            },
+            status=404,
+        )
     kind = (request.POST.get("kind") or "").strip()
     title = (request.POST.get("title") or "").strip()
     description = (request.POST.get("description") or "").strip()
