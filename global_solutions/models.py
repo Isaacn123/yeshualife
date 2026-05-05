@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import uuid
 
-from django.conf import settings
+from django.conf import settings as django_settings
 from django.db import models
 from django.utils import timezone
 
@@ -148,11 +148,9 @@ class GlobalSolutionsVideoStatus(models.TextChoices):
 class GlobalSolutionsVideo(models.Model):
     """
     Stores metadata + B2 object keys/URLs for a single uploaded clip.
-    Upload flow (recommended):
-      1) Create record (status=UPLOADING) -> get presigned multipart URLs
-      2) Browser uploads directly to B2
-      3) Complete multipart -> status=UPLOADED
-      4) Background ffmpeg transcodes to HLS -> uploads to B2 -> status=READY
+
+    Default (GLOBAL_SOLUTIONS_TRANSCODE_HLS unset/false): multipart complete -> READY; playback uses progressive MP4.
+    HLS mode (GLOBAL_SOLUTIONS_TRANSCODE_HLS=true): complete -> UPLOADED -> PROCESSING -> manage.py process_* -> READY + HLS URLs.
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -182,7 +180,7 @@ class GlobalSolutionsVideo(models.Model):
     last_error = models.TextField(blank=True, default="")
 
     created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="+"
+        django_settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="+"
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -197,15 +195,47 @@ class GlobalSolutionsVideo(models.Model):
     def __str__(self) -> str:
         return f"{self.get_kind_display()}: {self.title}"
 
+    @property
+    def playback_url(self) -> str:
+        """Public playback URL: HLS manifest when present, otherwise progressive MP4 from the original B2 object."""
+        from .b2 import b2_public_url
+
+        hls = (self.hls_master_manifest_url or "").strip()
+        if hls:
+            return hls
+        if self.original_b2_key:
+            return b2_public_url(self.original_b2_key)
+        return ""
+
+    @property
+    def playback_uses_hls(self) -> bool:
+        u = (self.hls_master_manifest_url or "").strip().lower()
+        return bool(u and ".m3u8" in u)
+
     panels = [
         HelpPanel(
             heading="How this video works",
-            content=format_html(
-                "<p>Videos are stored in Backblaze B2 and transcoded to HLS. Use <strong>Video upload</strong> below "
-                "to send the file from this screen; storage keys, manifest URLs, size, and duration are filled in "
-                "automatically by the server. B2 credentials stay in environment settings, not in the editor.</p>"
-                '<p>You can still use the <a href="{}">standalone upload center</a> if you prefer that workflow.</p>',
-                "/global-solutions/upload/",
+            content=(
+                format_html(
+                    "<p>Videos are stored in Backblaze B2. After multipart upload completes they become "
+                    "<strong>Ready</strong> automatically and play from your uploaded file (progressive MP4). "
+                    "No command line is required. Ensure the object is publicly readable via your "
+                    "<code>B2_PUBLIC_BASE_URL</code>.</p>"
+                    '<p>Optional: use the <a href="{}">standalone upload center</a>.</p>'
+                    '<p>To use HLS transcoding instead, set environment variable '
+                    "<code>GLOBAL_SOLUTIONS_TRANSCODE_HLS=true</code> and run "
+                    "<code>python manage.py process_global_solutions_videos</code> on the server (or on a schedule).</p>",
+                    "/global-solutions/upload/",
+                )
+                if not getattr(django_settings, "GLOBAL_SOLUTIONS_TRANSCODE_HLS", False)
+                else format_html(
+                    "<p>HLS transcoding is enabled. Upload completes with status <strong>Uploaded</strong>; "
+                    "click <strong>Mark for processing</strong>, then run "
+                    "<code>python manage.py process_global_solutions_videos</code> on the server (or schedule it). "
+                    "Manifest, poster, and duration are filled after transcoding.</p>"
+                    '<p>You can also use the <a href="{}">standalone upload center</a>.</p>',
+                    "/global-solutions/upload/",
+                )
             ),
         ),
         MultiFieldPanel(

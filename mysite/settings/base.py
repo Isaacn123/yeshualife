@@ -307,3 +307,12 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
+
+# Global Solutions: default is progressive MP4 from B2 after upload (no ffmpeg / no CLI).
+# Set GLOBAL_SOLUTIONS_TRANSCODE_HLS=true to use HLS + run: manage.py process_global_solutions_videos
+GLOBAL_SOLUTIONS_TRANSCODE_HLS = os.environ.get("GLOBAL_SOLUTIONS_TRANSCODE_HLS", "").lower() in (
+    "1",
+    "true",
+    "yes",
+    "on",
+)

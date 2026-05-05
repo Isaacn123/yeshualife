@@ -8,7 +8,8 @@
             controls
             preload="metadata"
             playsinline
-            data-hls-src="{{ v.hls_master_manifest_url }}"
+            data-playback-src="{{ v.playback_url }}"
+            data-playback-hls="{% if v.playback_uses_hls %}true{% else %}false{% endif %}"
             {% if v.poster_image_url %}poster="{{ v.poster_image_url }}"{% endif %}
           ></video>
         </div>

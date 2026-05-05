@@ -1,7 +1,14 @@
 (function () {
-  function attachHls(video) {
-    var src = video.getAttribute("data-hls-src");
+  function attachPlayback(video) {
+    var src = video.getAttribute("data-playback-src");
     if (!src) return;
+
+    var useHls = video.getAttribute("data-playback-hls") === "true";
+
+    if (!useHls) {
+      video.src = src;
+      return;
+    }
 
     // Native HLS (Safari/iOS)
     if (video.canPlayType("application/vnd.apple.mpegurl")) {
@@ -22,9 +29,9 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    var videos = document.querySelectorAll("video[data-hls-src]");
+    var videos = document.querySelectorAll("video[data-playback-src]");
     for (var i = 0; i < videos.length; i++) {
-      attachHls(videos[i]);
+      attachPlayback(videos[i]);
     }
   });
 })();

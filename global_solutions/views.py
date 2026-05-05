@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -243,9 +244,12 @@ def b2_complete_multipart_upload(request, video_id):
         MultipartUpload={"Parts": parts},
     )
 
-    video.status = GlobalSolutionsVideoStatus.UPLOADED
     video.original_size_bytes = size_bytes
     video.last_error = ""
+    if getattr(settings, "GLOBAL_SOLUTIONS_TRANSCODE_HLS", False):
+        video.status = GlobalSolutionsVideoStatus.UPLOADED
+    else:
+        video.status = GlobalSolutionsVideoStatus.READY
     video.save(update_fields=["status", "original_size_bytes", "last_error", "updated_at"])
 
     return JsonResponse({"ok": True, "key": video.original_b2_key, "public_url": b2_public_url(video.original_b2_key)})
@@ -255,9 +259,16 @@ def b2_complete_multipart_upload(request, video_id):
 @staff_member_required
 def mark_video_processing(request, video_id):
     video = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
-    if video.status not in {GlobalSolutionsVideoStatus.UPLOADED, GlobalSolutionsVideoStatus.FAILED}:
-        return JsonResponse({"error": f"Cannot process from status={video.status}"}, status=400)
-    video.status = GlobalSolutionsVideoStatus.PROCESSING
+    if getattr(settings, "GLOBAL_SOLUTIONS_TRANSCODE_HLS", False):
+        if video.status not in {GlobalSolutionsVideoStatus.UPLOADED, GlobalSolutionsVideoStatus.FAILED}:
+            return JsonResponse({"error": f"Cannot process from status={video.status}"}, status=400)
+        video.status = GlobalSolutionsVideoStatus.PROCESSING
+    else:
+        if video.status == GlobalSolutionsVideoStatus.READY:
+            return JsonResponse({"ok": True})
+        if video.status not in {GlobalSolutionsVideoStatus.UPLOADED, GlobalSolutionsVideoStatus.FAILED}:
+            return JsonResponse({"error": f"Cannot finalize from status={video.status}"}, status=400)
+        video.status = GlobalSolutionsVideoStatus.READY
     video.last_error = ""
     video.save(update_fields=["status", "last_error", "updated_at"])
     return JsonResponse({"ok": True})
