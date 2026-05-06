@@ -329,3 +329,9 @@ try:
     B2_PLAYBACK_PRESIGNED_EXPIRES = int(os.environ.get("B2_PLAYBACK_PRESIGNED_EXPIRES", "86400"))
 except ValueError:
     B2_PLAYBACK_PRESIGNED_EXPIRES = 86400
+
+# Max READY videos shown per category on the public Global Solutions hub (each category scrolls horizontally).
+try:
+    GLOBAL_SOLUTIONS_PUBLIC_VIDEO_CAP = int(os.environ.get("GLOBAL_SOLUTIONS_PUBLIC_VIDEO_CAP", "72"))
+except ValueError:
+    GLOBAL_SOLUTIONS_PUBLIC_VIDEO_CAP = 72

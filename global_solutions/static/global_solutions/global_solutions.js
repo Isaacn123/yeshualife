@@ -28,6 +28,19 @@
     for (var i = 0; i < videos.length; i++) {
       attachPlayback(videos[i]);
     }
+
+    document.querySelectorAll(".gs-video-layout-toggle").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var outer = btn.closest(".gs-video-strip-outer");
+        if (!outer) return;
+        var strip = outer.querySelector(".gs-video-strip");
+        if (!strip) return;
+        strip.classList.toggle("gs-video-strip--grid");
+        var gridOn = strip.classList.contains("gs-video-strip--grid");
+        btn.setAttribute("aria-pressed", gridOn ? "true" : "false");
+        btn.textContent = gridOn ? "Strip layout" : "Grid layout";
+      });
+    });
   });
 })();
 

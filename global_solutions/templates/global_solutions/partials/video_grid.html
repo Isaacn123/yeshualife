@@ -1,5 +1,5 @@
 {% if videos %}
-  <div class="gs-video-grid">
+  <div class="{% if strip %}gs-video-strip{% else %}gs-video-grid{% endif %}">
     {% for v in videos %}
       <article class="gs-video">
         <div class="gs-video-frame">

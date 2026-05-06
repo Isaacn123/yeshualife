@@ -33,13 +33,19 @@ def build_global_solutions_public_context() -> dict:
         is_active=True,
         status=GlobalSolutionsVideoStatus.READY,
     )
-    feeds = list(videos_qs.filter(kind=GlobalSolutionsVideoKind.FEEDING).order_by("-published_at", "sort_order")[:12])
-    preachings = list(
-        videos_qs.filter(kind=GlobalSolutionsVideoKind.PREACHING).order_by("-published_at", "sort_order")[:12]
-    )
-    learning = list(
-        videos_qs.filter(kind=GlobalSolutionsVideoKind.LEARNING).order_by("-published_at", "sort_order")[:12]
-    )
+    cap = int(getattr(django_settings, "GLOBAL_SOLUTIONS_PUBLIC_VIDEO_CAP", 72))
+
+    feeding_qs = videos_qs.filter(kind=GlobalSolutionsVideoKind.FEEDING).order_by("-published_at", "sort_order")
+    preaching_qs = videos_qs.filter(kind=GlobalSolutionsVideoKind.PREACHING).order_by("-published_at", "sort_order")
+    learning_qs = videos_qs.filter(kind=GlobalSolutionsVideoKind.LEARNING).order_by("-published_at", "sort_order")
+
+    feeds_total = feeding_qs.count()
+    preachings_total = preaching_qs.count()
+    learning_total = learning_qs.count()
+
+    feeds = list(feeding_qs[:cap])
+    preachings = list(preaching_qs[:cap])
+    learning = list(learning_qs[:cap])
 
     return {
         "hero_title": hero_title,
@@ -49,6 +55,10 @@ def build_global_solutions_public_context() -> dict:
         "feeds": feeds,
         "preachings": preachings,
         "learning": learning,
+        "feeds_total": feeds_total,
+        "preachings_total": preachings_total,
+        "learning_total": learning_total,
+        "global_solutions_video_cap": cap,
     }
 
 

@@ -1,0 +1,35 @@
+{# title, subtitle (optional), section_id, videos, empty_text, total_count, cap #}
+{% with cap_limit=cap|default:72 %}
+<section class="gs-category-block mb-5" id="{{ section_id }}" aria-labelledby="heading-{{ section_id }}">
+  <div class="row featurette align-items-end">
+    <div class="col-md-8">
+      <h2 id="heading-{{ section_id }}" class="featurette-heading">{{ title }}</h2>
+      {% if subtitle %}<p class="lead mb-0">{{ subtitle }}</p>{% endif %}
+    </div>
+    <div class="col-md-4 text-md-end mt-2 mt-md-0">
+      {% if total_count > 0 %}
+        <p class="text-muted mb-1 small">
+          {{ total_count }} clip{{ total_count|pluralize }}
+          {% if total_count > cap_limit %}
+            (showing {{ videos|length }} newest)
+          {% endif %}
+        </p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="gs-video-strip-outer mt-3">
+    {% include "global_solutions/partials/video_grid.html" with videos=videos empty_text=empty_text strip=True %}
+    {% if videos|length > 4 %}
+      <div class="d-flex flex-wrap align-items-center gap-2 mt-2 justify-content-between">
+        <p class="gs-scroll-hint text-muted small mb-0">
+          <em>Scroll sideways to browse — or switch to a grid.</em>
+        </p>
+        <button type="button" class="btn btn-sm btn-outline-secondary gs-video-layout-toggle" aria-pressed="false">
+          Grid layout
+        </button>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endwith %}

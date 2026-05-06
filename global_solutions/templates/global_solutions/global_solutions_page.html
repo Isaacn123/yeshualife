@@ -5,6 +5,7 @@
 
 {% block extra_css %}
   {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
   {% compress css %}
   <link rel="stylesheet" href="{% static 'global_solutions/global_solutions.css' %}">
   {% endcompress %}
@@ -13,118 +14,88 @@
 {% block content %}
 {% include "nav_bar.html" %}
 
-<section class="gs-hero">
-  <div class="container gs-hero-inner">
-    <div class="gs-hero-copy">
-      <h1 class="gs-title">{{ hero_title }}</h1>
+<section class="yesh-header">
+  <header
+    class="masthead d-flex align-items-center{% if hero_image_url %} gs-masthead-custom{% endif %}"
+    {% if hero_image_url %}
+      style="background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.35)), url('{{ hero_image_url }}');"
+    {% endif %}
+  >
+    <div class="container px-4 px-lg-5 container-info">
+      <h1 class="mb-1">{{ hero_title }}</h1>
       {% if hero_subtitle %}
-        <p class="gs-subtitle">{{ hero_subtitle }}</p>
+        <h3 class="mb-5"><em>{{ hero_subtitle }}</em></h3>
       {% endif %}
     </div>
-    {% if hero_image_url %}
-      <div class="gs-hero-media">
-        <img src="{{ hero_image_url }}" alt="{{ hero_title }}" class="gs-hero-image">
-      </div>
-    {% endif %}
-  </div>
+  </header>
 </section>
 
-<section class="gs-section">
-  <div class="container">
-    <div class="gs-section-header">
-      <h2 class="gs-h2">Feeding • Preachings • Learning</h2>
-      <p class="gs-muted">Fresh clips uploaded continuously.</p>
+<div class="top-content-wrap">
+  {% include "home/sections/top-section-updates.html" %}
+</div>
+
+<div class="d-flex flex-column justify-content-center align-items-center wrap-blog">
+
+  <div class="container marketing">
+    <hr class="featurette-divider">
+    <div class="text-center px-2 mb-4">
+      <h2 class="featurette-heading">Feeding • Preachings • Learning</h2>
+      <p class="lead">Fresh clips uploaded continuously.</p>
     </div>
 
-    <div class="row gs-triple">
-      <div class="col-lg-4">
-        <div class="gs-card">
-          <div class="gs-card-head">
-            <h3 class="gs-h3">Feeding</h3>
-          </div>
-          <div class="gs-card-body">
-            {% include "global_solutions/partials/video_grid.html" with videos=feeds empty_text="No feeding clips yet." %}
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="gs-card">
-          <div class="gs-card-head">
-            <h3 class="gs-h3">Preachings</h3>
-          </div>
-          <div class="gs-card-body">
-            {% include "global_solutions/partials/video_grid.html" with videos=preachings empty_text="No preachings yet." %}
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="gs-card">
-          <div class="gs-card-head">
-            <h3 class="gs-h3">Learning</h3>
-          </div>
-          <div class="gs-card-body">
-            {% include "global_solutions/partials/video_grid.html" with videos=learning empty_text="No learning clips yet." %}
-          </div>
-        </div>
-      </div>
-    </div>
+    {% include "global_solutions/partials/video_category_section.html" with title="Feeding" subtitle="Community meals and feeding outreach." section_id="feeding" videos=feeds empty_text="No feeding clips yet." total_count=feeds_total cap=global_solutions_video_cap %}
+
+    <hr class="featurette-divider">
+
+    {% include "global_solutions/partials/video_category_section.html" with title="Preachings" subtitle="Messages and ministry." section_id="preaching" videos=preachings empty_text="No preachings yet." total_count=preachings_total cap=global_solutions_video_cap %}
+
+    <hr class="featurette-divider">
+
+    {% include "global_solutions/partials/video_category_section.html" with title="Learning" subtitle="Teaching and training clips." section_id="learning" videos=learning empty_text="No learning clips yet." total_count=learning_total cap=global_solutions_video_cap %}
   </div>
-</section>
 
-<section class="gs-section gs-alt">
-  <div class="container">
-    <div class="gs-section-header">
-      <h2 class="gs-h2">Wealth Creation • Healings</h2>
-    </div>
+  <div class="container marketing">
+    <hr class="featurette-divider">
+    <h2 class="featurette-heading text-center mb-4">Wealth Creation • Healings</h2>
     <div class="row">
       <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Wealth Creation" blocks=blocks_by_category.wealth_creation %}</div>
       <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Healings" blocks=blocks_by_category.healings %}</div>
     </div>
   </div>
-</section>
 
-<section class="gs-section">
-  <div class="container">
-    <div class="gs-section-header">
-      <h2 class="gs-h2">Innovations • Advancement</h2>
-    </div>
+  <div class="container marketing">
+    <hr class="featurette-divider">
+    <h2 class="featurette-heading text-center mb-4">Innovations • Advancement</h2>
     <div class="row">
       <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Innovations" blocks=blocks_by_category.innovations %}</div>
       <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Advancement" blocks=blocks_by_category.advancement %}</div>
     </div>
   </div>
-</section>
 
-<section class="gs-section gs-alt">
-  <div class="container">
-    <div class="gs-section-header">
-      <h2 class="gs-h2">Integration • Power</h2>
-    </div>
+  <div class="container marketing">
+    <hr class="featurette-divider">
+    <h2 class="featurette-heading text-center mb-4">Integration • Power</h2>
     <div class="row">
       <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Integration" blocks=blocks_by_category.integration %}</div>
       <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Power" blocks=blocks_by_category.power %}</div>
     </div>
   </div>
-</section>
 
-<section class="gs-section">
-  <div class="container">
-    <div class="gs-section-header">
-      <h2 class="gs-h2">Education • Knowledge</h2>
-    </div>
+  <div class="container marketing">
+    <hr class="featurette-divider">
+    <h2 class="featurette-heading text-center mb-4">Education • Knowledge</h2>
     <div class="row">
       <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Education" blocks=blocks_by_category.education %}</div>
       <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Knowledge" blocks=blocks_by_category.knowledge %}</div>
     </div>
   </div>
-</section>
 
-{% if global_solutions_articles %}
-<section class="gs-section gs-alt" aria-labelledby="gs-articles-heading">
-  <div class="container">
-    <div class="gs-section-header">
-      <h2 id="gs-articles-heading" class="gs-h2">Articles &amp; updates</h2>
-      <p class="gs-muted">Individual stories and posts from Global Solutions.</p>
+  {% if global_solutions_articles %}
+  <div class="container marketing">
+    <hr class="featurette-divider">
+    <div class="text-center mb-4">
+      <h2 id="gs-articles-heading" class="featurette-heading">Articles &amp; updates</h2>
+      <p class="lead">Individual stories and posts from Global Solutions.</p>
     </div>
     <ul class="list-unstyled row g-3">
       {% for article in global_solutions_articles %}
@@ -139,8 +110,18 @@
       {% endfor %}
     </ul>
   </div>
+  {% endif %}
+
+</div>
+
+<section class="content-section bg-primary2 text-white">
+  <div class="container px-4 px-lg-5 text-center">
+    <h2 class="mb-4" style="font-weight:600">Your financial support empowers us to implement vital programs and initiatives.</h2>
+    <h6 style="font-size:8px; font-weight:200;">Have questions, ideas, or just want to say hello? We'd love to hear from you!</h6>
+    <a class="btn btn-xl btn-light me-4 btn-danger" href="/payments">Donate</a>
+    <a class="btn btn-xl btn-dark" href="#!">Support</a>
+  </div>
 </section>
-{% endif %}
 
 {% endblock %}
 
@@ -155,4 +136,3 @@
 {% block footer %}
   {% include "blog/footer.html" %}
 {% endblock %}
-
