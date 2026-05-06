@@ -8,6 +8,15 @@
 }
 
 /* Business Casual-like layout, scoped to Global Solutions page only */
+.gs-bc{
+  font-family: Lora, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.gs-bc h1, .gs-bc h2, .gs-bc h3, .gs-bc h4, .gs-bc h5, .gs-bc h6,
+.gs-bc .h1, .gs-bc .h2, .gs-bc .h3, .gs-bc .h4, .gs-bc .h5, .gs-bc .h6,
+.gs-bc .section-heading{
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
 .gs-bc .page-section{
   margin-top: 5rem;
   margin-bottom: 5rem;
