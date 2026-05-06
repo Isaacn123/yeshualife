@@ -1,33 +1,58 @@
-/* Overrides for Business Casual theme when used inside Django templates.
-   Keep this file small and page-specific. */
+/* Overrides for Business Casual theme when used inside Django templates. */
 
-/* Make sure carousel controls are clickable even when the product title overlaps. */
+/* Carousel controls above overlapping layers */
 .gs-bc .carousel-control-prev,
 .gs-bc .carousel-control-next,
 .gs-bc .carousel-indicators {
   z-index: 10;
 }
 
-/* Ensure intro text doesn't block carousel controls on large screens. */
-.gs-bc .intro .intro-img{
+.gs-bc .intro .intro-img {
   position: relative;
   z-index: 1;
 }
-.gs-bc .intro .intro-text{
+.gs-bc .intro .intro-text {
   position: relative;
   z-index: 2;
 }
 .gs-bc .intro .carousel-control-prev,
 .gs-bc .intro .carousel-control-next,
-.gs-bc .intro .carousel-indicators{
+.gs-bc .intro .carousel-indicators {
   z-index: 15;
 }
 
-/* Ensure carousel images fit nicely in the masked rounded container. */
-.gs-bc .carousel-inner img {
-  display: block;
+/*
+ * Fixed-height carousel: Bootstrap sizes .carousel-inner from the *active* slide only,
+ * so different image heights make the block jump and push intro-text around.
+ * Stack slides absolutely + fixed aspect ratio + cover.
+ */
+.gs-bc .carousel-inner.gs-carousel-fixed {
+  position: relative;
   width: 100%;
-  height: auto;
-  object-fit: cover;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: inherit;
 }
 
+.gs-bc .carousel-inner.gs-carousel-fixed .carousel-item {
+  position: absolute;
+  inset: 0;
+  float: none;
+  margin-right: 0;
+  backface-visibility: hidden;
+}
+
+.gs-bc .carousel-inner.gs-carousel-fixed .carousel-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Intro text card: stable width so long headings don't wildly resize the overlay layout */
+@media (min-width: 992px) {
+  .gs-bc .intro .intro-text.gs-intro-text {
+    max-width: min(45vw, 520px);
+  }
+}
