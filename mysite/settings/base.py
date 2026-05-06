@@ -316,3 +316,16 @@ GLOBAL_SOLUTIONS_TRANSCODE_HLS = os.environ.get("GLOBAL_SOLUTIONS_TRANSCODE_HLS"
     "yes",
     "on",
 )
+
+# Progressive playback: presigned GET URLs work with private buckets (default true).
+# Set B2_PLAYBACK_USE_PRESIGNED=false only if objects are world-readable via B2_PUBLIC_BASE_URL.
+B2_PLAYBACK_USE_PRESIGNED = os.environ.get("B2_PLAYBACK_USE_PRESIGNED", "true").lower() in (
+    "1",
+    "true",
+    "yes",
+    "on",
+)
+try:
+    B2_PLAYBACK_PRESIGNED_EXPIRES = int(os.environ.get("B2_PLAYBACK_PRESIGNED_EXPIRES", "86400"))
+except ValueError:
+    B2_PLAYBACK_PRESIGNED_EXPIRES = 86400

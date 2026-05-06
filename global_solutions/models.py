@@ -197,15 +197,20 @@ class GlobalSolutionsVideo(models.Model):
 
     @property
     def playback_url(self) -> str:
-        """Public playback URL: HLS manifest when present, otherwise progressive MP4 from the original B2 object."""
-        from .b2 import b2_public_url
+        """HLS manifest URL when set; else progressive MP4 (presigned GET by default for private buckets)."""
+        from .b2 import b2_presigned_get_url, b2_public_url
 
         hls = (self.hls_master_manifest_url or "").strip()
         if hls:
             return hls
-        if self.original_b2_key:
-            return b2_public_url(self.original_b2_key)
-        return ""
+        if not self.original_b2_key:
+            return ""
+        if getattr(django_settings, "B2_PLAYBACK_USE_PRESIGNED", True):
+            return b2_presigned_get_url(
+                self.original_b2_key,
+                expires_in=getattr(django_settings, "B2_PLAYBACK_PRESIGNED_EXPIRES", 86400),
+            )
+        return b2_public_url(self.original_b2_key)
 
     @property
     def playback_uses_hls(self) -> bool:
@@ -219,8 +224,9 @@ class GlobalSolutionsVideo(models.Model):
                 format_html(
                     "<p>Videos are stored in Backblaze B2. After multipart upload completes they become "
                     "<strong>Ready</strong> automatically and play from your uploaded file (progressive MP4). "
-                    "No command line is required. Ensure the object is publicly readable via your "
-                    "<code>B2_PUBLIC_BASE_URL</code>.</p>"
+                    "By default playback uses <strong>presigned URLs</strong> so private buckets work; set "
+                    "<code>B2_PLAYBACK_USE_PRESIGNED=false</code> only if files are fully public. "
+                    "Keep bucket CORS allowing your site for <code>s3_get</code> / reads so the browser can stream.</p>"
                     '<p>Optional: use the <a href="{}">standalone upload center</a>.</p>'
                     '<p>To use HLS transcoding instead, set environment variable '
                     "<code>GLOBAL_SOLUTIONS_TRANSCODE_HLS=true</code> and run "

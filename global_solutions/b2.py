@@ -55,3 +55,14 @@ def b2_public_url(key: str) -> str:
     cfg = get_b2_config()
     return f"{cfg.public_base_url}/{cfg.bucket_name}/{key.lstrip('/')}"
 
+
+def b2_presigned_get_url(key: str, *, expires_in: int = 86400) -> str:
+    """Readable URL for private buckets (short-lived)."""
+    s3 = get_b2_s3_client()
+    cfg = get_b2_config()
+    return s3.generate_presigned_url(
+        ClientMethod="get_object",
+        Params={"Bucket": cfg.bucket_name, "Key": key.lstrip("/")},
+        ExpiresIn=expires_in,
+    )
+
