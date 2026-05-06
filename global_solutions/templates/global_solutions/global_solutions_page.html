@@ -158,6 +158,22 @@
 
 {% block extra_js %}
   {{ block.super }}
+  <script>
+    // Ensure carousels work even if Bootstrap's data API isn't active.
+    window.addEventListener("DOMContentLoaded", function () {
+      if (!window.bootstrap || !window.bootstrap.Carousel) return;
+      ["carousel-intro", "carousel-feeding"].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        new window.bootstrap.Carousel(el, {
+          interval: false,
+          ride: false,
+          touch: true,
+          pause: true
+        });
+      });
+    });
+  </script>
 {% endblock %}
 
 {% block footer %}
