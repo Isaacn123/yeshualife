@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load static compress wagtailcore_tags %}
+
+{% block body_class %}template-globalsolutions{% endblock %}
+
+{% block extra_css %}
+  {{ block.super }}
+  <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+  {% compress css %}
+  <link rel="stylesheet" href="{% static 'global_solutions/global_solutions.css' %}">
+  {% endcompress %}
+{% endblock %}
+
+{% block content %}
+{% include "nav_bar.html" %}
+
+<main class="gs-bc">
+  <section class="page-section clearfix">
+    <div class="container">
+      <div class="intro">
+        {% if hero_image_url %}
+          <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{{ hero_image_url }}" alt="{{ hero_title }}">
+        {% endif %}
+        <div class="intro-text left-0 text-center bg-faded p-5 rounded">
+          <h2 class="section-heading mb-4">
+            <span class="section-heading-upper">Yeshua Life</span>
+            <span class="section-heading-lower">{{ hero_title }}</span>
+          </h2>
+          {% if hero_subtitle %}
+            <p class="mb-3">{{ hero_subtitle }}</p>
+          {% else %}
+            <p class="mb-3">Fresh clips and stories uploaded continuously.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container">
+      <h2 class="section-heading text-center mb-4">
+        <span class="section-heading-upper">Fresh clips</span>
+        <span class="section-heading-lower">Feeding • Preachings • Learning</span>
+      </h2>
+
+      {% include "global_solutions/partials/video_category_section.html" with title="Feeding" subtitle="Community meals and feeding outreach." section_id="feeding" videos=feeds empty_text="No feeding clips yet." total_count=feeds_total cap=global_solutions_video_cap align="right" %}
+      {% include "global_solutions/partials/video_category_section.html" with title="Preachings" subtitle="Messages and ministry." section_id="preaching" videos=preachings empty_text="No preachings yet." total_count=preachings_total cap=global_solutions_video_cap align="left" %}
+      {% include "global_solutions/partials/video_category_section.html" with title="Learning" subtitle="Teaching and training clips." section_id="learning" videos=learning empty_text="No learning clips yet." total_count=learning_total cap=global_solutions_video_cap align="right" %}
+    </div>
+  </section>
+
+  <section class="page-section cta">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-10 mx-auto">
+          <div class="cta-inner bg-faded rounded">
+            <h2 class="section-heading mb-4 text-center">
+              <span class="section-heading-upper">Programs &amp; initiatives</span>
+              <span class="section-heading-lower">What we do</span>
+            </h2>
+
+            <div class="row g-3">
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Wealth Creation" blocks=blocks_by_category.wealth_creation %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Healings" blocks=blocks_by_category.healings %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Innovations" blocks=blocks_by_category.innovations %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Advancement" blocks=blocks_by_category.advancement %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Integration" blocks=blocks_by_category.integration %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Power" blocks=blocks_by_category.power %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Education" blocks=blocks_by_category.education %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Knowledge" blocks=blocks_by_category.knowledge %}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% if global_solutions_articles %}
+  <section class="page-section">
+    <div class="container">
+      <h2 id="gs-articles-heading" class="section-heading text-center mb-4">
+        <span class="section-heading-upper">Stories</span>
+        <span class="section-heading-lower">Articles &amp; updates</span>
+      </h2>
+      <ul class="list-unstyled row g-3">
+        {% for article in global_solutions_articles %}
+          <li class="col-md-6 col-lg-4">
+            <article class="gs-card h-100">
+              <div class="gs-card-body">
+                <h3 class="gs-h3"><a href="{% pageurl article %}">{{ article.title }}</a></h3>
+                {% if article.intro %}<p class="gs-muted mb-0">{{ article.intro }}</p>{% endif %}
+              </div>
+            </article>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+  {% endif %}
+</main>
+
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
+  {% compress js %}
+  <script type="text/javascript" src="{% static 'global_solutions/global_solutions.js' %}"></script>
+  {% endcompress %}
+{% endblock %}
+
+{% block footer %}
+  {% include "blog/footer.html" %}
+{% endblock %}
