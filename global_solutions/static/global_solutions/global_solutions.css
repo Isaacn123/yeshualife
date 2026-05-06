@@ -84,6 +84,44 @@
 .gs-video-title{font-weight: 800; color: var(--gs-ink); line-height: 1.2;}
 .gs-video-desc{color: var(--gs-muted); margin-top: .35rem; font-size: .95rem;}
 
+/* Bootstrap carousel: one clip per slide, casual card treatment */
+.gs-video-carousel{
+  background: var(--gs-surface-2);
+  border-radius: 12px;
+  padding: .5rem .25rem 1rem;
+}
+.gs-video-carousel .carousel-inner{
+  background: var(--gs-surface);
+  border-color: var(--gs-border) !important;
+}
+.gs-video-carousel .carousel-item .gs-video{
+  max-width: min(100%, 720px);
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid var(--gs-border);
+  box-shadow: var(--gs-shadow);
+}
+.gs-video-carousel .gs-video-el{
+  height: auto;
+  aspect-ratio: 16 / 9;
+  max-height: min(70vh, 520px);
+  object-fit: contain;
+}
+.gs-video-carousel .carousel-control-prev,
+.gs-video-carousel .carousel-control-next{
+  width: 10%;
+  opacity: .85;
+}
+.gs-video-carousel .carousel-indicators button{
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(105, 69, 216, 0.35);
+}
+.gs-video-carousel .carousel-indicators .active{
+  background-color: #6945d8;
+}
+
 .gs-block-list{display:flex; flex-direction: column; gap: .9rem;}
 .gs-block{
   border: 1px solid var(--gs-border);

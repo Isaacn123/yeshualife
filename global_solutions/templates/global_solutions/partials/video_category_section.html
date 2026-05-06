@@ -18,18 +18,10 @@
     </div>
   </div>
 
-  <div class="gs-video-strip-outer mt-3">
-    {% include "global_solutions/partials/video_grid.html" with videos=videos empty_text=empty_text strip=True %}
-    {% if videos|length > 4 %}
-      <div class="d-flex flex-wrap align-items-center gap-2 mt-2 justify-content-between">
-        <p class="gs-scroll-hint text-muted small mb-0">
-          <em>Scroll sideways to browse — or switch to a grid.</em>
-        </p>
-        <button type="button" class="btn btn-sm btn-outline-secondary gs-video-layout-toggle" aria-pressed="false">
-          Grid layout
-        </button>
-      </div>
-    {% endif %}
+  {% with carousel_dom_id="carousel-"|add:section_id %}
+  <div class="mt-3">
+    {% include "global_solutions/partials/video_grid.html" with videos=videos empty_text=empty_text layout="carousel" carousel_dom_id=carousel_dom_id %}
   </div>
+  {% endwith %}
 </section>
 {% endwith %}

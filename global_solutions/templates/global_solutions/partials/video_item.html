@@ -1,0 +1,22 @@
+{# Expects: v (GlobalSolutionsVideo-like object with playback fields) #}
+<article class="gs-video">
+  <div class="gs-video-frame">
+    <video
+      class="gs-video-el"
+      controls
+      preload="metadata"
+      playsinline
+      {% if v.playback_uses_hls %}
+      data-playback-src="{{ v.playback_url }}"
+      data-playback-hls="true"
+      {% else %}
+      src="{{ v.playback_url }}"
+      {% endif %}
+      {% if v.poster_image_url %}poster="{{ v.poster_image_url }}"{% endif %}
+    ></video>
+  </div>
+  <div class="gs-video-meta">
+    <div class="gs-video-title">{{ v.title }}</div>
+    {% if v.description %}<div class="gs-video-desc">{{ v.description }}</div>{% endif %}
+  </div>
+</article>
