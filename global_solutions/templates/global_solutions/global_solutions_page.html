@@ -14,114 +14,90 @@
 {% block content %}
 {% include "nav_bar.html" %}
 
-<section class="yesh-header">
-  <header
-    class="masthead d-flex align-items-center{% if hero_image_url %} gs-masthead-custom{% endif %}"
-    {% if hero_image_url %}
-      style="background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.35)), url('{{ hero_image_url }}');"
-    {% endif %}
-  >
-    <div class="container px-4 px-lg-5 container-info">
-      <h1 class="mb-1">{{ hero_title }}</h1>
-      {% if hero_subtitle %}
-        <h3 class="mb-5"><em>{{ hero_subtitle }}</em></h3>
-      {% endif %}
+<main class="gs-bc">
+  <section class="page-section clearfix">
+    <div class="container">
+      <div class="intro">
+        {% if hero_image_url %}
+          <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{{ hero_image_url }}" alt="{{ hero_title }}">
+        {% endif %}
+        <div class="intro-text left-0 text-center bg-faded p-5 rounded">
+          <h2 class="section-heading mb-4">
+            <span class="section-heading-upper">Yeshua Life</span>
+            <span class="section-heading-lower">{{ hero_title }}</span>
+          </h2>
+          {% if hero_subtitle %}
+            <p class="mb-3">{{ hero_subtitle }}</p>
+          {% else %}
+            <p class="mb-3">Fresh clips and stories uploaded continuously.</p>
+          {% endif %}
+        </div>
+      </div>
     </div>
-  </header>
-</section>
+  </section>
 
-<div class="top-content-wrap">
-  {% include "home/sections/top-section-updates.html" %}
-</div>
+  <section class="page-section">
+    <div class="container">
+      <h2 class="section-heading text-center mb-4">
+        <span class="section-heading-upper">Fresh clips</span>
+        <span class="section-heading-lower">Feeding • Preachings • Learning</span>
+      </h2>
 
-<div class="d-flex flex-column justify-content-center align-items-center wrap-blog">
-
-  <div class="container marketing">
-    <hr class="featurette-divider">
-    <div class="text-center px-2 mb-4">
-      <h2 class="featurette-heading">Feeding • Preachings • Learning</h2>
-      <p class="lead">Fresh clips uploaded continuously.</p>
+      {% include "global_solutions/partials/video_category_section.html" with title="Feeding" subtitle="Community meals and feeding outreach." section_id="feeding" videos=feeds empty_text="No feeding clips yet." total_count=feeds_total cap=global_solutions_video_cap align="right" %}
+      {% include "global_solutions/partials/video_category_section.html" with title="Preachings" subtitle="Messages and ministry." section_id="preaching" videos=preachings empty_text="No preachings yet." total_count=preachings_total cap=global_solutions_video_cap align="left" %}
+      {% include "global_solutions/partials/video_category_section.html" with title="Learning" subtitle="Teaching and training clips." section_id="learning" videos=learning empty_text="No learning clips yet." total_count=learning_total cap=global_solutions_video_cap align="right" %}
     </div>
+  </section>
 
-    {% include "global_solutions/partials/video_category_section.html" with title="Feeding" subtitle="Community meals and feeding outreach." section_id="feeding" videos=feeds empty_text="No feeding clips yet." total_count=feeds_total cap=global_solutions_video_cap %}
+  <section class="page-section cta">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-10 mx-auto">
+          <div class="cta-inner bg-faded rounded">
+            <h2 class="section-heading mb-4 text-center">
+              <span class="section-heading-upper">Programs &amp; initiatives</span>
+              <span class="section-heading-lower">What we do</span>
+            </h2>
 
-    <hr class="featurette-divider">
-
-    {% include "global_solutions/partials/video_category_section.html" with title="Preachings" subtitle="Messages and ministry." section_id="preaching" videos=preachings empty_text="No preachings yet." total_count=preachings_total cap=global_solutions_video_cap %}
-
-    <hr class="featurette-divider">
-
-    {% include "global_solutions/partials/video_category_section.html" with title="Learning" subtitle="Teaching and training clips." section_id="learning" videos=learning empty_text="No learning clips yet." total_count=learning_total cap=global_solutions_video_cap %}
-  </div>
-
-  <div class="container marketing">
-    <hr class="featurette-divider">
-    <h2 class="featurette-heading text-center mb-4">Wealth Creation • Healings</h2>
-    <div class="row">
-      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Wealth Creation" blocks=blocks_by_category.wealth_creation %}</div>
-      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Healings" blocks=blocks_by_category.healings %}</div>
+            <div class="row g-3">
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Wealth Creation" blocks=blocks_by_category.wealth_creation %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Healings" blocks=blocks_by_category.healings %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Innovations" blocks=blocks_by_category.innovations %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Advancement" blocks=blocks_by_category.advancement %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Integration" blocks=blocks_by_category.integration %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Power" blocks=blocks_by_category.power %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Education" blocks=blocks_by_category.education %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Knowledge" blocks=blocks_by_category.knowledge %}</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <div class="container marketing">
-    <hr class="featurette-divider">
-    <h2 class="featurette-heading text-center mb-4">Innovations • Advancement</h2>
-    <div class="row">
-      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Innovations" blocks=blocks_by_category.innovations %}</div>
-      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Advancement" blocks=blocks_by_category.advancement %}</div>
-    </div>
-  </div>
-
-  <div class="container marketing">
-    <hr class="featurette-divider">
-    <h2 class="featurette-heading text-center mb-4">Integration • Power</h2>
-    <div class="row">
-      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Integration" blocks=blocks_by_category.integration %}</div>
-      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Power" blocks=blocks_by_category.power %}</div>
-    </div>
-  </div>
-
-  <div class="container marketing">
-    <hr class="featurette-divider">
-    <h2 class="featurette-heading text-center mb-4">Education • Knowledge</h2>
-    <div class="row">
-      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Education" blocks=blocks_by_category.education %}</div>
-      <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Knowledge" blocks=blocks_by_category.knowledge %}</div>
-    </div>
-  </div>
+  </section>
 
   {% if global_solutions_articles %}
-  <div class="container marketing">
-    <hr class="featurette-divider">
-    <div class="text-center mb-4">
-      <h2 id="gs-articles-heading" class="featurette-heading">Articles &amp; updates</h2>
-      <p class="lead">Individual stories and posts from Global Solutions.</p>
+  <section class="page-section">
+    <div class="container">
+      <h2 id="gs-articles-heading" class="section-heading text-center mb-4">
+        <span class="section-heading-upper">Stories</span>
+        <span class="section-heading-lower">Articles &amp; updates</span>
+      </h2>
+      <ul class="list-unstyled row g-3">
+        {% for article in global_solutions_articles %}
+          <li class="col-md-6 col-lg-4">
+            <article class="gs-card h-100">
+              <div class="gs-card-body">
+                <h3 class="gs-h3"><a href="{% pageurl article %}">{{ article.title }}</a></h3>
+                {% if article.intro %}<p class="gs-muted mb-0">{{ article.intro }}</p>{% endif %}
+              </div>
+            </article>
+          </li>
+        {% endfor %}
+      </ul>
     </div>
-    <ul class="list-unstyled row g-3">
-      {% for article in global_solutions_articles %}
-        <li class="col-md-6 col-lg-4">
-          <article class="gs-card h-100">
-            <div class="gs-card-body">
-              <h3 class="gs-h3"><a href="{% pageurl article %}">{{ article.title }}</a></h3>
-              {% if article.intro %}<p class="gs-muted mb-0">{{ article.intro }}</p>{% endif %}
-            </div>
-          </article>
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
+  </section>
   {% endif %}
-
-</div>
-
-<section class="content-section bg-primary2 text-white">
-  <div class="container px-4 px-lg-5 text-center">
-    <h2 class="mb-4" style="font-weight:600">Your financial support empowers us to implement vital programs and initiatives.</h2>
-    <h6 style="font-size:8px; font-weight:200;">Have questions, ideas, or just want to say hello? We'd love to hear from you!</h6>
-    <a class="btn btn-xl btn-light me-4 btn-danger" href="/payments">Donate</a>
-    <a class="btn btn-xl btn-dark" href="#!">Support</a>
-  </div>
-</section>
+</main>
 
 {% endblock %}
 

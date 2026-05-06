@@ -7,6 +7,66 @@
   --gs-shadow:0 14px 40px rgba(2,6,23,.10);
 }
 
+/* Business Casual-like layout, scoped to Global Solutions page only */
+.gs-bc .page-section{
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}
+.gs-bc .section-heading{
+  text-transform: uppercase;
+}
+.gs-bc .section-heading .section-heading-upper{
+  display: block;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: .03em;
+  opacity: .85;
+}
+.gs-bc .section-heading .section-heading-lower{
+  display: block;
+  font-size: clamp(1.8rem, 3.2vw, 3rem);
+  font-weight: 300;
+  letter-spacing: -.02em;
+}
+.gs-bc .bg-faded{
+  background-color: rgba(239, 240, 254, .82); /* matches your existing pill background vibe */
+}
+.gs-bc .intro{
+  position: relative;
+}
+.gs-bc .intro .intro-img{
+  width: 100%;
+  height: auto;
+  display:block;
+  border-radius: 1rem;
+  object-fit: cover;
+  box-shadow: var(--gs-shadow);
+  border: 1px solid var(--gs-border);
+}
+.gs-bc .intro .intro-text{
+  margin-top: 1rem;
+  border-radius: 1rem;
+  border: 1px solid var(--gs-border);
+  box-shadow: 0 10px 30px rgba(2,6,23,.06);
+}
+@media (min-width: 992px){
+  .gs-bc .intro .intro-img{
+    width: 75%;
+    float: right;
+  }
+  .gs-bc .intro .intro-text{
+    left: 0;
+    width: 60%;
+    margin-top: 3rem;
+    position: absolute;
+  }
+}
+@media (min-width: 1200px){
+  .gs-bc .intro .intro-text{
+    width: 45%;
+  }
+}
+
 /* Hero matches home masthead; optional custom photo from Global Solutions settings */
 .gs-masthead-custom{
   background-size: cover !important;
@@ -15,6 +75,52 @@
 }
 
 .gs-muted{margin:.35rem 0 0; color: var(--gs-muted);}
+
+/* Casual CTA panel (Business Casual-inspired), scoped */
+.gs-bc .cta{
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  background-color: rgba(149, 177, 186, 0.35); /* aligns with your bg-primary2 */
+}
+.gs-bc .cta .cta-inner{
+  position: relative;
+  padding: 2.5rem;
+  margin: .5rem;
+}
+.gs-bc .cta .cta-inner:before{
+  border-radius: .75rem;
+  content: "";
+  position: absolute;
+  top: -0.5rem;
+  bottom: -0.5rem;
+  left: -0.5rem;
+  right: -0.5rem;
+  border: 0.25rem solid rgba(255, 255, 255, 0.75);
+  z-index: -1;
+}
+
+/* Product-style sections (from Business Casual products.html), scoped */
+@media (min-width: 992px){
+  .gs-bc .product-item .product-item-title{
+    position: relative;
+    z-index: 1;
+    margin-bottom: -3rem;
+  }
+  .gs-bc .product-item .product-item-img{
+    position: relative;
+    z-index: 0;
+    max-width: 60vw;
+  }
+  .gs-bc .product-item .product-item-description{
+    position: relative;
+    z-index: 1;
+    margin-top: -3rem;
+    max-width: 50vw;
+  }
+}
+.gs-bc .gs-product-carousel-wrap{
+  width: 100%;
+}
 
 .gs-card{
   background: var(--gs-surface);
