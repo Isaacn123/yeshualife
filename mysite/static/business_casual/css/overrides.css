@@ -1,0 +1,18 @@
+/* Overrides for Business Casual theme when used inside Django templates.
+   Keep this file small and page-specific. */
+
+/* Make sure carousel controls are clickable even when the product title overlaps. */
+.gs-bc .carousel-control-prev,
+.gs-bc .carousel-control-next,
+.gs-bc .carousel-indicators {
+  z-index: 5;
+}
+
+/* Ensure carousel images fit nicely in the masked rounded container. */
+.gs-bc .carousel-inner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
