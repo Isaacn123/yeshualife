@@ -50,9 +50,36 @@
   object-position: center;
 }
 
-/* Intro text card: stable width so long headings don't wildly resize the overlay layout */
+/* Intro text card: compact height (~150–200px), scroll if subtitle is long */
+.gs-bc .intro .intro-text.gs-intro-text {
+  max-height: 200px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.gs-bc .intro .intro-text.gs-intro-text .section-heading .section-heading-upper {
+  font-size: 0.72rem;
+  line-height: 1.35;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.gs-bc .intro .intro-text.gs-intro-text .section-heading .section-heading-lower {
+  font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+  line-height: 1.1;
+  margin-top: 0.25rem;
+}
+.gs-bc .intro .intro-text.gs-intro-text .small {
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
 @media (min-width: 992px) {
   .gs-bc .intro .intro-text.gs-intro-text {
     max-width: min(45vw, 520px);
+  }
+}
+
+@media (max-width: 991px) {
+  .gs-bc .intro .intro-text.gs-intro-text {
+    max-height: 180px;
   }
 }
