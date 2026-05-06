@@ -51,7 +51,34 @@
             </h2>
           </div>
         </div>
-        <img class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0" src="{% static 'business_casual/assets/img/products-01.jpg' %}" alt="Feeding" />
+        <div class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0 overflow-hidden">
+          <div id="carousel-feeding" class="carousel slide w-100" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#carousel-feeding" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#carousel-feeding" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-bs-target="#carousel-feeding" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="{% static 'business_casual/assets/img/products-01.jpg' %}" class="d-block w-100" alt="Feeding slide 1">
+              </div>
+              <div class="carousel-item">
+                <img src="{% static 'business_casual/assets/img/products-02.jpg' %}" class="d-block w-100" alt="Feeding slide 2">
+              </div>
+              <div class="carousel-item">
+                <img src="{% static 'business_casual/assets/img/products-03.jpg' %}" class="d-block w-100" alt="Feeding slide 3">
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-feeding" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel-feeding" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
         <div class="product-item-description d-flex me-auto">
           <div class="bg-faded p-5 rounded">
             <p class="mb-0">Placeholder copy (design-only). We will replace this with Feeding videos + description.</p>
