@@ -159,6 +159,8 @@
 
 {% block extra_js %}
   {{ block.super }}
+  {# Ensure Bootstrap carousel JS is present for this page even if base offline-compress output is stale #}
+  <script src="{% static 'css/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
   <script>
     // Ensure carousels work even if Bootstrap's data API isn't active.
     window.addEventListener("DOMContentLoaded", function () {
@@ -173,6 +175,42 @@
           pause: true
         });
       });
+    });
+  </script>
+  <script>
+    // Fallback: if Bootstrap JS fails to load, make prev/next buttons still work.
+    // This only supports basic next/prev by toggling `.active`.
+    window.addEventListener("DOMContentLoaded", function () {
+      if (window.bootstrap && window.bootstrap.Carousel) return;
+
+      function setActive(items, nextIndex) {
+        for (var i = 0; i < items.length; i++) items[i].classList.remove("active");
+        items[nextIndex].classList.add("active");
+      }
+
+      function initFallback(id) {
+        var root = document.getElementById(id);
+        if (!root) return;
+        var items = root.querySelectorAll(".carousel-item");
+        if (!items.length) return;
+
+        root.addEventListener("click", function (e) {
+          var btn = e.target.closest("[data-bs-slide]");
+          if (!btn) return;
+          e.preventDefault();
+
+          var active = root.querySelector(".carousel-item.active");
+          var idx = 0;
+          for (var i = 0; i < items.length; i++) if (items[i] === active) idx = i;
+
+          var dir = btn.getAttribute("data-bs-slide");
+          var next = dir === "prev" ? (idx - 1 + items.length) % items.length : (idx + 1) % items.length;
+          setActive(items, next);
+        });
+      }
+
+      initFallback("carousel-intro");
+      initFallback("carousel-feeding");
     });
   </script>
 {% endblock %}

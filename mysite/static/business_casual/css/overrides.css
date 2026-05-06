@@ -5,7 +5,22 @@
 .gs-bc .carousel-control-prev,
 .gs-bc .carousel-control-next,
 .gs-bc .carousel-indicators {
-  z-index: 5;
+  z-index: 10;
+}
+
+/* Ensure intro text doesn't block carousel controls on large screens. */
+.gs-bc .intro .intro-img{
+  position: relative;
+  z-index: 1;
+}
+.gs-bc .intro .intro-text{
+  position: relative;
+  z-index: 2;
+}
+.gs-bc .intro .carousel-control-prev,
+.gs-bc .intro .carousel-control-next,
+.gs-bc .intro .carousel-indicators{
+  z-index: 15;
 }
 
 /* Ensure carousel images fit nicely in the masked rounded container. */
