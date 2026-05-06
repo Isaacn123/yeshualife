@@ -15,6 +15,15 @@
   position: relative;
   z-index: 2;
 }
+
+/* Align overlay with the top of the slideshow (theme used margin-top only, which sits it lower). */
+@media (min-width: 992px) {
+  .gs-bc .intro .intro-text.gs-intro-text {
+    top: 0;
+    margin-top: 0 !important;
+    bottom: auto;
+  }
+}
 .gs-bc .intro .carousel-control-prev,
 .gs-bc .intro .carousel-control-next,
 .gs-bc .intro .carousel-indicators {
