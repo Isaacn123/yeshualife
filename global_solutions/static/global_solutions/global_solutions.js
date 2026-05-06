@@ -3,13 +3,6 @@
     var src = video.getAttribute("data-playback-src");
     if (!src) return;
 
-    var useHls = video.getAttribute("data-playback-hls") === "true";
-
-    if (!useHls) {
-      video.src = src;
-      return;
-    }
-
     // Native HLS (Safari/iOS)
     if (video.canPlayType("application/vnd.apple.mpegurl")) {
       video.src = src;
@@ -29,7 +22,9 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    var videos = document.querySelectorAll("video[data-playback-src]");
+    var videos = document.querySelectorAll(
+      'video[data-playback-hls="true"][data-playback-src]'
+    );
     for (var i = 0; i < videos.length; i++) {
       attachPlayback(videos[i]);
     }
