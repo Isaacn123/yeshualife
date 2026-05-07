@@ -9,21 +9,21 @@
 
 .gs-bc .intro .intro-img {
   position: relative;
-  z-index: 1;
-}
-.gs-bc .intro .intro-text {
-  position: relative;
-  z-index: 2;
+  z-index: 0;
 }
 
-/* Align overlay with the top of the slideshow (theme used margin-top only, which sits it lower). */
+/* Intro: same overlap/stacking as .product-item (title overlaps image on lg+) */
 @media (min-width: 992px) {
-  .gs-bc .intro .intro-text.gs-intro-text {
-    top: 0;
-    margin-top: 0 !important;
-    bottom: auto;
+  .gs-bc .intro .product-item-title {
+    position: relative;
+    z-index: 1;
+    margin-bottom: -3rem;
+  }
+  .gs-bc .intro .intro-img {
+    max-width: 60vw;
   }
 }
+
 .gs-bc .intro .carousel-control-prev,
 .gs-bc .intro .carousel-control-next,
 .gs-bc .intro .carousel-indicators {
@@ -32,8 +32,7 @@
 
 /*
  * Fixed-height carousel: Bootstrap sizes .carousel-inner from the *active* slide only,
- * so different image heights make the block jump and push intro-text around.
- * Stack slides absolutely + fixed aspect ratio + cover.
+ * so different image heights make the block jump. Stack slides absolutely + aspect ratio + cover.
  */
 .gs-bc .carousel-inner.gs-carousel-fixed {
   position: relative;
@@ -59,36 +58,34 @@
   object-position: center;
 }
 
-/* Intro text card: compact height (~150–200px), scroll if subtitle is long */
-.gs-bc .intro .intro-text.gs-intro-text {
-  max-height: 200px;
+/* Intro heading card: compact + left-aligned (me-auto on inner flex parent) */
+.gs-bc .intro .gs-intro-heading-card {
+  max-height: 220px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  max-width: min(92vw, 520px);
 }
-.gs-bc .intro .intro-text.gs-intro-text .section-heading .section-heading-upper {
-  font-size: 0.72rem;
+
+.gs-bc .intro .gs-intro-heading-card .section-heading .section-heading-upper {
+  font-size: 0.85rem;
   line-height: 1.35;
   font-weight: 800;
   letter-spacing: 0.04em;
 }
-.gs-bc .intro .intro-text.gs-intro-text .section-heading .section-heading-lower {
-  font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+
+.gs-bc .intro .gs-intro-heading-card .section-heading .section-heading-lower {
+  font-size: clamp(1.35rem, 3vw, 2rem);
   line-height: 1.1;
-  margin-top: 0.25rem;
+  margin-top: 0.35rem;
 }
-.gs-bc .intro .intro-text.gs-intro-text .small {
-  font-size: 0.8rem;
+
+.gs-bc .intro .gs-intro-heading-card .small {
+  font-size: 0.85rem;
   line-height: 1.35;
 }
 
-@media (min-width: 992px) {
-  .gs-bc .intro .intro-text.gs-intro-text {
-    max-width: min(45vw, 520px);
-  }
-}
-
 @media (max-width: 991px) {
-  .gs-bc .intro .intro-text.gs-intro-text {
-    max-height: 180px;
+  .gs-bc .intro .gs-intro-heading-card {
+    max-height: 200px;
   }
 }
