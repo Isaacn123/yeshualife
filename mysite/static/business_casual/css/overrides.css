@@ -12,15 +12,22 @@
   z-index: 0;
 }
 
-/* Intro: same overlap/stacking as .product-item (title overlaps image on lg+) */
+/* Intro: title overlaps top of carousel (like Feeding); a bit more overlap than default -3rem */
 @media (min-width: 992px) {
-  .gs-bc .intro .product-item-title {
+  .gs-bc .intro .product-item-title.gs-intro-title-row {
     position: relative;
     z-index: 1;
-    margin-bottom: -3rem;
+    margin-bottom: -4.5rem;
   }
   .gs-bc .intro .intro-img {
     max-width: 60vw;
+  }
+}
+
+/* Slight overlap on tablets too */
+@media (min-width: 768px) and (max-width: 991px) {
+  .gs-bc .intro .product-item-title.gs-intro-title-row {
+    margin-bottom: -2.5rem;
   }
 }
 
@@ -58,12 +65,13 @@
   object-position: center;
 }
 
-/* Intro heading card: compact + left-aligned (me-auto on inner flex parent) */
+/* Intro heading card: narrower width + compact + left (me-auto) */
 .gs-bc .intro .gs-intro-heading-card {
   max-height: 220px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  max-width: min(92vw, 520px);
+  width: 100%;
+  max-width: min(88vw, 360px);
 }
 
 .gs-bc .intro .gs-intro-heading-card .section-heading .section-heading-upper {

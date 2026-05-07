@@ -1,5 +1,6 @@
-{# Business Casual product-item layout, but with our video carousel instead of an image #}
+{# Business Casual product-item layout + video carousel. Omit entire section when there are no videos. #}
 {# Expects: title, subtitle, section_id, videos, empty_text, total_count, cap, align ("left"|"right") #}
+{% if videos %}
 {% with cap_limit=cap|default:72 %}
 <section class="page-section" id="{{ section_id }}" aria-labelledby="heading-{{ section_id }}">
   <div class="container">
@@ -35,3 +36,4 @@
   </div>
 </section>
 {% endwith %}
+{% endif %}

@@ -47,6 +47,9 @@ def build_global_solutions_public_context() -> dict:
     preachings = list(preaching_qs[:cap])
     learning = list(learning_qs[:cap])
 
+    has_any_videos = bool(feeds or preachings or learning)
+    has_any_program_blocks = any(len(blocks_by_category[c]) > 0 for c in blocks_by_category)
+
     return {
         "hero_title": hero_title,
         "hero_subtitle": hero_subtitle,
@@ -59,6 +62,8 @@ def build_global_solutions_public_context() -> dict:
         "preachings_total": preachings_total,
         "learning_total": learning_total,
         "global_solutions_video_cap": cap,
+        "has_any_videos": has_any_videos,
+        "has_any_program_blocks": has_any_program_blocks,
     }
 
 
