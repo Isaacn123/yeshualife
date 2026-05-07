@@ -25,7 +25,29 @@
     </h1>
   </header>
 
-  {% if hero_image_url %}
+  {# Feeding clips: same videos + same carousel id pattern as video_category_section (carousel-feeding); hero image is fallback. #}
+  {% if feeds %}
+  <section class="page-section clearfix" id="feeding" aria-labelledby="heading-feeding-intro">
+    <div class="container">
+      <div class="intro">
+        <div class="product-item-title d-flex gs-intro-title-row mt-3 mt-lg-4">
+          <div class="bg-faded p-4 d-flex flex-column text-start me-auto rounded gs-intro-heading-card">
+            <h2 id="heading-feeding-intro" class="section-heading mb-0">
+              <span class="section-heading-upper">{% if hero_subtitle %}{{ hero_subtitle }}{% else %}Yeshua Life{% endif %}</span>
+              <span class="section-heading-lower">Global Solutions</span>
+            </h2>
+            <p class="mb-0 mt-2 small">Fresh clips uploaded continuously across Feeding, Preachings, and Learning.</p>
+          </div>
+        </div>
+        <div class="intro-img img-fluid mb-3 mb-lg-0 rounded overflow-hidden w-100">
+          {% with carousel_dom_id="carousel-"|add:"feeding" %}
+          {% include "global_solutions/partials/video_grid.html" with videos=feeds layout="carousel" carousel_dom_id=carousel_dom_id empty_text="" %}
+          {% endwith %}
+        </div>
+      </div>
+    </div>
+  </section>
+  {% elif hero_image_url %}
   <section class="page-section clearfix">
     <div class="container">
       <div class="intro">
@@ -77,9 +99,6 @@
     </div>
   </section>
 
-  {% if feeds %}
-  {% include "global_solutions/partials/video_category_section.html" with title="Feeding" subtitle="Community meals and feeding outreach." section_id="feeding" videos=feeds empty_text="No feeding clips yet." total_count=feeds_total cap=global_solutions_video_cap align="right" %}
-  {% endif %}
   {% if preachings %}
   {% include "global_solutions/partials/video_category_section.html" with title="Preachings" subtitle="Messages and ministry." section_id="preaching" videos=preachings empty_text="No preachings yet." total_count=preachings_total cap=global_solutions_video_cap align="left" %}
   {% endif %}
