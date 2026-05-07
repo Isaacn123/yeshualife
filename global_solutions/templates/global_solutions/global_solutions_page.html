@@ -8,9 +8,9 @@
   <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'business_casual/css/styles.css' %}">
-  <link rel="stylesheet" href="{% static 'business_casual/css/overrides.css' %}">
-  {# Video cards / program blocks rely on GS styles; hero uses Business Casual overrides. #}
+  {# Load GS first: Business Casual overrides win for intro / carousel tweaks. #}
   <link rel="stylesheet" href="{% static 'global_solutions/global_solutions.css' %}">
+  <link rel="stylesheet" href="{% static 'business_casual/css/overrides.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -24,26 +24,56 @@
     </h1>
   </header>
 
-  {% if hero_image_url %}
+  {# Hero: Start Bootstrap products.html layout — title, image carousel (up to 3 URLs in settings), description. #}
+  {% if hero_slide_urls %}
   <section class="page-section clearfix">
     <div class="container">
-      <div class="intro">
-        <div class="product-item-title d-flex gs-intro-title-row mt-3 mt-lg-4">
-          <div class="bg-faded p-4 d-flex flex-column text-start me-auto rounded gs-intro-heading-card">
+      <div class="product-item">
+        <div class="product-item-title d-flex">
+          <div class="bg-faded p-5 d-flex ms-auto rounded">
             <h2 class="section-heading mb-0">
               <span class="section-heading-upper">{% if hero_subtitle %}{{ hero_subtitle }}{% else %}Yeshua Life{% endif %}</span>
               <span class="section-heading-lower">Global Solutions</span>
             </h2>
-            <p class="mb-0 mt-2 small">Fresh clips uploaded continuously across Feeding, Preachings, and Learning.</p>
           </div>
         </div>
-        <div class="intro-img img-fluid mb-3 mb-lg-0 rounded overflow-hidden">
+        <div class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0 gs-product-carousel-wrap overflow-hidden">
           <div id="carousel-intro" class="carousel slide w-100" data-bs-ride="false">
             <div class="carousel-inner gs-carousel-fixed">
-              <div class="carousel-item active">
-                <img src="{{ hero_image_url }}" class="d-block w-100" alt="{{ hero_title }}">
+              {% for slide_url in hero_slide_urls %}
+              <div class="carousel-item{% if forloop.first %} active{% endif %}">
+                <img src="{{ slide_url }}" class="d-block w-100" alt="{{ hero_title }} slide {{ forloop.counter }}">
               </div>
+              {% endfor %}
             </div>
+            {% if hero_slide_urls|length > 1 %}
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-intro" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel-intro" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+            {% if hero_slide_urls|length < 9 %}
+            <div class="carousel-indicators position-static mt-2 mb-0">
+              {% for slide_url in hero_slide_urls %}
+              <button
+                type="button"
+                data-bs-target="#carousel-intro"
+                data-bs-slide-to="{{ forloop.counter0 }}"
+                {% if forloop.first %}class="active" aria-current="true"{% endif %}
+                aria-label="Slide {{ forloop.counter }}"
+              ></button>
+              {% endfor %}
+            </div>
+            {% endif %}
+            {% endif %}
+          </div>
+        </div>
+        <div class="product-item-description d-flex me-auto">
+          <div class="bg-faded p-5 rounded">
+            <p class="mb-0">Fresh clips uploaded continuously across Feeding, Preachings, and Learning.</p>
           </div>
         </div>
       </div>
@@ -78,31 +108,6 @@
   {% include "global_solutions/partials/video_category_section.html" with title="Feeding" subtitle="Community meals and feeding outreach." section_id="feeding" videos=feeds empty_text="No feeding clips yet." total_count=feeds_total cap=global_solutions_video_cap align="right" %}
   {% include "global_solutions/partials/video_category_section.html" with title="Preachings" subtitle="Messages and ministry." section_id="preaching" videos=preachings empty_text="No preachings yet." total_count=preachings_total cap=global_solutions_video_cap align="left" %}
   {% include "global_solutions/partials/video_category_section.html" with title="Learning" subtitle="Teaching and training clips." section_id="learning" videos=learning empty_text="No learning clips yet." total_count=learning_total cap=global_solutions_video_cap align="right" %}
-
-  <section class="page-section cta">
-    <div class="container">
-      <div class="row">
-        <div class="col-xl-10 mx-auto">
-          <div class="cta-inner bg-faded text-center rounded">
-            <h2 class="section-heading mb-4">
-              <span class="section-heading-upper">Programs &amp; initiatives</span>
-              <span class="section-heading-lower">What we do</span>
-            </h2>
-            <div class="row g-3 text-start">
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Wealth Creation" blocks=blocks_by_category.wealth_creation %}</div>
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Healings" blocks=blocks_by_category.healings %}</div>
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Innovations" blocks=blocks_by_category.innovations %}</div>
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Advancement" blocks=blocks_by_category.advancement %}</div>
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Integration" blocks=blocks_by_category.integration %}</div>
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Power" blocks=blocks_by_category.power %}</div>
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Education" blocks=blocks_by_category.education %}</div>
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Knowledge" blocks=blocks_by_category.knowledge %}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   {% if global_solutions_articles %}
   <section class="page-section">
