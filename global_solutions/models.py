@@ -24,15 +24,6 @@ def build_global_solutions_public_context() -> dict:
     hero_title = (settings_obj.hero_title if settings_obj else page_title).strip() or page_title
     hero_subtitle = (settings_obj.hero_subtitle if settings_obj else "").strip()
 
-    hero_slide_urls: list[str] = []
-    if settings_obj:
-        raw_slides = [
-            (settings_obj.hero_image_url or "").strip(),
-            (settings_obj.hero_image_url_2 or "").strip(),
-            (settings_obj.hero_image_url_3 or "").strip(),
-        ]
-        hero_slide_urls = [u for u in raw_slides if u]
-
     videos_qs = GlobalSolutionsVideo.objects.filter(
         is_active=True,
         status=GlobalSolutionsVideoStatus.READY,
@@ -56,8 +47,7 @@ def build_global_solutions_public_context() -> dict:
     return {
         "hero_title": hero_title,
         "hero_subtitle": hero_subtitle,
-        "hero_image_url": hero_slide_urls[0] if hero_slide_urls else "",
-        "hero_slide_urls": hero_slide_urls,
+        "hero_image_url": (settings_obj.hero_image_url if settings_obj else "").strip(),
         "feeds": feeds,
         "preachings": preachings,
         "learning": learning,
@@ -79,24 +69,7 @@ class GlobalSolutionsSettings(models.Model):
     page_title = models.CharField(max_length=160, default="Global Solutions")
     hero_title = models.CharField(max_length=160, default="Global Solutions")
     hero_subtitle = models.TextField(blank=True, default="")
-    hero_image_url = models.URLField(
-        blank=True,
-        default="",
-        verbose_name="Hero image 1 (first slide)",
-        help_text="First carousel slide.",
-    )
-    hero_image_url_2 = models.URLField(
-        blank=True,
-        default="",
-        verbose_name="Hero image 2",
-        help_text="Optional second slide.",
-    )
-    hero_image_url_3 = models.URLField(
-        blank=True,
-        default="",
-        verbose_name="Hero image 3",
-        help_text="Optional third slide.",
-    )
+    hero_image_url = models.URLField(blank=True, default="")
 
     seo_description = models.CharField(max_length=300, blank=True, default="")
 
@@ -113,15 +86,7 @@ class GlobalSolutionsSettings(models.Model):
         FieldPanel("page_title"),
         FieldPanel("hero_title"),
         FieldPanel("hero_subtitle"),
-        MultiFieldPanel(
-            [
-                FieldPanel("hero_image_url"),
-                FieldPanel("hero_image_url_2"),
-                FieldPanel("hero_image_url_3"),
-            ],
-            heading="Hero carousel (images)",
-            help_text="Up to three image URLs—in order—from Start Bootstrap-style hero slider.",
-        ),
+        FieldPanel("hero_image_url"),
         FieldPanel("seo_description"),
     ]
 

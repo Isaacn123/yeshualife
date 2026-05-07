@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags %}
+{% load static %}
 
 {% block body_class %}template-globalsolutions{% endblock %}
 
@@ -8,129 +8,92 @@
   <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'business_casual/css/styles.css' %}">
-  {# Load GS first: Business Casual overrides win for intro / carousel tweaks. #}
-  <link rel="stylesheet" href="{% static 'global_solutions/global_solutions.css' %}">
-  <link rel="stylesheet" href="{% static 'business_casual/css/overrides.css' %}">
 {% endblock %}
 
 {% block content %}
 {% include "nav_bar.html" %}
 
 <main class="gs-bc gs-bc-theme">
-  <header>
-    <h1 class="site-heading text-center text-faded d-none d-lg-block">
-      <span class="site-heading-upper text-primary mb-3">Yeshua Life</span>
-      <span class="site-heading-lower">{{ hero_title }}</span>
-    </h1>
-  </header>
-
-  {# Hero: Start Bootstrap products.html layout — title, image carousel (up to 3 URLs in settings), description. #}
-  {% if hero_slide_urls %}
-  <section class="page-section clearfix">
+  <section class="page-section">
     <div class="container">
       <div class="product-item">
         <div class="product-item-title d-flex">
           <div class="bg-faded p-5 d-flex ms-auto rounded">
             <h2 class="section-heading mb-0">
-              <span class="section-heading-upper">{% if hero_subtitle %}{{ hero_subtitle }}{% else %}Yeshua Life{% endif %}</span>
-              <span class="section-heading-lower">Global Solutions</span>
+              <span class="section-heading-upper">Blended to Perfection</span>
+              <span class="section-heading-lower">Coffees &amp; Teas</span>
             </h2>
           </div>
         </div>
-        <div class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0 gs-product-carousel-wrap overflow-hidden">
-          <div id="carousel-intro" class="carousel slide w-100" data-bs-ride="false">
-            <div class="carousel-inner gs-carousel-fixed">
-              {% for slide_url in hero_slide_urls %}
-              <div class="carousel-item{% if forloop.first %} active{% endif %}">
-                <img src="{{ slide_url }}" class="d-block w-100" alt="{{ hero_title }} slide {{ forloop.counter }}">
-              </div>
-              {% endfor %}
-            </div>
-            {% if hero_slide_urls|length > 1 %}
-            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-intro" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carousel-intro" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-            {% if hero_slide_urls|length < 9 %}
-            <div class="carousel-indicators position-static mt-2 mb-0">
-              {% for slide_url in hero_slide_urls %}
-              <button
-                type="button"
-                data-bs-target="#carousel-intro"
-                data-bs-slide-to="{{ forloop.counter0 }}"
-                {% if forloop.first %}class="active" aria-current="true"{% endif %}
-                aria-label="Slide {{ forloop.counter }}"
-              ></button>
-              {% endfor %}
-            </div>
-            {% endif %}
-            {% endif %}
-          </div>
-        </div>
+        <img
+          class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0"
+          src="{% static 'business_casual/assets/img/products-01.jpg' %}"
+          alt="Products 01"
+        />
         <div class="product-item-description d-flex me-auto">
           <div class="bg-faded p-5 rounded">
-            <p class="mb-0">Fresh clips uploaded continuously across Feeding, Preachings, and Learning.</p>
+            <p class="mb-0">
+              We take pride in our work, and it shows. Every time you order a beverage from us, we guarantee that it will be an experience worth having. Whether it's our world famous Venezuelan Cappuccino, a refreshing iced herbal tea, or something as simple as a cup of speciality sourced black coffee, you will be coming back for more.
+            </p>
           </div>
         </div>
       </div>
     </div>
   </section>
-  {% elif hero_subtitle %}
-  {# Hero image not set in Global Solutions settings: show text card only when subtitle exists #}
-  <section class="page-section clearfix">
+
+  <section class="page-section">
     <div class="container">
-      <div class="product-item-title d-flex">
-        <div class="bg-faded p-4 d-flex flex-column text-start me-auto rounded gs-intro-heading-card">
-          <h2 class="section-heading mb-0">
-            <span class="section-heading-upper">{{ hero_subtitle }}</span>
-            <span class="section-heading-lower">Global Solutions</span>
-          </h2>
-          <p class="mb-0 mt-2 small">Fresh clips uploaded continuously across Feeding, Preachings, and Learning.</p>
+      <div class="product-item">
+        <div class="product-item-title d-flex">
+          <div class="bg-faded p-5 d-flex me-auto rounded">
+            <h2 class="section-heading mb-0">
+              <span class="section-heading-upper">Delicious Treats, Good Eats</span>
+              <span class="section-heading-lower">Bakery &amp; Kitchen</span>
+            </h2>
+          </div>
+        </div>
+        <img
+          class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0"
+          src="{% static 'business_casual/assets/img/products-02.jpg' %}"
+          alt="Products 02"
+        />
+        <div class="product-item-description d-flex ms-auto">
+          <div class="bg-faded p-5 rounded">
+            <p class="mb-0">
+              Our seasonal menu features delicious snacks, baked goods, and even full meals perfect for breakfast or lunchtime. We source our ingredients from local, oragnic farms whenever possible, alongside premium vendors for specialty goods.
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </section>
-  {% endif %}
 
-  <section class="page-section pt-0">
-    <div class="container text-center">
-      <h2 class="section-heading mb-4">
-        <span class="section-heading-upper">Fresh clips</span>
-        <span class="section-heading-lower">Feeding • Preachings • Learning</span>
-      </h2>
-    </div>
-  </section>
-
-  {% include "global_solutions/partials/video_category_section.html" with title="Feeding" subtitle="Community meals and feeding outreach." section_id="feeding" videos=feeds empty_text="No feeding clips yet." total_count=feeds_total cap=global_solutions_video_cap align="right" %}
-  {% include "global_solutions/partials/video_category_section.html" with title="Preachings" subtitle="Messages and ministry." section_id="preaching" videos=preachings empty_text="No preachings yet." total_count=preachings_total cap=global_solutions_video_cap align="left" %}
-  {% include "global_solutions/partials/video_category_section.html" with title="Learning" subtitle="Teaching and training clips." section_id="learning" videos=learning empty_text="No learning clips yet." total_count=learning_total cap=global_solutions_video_cap align="right" %}
-
-  {% if global_solutions_articles %}
   <section class="page-section">
     <div class="container">
-      <h2 id="gs-articles-heading" class="section-heading text-center mb-4">
-        <span class="section-heading-upper">Stories</span>
-        <span class="section-heading-lower">Articles &amp; updates</span>
-      </h2>
-      <ul class="list-unstyled row g-3">
-        {% for article in global_solutions_articles %}
-          <li class="col-md-6 col-lg-4">
-            <article class="gs-card h-100">
-              <div class="gs-card-body">
-                <h3 class="gs-h3"><a href="{% pageurl article %}">{{ article.title }}</a></h3>
-                {% if article.intro %}<p class="gs-muted mb-0">{{ article.intro }}</p>{% endif %}
-              </div>
-            </article>
-          </li>
-        {% endfor %}
-      </ul>
+      <div class="product-item">
+        <div class="product-item-title d-flex">
+          <div class="bg-faded p-5 d-flex ms-auto rounded">
+            <h2 class="section-heading mb-0">
+              <span class="section-heading-upper">From Around the World</span>
+              <span class="section-heading-lower">Bulk Speciality Blends</span>
+            </h2>
+          </div>
+        </div>
+        <img
+          class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0"
+          src="{% static 'business_casual/assets/img/products-03.jpg' %}"
+          alt="Products 03"
+        />
+        <div class="product-item-description d-flex me-auto">
+          <div class="bg-faded p-5 rounded">
+            <p class="mb-0">
+              Travelling the world for the very best quality coffee is something take pride in. When you visit us, you'll always find new blends from around the world, mainly from regions in Central and South America. We sell our blends in smaller to large bulk quantities. Please visit us in person for more details.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
-  {% endif %}
 </main>
 
 {% endblock %}
@@ -138,47 +101,6 @@
 {% block extra_js %}
   {{ block.super }}
   <script src="{% static 'css/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
-  {% if has_any_videos %}
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
-  <script type="text/javascript" src="{% static 'global_solutions/global_solutions.js' %}"></script>
-  {% endif %}
-  <script>
-    window.addEventListener("DOMContentLoaded", function () {
-      if (!window.bootstrap || !window.bootstrap.Carousel) return;
-      document.querySelectorAll(".gs-bc .carousel").forEach(function (el) {
-        new window.bootstrap.Carousel(el, {
-          interval: false,
-          ride: false,
-          touch: true,
-          pause: true
-        });
-      });
-    });
-  </script>
-  <script>
-    window.addEventListener("DOMContentLoaded", function () {
-      if (window.bootstrap && window.bootstrap.Carousel) return;
-      function setActive(items, nextIndex) {
-        for (var i = 0; i < items.length; i++) items[i].classList.remove("active");
-        items[nextIndex].classList.add("active");
-      }
-      document.querySelectorAll(".gs-bc .carousel").forEach(function (root) {
-        var items = root.querySelectorAll(".carousel-item");
-        if (items.length < 2) return;
-        root.addEventListener("click", function (e) {
-          var btn = e.target.closest("[data-bs-slide]");
-          if (!btn) return;
-          e.preventDefault();
-          var active = root.querySelector(".carousel-item.active");
-          var idx = 0;
-          for (var i = 0; i < items.length; i++) if (items[i] === active) idx = i;
-          var dir = btn.getAttribute("data-bs-slide");
-          var next = dir === "prev" ? (idx - 1 + items.length) % items.length : (idx + 1) % items.length;
-          setActive(items, next);
-        });
-      });
-    });
-  </script>
 {% endblock %}
 
 {% block footer %}
