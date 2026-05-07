@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'business_casual/css/styles.css' %}">
   <link rel="stylesheet" href="{% static 'business_casual/css/overrides.css' %}">
-  {% if has_any_videos or has_any_program_blocks or global_solutions_articles %}
+  {% if has_any_videos or global_solutions_articles %}
   <link rel="stylesheet" href="{% static 'global_solutions/global_solutions.css' %}">
   {% endif %}
 {% endblock %}
@@ -105,33 +105,6 @@
   {% if learning %}
   {% include "global_solutions/partials/video_category_section.html" with title="Learning" subtitle="Teaching and training clips." section_id="learning" videos=learning empty_text="No learning clips yet." total_count=learning_total cap=global_solutions_video_cap align="right" %}
   {% endif %}
-  {% endif %}
-
-  {% if has_any_program_blocks %}
-  <section class="page-section cta">
-    <div class="container">
-      <div class="row">
-        <div class="col-xl-10 mx-auto">
-          <div class="cta-inner bg-faded text-center rounded">
-            <h2 class="section-heading mb-4">
-              <span class="section-heading-upper">Programs &amp; initiatives</span>
-              <span class="section-heading-lower">What we do</span>
-            </h2>
-            <div class="row g-3 text-start">
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Wealth Creation" blocks=blocks_by_category.wealth_creation %}</div>
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Healings" blocks=blocks_by_category.healings %}</div>
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Innovations" blocks=blocks_by_category.innovations %}</div>
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Advancement" blocks=blocks_by_category.advancement %}</div>
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Integration" blocks=blocks_by_category.integration %}</div>
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Power" blocks=blocks_by_category.power %}</div>
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Education" blocks=blocks_by_category.education %}</div>
-              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Knowledge" blocks=blocks_by_category.knowledge %}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
   {% endif %}
 
   {% if global_solutions_articles %}

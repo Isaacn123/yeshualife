@@ -1,0 +1,15 @@
+{# Native <video> for GlobalSolutionsVideo. Expects: v; optional video_class (default gs-video-el). #}
+<video
+  class="{% if video_class %}{{ video_class }}{% else %}gs-video-el{% endif %}"
+  controls
+  preload="metadata"
+  playsinline
+  {% if v.playback_uses_hls %}
+  data-playback-src="{{ v.playback_url }}"
+  data-playback-hls="true"
+  {% else %}
+  src="{{ v.playback_url }}"
+  {% endif %}
+  {% if v.poster_image_url %}poster="{{ v.poster_image_url }}"{% endif %}
+  {% if v.title %}aria-label="{{ v.title }}"{% endif %}
+></video>

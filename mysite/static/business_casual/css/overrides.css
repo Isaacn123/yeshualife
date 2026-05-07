@@ -57,12 +57,17 @@
   backface-visibility: hidden;
 }
 
-.gs-bc .carousel-inner.gs-carousel-fixed .carousel-item img {
+.gs-bc .carousel-inner.gs-carousel-fixed .carousel-item img,
+.gs-bc .carousel-inner.gs-carousel-fixed .carousel-item video.gs-carousel-fixed-media {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+.gs-bc .carousel-inner.gs-carousel-fixed .carousel-item video.gs-carousel-fixed-media {
+  background: #0b1220;
 }
 
 /* Intro heading card: narrower width + compact + left (me-auto) */
