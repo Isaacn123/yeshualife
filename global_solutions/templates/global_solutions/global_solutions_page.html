@@ -9,9 +9,8 @@
   <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'business_casual/css/styles.css' %}">
   <link rel="stylesheet" href="{% static 'business_casual/css/overrides.css' %}">
-  {% if has_any_videos or global_solutions_articles %}
+  {# Video cards / program blocks rely on GS styles; hero uses Business Casual overrides. #}
   <link rel="stylesheet" href="{% static 'global_solutions/global_solutions.css' %}">
-  {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -25,29 +24,7 @@
     </h1>
   </header>
 
-  {# Feeding clips: same videos + same carousel id pattern as video_category_section (carousel-feeding); hero image is fallback. #}
-  {% if feeds %}
-  <section class="page-section clearfix" id="feeding" aria-labelledby="heading-feeding-intro">
-    <div class="container">
-      <div class="intro">
-        <div class="product-item-title d-flex gs-intro-title-row mt-3 mt-lg-4">
-          <div class="bg-faded p-4 d-flex flex-column text-start me-auto rounded gs-intro-heading-card">
-            <h2 id="heading-feeding-intro" class="section-heading mb-0">
-              <span class="section-heading-upper">{% if hero_subtitle %}{{ hero_subtitle }}{% else %}Yeshua Life{% endif %}</span>
-              <span class="section-heading-lower">Global Solutions</span>
-            </h2>
-            <p class="mb-0 mt-2 small">Fresh clips uploaded continuously across Feeding, Preachings, and Learning.</p>
-          </div>
-        </div>
-        <div class="intro-img img-fluid mb-3 mb-lg-0 rounded overflow-hidden w-100">
-          {% with carousel_dom_id="carousel-"|add:"feeding" %}
-          {% include "global_solutions/partials/video_grid.html" with videos=feeds layout="carousel" carousel_dom_id=carousel_dom_id empty_text="" %}
-          {% endwith %}
-        </div>
-      </div>
-    </div>
-  </section>
-  {% elif hero_image_url %}
+  {% if hero_image_url %}
   <section class="page-section clearfix">
     <div class="container">
       <div class="intro">
@@ -89,7 +66,6 @@
   </section>
   {% endif %}
 
-  {% if has_any_videos %}
   <section class="page-section pt-0">
     <div class="container text-center">
       <h2 class="section-heading mb-4">
@@ -99,13 +75,34 @@
     </div>
   </section>
 
-  {% if preachings %}
+  {% include "global_solutions/partials/video_category_section.html" with title="Feeding" subtitle="Community meals and feeding outreach." section_id="feeding" videos=feeds empty_text="No feeding clips yet." total_count=feeds_total cap=global_solutions_video_cap align="right" %}
   {% include "global_solutions/partials/video_category_section.html" with title="Preachings" subtitle="Messages and ministry." section_id="preaching" videos=preachings empty_text="No preachings yet." total_count=preachings_total cap=global_solutions_video_cap align="left" %}
-  {% endif %}
-  {% if learning %}
   {% include "global_solutions/partials/video_category_section.html" with title="Learning" subtitle="Teaching and training clips." section_id="learning" videos=learning empty_text="No learning clips yet." total_count=learning_total cap=global_solutions_video_cap align="right" %}
-  {% endif %}
-  {% endif %}
+
+  <section class="page-section cta">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-10 mx-auto">
+          <div class="cta-inner bg-faded text-center rounded">
+            <h2 class="section-heading mb-4">
+              <span class="section-heading-upper">Programs &amp; initiatives</span>
+              <span class="section-heading-lower">What we do</span>
+            </h2>
+            <div class="row g-3 text-start">
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Wealth Creation" blocks=blocks_by_category.wealth_creation %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Healings" blocks=blocks_by_category.healings %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Innovations" blocks=blocks_by_category.innovations %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Advancement" blocks=blocks_by_category.advancement %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Integration" blocks=blocks_by_category.integration %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Power" blocks=blocks_by_category.power %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Education" blocks=blocks_by_category.education %}</div>
+              <div class="col-lg-6">{% include "global_solutions/partials/block_list.html" with title="Knowledge" blocks=blocks_by_category.knowledge %}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   {% if global_solutions_articles %}
   <section class="page-section">

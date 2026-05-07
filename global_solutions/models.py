@@ -18,11 +18,16 @@ from .wagtail_panels import GlobalSolutionsVideoB2UploadPanel
 
 
 def build_global_solutions_public_context() -> dict:
-    """Template context for the public Global Solutions index page (videos, hero)."""
+    """Template context for the public Global Solutions index page (blocks, videos, hero)."""
     settings_obj = GlobalSolutionsSettings.objects.first()
     page_title = (settings_obj.page_title if settings_obj else "Global Solutions").strip() or "Global Solutions"
     hero_title = (settings_obj.hero_title if settings_obj else page_title).strip() or page_title
     hero_subtitle = (settings_obj.hero_subtitle if settings_obj else "").strip()
+
+    blocks_qs = GlobalSolutionsBlock.objects.filter(is_active=True)
+    blocks_by_category: dict[str, list[GlobalSolutionsBlock]] = {}
+    for cat, _label in GlobalSolutionsBlockCategory.choices:
+        blocks_by_category[cat] = list(blocks_qs.filter(category=cat).order_by("sort_order", "-created_at"))
 
     videos_qs = GlobalSolutionsVideo.objects.filter(
         is_active=True,
@@ -48,6 +53,7 @@ def build_global_solutions_public_context() -> dict:
         "hero_title": hero_title,
         "hero_subtitle": hero_subtitle,
         "hero_image_url": (settings_obj.hero_image_url if settings_obj else "").strip(),
+        "blocks_by_category": blocks_by_category,
         "feeds": feeds,
         "preachings": preachings,
         "learning": learning,
