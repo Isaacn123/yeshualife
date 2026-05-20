@@ -1,0 +1,86 @@
+{# Bootstrap carousel for product-item slot — dynamic Feeding / category videos from backend. #}
+{# Expects: carousel_id, videos (list of GlobalSolutionsVideo with playback_url). #}
+{% if videos %}
+<div class="product-item-img mx-auto mb-3 mb-lg-0 gs-product-carousel-wrap w-100">
+  <div
+    id="{{ carousel_id }}"
+    class="carousel carousel-dark slide gs-product-carousel gs-video-carousel w-100"
+    data-bs-ride="false"
+    data-bs-interval="false"
+    data-bs-wrap="true"
+    data-bs-touch="true"
+  >
+    {% if videos|length > 1 %}
+      <div class="carousel-indicators">
+        {% for v in videos %}
+          <button
+            type="button"
+            data-bs-target="#{{ carousel_id }}"
+            data-bs-slide-to="{{ forloop.counter0 }}"
+            {% if forloop.first %}class="active" aria-current="true"{% endif %}
+            aria-label="Slide {{ forloop.counter }}"
+          ></button>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="carousel-inner gs-product-carousel-inner rounded overflow-hidden">
+      {% for v in videos %}
+        <div class="carousel-item{% if forloop.first %} active{% endif %}">
+          <div class="gs-carousel-slide-media">
+            {% if v.playback_url %}
+              {% if v.playback_uses_hls %}
+                <video
+                  class="d-block w-100"
+                  controls
+                  playsinline
+                  preload="metadata"
+                  data-playback-src="{{ v.playback_url }}"
+                  data-playback-hls="true"
+                  {% if v.poster_image_url %}poster="{{ v.poster_image_url }}"{% endif %}
+                  {% if v.title %}aria-label="{{ v.title }}"{% endif %}
+                >
+                  Your browser does not support the video tag.
+                </video>
+              {% else %}
+                <video
+                  class="d-block w-100"
+                  controls
+                  playsinline
+                  preload="metadata"
+                  {% if v.poster_image_url %}poster="{{ v.poster_image_url }}"{% endif %}
+                  {% if v.title %}aria-label="{{ v.title }}"{% endif %}
+                >
+                  <source src="{{ v.playback_url }}" type="{{ v.original_content_type|default:'video/mp4' }}">
+                  Your browser does not support the video tag.
+                </video>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if videos|length > 1 %}
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#{{ carousel_id }}"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#{{ carousel_id }}"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    {% endif %}
+  </div>
+</div>
+{% endif %}

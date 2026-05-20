@@ -42,12 +42,14 @@
   background-color: rgba(47, 23, 15, 0.08);
 }
 
-.gs-bc .gs-product-carousel .gs-carousel-slide-media img {
+.gs-bc .gs-product-carousel .gs-carousel-slide-media img,
+.gs-bc .gs-product-carousel .gs-carousel-slide-media video {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
+  background-color: #0b1220;
 }
 
 @media (min-width: 992px) {

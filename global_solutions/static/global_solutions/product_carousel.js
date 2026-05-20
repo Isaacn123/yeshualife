@@ -5,14 +5,17 @@
     }
 
     document.querySelectorAll(".gs-product-carousel").forEach(function (el) {
+      var isVideo = el.classList.contains("gs-video-carousel");
       var instance = bootstrap.Carousel.getOrCreateInstance(el, {
-        interval: 5000,
+        interval: isVideo ? false : 5000,
         ride: false,
         wrap: true,
         touch: true,
         keyboard: true,
       });
-      instance.cycle();
+      if (!isVideo) {
+        instance.cycle();
+      }
     });
   }
 

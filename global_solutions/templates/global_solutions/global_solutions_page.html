@@ -15,22 +15,28 @@
 {% include "nav_bar.html" %}
 
 <main class="gs-bc gs-bc-theme">
-  <section class="page-section">
+  <section class="page-section" id="feeding">
     <div class="container">
       <div class="product-item">
         <div class="product-item-title d-flex">
           <div class="bg-faded p-5 d-flex ms-auto rounded">
             <h2 class="section-heading mb-0">
-              <span class="section-heading-upper">Blended to Perfection</span>
-              <span class="section-heading-lower">Coffees &amp; Teas</span>
+              <span class="section-heading-upper">
+                {% if feeds_total %}{{ feeds_total }} clip{{ feeds_total|pluralize }}{% else %}Community outreach{% endif %}
+              </span>
+              <span class="section-heading-lower">Feeding</span>
             </h2>
           </div>
         </div>
-        {% include "global_solutions/partials/product_item_carousel.html" with carousel_id="gs-carousel-products-1" slide_1="business_casual/assets/img/products-01.jpg" slide_1_alt="Products 01" slide_2="business_casual/assets/img/products-02.jpg" slide_2_alt="Products 02" slide_3="business_casual/assets/img/products-03.jpg" slide_3_alt="Products 03" %}
+        {% if feeds %}
+          {% include "global_solutions/partials/product_item_video_carousel.html" with carousel_id="gs-carousel-feeding" videos=feeds %}
+        {% else %}
+          {% include "global_solutions/partials/product_item_carousel.html" with carousel_id="gs-carousel-products-1" slide_1="business_casual/assets/img/products-01.jpg" slide_1_alt="Products 01" slide_2="business_casual/assets/img/products-02.jpg" slide_2_alt="Products 02" slide_3="business_casual/assets/img/products-03.jpg" slide_3_alt="Products 03" %}
+        {% endif %}
         <div class="product-item-description d-flex me-auto">
           <div class="bg-faded p-5 rounded">
             <p class="mb-0">
-              We take pride in our work, and it shows. Every time you order a beverage from us, we guarantee that it will be an experience worth having. Whether it's our world famous Venezuelan Cappuccino, a refreshing iced herbal tea, or something as simple as a cup of speciality sourced black coffee, you will be coming back for more.
+              {% if hero_subtitle %}{{ hero_subtitle }}{% else %}Community meals and feeding outreach — fresh clips uploaded from the field.{% endif %}
             </p>
           </div>
         </div>
@@ -38,7 +44,7 @@
     </div>
   </section>
 
-  <section class="page-section">
+  <!-- <section class="page-section">
     <div class="container">
       <div class="product-item">
         <div class="product-item-title d-flex">
@@ -82,7 +88,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 </main>
 
 {% endblock %}
@@ -91,7 +97,9 @@
   {{ block.super }}
   {# Load Bootstrap + init outside compress so carousels work in dev and prod #}
   <script src="{% static 'css/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
   <script src="{% static 'global_solutions/product_carousel.js' %}"></script>
+  <script src="{% static 'global_solutions/global_solutions.js' %}"></script>
 {% endblock %}
 
 {% block footer %}

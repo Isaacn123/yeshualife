@@ -1,0 +1,84 @@
+{% load static %}
+{# Bootstrap 5 carousel for product-item image slot. Requires unique carousel_id and slide_1..3. #}
+<div class="product-item-img mx-auto mb-3 mb-lg-0 gs-product-carousel-wrap w-100">
+  <div
+    id="{{ carousel_id }}"
+    class="carousel carousel-dark slide gs-product-carousel w-100"
+    data-bs-ride="false"
+    data-bs-interval="5000"
+    data-bs-wrap="true"
+    data-bs-touch="true"
+  >
+    <div class="carousel-indicators">
+      <button
+        type="button"
+        data-bs-target="#{{ carousel_id }}"
+        data-bs-slide-to="0"
+        class="active"
+        aria-current="true"
+        aria-label="Slide 1"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#{{ carousel_id }}"
+        data-bs-slide-to="1"
+        aria-label="Slide 2"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#{{ carousel_id }}"
+        data-bs-slide-to="2"
+        aria-label="Slide 3"
+      ></button>
+    </div>
+
+    <div class="carousel-inner gs-product-carousel-inner rounded overflow-hidden">
+      <div class="carousel-item active">
+        <div class="gs-carousel-slide-media">
+          <img
+            src="{% static slide_1 %}"
+            class="d-block w-100"
+            alt="{{ slide_1_alt|default:'Slide 1' }}"
+          />
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="gs-carousel-slide-media">
+          <img
+            src="{% static slide_2 %}"
+            class="d-block w-100"
+            alt="{{ slide_2_alt|default:'Slide 2' }}"
+          />
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="gs-carousel-slide-media">
+          <img
+            src="{% static slide_3 %}"
+            class="d-block w-100"
+            alt="{{ slide_3_alt|default:'Slide 3' }}"
+          />
+        </div>
+      </div>
+    </div>
+
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#{{ carousel_id }}"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#{{ carousel_id }}"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
