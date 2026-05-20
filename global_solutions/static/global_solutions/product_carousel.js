@@ -82,9 +82,76 @@
     }
   }
 
+  function getFullscreenElement() {
+    return (
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement ||
+      null
+    );
+  }
+
+  function requestFullscreen(el) {
+    if (el.requestFullscreen) {
+      return el.requestFullscreen();
+    }
+    if (el.webkitRequestFullscreen) {
+      return el.webkitRequestFullscreen();
+    }
+    if (el.mozRequestFullScreen) {
+      return el.mozRequestFullScreen();
+    }
+    if (el.msRequestFullscreen) {
+      return el.msRequestFullscreen();
+    }
+    return Promise.reject(new Error("Fullscreen not supported"));
+  }
+
+  function exitFullscreen() {
+    if (document.exitFullscreen) {
+      return document.exitFullscreen();
+    }
+    if (document.webkitExitFullscreen) {
+      return document.webkitExitFullscreen();
+    }
+    if (document.mozCancelFullScreen) {
+      return document.mozCancelFullScreen();
+    }
+    if (document.msExitFullscreen) {
+      return document.msExitFullscreen();
+    }
+    return Promise.resolve();
+  }
+
+  function isPlayerFullscreen(player, video) {
+    var fs = getFullscreenElement();
+    return fs === player || fs === video;
+  }
+
+  function updateFullscreenButton(player, video) {
+    var btn = player.querySelector(".gs-video-fullscreen-btn");
+    if (!btn) return;
+
+    var active = isPlayerFullscreen(player, video);
+    player.classList.toggle("is-fullscreen", active);
+    btn.setAttribute("aria-label", active ? "Exit fullscreen" : "Maximize video");
+    btn.setAttribute("title", active ? "Exit fullscreen" : "Maximize");
+    btn.classList.toggle("is-active", active);
+  }
+
+  function enterFullscreen(player, video) {
+    if (typeof video.webkitEnterFullscreen === "function") {
+      video.webkitEnterFullscreen();
+      return Promise.resolve();
+    }
+    return requestFullscreen(player);
+  }
+
   function bindVideoPlayer(player) {
     var video = player.querySelector(".gs-video-player-el");
     var playBtn = player.querySelector(".gs-video-play-btn");
+    var fullscreenBtn = player.querySelector(".gs-video-fullscreen-btn");
     if (!video || !playBtn) return;
 
     if (video.getAttribute("data-playback-hls") === "true" && video.getAttribute("data-playback-src")) {
@@ -101,12 +168,37 @@
       }
     });
 
+    if (fullscreenBtn) {
+      fullscreenBtn.addEventListener("click", function (event) {
+        event.stopPropagation();
+
+        if (isPlayerFullscreen(player, video)) {
+          exitFullscreen();
+          return;
+        }
+
+        video.muted = false;
+        var playPromise = video.play();
+        var goFullscreen = function () {
+          enterFullscreen(player, video).catch(function () {
+            /* ignore */
+          });
+        };
+
+        if (playPromise && playPromise.then) {
+          playPromise.then(goFullscreen).catch(goFullscreen);
+        } else {
+          goFullscreen();
+        }
+      });
+    }
+
     video.addEventListener("play", function () {
       hidePlayOverlay(player);
     });
 
     video.addEventListener("pause", function () {
-      if (!video.ended) {
+      if (!video.ended && !isPlayerFullscreen(player, video)) {
         showPlayOverlay(player);
       }
     });
@@ -114,6 +206,26 @@
     video.addEventListener("ended", function () {
       showPlayOverlay(player);
     });
+
+    video.addEventListener("webkitbeginfullscreen", function () {
+      player.classList.add("is-fullscreen");
+      updateFullscreenButton(player, video);
+    });
+
+    video.addEventListener("webkitendfullscreen", function () {
+      player.classList.remove("is-fullscreen");
+      updateFullscreenButton(player, video);
+    });
+
+    ["fullscreenchange", "webkitfullscreenchange", "mozfullscreenchange", "MSFullscreenChange"].forEach(
+      function (eventName) {
+        document.addEventListener(eventName, function () {
+          updateFullscreenButton(player, video);
+        });
+      }
+    );
+
+    updateFullscreenButton(player, video);
   }
 
   function initVideoCarousels() {
