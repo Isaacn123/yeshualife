@@ -1,4 +1,4 @@
-{# Bootstrap carousel for product-item slot — dynamic Feeding / category videos from backend. #}
+{# Bootstrap carousel for product-item slot — dynamic videos from backend. #}
 {# Expects: carousel_id, videos (list of GlobalSolutionsVideo with playback_url). #}
 {% if videos %}
 <div class="product-item-img mx-auto mb-3 mb-lg-0 gs-product-carousel-wrap w-100">
@@ -29,32 +29,32 @@
         <div class="carousel-item{% if forloop.first %} active{% endif %}">
           <div class="gs-carousel-slide-media">
             {% if v.playback_url %}
-              {% if v.playback_uses_hls %}
-                <video
-                  class="d-block w-100"
-                  controls
-                  playsinline
-                  preload="metadata"
-                  data-playback-src="{{ v.playback_url }}"
-                  data-playback-hls="true"
-                  {% if v.poster_image_url %}poster="{{ v.poster_image_url }}"{% endif %}
-                  {% if v.title %}aria-label="{{ v.title }}"{% endif %}
-                >
-                  Your browser does not support the video tag.
-                </video>
-              {% else %}
-                <video
-                  class="d-block w-100"
-                  controls
-                  playsinline
-                  preload="metadata"
-                  {% if v.poster_image_url %}poster="{{ v.poster_image_url }}"{% endif %}
-                  {% if v.title %}aria-label="{{ v.title }}"{% endif %}
-                >
-                  <source src="{{ v.playback_url }}" type="{{ v.original_content_type|default:'video/mp4' }}">
-                  Your browser does not support the video tag.
-                </video>
-              {% endif %}
+              <div class="gs-video-player is-paused">
+                {% if v.playback_uses_hls %}
+                  <video
+                    class="gs-video-player-el d-block w-100"
+                    playsinline
+                    preload="metadata"
+                    data-playback-src="{{ v.playback_url }}"
+                    data-playback-hls="true"
+                    {% if v.poster_image_url %}poster="{{ v.poster_image_url }}"{% endif %}
+                    {% if v.title %}aria-label="{{ v.title }}"{% endif %}
+                  ></video>
+                {% else %}
+                  <video
+                    class="gs-video-player-el d-block w-100"
+                    playsinline
+                    preload="metadata"
+                    {% if v.poster_image_url %}poster="{{ v.poster_image_url }}"{% endif %}
+                    {% if v.title %}aria-label="{{ v.title }}"{% endif %}
+                  >
+                    <source src="{{ v.playback_url }}" type="{{ v.original_content_type|default:'video/mp4' }}">
+                  </video>
+                {% endif %}
+                <button type="button" class="gs-video-play-btn" aria-label="{% if v.title %}Play {{ v.title }}{% else %}Play video{% endif %}">
+                  <span class="gs-video-play-icon" aria-hidden="true"></span>
+                </button>
+              </div>
             {% endif %}
           </div>
         </div>
