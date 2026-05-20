@@ -158,7 +158,17 @@
       attachHlsPlayback(video);
     }
 
-    playBtn.addEventListener("click", function () {
+    function stopCarouselFromClick(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.stopImmediatePropagation) {
+        event.stopImmediatePropagation();
+      }
+    }
+
+    playBtn.addEventListener("mousedown", stopCarouselFromClick);
+    playBtn.addEventListener("click", function (event) {
+      stopCarouselFromClick(event);
       video.muted = false;
       var playPromise = video.play();
       if (playPromise && playPromise.catch) {
@@ -169,8 +179,9 @@
     });
 
     if (fullscreenBtn) {
+      fullscreenBtn.addEventListener("mousedown", stopCarouselFromClick);
       fullscreenBtn.addEventListener("click", function (event) {
-        event.stopPropagation();
+        stopCarouselFromClick(event);
 
         if (isPlayerFullscreen(player, video)) {
           exitFullscreen();

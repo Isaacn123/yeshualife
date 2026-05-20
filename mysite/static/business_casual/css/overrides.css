@@ -22,6 +22,16 @@
   opacity: 0.85;
 }
 
+/* Video carousel: keep side arrows off corners so play/fullscreen buttons receive clicks */
+.gs-bc .gs-video-carousel .carousel-control-prev,
+.gs-bc .gs-video-carousel .carousel-control-next {
+  top: 22%;
+  bottom: 22%;
+  height: auto;
+  width: 9%;
+  z-index: 4;
+}
+
 .gs-bc .gs-product-carousel .carousel-indicators {
   z-index: 10;
   margin-bottom: 0.5rem;
@@ -63,7 +73,8 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  z-index: 6;
+  z-index: 11;
+  pointer-events: auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -109,9 +120,11 @@
 
 .gs-bc .gs-video-fullscreen-btn {
   position: absolute;
-  top: 0.65rem;
-  right: 0.65rem;
-  z-index: 7;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  top: auto;
+  z-index: 12;
+  pointer-events: auto;
   display: flex;
   align-items: center;
   justify-content: center;
