@@ -1,0 +1,95 @@
+{% load static %}
+{# Image carousel for Business Casual product-item layout. Requires unique carousel_id. #}
+<div class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0 gs-product-carousel-wrap w-100">
+  <div
+    id="{{ carousel_id }}"
+    class="carousel carousel-dark slide gs-product-carousel w-100"
+    data-bs-ride="carousel"
+  >
+    {% if show_indicators|default:True %}
+      <div class="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#{{ carousel_id }}"
+          data-bs-slide-to="0"
+          class="active"
+          aria-current="true"
+          aria-label="Slide 1"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#{{ carousel_id }}"
+          data-bs-slide-to="1"
+          aria-label="Slide 2"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#{{ carousel_id }}"
+          data-bs-slide-to="2"
+          aria-label="Slide 3"
+        ></button>
+      </div>
+    {% endif %}
+
+    <div class="carousel-inner gs-carousel-fixed">
+      <div class="carousel-item active" data-bs-interval="10000">
+        <img
+          src="{% static slide_1 %}"
+          class="d-block w-100"
+          alt="{{ slide_1_alt|default:'Slide 1' }}"
+        />
+        {% if slide_1_title %}
+          <div class="carousel-caption d-none d-md-block">
+            <h5>{{ slide_1_title }}</h5>
+            {% if slide_1_text %}<p>{{ slide_1_text }}</p>{% endif %}
+          </div>
+        {% endif %}
+      </div>
+      <div class="carousel-item" data-bs-interval="2000">
+        <img
+          src="{% static slide_2 %}"
+          class="d-block w-100"
+          alt="{{ slide_2_alt|default:'Slide 2' }}"
+        />
+        {% if slide_2_title %}
+          <div class="carousel-caption d-none d-md-block">
+            <h5>{{ slide_2_title }}</h5>
+            {% if slide_2_text %}<p>{{ slide_2_text }}</p>{% endif %}
+          </div>
+        {% endif %}
+      </div>
+      <div class="carousel-item" data-bs-interval="5000">
+        <img
+          src="{% static slide_3 %}"
+          class="d-block w-100"
+          alt="{{ slide_3_alt|default:'Slide 3' }}"
+        />
+        {% if slide_3_title %}
+          <div class="carousel-caption d-none d-md-block">
+            <h5>{{ slide_3_title }}</h5>
+            {% if slide_3_text %}<p>{{ slide_3_text }}</p>{% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#{{ carousel_id }}"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#{{ carousel_id }}"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>

@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'business_casual/css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'business_casual/css/overrides.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -25,11 +26,7 @@
             </h2>
           </div>
         </div>
-        <img
-          class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0"
-          src="{% static 'business_casual/assets/img/products-01.jpg' %}"
-          alt="Products 01"
-        />
+        {% include "global_solutions/partials/product_item_carousel.html" with carousel_id="gs-carousel-products-1" slide_1="business_casual/assets/img/products-01.jpg" slide_1_alt="Coffees and teas" slide_1_title="Coffees & Teas" slide_1_text="Blended to perfection." slide_2="business_casual/assets/img/intro.jpg" slide_2_alt="Intro" slide_2_title="Welcome" slide_2_text="Fresh blends and warm hospitality." slide_3="business_casual/assets/img/about.jpg" slide_3_alt="About" slide_3_title="Our story" slide_3_text="Quality you can taste in every cup." %}
         <div class="product-item-description d-flex me-auto">
           <div class="bg-faded p-5 rounded">
             <p class="mb-0">
@@ -52,11 +49,7 @@
             </h2>
           </div>
         </div>
-        <img
-          class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0"
-          src="{% static 'business_casual/assets/img/products-02.jpg' %}"
-          alt="Products 02"
-        />
+        {% include "global_solutions/partials/product_item_carousel.html" with carousel_id="gs-carousel-products-2" slide_1="business_casual/assets/img/products-02.jpg" slide_1_alt="Bakery and kitchen" slide_1_title="Bakery & Kitchen" slide_1_text="Delicious treats and good eats." slide_2="business_casual/assets/img/products-01.jpg" slide_2_alt="Seasonal menu" slide_2_title="Seasonal favorites" slide_2_text="Snacks, baked goods, and full meals." slide_3="business_casual/assets/img/intro.jpg" slide_3_alt="Local ingredients" slide_3_title="Locally sourced" slide_3_text="Organic farms and premium vendors." %}
         <div class="product-item-description d-flex ms-auto">
           <div class="bg-faded p-5 rounded">
             <p class="mb-0">
@@ -79,11 +72,7 @@
             </h2>
           </div>
         </div>
-        <img
-          class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0"
-          src="{% static 'business_casual/assets/img/products-03.jpg' %}"
-          alt="Products 03"
-        />
+        {% include "global_solutions/partials/product_item_carousel.html" with carousel_id="gs-carousel-products-3" slide_1="business_casual/assets/img/products-03.jpg" slide_1_alt="Bulk speciality blends" slide_1_title="Bulk Speciality Blends" slide_1_text="From around the world." slide_2="business_casual/assets/img/products-02.jpg" slide_2_alt="Central America" slide_2_title="World blends" slide_2_text="Central and South American regions." slide_3="business_casual/assets/img/about.jpg" slide_3_alt="Visit us" slide_3_title="Visit in person" slide_3_text="Smaller to large bulk quantities available." %}
         <div class="product-item-description d-flex me-auto">
           <div class="bg-faded p-5 rounded">
             <p class="mb-0">
@@ -96,11 +85,6 @@
   </section>
 </main>
 
-{% endblock %}
-
-{% block extra_js %}
-  {{ block.super }}
-  <script src="{% static 'css/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
 {% endblock %}
 
 {% block footer %}
