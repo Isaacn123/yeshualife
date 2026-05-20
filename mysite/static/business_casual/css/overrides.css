@@ -1,49 +1,42 @@
 /* Overrides for Business Casual theme when used inside Django templates. */
 
-/* Carousel controls above overlapping layers */
-.gs-bc .carousel-control-prev,
-.gs-bc .carousel-control-next,
-.gs-bc .carousel-indicators {
-  z-index: 10;
-}
-
-.gs-bc .product-item .carousel-control-prev,
-.gs-bc .product-item .carousel-control-next,
-.gs-bc .product-item .carousel-indicators {
-  z-index: 15;
-}
-
-/*
- * Fixed-height carousel: Bootstrap sizes .carousel-inner from the *active* slide only,
- * so different image heights make the block jump. Stack slides absolutely + aspect ratio + cover.
- */
-.gs-bc .carousel-inner.gs-carousel-fixed {
+/* Carousel controls above overlapping product-item layers */
+.gs-bc .product-item .gs-product-carousel-wrap {
   position: relative;
+  z-index: 3;
   width: 100%;
-  aspect-ratio: 16 / 9;
+}
+
+.gs-bc .product-item .product-item-title {
+  z-index: 2;
+}
+
+.gs-bc .product-item .product-item-description {
+  z-index: 1;
+}
+
+.gs-bc .gs-product-carousel .carousel-control-prev,
+.gs-bc .gs-product-carousel .carousel-control-next {
+  z-index: 10;
+  width: 12%;
+  opacity: 0.85;
+}
+
+.gs-bc .gs-product-carousel .carousel-indicators {
+  z-index: 10;
+  margin-bottom: 0.5rem;
+}
+
+.gs-bc .gs-product-carousel .carousel-inner {
   overflow: hidden;
-  border-radius: inherit;
 }
 
-.gs-bc .carousel-inner.gs-carousel-fixed .carousel-item {
-  position: absolute;
-  inset: 0;
-  float: none;
-  margin-right: 0;
-  backface-visibility: hidden;
-}
-
-.gs-bc .carousel-inner.gs-carousel-fixed .carousel-item img,
-.gs-bc .carousel-inner.gs-carousel-fixed .carousel-item video.gs-carousel-fixed-media {
+.gs-bc .gs-product-carousel .carousel-item img {
   display: block;
   width: 100%;
-  height: 100%;
+  max-height: min(70vh, 520px);
   object-fit: cover;
   object-position: center;
-}
-
-.gs-bc .carousel-inner.gs-carousel-fixed .carousel-item video.gs-carousel-fixed-media {
-  background: #0b1220;
 }
 
 /* Text-only fallback (no hero images): narrower heading card */
@@ -79,11 +72,30 @@
   }
 }
 
-/* Product-item image carousels (Global Solutions) */
-.gs-bc .gs-product-carousel-wrap {
+/* Video carousel fixed height (legacy Global Solutions video layout) */
+.gs-bc .carousel-inner.gs-carousel-fixed {
+  position: relative;
   width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: inherit;
 }
 
-.gs-bc .gs-product-carousel .carousel-indicators {
-  margin-bottom: 0.5rem;
+.gs-bc .carousel-inner.gs-carousel-fixed .carousel-item {
+  height: 100%;
+  min-height: 100%;
+}
+
+.gs-bc .carousel-inner.gs-carousel-fixed .carousel-item img,
+.gs-bc .carousel-inner.gs-carousel-fixed .carousel-item video.gs-carousel-fixed-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.gs-bc .carousel-inner.gs-carousel-fixed .carousel-item video.gs-carousel-fixed-media {
+  background: #0b1220;
 }

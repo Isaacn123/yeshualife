@@ -87,6 +87,13 @@
 
 {% endblock %}
 
+{% block extra_js %}
+  {{ block.super }}
+  {# Load Bootstrap + init outside compress so carousels work in dev and prod #}
+  <script src="{% static 'css/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'global_solutions/product_carousel.js' %}"></script>
+{% endblock %}
+
 {% block footer %}
   {% include "blog/footer.html" %}
 {% endblock %}
