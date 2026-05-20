@@ -27,16 +27,33 @@
   margin-bottom: 0.5rem;
 }
 
-.gs-bc .gs-product-carousel .carousel-inner {
+.gs-bc .gs-product-carousel .carousel-inner.gs-product-carousel-inner {
   overflow: hidden;
 }
 
-.gs-bc .gs-product-carousel .carousel-item img {
+/* Fixed-size slide frame: large images crop, small images scale up */
+.gs-bc .gs-product-carousel .gs-carousel-slide-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 240px;
+  max-height: min(70vh, 520px);
+  overflow: hidden;
+  background-color: rgba(47, 23, 15, 0.08);
+}
+
+.gs-bc .gs-product-carousel .gs-carousel-slide-media img {
   display: block;
   width: 100%;
-  max-height: min(70vh, 520px);
+  height: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+@media (min-width: 992px) {
+  .gs-bc .gs-product-carousel .gs-carousel-slide-media {
+    min-height: 300px;
+  }
 }
 
 /* Text-only fallback (no hero images): narrower heading card */
