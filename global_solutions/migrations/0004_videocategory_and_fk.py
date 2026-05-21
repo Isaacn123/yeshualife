@@ -105,4 +105,15 @@ class Migration(migrations.Migration):
                 verbose_name="Kind",
             ),
         ),
+        migrations.RemoveIndex(
+            model_name="globalsolutionsvideo",
+            name="global_solut_kind_dbbbae_idx",
+        ),
+        migrations.AddIndex(
+            model_name="globalsolutionsvideo",
+            index=models.Index(
+                fields=["category", "is_active", "published_at"],
+                name="global_solut_category_vid_idx",
+            ),
+        ),
     ]
