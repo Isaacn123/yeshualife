@@ -88,6 +88,9 @@ def noop_reverse(apps, schema_editor):
 
 class Migration(migrations.Migration):
 
+    # MySQL cannot roll back DDL; raw ALTER TABLE must run outside a transaction.
+    atomic = False
+
     dependencies = [
         ("global_solutions", "0003_globalsolutionspage_and_index_fields"),
     ]
