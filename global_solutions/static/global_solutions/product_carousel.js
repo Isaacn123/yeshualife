@@ -50,22 +50,58 @@
     carousel.querySelectorAll(".gs-video-player").forEach(showPlayOverlay);
   }
 
-  function updateCarouselSlideDescription(carousel) {
+  function getSlideMetaForCarousel(carousel) {
+    var metaId = carousel.getAttribute("data-description-meta");
+    if (!metaId) return null;
+    var node = document.getElementById(metaId);
+    if (!node || !node.textContent) return null;
+    try {
+      return JSON.parse(node.textContent);
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function slideDescriptionText(carousel, slideIndex) {
+    var fallback = carousel.getAttribute("data-description-fallback") || "";
+    var meta = getSlideMetaForCarousel(carousel);
+
+    if (meta && meta.length && slideIndex >= 0 && slideIndex < meta.length) {
+      var entry = meta[slideIndex];
+      var description = (entry.description || "").trim();
+      if (description) return description;
+      var title = (entry.title || "").trim();
+      if (title) return title;
+    }
+
+    var items = carousel.querySelectorAll(".carousel-item");
+    var item = items[slideIndex];
+    if (item) {
+      var source = item.querySelector(".gs-slide-description-source");
+      if (source) {
+        var domText = source.textContent.trim();
+        if (domText) return domText;
+      }
+    }
+
+    return fallback;
+  }
+
+  function updateCarouselSlideDescription(carousel, slideIndex) {
     var targetId = carousel.getAttribute("data-description-target");
     if (!targetId) return;
 
     var target = document.getElementById(targetId);
     if (!target) return;
 
-    var activeItem = carousel.querySelector(".carousel-item.active");
-    var source = activeItem
-      ? activeItem.querySelector(".gs-slide-description-source")
-      : null;
-    var text = source ? source.textContent.trim() : "";
-    if (!text) {
-      text = carousel.getAttribute("data-description-fallback") || "";
+    if (typeof slideIndex !== "number") {
+      var activeItem = carousel.querySelector(".carousel-item.active");
+      var items = carousel.querySelectorAll(".carousel-item");
+      slideIndex = Array.prototype.indexOf.call(items, activeItem);
+      if (slideIndex < 0) slideIndex = 0;
     }
-    target.textContent = text;
+
+    target.textContent = slideDescriptionText(carousel, slideIndex);
   }
 
   function playActiveSlideVideo(carousel) {
@@ -163,6 +199,9 @@
     video.muted = !inFullscreen;
     player.classList.toggle("is-fullscreen", inFullscreen);
     updateFullscreenButton(player, video);
+    if (inFullscreen && !video.paused && !video.ended) {
+      hidePlayOverlay(player);
+    }
   }
 
   function enterFullscreen(player, video) {
@@ -220,6 +259,9 @@
           enterFullscreen(player, video)
             .then(function () {
               applyFullscreenAudio(player, video, true);
+              if (!video.paused && !video.ended) {
+                hidePlayOverlay(player);
+              }
             })
             .catch(function () {
               /* ignore */
@@ -227,7 +269,12 @@
         };
 
         if (playPromise && playPromise.then) {
-          playPromise.then(goFullscreen).catch(goFullscreen);
+          playPromise
+            .then(function () {
+              hidePlayOverlay(player);
+              goFullscreen();
+            })
+            .catch(goFullscreen);
         } else {
           goFullscreen();
         }
@@ -250,6 +297,9 @@
 
     video.addEventListener("webkitbeginfullscreen", function () {
       applyFullscreenAudio(player, video, true);
+      if (!video.paused && !video.ended) {
+        hidePlayOverlay(player);
+      }
     });
 
     video.addEventListener("webkitendfullscreen", function () {
@@ -272,12 +322,19 @@
     document.querySelectorAll(".gs-video-carousel").forEach(function (carousel) {
       carousel.querySelectorAll(".gs-video-player").forEach(bindVideoPlayer);
 
-      carousel.addEventListener("slid.bs.carousel", function () {
-        updateCarouselSlideDescription(carousel);
+      carousel.addEventListener("slid.bs.carousel", function (event) {
+        var slideIndex = typeof event.to === "number" ? event.to : undefined;
+        updateCarouselSlideDescription(carousel, slideIndex);
         playActiveSlideVideo(carousel);
       });
 
-      updateCarouselSlideDescription(carousel);
+      carousel.addEventListener("slide.bs.carousel", function (event) {
+        if (typeof event.to === "number") {
+          updateCarouselSlideDescription(carousel, event.to);
+        }
+      });
+
+      updateCarouselSlideDescription(carousel, 0);
 
       window.setTimeout(function () {
         playActiveSlideVideo(carousel);

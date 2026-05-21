@@ -181,8 +181,17 @@
   object-fit: contain;
 }
 
-.gs-bc .gs-video-player:fullscreen .gs-video-play-btn,
-.gs-bc .gs-video-player:-webkit-full-screen .gs-video-play-btn {
+/* Fullscreen: hide center play while video is playing; show when paused/ended */
+.gs-bc .gs-video-player:fullscreen.is-playing .gs-video-play-btn,
+.gs-bc .gs-video-player:-webkit-full-screen.is-playing .gs-video-play-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gs-bc .gs-video-player:fullscreen.is-paused .gs-video-play-btn,
+.gs-bc .gs-video-player:fullscreen.is-ended .gs-video-play-btn,
+.gs-bc .gs-video-player:-webkit-full-screen.is-paused .gs-video-play-btn,
+.gs-bc .gs-video-player:-webkit-full-screen.is-ended .gs-video-play-btn {
   opacity: 1;
   pointer-events: auto;
 }
