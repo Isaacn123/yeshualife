@@ -1,0 +1,30 @@
+{# One Business Casual product-item section per video category. Expects: section (from video_sections). #}
+{% with cat=section.category %}
+<section class="page-section" id="{{ cat.slug }}">
+  <div class="container">
+    <div class="product-item">
+      <div class="product-item-title d-flex">
+        <div class="bg-faded p-5 d-flex {% if cat.title_align == 'left' %}me-auto{% else %}ms-auto{% endif %} rounded">
+          <h2 class="section-heading mb-0">
+            <span class="section-heading-upper">{{ section.heading_upper }}</span>
+            <span class="section-heading-lower">{{ cat.name }}</span>
+          </h2>
+        </div>
+      </div>
+
+      {{ section.slides_meta|json_script:section.description_meta_id }}
+      {% include "global_solutions/partials/product_item_video_carousel.html" with carousel_id=section.carousel_id videos=section.videos description_target=section.description_target description_meta=section.description_meta_id description_fallback=cat.section_intro %}
+
+      <div class="product-item-description d-flex {% if cat.title_align == 'left' %}ms-auto{% else %}me-auto{% endif %}">
+        <div class="bg-faded p-5 rounded">
+          <p class="mb-0" id="{{ section.description_target }}">
+            {% with first=section.videos.0 %}
+              {% if first.description %}{{ first.description }}{% elif cat.section_intro %}{{ cat.section_intro }}{% endif %}
+            {% endwith %}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endwith %}

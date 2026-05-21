@@ -38,11 +38,13 @@
       <div class="gsu-row">
         <div>
           <div class="gsu-field mb-3">
-            <label class="form-label">Type</label>
+            <label class="form-label">Kind (category)</label>
             <select class="form-select" id="gsu-kind">
-              <option value="feeding">Feeding</option>
-              <option value="preaching">Preachings</option>
-              <option value="learning">Learning</option>
+              {% for cat in video_categories %}
+                <option value="{{ cat.slug }}">{{ cat.name }}</option>
+              {% empty %}
+                <option value="">No categories — add Video categories in Snippets</option>
+              {% endfor %}
             </select>
           </div>
           <div class="gsu-field mb-3">
