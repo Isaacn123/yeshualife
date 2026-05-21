@@ -91,6 +91,11 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.RunPython(seed_categories_and_migrate_kind, noop_reverse),
+        # Drop kind index before removing the kind column (Django resolves index fields).
+        migrations.RemoveIndex(
+            model_name="globalsolutionsvideo",
+            name="global_solut_kind_dbbbae_idx",
+        ),
         migrations.RemoveField(
             model_name="globalsolutionsvideo",
             name="kind",
@@ -104,10 +109,6 @@ class Migration(migrations.Migration):
                 to="global_solutions.globalsolutionsvideocategory",
                 verbose_name="Kind",
             ),
-        ),
-        migrations.RemoveIndex(
-            model_name="globalsolutionsvideo",
-            name="global_solut_kind_dbbbae_idx",
         ),
         migrations.AddIndex(
             model_name="globalsolutionsvideo",
