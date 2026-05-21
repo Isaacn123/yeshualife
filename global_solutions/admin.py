@@ -29,7 +29,7 @@ class GlobalSolutionsBlockAdmin(admin.ModelAdmin):
 
 @admin.register(GlobalSolutionsVideoCategory)
 class GlobalSolutionsVideoCategoryAdmin(admin.ModelAdmin):
-    list_display = ("name", "slug", "sort_order", "is_active", "updated_at")
+    list_display = ("name", "slug", "sort_order", "is_active")
     list_filter = ("is_active",)
     search_fields = ("name", "slug")
     ordering = ("sort_order", "name")
