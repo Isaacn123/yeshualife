@@ -113,7 +113,7 @@ class Migration(migrations.Migration):
             model_name="globalsolutionsvideo",
             index=models.Index(
                 fields=["category", "is_active", "published_at"],
-                name="global_solut_category_vid_idx",
+                name="gs_video_cat_pub_idx",
             ),
         ),
     ]

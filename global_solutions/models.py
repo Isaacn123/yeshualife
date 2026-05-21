@@ -132,10 +132,7 @@ class GlobalSolutionsBlock(models.Model):
     class Meta:
         ordering = ["category", "sort_order", "-created_at"]
         indexes = [
-            models.Index(
-                fields=["category", "is_active", "sort_order"],
-                name="global_solut_category_7d69cf_idx",
-            ),
+            models.Index(fields=["category", "is_active", "sort_order"]),
         ]
 
     def __str__(self) -> str:
@@ -275,12 +272,9 @@ class GlobalSolutionsVideo(models.Model):
         indexes = [
             models.Index(
                 fields=["category", "is_active", "published_at"],
-                name="global_solut_category_vid_idx",
+                name="gs_video_cat_pub_idx",
             ),
-            models.Index(
-                fields=["status", "updated_at"],
-                name="global_solut_status_d87a65_idx",
-            ),
+            models.Index(fields=["status", "updated_at"]),
         ]
 
     def __str__(self) -> str:
