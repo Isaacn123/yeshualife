@@ -34,6 +34,7 @@
                   <video
                     class="gs-video-player-el d-block w-100"
                     playsinline
+                    muted
                     preload="metadata"
                     data-playback-src="{{ v.playback_url }}"
                     data-playback-hls="true"
@@ -44,6 +45,7 @@
                   <video
                     class="gs-video-player-el d-block w-100"
                     playsinline
+                    muted
                     preload="metadata"
                     {% if v.poster_image_url %}poster="{{ v.poster_image_url }}"{% endif %}
                     {% if v.title %}aria-label="{{ v.title }}"{% endif %}

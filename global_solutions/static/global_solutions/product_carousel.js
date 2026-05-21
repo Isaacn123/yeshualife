@@ -45,6 +45,7 @@
   function pauseAllInCarousel(carousel) {
     carousel.querySelectorAll(".gs-video-player-el").forEach(function (video) {
       video.pause();
+      video.muted = true;
     });
     carousel.querySelectorAll(".gs-video-player").forEach(showPlayOverlay);
   }
@@ -140,6 +141,12 @@
     btn.classList.toggle("is-active", active);
   }
 
+  function applyFullscreenAudio(player, video, inFullscreen) {
+    video.muted = !inFullscreen;
+    player.classList.toggle("is-fullscreen", inFullscreen);
+    updateFullscreenButton(player, video);
+  }
+
   function enterFullscreen(player, video) {
     if (typeof video.webkitEnterFullscreen === "function") {
       video.webkitEnterFullscreen();
@@ -169,7 +176,9 @@
     playBtn.addEventListener("mousedown", stopCarouselFromClick);
     playBtn.addEventListener("click", function (event) {
       stopCarouselFromClick(event);
-      video.muted = false;
+      if (!isPlayerFullscreen(player, video)) {
+        video.muted = true;
+      }
       var playPromise = video.play();
       if (playPromise && playPromise.catch) {
         playPromise.catch(function () {
@@ -188,12 +197,15 @@
           return;
         }
 
-        video.muted = false;
         var playPromise = video.play();
         var goFullscreen = function () {
-          enterFullscreen(player, video).catch(function () {
-            /* ignore */
-          });
+          enterFullscreen(player, video)
+            .then(function () {
+              applyFullscreenAudio(player, video, true);
+            })
+            .catch(function () {
+              /* ignore */
+            });
         };
 
         if (playPromise && playPromise.then) {
@@ -219,23 +231,22 @@
     });
 
     video.addEventListener("webkitbeginfullscreen", function () {
-      player.classList.add("is-fullscreen");
-      updateFullscreenButton(player, video);
+      applyFullscreenAudio(player, video, true);
     });
 
     video.addEventListener("webkitendfullscreen", function () {
-      player.classList.remove("is-fullscreen");
-      updateFullscreenButton(player, video);
+      applyFullscreenAudio(player, video, false);
     });
 
     ["fullscreenchange", "webkitfullscreenchange", "mozfullscreenchange", "MSFullscreenChange"].forEach(
       function (eventName) {
         document.addEventListener(eventName, function () {
-          updateFullscreenButton(player, video);
+          applyFullscreenAudio(player, video, isPlayerFullscreen(player, video));
         });
       }
     );
 
+    video.muted = true;
     updateFullscreenButton(player, video);
   }
 
