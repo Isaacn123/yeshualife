@@ -1,43 +1,115 @@
-{% extends "base.html" %}
-{% load static %}
-
-{% block body_class %}template-globalsolutions{% endblock %}
-
-{% block extra_css %}
-  {{ block.super }}
-  <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'business_casual/css/styles.css' %}">
-  <link rel="stylesheet" href="{% static 'business_casual/css/overrides.css' %}">
-{% endblock %}
-
-{% block content %}
-{% include "nav_bar.html" %}
-
-<main class="gs-bc gs-bc-theme">
-  {% for section in video_sections %}
-    {% include "global_solutions/partials/product_item_video_section.html" with section=section %}
-  {% empty %}
-    <section class="page-section">
-      <div class="container">
-        <div class="bg-faded p-5 rounded text-center">
-          <p class="mb-0">No video categories with clips yet. Add categories under <strong>Snippets → Video categories</strong>, then upload videos.</p>
-        </div>
-      </div>
-    </section>
-  {% endfor %}
-</main>
-
-{% endblock %}
-
-{% block extra_js %}
-  {{ block.super }}
-  <script src="{% static 'css/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
-  <script src="{% static 'global_solutions/product_carousel.js' %}"></script>
-  <script src="{% static 'global_solutions/global_solutions.js' %}"></script>
-{% endblock %}
-
-{% block footer %}
-  {% include "blog/footer.html" %}
-{% endblock %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block body_class %}template-globalsolutions{% endblock %}
+
+{% block extra_css %}
+  {{ block.super }}
+  <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'business_casual/css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'business_casual/css/overrides.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include "nav_bar.html" %}
+
+<main class="gs-bc gs-bc-theme">
+  <section class="page-section" id="feeding">
+    <div class="container">
+      <div class="product-item">
+        <div class="product-item-title d-flex">
+          <div class="bg-faded p-5 d-flex ms-auto rounded">
+            <h2 class="section-heading mb-0">
+              <span class="section-heading-upper">
+                {% if feeds_total %}{{ feeds_total }} clip{{ feeds_total|pluralize }}{% else %}Community outreach{% endif %}
+              </span>
+              <span class="section-heading-lower">Feeding</span>
+            </h2>
+          </div>
+        </div>
+        {% if feeds %}
+          {% include "global_solutions/partials/product_item_video_carousel.html" with carousel_id="gs-carousel-feeding" videos=feeds description_target="gs-feeding-slide-description" description_fallback="Community meals and feeding outreach — fresh clips uploaded from the field." %}
+        {% else %}
+          {% include "global_solutions/partials/product_item_carousel.html" with carousel_id="gs-carousel-products-1" slide_1="business_casual/assets/img/products-01.jpg" slide_1_alt="Products 01" slide_2="business_casual/assets/img/products-02.jpg" slide_2_alt="Products 02" slide_3="business_casual/assets/img/products-03.jpg" slide_3_alt="Products 03" %}
+        {% endif %}
+        <div class="product-item-description d-flex me-auto">
+          <div class="bg-faded p-5 rounded">
+            <p class="mb-0" id="gs-feeding-slide-description">
+              {% if feeds %}
+                {% with first_feed=feeds.0 %}
+                  {% if first_feed.description %}{{ first_feed.description }}{% else %}Community meals and feeding outreach — fresh clips uploaded from the field.{% endif %}
+                {% endwith %}
+              {% elif hero_subtitle %}
+                {{ hero_subtitle }}
+              {% else %}
+                Community meals and feeding outreach — fresh clips uploaded from the field.
+              {% endif %}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <section class="page-section">
+    <div class="container">
+      <div class="product-item">
+        <div class="product-item-title d-flex">
+          <div class="bg-faded p-5 d-flex me-auto rounded">
+            <h2 class="section-heading mb-0">
+              <span class="section-heading-upper">Delicious Treats, Good Eats</span>
+              <span class="section-heading-lower">Bakery &amp; Kitchen</span>
+            </h2>
+          </div>
+        </div>
+        {% include "global_solutions/partials/product_item_carousel.html" with carousel_id="gs-carousel-products-2" slide_1="business_casual/assets/img/products-02.jpg" slide_1_alt="Products 02" slide_2="business_casual/assets/img/products-03.jpg" slide_2_alt="Products 03" slide_3="business_casual/assets/img/products-01.jpg" slide_3_alt="Products 01" %}
+        <div class="product-item-description d-flex ms-auto">
+          <div class="bg-faded p-5 rounded">
+            <p class="mb-0">
+              Our seasonal menu features delicious snacks, baked goods, and even full meals perfect for breakfast or lunchtime. We source our ingredients from local, oragnic farms whenever possible, alongside premium vendors for specialty goods.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container">
+      <div class="product-item">
+        <div class="product-item-title d-flex">
+          <div class="bg-faded p-5 d-flex ms-auto rounded">
+            <h2 class="section-heading mb-0">
+              <span class="section-heading-upper">From Around the World</span>
+              <span class="section-heading-lower">Bulk Speciality Blends</span>
+            </h2>
+          </div>
+        </div>
+        {% include "global_solutions/partials/product_item_carousel.html" with carousel_id="gs-carousel-products-3" slide_1="business_casual/assets/img/products-03.jpg" slide_1_alt="Products 03" slide_2="business_casual/assets/img/products-01.jpg" slide_2_alt="Products 01" slide_3="business_casual/assets/img/products-02.jpg" slide_3_alt="Products 02" %}
+        <div class="product-item-description d-flex me-auto">
+          <div class="bg-faded p-5 rounded">
+            <p class="mb-0">
+              Travelling the world for the very best quality coffee is something take pride in. When you visit us, you'll always find new blends from around the world, mainly from regions in Central and South America. We sell our blends in smaller to large bulk quantities. Please visit us in person for more details.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+</main>
+
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  {# Load Bootstrap + init outside compress so carousels work in dev and prod #}
+  <script src="{% static 'css/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
+  <script src="{% static 'global_solutions/product_carousel.js' %}"></script>
+  <script src="{% static 'global_solutions/global_solutions.js' %}"></script>
+{% endblock %}
+
+{% block footer %}
+  {% include "blog/footer.html" %}
+{% endblock %}

@@ -202,18 +202,14 @@
     return (el.value || "").trim();
   }
 
-  function snippetCategoryValue() {
-    return snippetFormValue("category") || snippetFormValue("kind");
-  }
-
   async function syncSnippetMeta(urls) {
-    var category = snippetCategoryValue();
+    var kind = snippetFormValue("kind");
     var title = snippetFormValue("title");
     var description = snippetFormValue("description");
     if (!title) throw new Error("Enter a title in the Details section above (you can save the form after upload if you prefer).");
-    if (!category) throw new Error("Choose a Kind (category) in the Details section.");
+    if (!kind) throw new Error("Choose a Kind in the Details section.");
     await postForm(urls.meta, {
-      category: category,
+      kind: kind,
       title: title,
       description: description,
     });

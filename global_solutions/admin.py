@@ -1,11 +1,6 @@
 from django.contrib import admin
 
-from .models import (
-    GlobalSolutionsBlock,
-    GlobalSolutionsSettings,
-    GlobalSolutionsVideo,
-    GlobalSolutionsVideoCategory,
-)
+from .models import GlobalSolutionsBlock, GlobalSolutionsSettings, GlobalSolutionsVideo
 
 
 @admin.register(GlobalSolutionsSettings)
@@ -27,21 +22,12 @@ class GlobalSolutionsBlockAdmin(admin.ModelAdmin):
     ordering = ("category", "sort_order", "-updated_at")
 
 
-@admin.register(GlobalSolutionsVideoCategory)
-class GlobalSolutionsVideoCategoryAdmin(admin.ModelAdmin):
-    list_display = ("name", "slug", "sort_order", "is_active")
-    list_filter = ("is_active",)
-    search_fields = ("name", "slug")
-    ordering = ("sort_order", "name")
-    prepopulated_fields = {"slug": ("name",)}
-
-
 @admin.register(GlobalSolutionsVideo)
 class GlobalSolutionsVideoAdmin(admin.ModelAdmin):
-    list_display = ("title", "category", "status", "is_active", "published_at", "updated_at")
-    list_filter = ("category", "status", "is_active")
+    list_display = ("title", "kind", "status", "is_active", "published_at", "updated_at")
+    list_filter = ("kind", "status", "is_active")
     search_fields = ("title", "description", "original_b2_key", "hls_master_manifest_key")
-    ordering = ("-published_at", "category", "sort_order")
+    ordering = ("-published_at", "kind", "sort_order")
     readonly_fields = (
         "id",
         "created_at",

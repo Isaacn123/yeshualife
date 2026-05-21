@@ -17,13 +17,6 @@ from wagtail.snippets.models import register_snippet
 from .wagtail_panels import GlobalSolutionsVideoB2UploadPanel
 
 
-def _video_slides_meta(videos: list) -> list[dict[str, str]]:
-    return [
-        {"title": (v.title or "").strip(), "description": (v.description or "").strip()}
-        for v in videos
-    ]
-
-
 def build_global_solutions_public_context() -> dict:
     """Template context for the public Global Solutions index page (videos, hero)."""
     settings_obj = GlobalSolutionsSettings.objects.first()
@@ -34,39 +27,33 @@ def build_global_solutions_public_context() -> dict:
     videos_qs = GlobalSolutionsVideo.objects.filter(
         is_active=True,
         status=GlobalSolutionsVideoStatus.READY,
-    ).select_related("category")
+    )
     cap = int(getattr(django_settings, "GLOBAL_SOLUTIONS_PUBLIC_VIDEO_CAP", 72))
 
-    video_sections = []
-    categories = GlobalSolutionsVideoCategory.objects.filter(is_active=True).order_by(
-        "sort_order", "name"
-    )
-    for category in categories:
-        cat_qs = videos_qs.filter(category=category).order_by("-published_at", "sort_order")
-        total = cat_qs.count()
-        videos = list(cat_qs[:cap])
-        if not videos:
-            continue
-        video_sections.append(
-            {
-                "category": category,
-                "videos": videos,
-                "total_count": total,
-                "heading_upper": category.heading_upper_display(total),
-                "slides_meta": _video_slides_meta(videos),
-                "carousel_id": f"gs-carousel-{category.slug}",
-                "description_target": f"gs-slide-description-{category.slug}",
-                "description_meta_id": f"{category.slug}-slides-meta",
-            }
-        )
+    feeding_qs = videos_qs.filter(kind=GlobalSolutionsVideoKind.FEEDING).order_by("-published_at", "sort_order")
+    preaching_qs = videos_qs.filter(kind=GlobalSolutionsVideoKind.PREACHING).order_by("-published_at", "sort_order")
+    learning_qs = videos_qs.filter(kind=GlobalSolutionsVideoKind.LEARNING).order_by("-published_at", "sort_order")
 
-    has_any_videos = bool(video_sections)
+    feeds_total = feeding_qs.count()
+    preachings_total = preaching_qs.count()
+    learning_total = learning_qs.count()
+
+    feeds = list(feeding_qs[:cap])
+    preachings = list(preaching_qs[:cap])
+    learning = list(learning_qs[:cap])
+
+    has_any_videos = bool(feeds or preachings or learning)
 
     return {
         "hero_title": hero_title,
         "hero_subtitle": hero_subtitle,
         "hero_image_url": (settings_obj.hero_image_url if settings_obj else "").strip(),
-        "video_sections": video_sections,
+        "feeds": feeds,
+        "preachings": preachings,
+        "learning": learning,
+        "feeds_total": feeds_total,
+        "preachings_total": preachings_total,
+        "learning_total": learning_total,
         "global_solutions_video_cap": cap,
         "has_any_videos": has_any_videos,
     }
@@ -149,67 +136,10 @@ class GlobalSolutionsBlock(models.Model):
     ]
 
 
-class GlobalSolutionsVideoCategoryAlign(models.TextChoices):
-    RIGHT = "right", "Title box — right"
-    LEFT = "left", "Title box — left"
-
-
-@register_snippet
-class GlobalSolutionsVideoCategory(models.Model):
-    """
-    Manage video types (Kind) from Snippets — add, edit, delete, reorder.
-    """
-
-    name = models.CharField(max_length=120, help_text="Shown in admin and on the public page (section title).")
-    slug = models.SlugField(
-        max_length=32,
-        unique=True,
-        help_text="URL-safe id (e.g. feeding). Used for uploads and section anchors.",
-    )
-    heading_upper = models.CharField(
-        max_length=160,
-        blank=True,
-        default="",
-        help_text="Small line above the title. Use {count} for number of clips (e.g. “{count} clips”).",
-    )
-    section_intro = models.TextField(
-        blank=True,
-        default="",
-        help_text="Default text in the description box when a clip has no description.",
-    )
-    title_align = models.CharField(
-        max_length=16,
-        choices=GlobalSolutionsVideoCategoryAlign.choices,
-        default=GlobalSolutionsVideoCategoryAlign.RIGHT,
-    )
-    sort_order = models.PositiveIntegerField(default=0)
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        ordering = ["sort_order", "name"]
-        verbose_name = "Video category"
-        verbose_name_plural = "Video categories"
-
-    def __str__(self) -> str:
-        return self.name
-
-    def heading_upper_display(self, count: int) -> str:
-        template = (self.heading_upper or "").strip()
-        if template:
-            return template.replace("{count}", str(count))
-        if count:
-            return f"{count} clip{'s' if count != 1 else ''}"
-        return "Community outreach"
-
-    panels = [
-        FieldPanel("name"),
-        FieldPanel("slug"),
-        FieldPanel("heading_upper"),
-        FieldPanel("section_intro"),
-        FieldPanel("title_align"),
-        FieldPanel("sort_order"),
-        FieldPanel("is_active"),
-    ]
+class GlobalSolutionsVideoKind(models.TextChoices):
+    FEEDING = "feeding", "Feeding"
+    PREACHING = "preaching", "Preachings"
+    LEARNING = "learning", "Learning"
 
 
 class GlobalSolutionsVideoStatus(models.TextChoices):
@@ -232,12 +162,7 @@ class GlobalSolutionsVideo(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    category = models.ForeignKey(
-        GlobalSolutionsVideoCategory,
-        on_delete=models.PROTECT,
-        related_name="videos",
-        verbose_name="Kind",
-    )
+    kind = models.CharField(max_length=16, choices=GlobalSolutionsVideoKind.choices)
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True, default="")
 
@@ -270,15 +195,12 @@ class GlobalSolutionsVideo(models.Model):
     class Meta:
         ordering = ["-published_at", "sort_order", "-created_at"]
         indexes = [
-            models.Index(
-                fields=["category", "is_active", "published_at"],
-                name="gs_video_cat_pub_idx",
-            ),
+            models.Index(fields=["kind", "is_active", "published_at"]),
             models.Index(fields=["status", "updated_at"]),
         ]
 
     def __str__(self) -> str:
-        return f"{self.category}: {self.title}"
+        return f"{self.get_kind_display()}: {self.title}"
 
     @property
     def playback_url(self) -> str:
@@ -331,7 +253,7 @@ class GlobalSolutionsVideo(models.Model):
         ),
         MultiFieldPanel(
             [
-                FieldPanel("category"),
+                FieldPanel("kind"),
                 FieldPanel("title"),
                 FieldPanel("description"),
                 FieldPanel("published_at"),

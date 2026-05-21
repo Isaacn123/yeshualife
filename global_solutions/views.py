@@ -13,7 +13,7 @@ from .b2 import b2_public_url, get_b2_s3_client
 from .models import (
     GlobalSolutionsSettings,
     GlobalSolutionsVideo,
-    GlobalSolutionsVideoCategory,
+    GlobalSolutionsVideoKind,
     GlobalSolutionsVideoStatus,
 )
 
@@ -25,16 +25,6 @@ class PageLike:
     intro: str
     search_description: str
     image: None = None
-
-
-def resolve_video_category(value: str) -> GlobalSolutionsVideoCategory | None:
-    """Accept category primary key (Wagtail form) or slug (upload center / legacy kind)."""
-    raw = (value or "").strip()
-    if not raw:
-        return None
-    if raw.isdigit():
-        return GlobalSolutionsVideoCategory.objects.filter(pk=int(raw), is_active=True).first()
-    return GlobalSolutionsVideoCategory.objects.filter(slug=raw, is_active=True).first()
 
 
 # --------------------------
@@ -56,9 +46,6 @@ def upload_center(request):
         intro="Upload large clips directly to Backblaze B2, then process to HLS for fast playback.",
         search_description="Upload Global Solutions videos",
     )
-    video_categories = GlobalSolutionsVideoCategory.objects.filter(is_active=True).order_by(
-        "sort_order", "name"
-    )
     return render(
         request,
         "global_solutions/upload_center.html",
@@ -67,7 +54,6 @@ def upload_center(request):
             "hero_title": "Global Solutions Upload Center",
             "hero_subtitle": (settings_obj.hero_subtitle if settings_obj else "").strip(),
             "gs_video_api_urls_placeholder": video_api_urls_placeholder_map(),
-            "video_categories": video_categories,
         },
     )
 
@@ -75,18 +61,17 @@ def upload_center(request):
 @require_POST
 @staff_member_required
 def create_video_record(request):
-    kind = (request.POST.get("kind") or request.POST.get("category") or "").strip()
+    kind = (request.POST.get("kind") or "").strip()
     title = (request.POST.get("title") or "").strip()
     description = (request.POST.get("description") or "").strip()
 
-    category = resolve_video_category(kind)
-    if not category:
-        return JsonResponse({"error": "Invalid video category"}, status=400)
+    if kind not in {k for k, _ in GlobalSolutionsVideoKind.choices}:
+        return JsonResponse({"error": "Invalid kind"}, status=400)
     if not title:
         return JsonResponse({"error": "title is required"}, status=400)
 
     v = GlobalSolutionsVideo.objects.create(
-        category=category,
+        kind=kind,
         title=title,
         description=description,
         status=GlobalSolutionsVideoStatus.DRAFT,
@@ -109,7 +94,7 @@ def api_deploy_check(request):
 @staff_member_required
 def update_video_meta(request, video_id):
     """
-    Sync category/title/description from the Wagtail snippet form before B2 multipart upload.
+    Sync kind/title/description from the Wagtail snippet form before B2 multipart upload.
     Not used for B2 credentials (those stay server-side).
     """
     try:
@@ -124,13 +109,12 @@ def update_video_meta(request, video_id):
             },
             status=404,
         )
-    kind = (request.POST.get("kind") or request.POST.get("category") or "").strip()
+    kind = (request.POST.get("kind") or "").strip()
     title = (request.POST.get("title") or "").strip()
     description = (request.POST.get("description") or "").strip()
 
-    category = resolve_video_category(kind)
-    if not category:
-        return JsonResponse({"error": "Invalid video category"}, status=400)
+    if kind not in {k for k, _ in GlobalSolutionsVideoKind.choices}:
+        return JsonResponse({"error": "Invalid kind"}, status=400)
     if not title:
         return JsonResponse({"error": "title is required"}, status=400)
 
@@ -140,17 +124,17 @@ def update_video_meta(request, video_id):
         return JsonResponse({"error": "Cannot edit metadata during active upload."}, status=400)
 
     if video.status == GlobalSolutionsVideoStatus.UPLOADED:
-        if category.pk != video.category_id:
+        if kind != video.kind:
             return JsonResponse({"error": "Cannot change type after upload."}, status=400)
         video.title = title
         video.description = description
         video.save(update_fields=["title", "description", "updated_at"])
         return JsonResponse({"ok": True})
 
-    video.category = category
+    video.kind = kind
     video.title = title
     video.description = description
-    video.save(update_fields=["category", "title", "description", "updated_at"])
+    video.save(update_fields=["kind", "title", "description", "updated_at"])
     return JsonResponse({"ok": True})
 
 
@@ -165,7 +149,7 @@ def b2_create_multipart_upload(request, video_id):
     if not filename:
         return JsonResponse({"error": "filename is required"}, status=400)
 
-    key = f"global-solutions/videos/{video.category.slug}/{video.id}/{filename}"
+    key = f"global-solutions/videos/{video.kind}/{video.id}/{filename}"
 
     s3 = get_b2_s3_client()
     # B2 requires ContentType to be set at upload creation for correct metadata
@@ -208,7 +192,7 @@ def b2_get_upload_part_url(request, video_id):
     url = s3.generate_presigned_url(
         ClientMethod="upload_part",
         Params={"Bucket": cfg.bucket_name, "Key": video.original_b2_key, "UploadId": upload_id, "PartNumber": part_number},
-        ExpiresIn=60 * 30,
+        ExpiresIn=60 * 30,  # 30 minutes
         HttpMethod="PUT",
     )
     return JsonResponse({"url": url})
@@ -217,7 +201,12 @@ def b2_get_upload_part_url(request, video_id):
 @require_POST
 @staff_member_required
 def b2_complete_multipart_upload(request, video_id):
-    """Expects upload_id, parts JSON, optional size_bytes."""
+    """
+    Expects:
+      - upload_id
+      - parts: JSON string like [{"PartNumber":1,"ETag":"..."}]
+      - size_bytes (optional)
+    """
     import json
 
     video = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
@@ -283,3 +272,4 @@ def mark_video_processing(request, video_id):
     video.last_error = ""
     video.save(update_fields=["status", "last_error", "updated_at"])
     return JsonResponse({"ok": True})
+
