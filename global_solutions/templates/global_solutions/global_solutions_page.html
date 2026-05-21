@@ -29,14 +29,22 @@
           </div>
         </div>
         {% if feeds %}
-          {% include "global_solutions/partials/product_item_video_carousel.html" with carousel_id="gs-carousel-feeding" videos=feeds %}
+          {% include "global_solutions/partials/product_item_video_carousel.html" with carousel_id="gs-carousel-feeding" videos=feeds description_target="gs-feeding-slide-description" description_fallback="Community meals and feeding outreach — fresh clips uploaded from the field." %}
         {% else %}
           {% include "global_solutions/partials/product_item_carousel.html" with carousel_id="gs-carousel-products-1" slide_1="business_casual/assets/img/products-01.jpg" slide_1_alt="Products 01" slide_2="business_casual/assets/img/products-02.jpg" slide_2_alt="Products 02" slide_3="business_casual/assets/img/products-03.jpg" slide_3_alt="Products 03" %}
         {% endif %}
         <div class="product-item-description d-flex me-auto">
           <div class="bg-faded p-5 rounded">
-            <p class="mb-0">
-              {% if hero_subtitle %}{{ hero_subtitle }}{% else %}Community meals and feeding outreach — fresh clips uploaded from the field.{% endif %}
+            <p class="mb-0" id="gs-feeding-slide-description">
+              {% if feeds %}
+                {% with first_feed=feeds.0 %}
+                  {% if first_feed.description %}{{ first_feed.description }}{% else %}Community meals and feeding outreach — fresh clips uploaded from the field.{% endif %}
+                {% endwith %}
+              {% elif hero_subtitle %}
+                {{ hero_subtitle }}
+              {% else %}
+                Community meals and feeding outreach — fresh clips uploaded from the field.
+              {% endif %}
             </p>
           </div>
         </div>

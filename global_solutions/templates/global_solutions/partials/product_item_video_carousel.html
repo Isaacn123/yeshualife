@@ -9,6 +9,8 @@
     data-bs-interval="false"
     data-bs-wrap="true"
     data-bs-touch="true"
+    {% if description_target %}data-description-target="{{ description_target }}"{% endif %}
+    {% if description_fallback %}data-description-fallback="{{ description_fallback }}"{% endif %}
   >
     {% if videos|length > 1 %}
       <div class="carousel-indicators">
@@ -27,6 +29,9 @@
     <div class="carousel-inner gs-product-carousel-inner rounded overflow-hidden">
       {% for v in videos %}
         <div class="carousel-item{% if forloop.first %} active{% endif %}">
+          {% if v.description %}
+            <span class="visually-hidden gs-slide-description-source">{{ v.description }}</span>
+          {% endif %}
           <div class="gs-carousel-slide-media">
             {% if v.playback_url %}
               <div class="gs-video-player is-paused">

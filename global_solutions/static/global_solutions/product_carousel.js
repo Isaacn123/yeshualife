@@ -50,6 +50,24 @@
     carousel.querySelectorAll(".gs-video-player").forEach(showPlayOverlay);
   }
 
+  function updateCarouselSlideDescription(carousel) {
+    var targetId = carousel.getAttribute("data-description-target");
+    if (!targetId) return;
+
+    var target = document.getElementById(targetId);
+    if (!target) return;
+
+    var activeItem = carousel.querySelector(".carousel-item.active");
+    var source = activeItem
+      ? activeItem.querySelector(".gs-slide-description-source")
+      : null;
+    var text = source ? source.textContent.trim() : "";
+    if (!text) {
+      text = carousel.getAttribute("data-description-fallback") || "";
+    }
+    target.textContent = text;
+  }
+
   function playActiveSlideVideo(carousel) {
     var activeItem = carousel.querySelector(".carousel-item.active");
     if (!activeItem) return;
@@ -255,8 +273,11 @@
       carousel.querySelectorAll(".gs-video-player").forEach(bindVideoPlayer);
 
       carousel.addEventListener("slid.bs.carousel", function () {
+        updateCarouselSlideDescription(carousel);
         playActiveSlideVideo(carousel);
       });
+
+      updateCarouselSlideDescription(carousel);
 
       window.setTimeout(function () {
         playActiveSlideVideo(carousel);
