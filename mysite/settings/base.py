@@ -250,7 +250,7 @@ STATICFILES_DIRS = [
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
 # JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
 # See https://docs.djangoproject.com/en/4.2/ref/contrib/staticfiles/#manifeststaticfilesstorage
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+_STATICFILES_BACKEND = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
@@ -306,9 +306,11 @@ if USE_R2_MEDIA:
             "BACKEND": "storages.backends.s3.S3Storage",
         },
         "staticfiles": {
-            "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
+            "BACKEND": _STATICFILES_BACKEND,
         },
     }
+else:
+    STATICFILES_STORAGE = _STATICFILES_BACKEND
 
 COMPRESS_ROOT = STATIC_ROOT  # This should be the same as STATIC_ROOT
 COMPRESS_URL = STATIC_URL  # This should be the same as STATIC_URL
