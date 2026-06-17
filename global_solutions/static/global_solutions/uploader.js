@@ -203,13 +203,13 @@
   }
 
   async function syncSnippetMeta(urls) {
-    var kind = snippetFormValue("kind");
+    var category = snippetFormValue("category");
     var title = snippetFormValue("title");
     var description = snippetFormValue("description");
     if (!title) throw new Error("Enter a title in the Details section above (you can save the form after upload if you prefer).");
-    if (!kind) throw new Error("Choose a Kind in the Details section.");
+    if (!category) throw new Error("Choose a Category in the Details section.");
     await postForm(urls.meta, {
-      kind: kind,
+      category: category,
       title: title,
       description: description,
     });
@@ -282,12 +282,13 @@
 
     uploadBtn.addEventListener("click", async function () {
       try {
-        var kindEl = $("gsu-kind");
+        var categoryEl = $("gsu-category");
         var titleEl = $("gsu-title");
         var descEl = $("gsu-description");
-        if (!kindEl || !titleEl) return;
+        if (!categoryEl || !titleEl) return;
 
-        var kind = kindEl.value;
+        var category = categoryEl.value;
+        if (!category) throw new Error("Choose a category.");
         var titleBase = titleEl.value.trim();
         var description = descEl ? descEl.value.trim() : "";
         var filesList = $("gsu-file").files;
@@ -316,7 +317,7 @@
           setRowStatus(row, "Creating video record...");
           setStatus("Creating video record (" + (idx + 1) + " / " + files.length + ") ...");
           var created = await postForm(createUrl, {
-            kind: kind,
+            category: category,
             title: title,
             description: description,
           });

@@ -10,11 +10,22 @@ from django.views.decorators.http import require_GET, require_POST
 
 from .api_urls import video_api_urls_placeholder_map
 from .b2 import b2_public_url, get_b2_s3_client
+from django.db.models import F
+
+from .discovery import (
+    build_farmhub_home_context,
+    get_public_videos_qs,
+    get_related_videos,
+    get_videos_for_category,
+    search_videos,
+)
+from .categories import get_active_categories, resolve_category
 from .models import (
+    Creator,
     GlobalSolutionsSettings,
     GlobalSolutionsVideo,
-    GlobalSolutionsVideoKind,
     GlobalSolutionsVideoStatus,
+    SolutionCategory,
 )
 
 
@@ -54,6 +65,7 @@ def upload_center(request):
             "hero_title": "Global Solutions Upload Center",
             "hero_subtitle": (settings_obj.hero_subtitle if settings_obj else "").strip(),
             "gs_video_api_urls_placeholder": video_api_urls_placeholder_map(),
+            "solution_categories": get_active_categories(),
         },
     )
 
@@ -61,17 +73,19 @@ def upload_center(request):
 @require_POST
 @staff_member_required
 def create_video_record(request):
-    kind = (request.POST.get("kind") or "").strip()
+    category_id = (request.POST.get("category_id") or request.POST.get("category") or "").strip()
+    category_slug = (request.POST.get("category_slug") or "").strip()
     title = (request.POST.get("title") or "").strip()
     description = (request.POST.get("description") or "").strip()
 
-    if kind not in {k for k, _ in GlobalSolutionsVideoKind.choices}:
-        return JsonResponse({"error": "Invalid kind"}, status=400)
+    category = resolve_category(category_id=category_id or None, category_slug=category_slug or None)
+    if not category:
+        return JsonResponse({"error": "Valid category is required"}, status=400)
     if not title:
         return JsonResponse({"error": "title is required"}, status=400)
 
     v = GlobalSolutionsVideo.objects.create(
-        kind=kind,
+        category=category,
         title=title,
         description=description,
         status=GlobalSolutionsVideoStatus.DRAFT,
@@ -109,12 +123,14 @@ def update_video_meta(request, video_id):
             },
             status=404,
         )
-    kind = (request.POST.get("kind") or "").strip()
+    category_id = (request.POST.get("category_id") or request.POST.get("category") or "").strip()
+    category_slug = (request.POST.get("category_slug") or "").strip()
     title = (request.POST.get("title") or "").strip()
     description = (request.POST.get("description") or "").strip()
 
-    if kind not in {k for k, _ in GlobalSolutionsVideoKind.choices}:
-        return JsonResponse({"error": "Invalid kind"}, status=400)
+    category = resolve_category(category_id=category_id or None, category_slug=category_slug or None)
+    if not category:
+        return JsonResponse({"error": "Valid category is required"}, status=400)
     if not title:
         return JsonResponse({"error": "title is required"}, status=400)
 
@@ -124,17 +140,17 @@ def update_video_meta(request, video_id):
         return JsonResponse({"error": "Cannot edit metadata during active upload."}, status=400)
 
     if video.status == GlobalSolutionsVideoStatus.UPLOADED:
-        if kind != video.kind:
-            return JsonResponse({"error": "Cannot change type after upload."}, status=400)
+        if video.category_id != category.pk:
+            return JsonResponse({"error": "Cannot change category after upload."}, status=400)
         video.title = title
         video.description = description
         video.save(update_fields=["title", "description", "updated_at"])
         return JsonResponse({"ok": True})
 
-    video.kind = kind
+    video.category = category
     video.title = title
     video.description = description
-    video.save(update_fields=["kind", "title", "description", "updated_at"])
+    video.save(update_fields=["category", "title", "description", "updated_at"])
     return JsonResponse({"ok": True})
 
 
@@ -149,7 +165,7 @@ def b2_create_multipart_upload(request, video_id):
     if not filename:
         return JsonResponse({"error": "filename is required"}, status=400)
 
-    key = f"global-solutions/videos/{video.kind}/{video.id}/{filename}"
+    key = f"global-solutions/videos/{video.storage_path_slug}/{video.id}/{filename}"
 
     s3 = get_b2_s3_client()
     # B2 requires ContentType to be set at upload creation for correct metadata
@@ -272,4 +288,85 @@ def mark_video_processing(request, video_id):
     video.last_error = ""
     video.save(update_fields=["status", "last_error", "updated_at"])
     return JsonResponse({"ok": True})
+
+
+# --------------------------
+# FarmHub public discovery pages
+# --------------------------
+
+
+def _farmhub_page(title: str, intro: str = ""):
+    return PageLike(
+        title=title,
+        seo_title=title,
+        intro=intro,
+        search_description=intro,
+    )
+
+
+@require_GET
+def farmhub_home(request):
+    ctx = build_farmhub_home_context()
+    ctx["page"] = _farmhub_page(ctx.get("hero_title", "FarmHub"), ctx.get("hero_subtitle", ""))
+    ctx["solution_categories"] = get_active_categories()
+    return render(request, "global_solutions/farmhub_home.html", ctx)
+
+
+@require_GET
+def farmhub_category(request, slug):
+    category = get_object_or_404(SolutionCategory, slug=slug, is_active=True)
+    videos = get_videos_for_category(category, limit=48)
+    ctx = {
+        "page": _farmhub_page(category.name, category.description),
+        "category": category,
+        "videos": videos,
+        "farmhub_home_url": request.build_absolute_uri("/farmhub/"),
+    }
+    return render(request, "global_solutions/category_page.html", ctx)
+
+
+@require_GET
+def farmhub_creator(request, slug):
+    creator = get_object_or_404(Creator, slug=slug, is_active=True)
+    videos = list(
+        get_public_videos_qs()
+        .filter(creator=creator)
+        .order_by("-published_at")[:48]
+    )
+    ctx = {
+        "page": _farmhub_page(creator.name, creator.bio),
+        "creator": creator,
+        "videos": videos,
+    }
+    return render(request, "global_solutions/creator_page.html", ctx)
+
+
+@require_GET
+def farmhub_video(request, slug):
+    video = get_object_or_404(
+        get_public_videos_qs(),
+        slug=slug,
+    )
+    GlobalSolutionsVideo.objects.filter(pk=video.pk).update(views=F("views") + 1)
+    video.views += 1
+    related = get_related_videos(video, limit=8)
+    ctx = {
+        "page": _farmhub_page(video.title, video.description[:300]),
+        "video": video,
+        "related_videos": related,
+    }
+    return render(request, "global_solutions/video_detail.html", ctx)
+
+
+@require_GET
+def farmhub_search(request):
+    q = (request.GET.get("q") or "").strip()
+    videos = search_videos(q, limit=48) if q else []
+    ctx = {
+        "page": _farmhub_page("Search", f"Results for {q}" if q else "Search farming videos"),
+        "query": q,
+        "videos": videos,
+        "categories": get_active_categories(),
+    }
+    return render(request, "global_solutions/search_results.html", ctx)
 

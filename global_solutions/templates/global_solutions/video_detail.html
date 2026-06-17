@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body_class %}template-farmhub template-farmhub-video{% endblock %}
+
+{% block extra_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'business_casual/css/overrides.css' %}">
+  <link rel="stylesheet" href="{% static 'global_solutions/farmhub.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include "nav_bar.html" %}
+{% include "global_solutions/partials/farmhub_header.html" %}
+
+<main class="fh-main container-fluid fh-video-page">
+  <a href="{% url 'global_solutions:farmhub_home' %}" class="fh-back">← FarmHub</a>
+
+  <div class="fh-video-layout">
+    <div class="fh-video-player-wrap">
+      {% if video.playback_url %}
+        <div class="gs-video-player is-paused fh-detail-player">
+          {% if video.playback_uses_hls %}
+            <video
+              class="gs-video-player-el fh-detail-video"
+              controls
+              playsinline
+              preload="metadata"
+              data-playback-src="{{ video.playback_url }}"
+              data-playback-hls="true"
+              {% if video.poster_image_url %}poster="{{ video.poster_image_url }}"{% endif %}
+            ></video>
+          {% else %}
+            <video
+              class="gs-video-player-el fh-detail-video"
+              controls
+              playsinline
+              preload="metadata"
+              {% if video.poster_image_url %}poster="{{ video.poster_image_url }}"{% endif %}
+            >
+              <source src="{{ video.playback_url }}" type="{{ video.original_content_type|default:'video/mp4' }}">
+            </video>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <aside class="fh-video-sidebar">
+      <h1 class="fh-video-title">{{ video.title }}</h1>
+      <p class="fh-video-stats">
+        {{ video.views_display }} views
+        {% if video.published_at %} · {{ video.published_at|date:"M j, Y" }}{% endif %}
+        {% if video.duration_display %} · {{ video.duration_display }}{% endif %}
+        {% if video.resolution_label %} · {{ video.resolution_label }}{% endif %}
+      </p>
+      {% if video.creator %}
+        <a href="{{ video.creator.get_absolute_url }}" class="fh-video-creator-link">{{ video.creator.name }}</a>
+      {% endif %}
+      {% if video.category %}
+        <a href="{% url 'global_solutions:farmhub_category' slug=video.category.slug %}" class="fh-tag">{{ video.category.name }}</a>
+      {% endif %}
+      {% if video.description %}
+        <div class="fh-video-desc">{{ video.description|linebreaks }}</div>
+      {% endif %}
+      {% if video.tags_list %}
+        <div class="fh-tags">
+          {% for tag in video.tags_list %}
+            <a href="{% url 'global_solutions:farmhub_search' %}?q={{ tag|urlencode }}" class="fh-tag">{{ tag }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </aside>
+  </div>
+
+  {% if related_videos %}
+    <section class="fh-section fh-related">
+      <h2 class="fh-section-title">Related Videos</h2>
+      {% include "global_solutions/partials/video_grid.html" with videos=related_videos grid_class="fh-video-grid--related" %}
+    </section>
+  {% endif %}
+</main>
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
+  <script src="{% static 'global_solutions/global_solutions.js' %}"></script>
+  <script src="{% static 'global_solutions/farmhub.js' %}"></script>
+{% endblock %}
+
+{% block footer %}{% include "blog/footer.html" %}{% endblock %}

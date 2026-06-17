@@ -1,0 +1,12 @@
+{% load wagtailimages_tags %}
+{# Expects: creator (Creator model) #}
+<a href="{{ creator.get_absolute_url }}" class="fh-creator-card">
+  <div class="fh-creator-avatar">
+    {% if creator.avatar %}
+      {% image creator.avatar fill-120x120 class="fh-creator-img" alt=creator.name %}
+    {% else %}
+      <span class="fh-creator-initial">{{ creator.name|slice:":1" }}</span>
+    {% endif %}
+  </div>
+  <span class="fh-creator-name">{{ creator.name }}</span>
+</a>

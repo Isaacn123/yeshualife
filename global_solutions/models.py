@@ -4,7 +4,9 @@ import uuid
 
 from django.conf import settings as django_settings
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import slugify
 
 from django.utils.html import format_html
 
@@ -17,46 +19,18 @@ from wagtail.snippets.models import register_snippet
 from .wagtail_panels import GlobalSolutionsVideoB2UploadPanel
 
 
-def build_global_solutions_public_context() -> dict:
-    """Template context for the public Global Solutions index page (videos, hero)."""
-    settings_obj = GlobalSolutionsSettings.objects.first()
-    page_title = (settings_obj.page_title if settings_obj else "Global Solutions").strip() or "Global Solutions"
-    hero_title = (settings_obj.hero_title if settings_obj else page_title).strip() or page_title
-    hero_subtitle = (settings_obj.hero_subtitle if settings_obj else "").strip()
-
-    videos_qs = GlobalSolutionsVideo.objects.filter(
-        is_active=True,
-        status=GlobalSolutionsVideoStatus.READY,
-    )
-    cap = int(getattr(django_settings, "GLOBAL_SOLUTIONS_PUBLIC_VIDEO_CAP", 72))
-
-    feeding_qs = videos_qs.filter(kind=GlobalSolutionsVideoKind.FEEDING).order_by("-published_at", "sort_order")
-    preaching_qs = videos_qs.filter(kind=GlobalSolutionsVideoKind.PREACHING).order_by("-published_at", "sort_order")
-    learning_qs = videos_qs.filter(kind=GlobalSolutionsVideoKind.LEARNING).order_by("-published_at", "sort_order")
-
-    feeds_total = feeding_qs.count()
-    preachings_total = preaching_qs.count()
-    learning_total = learning_qs.count()
-
-    feeds = list(feeding_qs[:cap])
-    preachings = list(preaching_qs[:cap])
-    learning = list(learning_qs[:cap])
-
-    has_any_videos = bool(feeds or preachings or learning)
-
-    return {
-        "hero_title": hero_title,
-        "hero_subtitle": hero_subtitle,
-        "hero_image_url": (settings_obj.hero_image_url if settings_obj else "").strip(),
-        "feeds": feeds,
-        "preachings": preachings,
-        "learning": learning,
-        "feeds_total": feeds_total,
-        "preachings_total": preachings_total,
-        "learning_total": learning_total,
-        "global_solutions_video_cap": cap,
-        "has_any_videos": has_any_videos,
-    }
+def _unique_slug(model_cls, base: str, *, exclude_pk=None) -> str:
+    base = slugify(base)[:200] or "item"
+    slug = base
+    n = 2
+    while True:
+        qs = model_cls.objects.filter(slug=slug)
+        if exclude_pk is not None:
+            qs = qs.exclude(pk=exclude_pk)
+        if not qs.exists():
+            return slug
+        slug = f"{base}-{n}"
+        n += 1
 
 
 @register_snippet
@@ -136,10 +110,85 @@ class GlobalSolutionsBlock(models.Model):
     ]
 
 
-class GlobalSolutionsVideoKind(models.TextChoices):
-    FEEDING = "feeding", "Feeding"
-    PREACHING = "preaching", "Preachings"
-    LEARNING = "learning", "Learning"
+@register_snippet
+class SolutionCategory(models.Model):
+    """FarmHub taxonomy — managed in Wagtail Snippets."""
+
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=120, unique=True)
+    description = models.TextField(blank=True, default="")
+    sort_order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    show_on_home = models.BooleanField(
+        default=True,
+        help_text="Show as a carousel row on the FarmHub homepage.",
+    )
+
+    class Meta:
+        ordering = ["sort_order", "name"]
+        verbose_name = "Solution category"
+        verbose_name_plural = "Solution categories"
+
+    def __str__(self) -> str:
+        return self.name
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("slug"),
+        FieldPanel("description"),
+        FieldPanel("sort_order"),
+        FieldPanel("is_active"),
+        FieldPanel("show_on_home"),
+    ]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = _unique_slug(SolutionCategory, self.name, exclude_pk=self.pk)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self) -> str:
+        return reverse("global_solutions:farmhub_category", kwargs={"slug": self.slug})
+
+
+@register_snippet
+class Creator(models.Model):
+    """Farmer, extension officer, or ministry channel profile."""
+
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=120, unique=True)
+    bio = models.TextField(blank=True, default="")
+    avatar = models.ForeignKey(
+        "wagtailimages.Image",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    sort_order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["sort_order", "name"]
+
+    def __str__(self) -> str:
+        return self.name
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("slug"),
+        FieldPanel("bio"),
+        FieldPanel("avatar"),
+        FieldPanel("sort_order"),
+        FieldPanel("is_active"),
+    ]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = _unique_slug(Creator, self.name, exclude_pk=self.pk)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self) -> str:
+        return reverse("global_solutions:farmhub_creator", kwargs={"slug": self.slug})
 
 
 class GlobalSolutionsVideoStatus(models.TextChoices):
@@ -162,9 +211,38 @@ class GlobalSolutionsVideo(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    kind = models.CharField(max_length=16, choices=GlobalSolutionsVideoKind.choices)
     title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=220, unique=True, blank=True)
     description = models.TextField(blank=True, default="")
+    tags = models.CharField(
+        max_length=500,
+        blank=True,
+        default="",
+        help_text="Comma-separated tags for search (e.g. maize, irrigation, dairy).",
+    )
+
+    category = models.ForeignKey(
+        SolutionCategory,
+        on_delete=models.PROTECT,
+        related_name="videos",
+        help_text="Managed under Snippets → Solution categories (e.g. Feeding, Preaching, Crop Farming).",
+    )
+    creator = models.ForeignKey(
+        Creator,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="videos",
+    )
+
+    views = models.PositiveIntegerField(default=0)
+    featured = models.BooleanField(default=False)
+    resolution_label = models.CharField(
+        max_length=16,
+        blank=True,
+        default="",
+        help_text="Display label e.g. 720p (filled by transcoder when available).",
+    )
 
     published_at = models.DateTimeField(default=timezone.now)
     is_active = models.BooleanField(default=True)
@@ -195,12 +273,56 @@ class GlobalSolutionsVideo(models.Model):
     class Meta:
         ordering = ["-published_at", "sort_order", "-created_at"]
         indexes = [
-            models.Index(fields=["kind", "is_active", "published_at"]),
             models.Index(fields=["status", "updated_at"]),
+            models.Index(fields=["slug"]),
+            models.Index(fields=["featured", "is_active", "published_at"]),
+            models.Index(fields=["category", "is_active", "published_at"]),
         ]
 
     def __str__(self) -> str:
-        return f"{self.get_kind_display()}: {self.title}"
+        cat = self.category.name if self.category_id else "Uncategorized"
+        return f"{cat}: {self.title}"
+
+    @property
+    def storage_path_slug(self) -> str:
+        if self.category_id:
+            return self.category.slug
+        return "uncategorized"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = _unique_slug(GlobalSolutionsVideo, self.title, exclude_pk=self.pk)
+        super().save(*args, **kwargs)
+
+    @property
+    def tags_list(self) -> list[str]:
+        return [t.strip() for t in self.tags.split(",") if t.strip()]
+
+    @property
+    def thumbnail_url(self) -> str:
+        return (self.poster_image_url or "").strip()
+
+    @property
+    def duration_display(self) -> str:
+        if not self.duration_seconds:
+            return ""
+        m, s = divmod(int(self.duration_seconds), 60)
+        h, m = divmod(m, 60)
+        if h:
+            return f"{h}:{m:02d}:{s:02d}"
+        return f"{m}:{s:02d}"
+
+    @property
+    def views_display(self) -> str:
+        n = self.views
+        if n >= 1_000_000:
+            return f"{n / 1_000_000:.1f}M".replace(".0M", "M")
+        if n >= 1_000:
+            return f"{n / 1_000:.1f}k".replace(".0k", "k")
+        return str(n)
+
+    def get_absolute_url(self) -> str:
+        return reverse("global_solutions:farmhub_video", kwargs={"slug": self.slug})
 
     @property
     def playback_url(self) -> str:
@@ -253,14 +375,25 @@ class GlobalSolutionsVideo(models.Model):
         ),
         MultiFieldPanel(
             [
-                FieldPanel("kind"),
+                FieldPanel("category"),
+                FieldPanel("creator"),
                 FieldPanel("title"),
+                FieldPanel("slug"),
                 FieldPanel("description"),
+                FieldPanel("tags"),
+                FieldPanel("featured"),
                 FieldPanel("published_at"),
                 FieldPanel("is_active"),
                 FieldPanel("sort_order"),
             ],
             heading="Details",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("views", read_only=True),
+                FieldPanel("resolution_label", read_only=True),
+            ],
+            heading="Discovery stats",
         ),
         GlobalSolutionsVideoB2UploadPanel(heading="Video upload"),
         MultiFieldPanel(
@@ -305,11 +438,13 @@ class GlobalSolutionsIndexPage(Page):
     class Meta:
         verbose_name = "Global Solutions index page"
 
-    template = "global_solutions/global_solutions_page.html"
+    template = "global_solutions/farmhub_home.html"
 
     def get_context(self, request, *args, **kwargs):
+        from .discovery import build_farmhub_home_context
+
         context = super().get_context(request, *args, **kwargs)
-        context.update(build_global_solutions_public_context())
+        context.update(build_farmhub_home_context())
         # Child article pages (single-item views live at each child URL).
         context["global_solutions_articles"] = list(
             GlobalSolutionsPage.objects.child_of(self).live().public().order_by("-first_published_at")

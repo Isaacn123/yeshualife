@@ -120,7 +120,7 @@ class Command(BaseCommand):
                     master.write_text(master_contents, encoding="utf-8")
 
                     # Upload all HLS outputs to B2
-                    base_key = f"global-solutions/hls/{v.kind}/{v.id}"
+                    base_key = f"global-solutions/hls/{v.storage_path_slug}/{v.id}"
                     for p in out_dir.iterdir():
                         if p.is_dir():
                             continue

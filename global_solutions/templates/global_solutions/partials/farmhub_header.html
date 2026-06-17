@@ -1,0 +1,27 @@
+{% load static %}
+<header class="fh-header">
+  <div class="container-fluid fh-header-inner">
+    <a href="{% url 'global_solutions:farmhub_home' %}" class="fh-logo">
+      <img src="{% static 'images/yeshua_logo_nav.png' %}" alt="Yeshua Life" width="36" height="36">
+      <span>FarmHub</span>
+    </a>
+    <form class="fh-search-form" action="{% url 'global_solutions:farmhub_search' %}" method="get" role="search">
+      <input
+        type="search"
+        name="q"
+        class="fh-search-input"
+        placeholder="Search farming videos…"
+        value="{{ query|default:'' }}"
+        aria-label="Search farming videos"
+      >
+      <button type="submit" class="fh-search-btn" aria-label="Search">Search</button>
+    </form>
+    {% if categories %}
+    <nav class="fh-cat-nav" aria-label="Categories">
+      {% for cat in categories %}
+        <a href="{% url 'global_solutions:farmhub_category' slug=cat.slug %}">{{ cat.name }}</a>
+      {% endfor %}
+    </nav>
+    {% endif %}
+  </div>
+</header>

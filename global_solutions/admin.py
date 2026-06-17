@@ -1,6 +1,30 @@
 from django.contrib import admin
 
-from .models import GlobalSolutionsBlock, GlobalSolutionsSettings, GlobalSolutionsVideo
+from .models import (
+    Creator,
+    GlobalSolutionsBlock,
+    GlobalSolutionsSettings,
+    GlobalSolutionsVideo,
+    SolutionCategory,
+)
+
+
+@admin.register(SolutionCategory)
+class SolutionCategoryAdmin(admin.ModelAdmin):
+    list_display = ("name", "slug", "show_on_home", "is_active", "sort_order")
+    list_filter = ("is_active", "show_on_home")
+    search_fields = ("name", "slug")
+    prepopulated_fields = {"slug": ("name",)}
+    ordering = ("sort_order", "name")
+
+
+@admin.register(Creator)
+class CreatorAdmin(admin.ModelAdmin):
+    list_display = ("name", "slug", "is_active", "sort_order")
+    list_filter = ("is_active",)
+    search_fields = ("name", "slug", "bio")
+    prepopulated_fields = {"slug": ("name",)}
+    ordering = ("sort_order", "name")
 
 
 @admin.register(GlobalSolutionsSettings)
@@ -24,10 +48,19 @@ class GlobalSolutionsBlockAdmin(admin.ModelAdmin):
 
 @admin.register(GlobalSolutionsVideo)
 class GlobalSolutionsVideoAdmin(admin.ModelAdmin):
-    list_display = ("title", "kind", "status", "is_active", "published_at", "updated_at")
-    list_filter = ("kind", "status", "is_active")
-    search_fields = ("title", "description", "original_b2_key", "hls_master_manifest_key")
-    ordering = ("-published_at", "kind", "sort_order")
+    list_display = (
+        "title",
+        "category",
+        "creator",
+        "featured",
+        "views",
+        "status",
+        "is_active",
+        "published_at",
+    )
+    list_filter = ("category", "status", "is_active", "featured")
+    search_fields = ("title", "slug", "description", "tags", "original_b2_key", "hls_master_manifest_key")
+    ordering = ("-published_at", "category", "sort_order")
     readonly_fields = (
         "id",
         "created_at",

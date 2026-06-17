@@ -1,60 +1,8 @@
+{# Expects: videos (list), optional grid_class #}
 {% if videos %}
-  {% if layout == "carousel" and carousel_dom_id %}
-    <div
-      id="{{ carousel_dom_id }}"
-      class="carousel slide gs-video-carousel"
-      data-bs-ride="false"
-      data-bs-interval="false"
-      aria-roledescription="carousel"
-    >
-      <div class="carousel-inner rounded-3 overflow-hidden border shadow-sm">
-        {% for v in videos %}
-          <div class="carousel-item px-2 px-md-3 py-3{% if forloop.first %} active{% endif %}">
-            {% include "global_solutions/partials/video_item.html" with v=v %}
-          </div>
-        {% endfor %}
-      </div>
-      {% if videos|length > 1 %}
-        <button
-          class="carousel-control-prev"
-          type="button"
-          data-bs-target="#{{ carousel_dom_id }}"
-          data-bs-slide="prev"
-        >
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button
-          class="carousel-control-next"
-          type="button"
-          data-bs-target="#{{ carousel_dom_id }}"
-          data-bs-slide="next"
-        >
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-        {% if videos|length < 9 %}
-          <div class="carousel-indicators position-static mt-2 mb-0">
-            {% for v in videos %}
-              <button
-                type="button"
-                data-bs-target="#{{ carousel_dom_id }}"
-                data-bs-slide-to="{{ forloop.counter0 }}"
-                {% if forloop.first %}class="active" aria-current="true"{% endif %}
-                aria-label="Slide {{ forloop.counter }}"
-              ></button>
-            {% endfor %}
-          </div>
-        {% endif %}
-      {% endif %}
-    </div>
-  {% else %}
-    <div class="{% if strip %}gs-video-strip{% else %}gs-video-grid{% endif %}">
-      {% for v in videos %}
-        {% include "global_solutions/partials/video_item.html" with v=v %}
-      {% endfor %}
-    </div>
-  {% endif %}
-{% else %}
-  <div class="gs-empty">{{ empty_text }}</div>
+<div class="fh-video-grid {% if grid_class %}{{ grid_class }}{% endif %}">
+  {% for video in videos %}
+    {% include "global_solutions/partials/video_card.html" with video=video %}
+  {% endfor %}
+</div>
 {% endif %}

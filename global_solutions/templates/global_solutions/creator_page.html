@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static wagtailimages_tags %}
+
+{% block body_class %}template-farmhub template-farmhub-creator{% endblock %}
+
+{% block extra_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'global_solutions/farmhub.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include "nav_bar.html" %}
+{% include "global_solutions/partials/farmhub_header.html" %}
+
+<main class="fh-main container-fluid">
+  <header class="fh-creator-profile">
+    <a href="{% url 'global_solutions:farmhub_home' %}" class="fh-back">← FarmHub</a>
+    <div class="fh-creator-profile-inner">
+      <div class="fh-creator-avatar fh-creator-avatar--lg">
+        {% if creator.avatar %}
+          {% image creator.avatar fill-160x160 class="fh-creator-img" alt=creator.name %}
+        {% else %}
+          <span class="fh-creator-initial">{{ creator.name|slice:":1" }}</span>
+        {% endif %}
+      </div>
+      <div>
+        <h1>{{ creator.name }}</h1>
+        {% if creator.bio %}<p class="fh-page-intro">{{ creator.bio }}</p>{% endif %}
+      </div>
+    </div>
+  </header>
+  <h2 class="fh-section-title">Videos</h2>
+  {% include "global_solutions/partials/video_grid.html" with videos=videos %}
+  {% if not videos %}
+    <p class="fh-empty-inline">No videos from this creator yet.</p>
+  {% endif %}
+</main>
+{% endblock %}
+
+{% block footer %}{% include "blog/footer.html" %}{% endblock %}

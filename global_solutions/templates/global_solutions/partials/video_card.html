@@ -1,0 +1,26 @@
+{# Expects: video (GlobalSolutionsVideo with discovery fields) #}
+<a href="{{ video.get_absolute_url }}" class="fh-video-card">
+  <div class="fh-video-card-thumb">
+    {% if video.thumbnail_url %}
+      <img src="{{ video.thumbnail_url }}" alt="{{ video.title }}" loading="lazy" width="320" height="180">
+    {% else %}
+      <div class="fh-video-card-placeholder" aria-hidden="true">
+        <span class="fh-play-icon"></span>
+      </div>
+    {% endif %}
+    {% if video.duration_display %}
+      <span class="fh-badge fh-badge-duration">{{ video.duration_display }}</span>
+    {% endif %}
+    {% if video.resolution_label %}
+      <span class="fh-badge fh-badge-res">{{ video.resolution_label }}</span>
+    {% endif %}
+  </div>
+  <div class="fh-video-card-meta">
+    <h3 class="fh-video-card-title">{{ video.title }}</h3>
+    <p class="fh-video-card-sub">
+      {% if video.views_display %}{{ video.views_display }} views{% endif %}
+      {% if video.creator %} · {{ video.creator.name }}{% endif %}
+      {% if video.category %} · {{ video.category.name }}{% endif %}
+    </p>
+  </div>
+</a>

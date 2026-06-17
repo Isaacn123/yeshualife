@@ -1,0 +1,22 @@
+{# Horizontal scroll row of video cards — category sections on homepage #}
+{% if videos %}
+<section class="fh-row">
+  <div class="fh-row-head">
+    <h2 class="fh-row-title">
+      {% if category_url %}
+        <a href="{{ category_url }}">{{ title }}</a>
+      {% else %}
+        {{ title }}
+      {% endif %}
+    </h2>
+    {% if category_url and videos|length > 4 %}
+      <a href="{{ category_url }}" class="fh-row-more">View all</a>
+    {% endif %}
+  </div>
+  <div class="fh-scroll-row">
+    {% for video in videos %}
+      {% include "global_solutions/partials/video_card.html" with video=video %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

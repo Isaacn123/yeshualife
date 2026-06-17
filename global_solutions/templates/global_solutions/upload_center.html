@@ -38,12 +38,14 @@
       <div class="gsu-row">
         <div>
           <div class="gsu-field mb-3">
-            <label class="form-label">Type</label>
-            <select class="form-select" id="gsu-kind">
-              <option value="feeding">Feeding</option>
-              <option value="preaching">Preachings</option>
-              <option value="learning">Learning</option>
+            <label class="form-label">Category</label>
+            <select class="form-select" id="gsu-category" required>
+              <option value="">Select category…</option>
+              {% for cat in solution_categories %}
+                <option value="{{ cat.pk }}">{{ cat.name }}</option>
+              {% endfor %}
             </select>
+            <div class="gsu-help">Categories are managed in Wagtail Snippets → Solution categories.</div>
           </div>
           <div class="gsu-field mb-3">
             <label class="form-label">Title</label>

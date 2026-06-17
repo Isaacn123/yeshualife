@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body_class %}template-farmhub template-farmhub-category{% endblock %}
+
+{% block extra_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'global_solutions/farmhub.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include "nav_bar.html" %}
+{% include "global_solutions/partials/farmhub_header.html" %}
+
+<main class="fh-main container-fluid">
+  <header class="fh-page-head">
+    <a href="{% url 'global_solutions:farmhub_home' %}" class="fh-back">← FarmHub</a>
+    <h1>{{ category.name }}</h1>
+    {% if category.description %}<p class="fh-page-intro">{{ category.description }}</p>{% endif %}
+  </header>
+  {% include "global_solutions/partials/video_grid.html" with videos=videos %}
+  {% if not videos %}
+    <p class="fh-empty-inline">No videos in this category yet.</p>
+  {% endif %}
+</main>
+{% endblock %}
+
+{% block footer %}{% include "blog/footer.html" %}{% endblock %}

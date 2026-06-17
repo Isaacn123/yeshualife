@@ -5,6 +5,35 @@
   --gs-surface-2:#f8fafc;
   --gs-border:rgba(17,24,39,.10);
   --gs-shadow:0 14px 40px rgba(2,6,23,.10);
+  --gs-brand:#6945d8;
+  --gs-brand-soft:rgba(105,69,216,.18);
+  --gs-sky:#95b1ba;
+}
+
+/* Replace Business Casual coffee-shop body background on Global Solutions only */
+body.template-globalsolutions{
+  background-color:#0c1424;
+  background-image:
+    linear-gradient(
+      145deg,
+      rgba(12,20,36,.88) 0%,
+      rgba(30,58,95,.72) 42%,
+      rgba(105,69,216,.28) 100%
+    ),
+    url("/static/images/karamoja_re.jpg");
+  background-attachment:fixed;
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+@media (max-width: 991px){
+  body.template-globalsolutions{
+    background-attachment:scroll;
+  }
+}
+
+body.template-globalsolutions .gs-bc-theme{
+  color:#f1f5f9;
 }
 
 /* Business Casual-like layout, scoped to Global Solutions page only */
@@ -38,7 +67,15 @@
   letter-spacing: -.02em;
 }
 .gs-bc .bg-faded{
-  background-color: rgba(239, 240, 254, .82); /* matches your existing pill background vibe */
+  background-color:rgba(255,255,255,.93);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.35);
+  box-shadow:0 16px 48px rgba(2,6,23,.22);
+  color:var(--gs-ink);
+}
+.gs-bc .section-heading .section-heading-upper{
+  color:var(--gs-brand);
 }
 .gs-bc .intro{
   position: relative;
@@ -129,6 +166,9 @@
 }
 .gs-bc .gs-product-carousel-wrap{
   width: 100%;
+}
+body.template-globalsolutions .gs-bc .gs-product-carousel .gs-carousel-slide-media{
+  background-color:rgba(15,23,42,.08);
 }
 
 .gs-card{
