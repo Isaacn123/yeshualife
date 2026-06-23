@@ -266,6 +266,37 @@ body.template-globalsolutions.template-farmhub {
   display: block;
 }
 
+.fh-thumb-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #000;
+  pointer-events: none;
+}
+
+.fh-thumb-play-overlay {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+.fh-thumb-play-overlay::after {
+  content: "";
+  position: absolute;
+  left: 54%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 7px solid transparent;
+  border-left: 11px solid #fff;
+}
+
 .fh-video-card-placeholder {
   width: 100%;
   height: 100%;

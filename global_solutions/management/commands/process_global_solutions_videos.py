@@ -145,6 +145,13 @@ class Command(BaseCommand):
                             "updated_at",
                         ]
                     )
+                    try:
+                        from global_solutions.thumbnails import generate_poster_for_video
+
+                        if not v.poster_image_url:
+                            generate_poster_for_video(v)
+                    except Exception:
+                        pass
 
             except Exception as e:
                 v.status = GlobalSolutionsVideoStatus.FAILED

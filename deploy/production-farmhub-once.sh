@@ -52,7 +52,9 @@ if command -v systemctl >/dev/null 2>&1 && systemctl is-enabled global-solutions
   sudo systemctl restart global-solutions-video-worker.service || true
 fi
 
-echo ""
+echo "==> Generate missing video posters (requires ffmpeg on server)"
+$VENV_PYTHON manage.py generate_video_posters --limit 50 || echo "WARN: poster generation skipped or partial"
+
 echo "==> Smoke tests (adjust host if needed)"
 BASE="${SMOKE_BASE_URL:-https://yeshualifeug.com}"
 for path in \

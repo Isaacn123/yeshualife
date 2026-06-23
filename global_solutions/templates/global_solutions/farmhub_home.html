@@ -19,6 +19,8 @@
       <div class="fh-hero-media">
         {% if featured_video.thumbnail_url %}
           <img src="{{ featured_video.thumbnail_url }}" alt="{{ featured_video.title }}">
+        {% elif featured_video.playback_url and not featured_video.playback_uses_hls %}
+          <video class="fh-thumb-video" preload="metadata" muted playsinline src="{{ featured_video.playback_url }}"></video>
         {% else %}
           <div class="fh-video-card-placeholder fh-hero-placeholder"><span class="fh-play-icon"></span></div>
         {% endif %}

@@ -268,6 +268,13 @@ def b2_complete_multipart_upload(request, video_id):
         video.status = GlobalSolutionsVideoStatus.READY
     video.save(update_fields=["status", "original_size_bytes", "last_error", "updated_at"])
 
+    try:
+        from .thumbnails import generate_poster_for_video
+
+        generate_poster_for_video(video)
+    except Exception:
+        pass
+
     return JsonResponse({"ok": True, "key": video.original_b2_key, "public_url": b2_public_url(video.original_b2_key)})
 
 

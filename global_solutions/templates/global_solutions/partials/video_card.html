@@ -3,6 +3,16 @@
   <div class="fh-video-card-thumb">
     {% if video.thumbnail_url %}
       <img src="{{ video.thumbnail_url }}" alt="{{ video.title }}" loading="lazy" width="320" height="180">
+    {% elif video.playback_url and not video.playback_uses_hls %}
+      <video
+        class="fh-thumb-video"
+        preload="metadata"
+        muted
+        playsinline
+        aria-hidden="true"
+        src="{{ video.playback_url }}"
+      ></video>
+      <span class="fh-thumb-play-overlay" aria-hidden="true"></span>
     {% else %}
       <div class="fh-video-card-placeholder" aria-hidden="true">
         <span class="fh-play-icon"></span>
