@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 #
 # Load environment variables from .env (if present).
 #
-# This is used in production too, so you can configure secrets like Backblaze B2
+# This is used in production too, so you can configure secrets (R2, Backblaze B2, etc.)
 # without editing systemd/gunicorn service files.
 #
 try:
@@ -250,13 +250,67 @@ STATICFILES_DIRS = [
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
 # JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
 # See https://docs.djangoproject.com/en/4.2/ref/contrib/staticfiles/#manifeststaticfilesstorage
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+_STATICFILES_BACKEND = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+# Cloudflare R2 (S3-compatible) for Wagtail images, documents, and other uploads.
+# Set USE_R2_MEDIA=true and the R2_* variables in .env on the server.
+USE_R2_MEDIA = os.environ.get("USE_R2_MEDIA", "").lower() in (
+    "1",
+    "true",
+    "yes",
+    "on",
+) or bool(os.environ.get("R2_BUCKET_NAME"))
+
+if USE_R2_MEDIA:
+    from django.core.exceptions import ImproperlyConfigured
+    from urllib.parse import urlparse
+
+    if "storages" not in INSTALLED_APPS:
+        INSTALLED_APPS = [*INSTALLED_APPS, "storages"]
+
+    def _r2_env(name: str) -> str:
+        value = os.environ.get(name, "").strip()
+        if not value:
+            raise ImproperlyConfigured(f"{name} is required when R2 media storage is enabled")
+        return value
+
+    AWS_ACCESS_KEY_ID = _r2_env("R2_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = _r2_env("R2_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = _r2_env("R2_BUCKET_NAME")
+    AWS_S3_ENDPOINT_URL = _r2_env("R2_S3_ENDPOINT_URL")
+    AWS_S3_REGION_NAME = os.environ.get("R2_REGION", "auto")
+    AWS_S3_SIGNATURE_VERSION = "s3v4"
+    AWS_DEFAULT_ACL = None
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
+
+    r2_public_base = os.environ.get("R2_PUBLIC_BASE_URL", "").strip().rstrip("/")
+    if r2_public_base:
+        if "://" not in r2_public_base:
+            r2_public_base = f"https://{r2_public_base}"
+        parsed = urlparse(r2_public_base)
+        AWS_S3_CUSTOM_DOMAIN = parsed.netloc
+        MEDIA_URL = f"{parsed.scheme}://{parsed.netloc}/"
+        AWS_QUERYSTRING_AUTH = False
+    else:
+        AWS_QUERYSTRING_AUTH = True
+
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+        },
+        "staticfiles": {
+            "BACKEND": _STATICFILES_BACKEND,
+        },
+    }
+else:
+    STATICFILES_STORAGE = _STATICFILES_BACKEND
 
 COMPRESS_ROOT = STATIC_ROOT  # This should be the same as STATIC_ROOT
 COMPRESS_URL = STATIC_URL  # This should be the same as STATIC_URL
