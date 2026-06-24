@@ -1,38 +1,40 @@
 {# Expects: video (GlobalSolutionsVideo with discovery fields) #}
-<a href="{{ video.get_absolute_url }}" class="fh-video-card">
-  <div class="fh-video-card-thumb">
-    {% if video.thumbnail_url %}
-      <img src="{{ video.thumbnail_url }}" alt="{{ video.title }}" loading="lazy" width="320" height="180">
-    {% elif video.playback_url and not video.playback_uses_hls %}
-      <video
-        class="fh-thumb-video"
-        preload="metadata"
-        muted
-        playsinline
-        aria-hidden="true"
-        src="{{ video.playback_url }}"
-      ></video>
-      <span class="fh-thumb-play-overlay" aria-hidden="true"></span>
-    {% else %}
-      <div class="fh-video-card-placeholder" aria-hidden="true">
-        <span class="fh-play-icon"></span>
-      </div>
-    {% endif %}
-    {% if video.duration_display %}
-      <span class="fh-badge fh-badge-duration">{{ video.duration_display }}</span>
-    {% endif %}
-    {% if video.resolution_label %}
-      <span class="fh-badge fh-badge-res">{{ video.resolution_label }}</span>
-    {% endif %}
-  </div>
-  <div class="fh-video-card-meta">
+<article class="fh-video-card" data-video-slug="{{ video.slug }}">
+  <a href="{{ video.get_absolute_url }}" class="fh-video-card-link">
+    <div class="fh-video-card-thumb">
+      {% if video.thumbnail_url %}
+        <img src="{{ video.thumbnail_url }}" alt="" loading="lazy" width="320" height="180">
+      {% elif video.playback_url and not video.playback_uses_hls %}
+        <video
+          class="fh-thumb-video"
+          preload="metadata"
+          muted
+          playsinline
+          aria-hidden="true"
+          src="{{ video.playback_url }}"
+        ></video>
+        <span class="fh-thumb-play-overlay" aria-hidden="true"></span>
+      {% else %}
+        <div class="fh-video-card-placeholder" aria-hidden="true">
+          <span class="fh-play-icon"></span>
+        </div>
+      {% endif %}
+      {% if video.duration_display %}
+        <span class="fh-badge fh-badge-duration">{{ video.duration_display }}</span>
+      {% endif %}
+      {% if video.resolution_label %}
+        <span class="fh-badge fh-badge-res">{{ video.resolution_label }}</span>
+      {% endif %}
+    </div>
     <h3 class="fh-video-card-title">{{ video.title }}</h3>
-    {% if video.views_display or video.creator or video.category %}
+  </a>
+  <div class="fh-video-card-meta">
+    {% if video.creator or video.category %}
     <p class="fh-video-card-sub">
-      {% if video.views_display %}<span class="fh-video-card-stat">{{ video.views_display }} views</span>{% endif %}
       {% if video.creator %}<span class="fh-video-card-stat">{{ video.creator.name }}</span>{% endif %}
       {% if video.category %}<span class="fh-video-card-stat fh-video-card-cat">{{ video.category.name }}</span>{% endif %}
     </p>
     {% endif %}
+    {% include "global_solutions/partials/video_engagement.html" with video=video compact=True %}
   </div>
-</a>
+</article>

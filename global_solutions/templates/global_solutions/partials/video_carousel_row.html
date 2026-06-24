@@ -17,7 +17,7 @@
     {% endif %}
   </header>
   <div class="fh-section-body">
-    <div class="fh-scroll-row">
+    <div class="fh-scroll-row fh-scroll-row--n{{ videos|length }}{% if videos|length <= 4 %} fh-scroll-row--few{% endif %}">
       {% for video in videos %}
         {% include "global_solutions/partials/video_card.html" with video=video %}
       {% endfor %}

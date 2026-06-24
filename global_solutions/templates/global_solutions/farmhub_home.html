@@ -45,6 +45,9 @@
             {% if featured_video.views_display %}
               <li>{{ featured_video.views_display }} views</li>
             {% endif %}
+            {% if featured_video.likes_display %}
+              <li>{{ featured_video.likes_display }} likes</li>
+            {% endif %}
             {% if featured_video.duration_display %}
               <li>{{ featured_video.duration_display }}</li>
             {% endif %}

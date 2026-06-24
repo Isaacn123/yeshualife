@@ -101,6 +101,8 @@ def video_to_api_dict(video: GlobalSolutionsVideo) -> dict:
         "duration_display": video.duration_display,
         "views": video.views,
         "views_display": video.views_display,
+        "likes": video.likes,
+        "likes_display": video.likes_display,
         "resolution_label": video.resolution_label,
         "featured": video.featured,
         "published_at": video.published_at.isoformat() if video.published_at else None,

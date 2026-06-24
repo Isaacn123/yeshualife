@@ -54,6 +54,7 @@ class GlobalSolutionsVideoAdmin(admin.ModelAdmin):
         "creator",
         "featured",
         "views",
+        "likes",
         "status",
         "is_active",
         "published_at",

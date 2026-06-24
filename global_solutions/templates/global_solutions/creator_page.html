@@ -37,4 +37,9 @@
 </main>
 {% endblock %}
 
+{% block extra_js %}
+  {{ block.super }}
+  <script src="{% static 'global_solutions/farmhub.js' %}"></script>
+{% endblock %}
+
 {% block footer %}{% include "blog/footer.html" %}{% endblock %}

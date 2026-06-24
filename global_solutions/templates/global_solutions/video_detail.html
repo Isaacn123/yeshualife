@@ -47,10 +47,10 @@
 
     <aside class="fh-video-sidebar">
       <h1 class="fh-video-title">{{ video.title }}</h1>
+      {% include "global_solutions/partials/video_engagement.html" with video=video %}
       <p class="fh-video-stats">
-        {{ video.views_display }} views
-        {% if video.published_at %} · {{ video.published_at|date:"M j, Y" }}{% endif %}
-        {% if video.duration_display %} · {{ video.duration_display }}{% endif %}
+        {% if video.published_at %}{{ video.published_at|date:"M j, Y" }}{% endif %}
+        {% if video.duration_display %}{% if video.published_at %} · {% endif %}{{ video.duration_display }}{% endif %}
         {% if video.resolution_label %} · {{ video.resolution_label }}{% endif %}
       </p>
       {% if video.creator %}

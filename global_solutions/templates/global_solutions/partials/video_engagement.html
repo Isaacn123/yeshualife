@@ -1,0 +1,40 @@
+{# Video engagement: views, like, share. Expects: video #}
+<div
+  class="fh-engagement{% if compact %} fh-engagement--compact{% endif %}"
+  data-video-slug="{{ video.slug }}"
+>
+  <div class="fh-engagement-stats">
+    {% if video.views_display %}
+      <span class="fh-engagement-stat" title="Views">
+        <span class="fh-engagement-icon fh-engagement-icon--views" aria-hidden="true"></span>
+        <span class="fh-engagement-views">{{ video.views_display }}</span>
+      </span>
+    {% endif %}
+    <span class="fh-engagement-stat fh-engagement-stat--likes" title="Likes">
+      <span class="fh-engagement-icon fh-engagement-icon--likes" aria-hidden="true"></span>
+      <span class="fh-engagement-likes">{{ video.likes_display }}</span>
+    </span>
+  </div>
+  <div class="fh-engagement-actions">
+    <button
+      type="button"
+      class="fh-like-btn"
+      data-video-slug="{{ video.slug }}"
+      aria-pressed="false"
+      aria-label="Like {{ video.title }}"
+    >
+      <span class="fh-like-btn-icon" aria-hidden="true"></span>
+      <span class="fh-like-btn-label">Like</span>
+    </button>
+    <button
+      type="button"
+      class="fh-share-btn"
+      data-share-path="{{ video.get_absolute_url }}"
+      data-share-title="{{ video.title }}"
+      aria-label="Share {{ video.title }}"
+    >
+      <span class="fh-share-btn-icon" aria-hidden="true"></span>
+      <span class="fh-share-btn-label">Share</span>
+    </button>
+  </div>
+</div>

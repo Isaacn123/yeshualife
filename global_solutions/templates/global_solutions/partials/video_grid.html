@@ -1,6 +1,6 @@
 {# Expects: videos (list), optional grid_class #}
 {% if videos %}
-<div class="fh-video-grid {% if grid_class %}{{ grid_class }}{% endif %}">
+<div class="fh-video-grid fh-video-grid--n{{ videos|length }}{% if videos|length <= 4 %} fh-video-grid--few{% endif %}{% if grid_class %} {{ grid_class }}{% endif %}">
   {% for video in videos %}
     {% include "global_solutions/partials/video_card.html" with video=video %}
   {% endfor %}

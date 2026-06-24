@@ -236,6 +236,7 @@ class GlobalSolutionsVideo(models.Model):
     )
 
     views = models.PositiveIntegerField(default=0)
+    likes = models.PositiveIntegerField(default=0)
     featured = models.BooleanField(default=False)
     resolution_label = models.CharField(
         max_length=16,
@@ -314,7 +315,14 @@ class GlobalSolutionsVideo(models.Model):
 
     @property
     def views_display(self) -> str:
-        n = self.views
+        return self._count_display(self.views)
+
+    @property
+    def likes_display(self) -> str:
+        return self._count_display(self.likes)
+
+    @staticmethod
+    def _count_display(n: int) -> str:
         if n >= 1_000_000:
             return f"{n / 1_000_000:.1f}M".replace(".0M", "M")
         if n >= 1_000:
@@ -391,6 +399,7 @@ class GlobalSolutionsVideo(models.Model):
         MultiFieldPanel(
             [
                 FieldPanel("views", read_only=True),
+                FieldPanel("likes", read_only=True),
                 FieldPanel("resolution_label", read_only=True),
             ],
             heading="Discovery stats",

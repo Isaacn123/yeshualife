@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+from django.db.models import F
 from django.http import JsonResponse
-from django.views.decorators.http import require_GET
+from django.shortcuts import get_object_or_404
+from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.csrf import csrf_protect
 
 from .categories import get_active_categories
 from .discovery import (
@@ -15,7 +18,24 @@ from .discovery import (
     search_videos,
     video_to_api_dict,
 )
-from .models import Creator, SolutionCategory
+from .models import Creator, GlobalSolutionsVideo, SolutionCategory
+
+
+def _liked_slugs(request) -> set[str]:
+    raw = request.session.get("farmhub_liked", [])
+    if not isinstance(raw, list):
+        return set()
+    return {str(s) for s in raw if s}
+
+
+def _video_like_payload(video: GlobalSolutionsVideo, *, liked: bool, already_liked: bool = False) -> dict:
+    return {
+        "slug": video.slug,
+        "likes": video.likes,
+        "likes_display": video.likes_display,
+        "liked": liked,
+        "already_liked": already_liked,
+    }
 
 
 def _video_list_response(videos):
@@ -110,3 +130,20 @@ def api_creators_list(request):
             }
         )
     return JsonResponse({"results": results})
+
+
+@csrf_protect
+@require_POST
+def api_video_like(request, slug):
+    """Increment like count once per browser session per video."""
+    video = get_object_or_404(get_public_videos_qs(), slug=slug)
+    liked_slugs = _liked_slugs(request)
+    if slug in liked_slugs:
+        return JsonResponse(_video_like_payload(video, liked=True, already_liked=True))
+
+    GlobalSolutionsVideo.objects.filter(pk=video.pk).update(likes=F("likes") + 1)
+    video.likes += 1
+    liked_slugs.add(slug)
+    request.session["farmhub_liked"] = sorted(liked_slugs)
+    request.session.modified = True
+    return JsonResponse(_video_like_payload(video, liked=True))
