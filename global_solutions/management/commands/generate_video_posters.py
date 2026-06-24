@@ -3,7 +3,7 @@ from __future__ import annotations
 from django.core.management.base import BaseCommand
 
 from global_solutions.models import GlobalSolutionsVideo, GlobalSolutionsVideoStatus
-from global_solutions.thumbnails import generate_poster_for_video
+from global_solutions.thumbnails import FFmpegNotFoundError, ensure_ffmpeg_available, generate_poster_for_video
 
 
 class Command(BaseCommand):
@@ -15,6 +15,13 @@ class Command(BaseCommand):
         parser.add_argument("--force", action="store_true", help="Regenerate even if poster exists")
 
     def handle(self, *args, **options):
+        try:
+            ffmpeg_path = ensure_ffmpeg_available()
+            self.stdout.write(f"Using ffmpeg: {ffmpeg_path}")
+        except FFmpegNotFoundError as e:
+            self.stderr.write(self.style.ERROR(str(e)))
+            return
+
         limit = options["limit"]
         video_id = (options.get("video_id") or "").strip()
         force = options["force"]

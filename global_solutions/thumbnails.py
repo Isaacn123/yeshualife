@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 import os
+import re
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -13,12 +15,60 @@ from django.conf import settings
 from .b2 import b2_presigned_get_url, b2_public_url, get_b2_config, get_b2_s3_client
 
 
-def _ffmpeg_bin() -> str:
-    return os.environ.get("FFMPEG_BIN", "ffmpeg")
+class FFmpegNotFoundError(FileNotFoundError):
+    """Raised when ffmpeg cannot be located."""
 
 
-def _ffprobe_bin() -> str:
-    return os.environ.get("FFPROBE_BIN", "ffprobe")
+def _bundled_ffmpeg() -> str | None:
+    """Pip package imageio-ffmpeg ships a static ffmpeg binary (no apt install)."""
+    try:
+        import imageio_ffmpeg
+
+        path = imageio_ffmpeg.get_ffmpeg_exe()
+        if path and os.path.isfile(path) and os.access(path, os.X_OK):
+            return path
+    except Exception:
+        pass
+    return None
+
+
+def _resolve_ffmpeg() -> str:
+    configured = (os.environ.get("FFMPEG_BIN") or getattr(settings, "FFMPEG_BIN", "") or "").strip()
+    if configured:
+        return configured
+    found = shutil.which("ffmpeg")
+    if found:
+        return found
+    for candidate in ("/usr/bin/ffmpeg", "/usr/local/bin/ffmpeg"):
+        if os.path.isfile(candidate) and os.access(candidate, os.X_OK):
+            return candidate
+    bundled = _bundled_ffmpeg()
+    if bundled:
+        return bundled
+    raise FFmpegNotFoundError(
+        "ffmpeg not found. Either: (1) `sudo apt install -y ffmpeg`, or "
+        "(2) `pip install imageio-ffmpeg` in your venv, or "
+        "(3) set FFMPEG_BIN=/full/path/to/ffmpeg"
+    )
+
+
+def _resolve_ffprobe() -> str | None:
+    """ffprobe is optional; duration can be parsed via ffmpeg if missing."""
+    configured = (os.environ.get("FFPROBE_BIN") or getattr(settings, "FFPROBE_BIN", "") or "").strip()
+    if configured:
+        return configured
+    found = shutil.which("ffprobe")
+    if found:
+        return found
+    for candidate in ("/usr/bin/ffprobe", "/usr/local/bin/ffprobe"):
+        if os.path.isfile(candidate) and os.access(candidate, os.X_OK):
+            return candidate
+    return None
+
+
+def ensure_ffmpeg_available() -> str:
+    """Return ffmpeg path or raise FFmpegNotFoundError."""
+    return _resolve_ffmpeg()
 
 
 def poster_url_for_key(key: str) -> str:
@@ -39,10 +89,9 @@ def _presigned_source_url(key: str) -> str:
     )
 
 
-def _probe_metadata(input_url: str) -> tuple[int | None, str]:
-    """Return (duration_seconds, resolution_label e.g. 720p)."""
+def _probe_metadata_ffprobe(input_url: str, ffprobe: str) -> tuple[int | None, str]:
     cmd = [
-        _ffprobe_bin(),
+        ffprobe,
         "-v",
         "error",
         "-select_streams",
@@ -55,25 +104,48 @@ def _probe_metadata(input_url: str) -> tuple[int | None, str]:
         "json",
         input_url,
     ]
+    proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    if proc.returncode != 0:
+        return None, ""
+    data = json.loads(proc.stdout or "{}")
+    duration = None
+    if data.get("format", {}).get("duration"):
+        duration = int(float(data["format"]["duration"]))
+    height = None
+    streams = data.get("streams") or []
+    if streams:
+        height = streams[0].get("height")
+    label = f"{int(height)}p" if height else ""
+    return duration, label
+
+
+def _probe_metadata_ffmpeg(input_url: str, ffmpeg: str) -> tuple[int | None, str]:
+    """Fallback when ffprobe is not installed (ffmpeg -i parses stderr)."""
+    proc = subprocess.run(
+        [ffmpeg, "-hide_banner", "-i", input_url],
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    text = (proc.stderr or "") + (proc.stdout or "")
+    duration = None
+    m = re.search(r"Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)", text)
+    if m:
+        h, mi, s = m.groups()
+        duration = int(float(h) * 3600 + float(mi) * 60 + float(s))
+    label = ""
+    m2 = re.search(r"Video:.*?(\d{3,4})x(\d{3,4})", text)
+    if m2:
+        label = f"{int(m2.group(2))}p"
+    return duration, label
+
+
+def _probe_metadata(input_url: str, ffmpeg: str) -> tuple[int | None, str]:
+    ffprobe = _resolve_ffprobe()
     try:
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-        if proc.returncode != 0:
-            return None, ""
-        data = json.loads(proc.stdout or "{}")
-        duration = None
-        if data.get("format", {}).get("duration"):
-            duration = int(float(data["format"]["duration"]))
-        width = height = None
-        streams = data.get("streams") or []
-        if streams:
-            width = streams[0].get("width")
-            height = streams[0].get("height")
-        label = ""
-        if height:
-            label = f"{int(height)}p"
-        elif width and height:
-            label = f"{width}x{height}"
-        return duration, label
+        if ffprobe:
+            return _probe_metadata_ffprobe(input_url, ffprobe)
+        return _probe_metadata_ffmpeg(input_url, ffmpeg)
     except Exception:
         return None, ""
 
@@ -86,6 +158,7 @@ def generate_poster_for_video(video) -> bool:
     if not video.original_b2_key:
         return False
 
+    ffmpeg = _resolve_ffmpeg()
     input_url = _presigned_source_url(video.original_b2_key)
     s3 = get_b2_s3_client()
     cfg = get_b2_config()
@@ -93,7 +166,7 @@ def generate_poster_for_video(video) -> bool:
     with tempfile.TemporaryDirectory(prefix="gs_poster_") as tmpdir:
         poster_path = Path(tmpdir) / "poster.jpg"
         cmd = [
-            _ffmpeg_bin(),
+            ffmpeg,
             "-y",
             "-ss",
             "00:00:01",
@@ -119,7 +192,7 @@ def generate_poster_for_video(video) -> bool:
             ExtraArgs={"ContentType": "image/jpeg"},
         )
 
-        duration_seconds, resolution_label = _probe_metadata(input_url)
+        duration_seconds, resolution_label = _probe_metadata(input_url, ffmpeg)
 
         update_fields = ["poster_image_url", "updated_at"]
         video.poster_image_url = poster_url_for_key(poster_key)
