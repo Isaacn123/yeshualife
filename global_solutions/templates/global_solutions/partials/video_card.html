@@ -27,10 +27,12 @@
   </div>
   <div class="fh-video-card-meta">
     <h3 class="fh-video-card-title">{{ video.title }}</h3>
+    {% if video.views_display or video.creator or video.category %}
     <p class="fh-video-card-sub">
-      {% if video.views_display %}{{ video.views_display }} views{% endif %}
-      {% if video.creator %} · {{ video.creator.name }}{% endif %}
-      {% if video.category %} · {{ video.category.name }}{% endif %}
+      {% if video.views_display %}<span class="fh-video-card-stat">{{ video.views_display }} views</span>{% endif %}
+      {% if video.creator %}<span class="fh-video-card-stat">{{ video.creator.name }}</span>{% endif %}
+      {% if video.category %}<span class="fh-video-card-stat fh-video-card-cat">{{ video.category.name }}</span>{% endif %}
     </p>
+    {% endif %}
   </div>
 </a>

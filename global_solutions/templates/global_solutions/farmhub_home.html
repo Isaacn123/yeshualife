@@ -59,41 +59,61 @@
   </section>
   {% endif %}
 
-  <div class="container-fluid fh-sections">
+  <div class="fh-sections">
+    {% if featured_video %}
+      {% if trending_videos or latest_videos or category_sections or top_creators %}
+        {% include "global_solutions/partials/section_separator.html" %}
+      {% endif %}
+    {% endif %}
     {% if trending_videos %}
-      <section class="fh-section fh-section--divider">
+      <section class="fh-section-panel fh-section-panel--trending" aria-labelledby="fh-trending-title">
         <header class="fh-section-head">
-          <p class="fh-section-eyebrow">Popular right now</p>
-          <h2 class="fh-section-title">Trending Now</h2>
+          <div class="fh-section-head-text">
+            <p class="fh-section-eyebrow">Popular right now</p>
+            <h2 class="fh-section-title" id="fh-trending-title">Trending Now</h2>
+          </div>
         </header>
-        {% include "global_solutions/partials/video_grid.html" with videos=trending_videos %}
+        <div class="fh-section-body">
+          {% include "global_solutions/partials/video_grid.html" with videos=trending_videos %}
+        </div>
       </section>
     {% endif %}
 
     {% if latest_videos %}
-      <section class="fh-section fh-section--divider">
+      {% if trending_videos %}{% include "global_solutions/partials/section_separator.html" %}{% endif %}
+      <section class="fh-section-panel fh-section-panel--latest" aria-labelledby="fh-latest-title">
         <header class="fh-section-head">
-          <p class="fh-section-eyebrow">Fresh from the field</p>
-          <h2 class="fh-section-title">New Uploads</h2>
+          <div class="fh-section-head-text">
+            <p class="fh-section-eyebrow">Fresh from the field</p>
+            <h2 class="fh-section-title" id="fh-latest-title">New Uploads</h2>
+          </div>
         </header>
-        {% include "global_solutions/partials/video_grid.html" with videos=latest_videos %}
+        <div class="fh-section-body">
+          {% include "global_solutions/partials/video_grid.html" with videos=latest_videos %}
+        </div>
       </section>
     {% endif %}
 
     {% for section in category_sections %}
+      {% if trending_videos or latest_videos or not forloop.first %}{% include "global_solutions/partials/section_separator.html" %}{% endif %}
       {% include "global_solutions/partials/video_carousel_row.html" with title=section.category.name videos=section.videos category_url=section.category.get_absolute_url %}
     {% endfor %}
 
     {% if top_creators %}
-      <section class="fh-section fh-section--divider fh-section--creators">
+      {% if trending_videos or latest_videos or category_sections %}{% include "global_solutions/partials/section_separator.html" %}{% endif %}
+      <section class="fh-section-panel fh-section-panel--creators" aria-labelledby="fh-creators-title">
         <header class="fh-section-head">
-          <p class="fh-section-eyebrow">Community voices</p>
-          <h2 class="fh-section-title">Top Farmers &amp; Creators</h2>
+          <div class="fh-section-head-text">
+            <p class="fh-section-eyebrow">Community voices</p>
+            <h2 class="fh-section-title" id="fh-creators-title">Top Farmers &amp; Creators</h2>
+          </div>
         </header>
-        <div class="fh-creator-row">
-          {% for creator in top_creators %}
-            {% include "global_solutions/partials/creator_card.html" with creator=creator %}
-          {% endfor %}
+        <div class="fh-section-body">
+          <div class="fh-creator-row">
+            {% for creator in top_creators %}
+              {% include "global_solutions/partials/creator_card.html" with creator=creator %}
+            {% endfor %}
+          </div>
         </div>
       </section>
     {% endif %}
