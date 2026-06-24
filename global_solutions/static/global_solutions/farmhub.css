@@ -6,6 +6,9 @@
   --fh-bg-alt: #f5ebe0;
   --fh-surface: #fffdf9;
   --fh-surface-2: #faf3e8;
+  --fh-panel: rgba(255, 252, 247, 0.92);
+  --fh-panel-border: rgba(255, 255, 255, 0.85);
+  --fh-line: rgba(80, 60, 40, 0.12);
   --fh-border: rgba(80, 60, 40, 0.1);
   --fh-border-strong: rgba(80, 60, 40, 0.18);
   --fh-text: #2c2419;
@@ -372,86 +375,56 @@ body.template-globalsolutions.template-farmhub h3 {
 
 /* ── Section panels & separators ── */
 .fh-sections {
-  padding-top: 1.75rem;
+  padding: 2rem 0 2.75rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .fh-section-panel {
-  background: var(--fh-surface);
-  border: 1px solid var(--fh-border);
+  background: var(--fh-panel);
+  border: 1px solid var(--fh-panel-border);
   border-radius: var(--fh-radius-lg);
-  padding: 1.35rem 1.25rem 1.5rem;
-  box-shadow: var(--fh-shadow-sm);
-}
-
-.fh-section-panel--trending {
-  border-top: 3px solid var(--fh-accent);
-}
-
-.fh-section-panel--latest {
-  border-top: 3px solid var(--fh-accent-light);
-}
-
-.fh-section-panel--category {
-  border-top: 3px solid rgba(196, 138, 26, 0.45);
-}
-
-.fh-section-panel--creators {
-  background: linear-gradient(160deg, var(--fh-surface) 0%, var(--fh-surface-2) 100%);
+  padding: 1.65rem 1.5rem 1.75rem;
+  margin: 0.75rem 0;
+  box-shadow:
+    0 1px 2px rgba(60, 45, 30, 0.03),
+    0 6px 20px rgba(60, 45, 30, 0.045);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .fh-section-sep {
   border: 0;
-  height: 0;
-  margin: 1.75rem 0;
-  padding: 0;
-  overflow: visible;
-  position: relative;
-  background: transparent;
-}
-
-.fh-section-sep::before {
-  content: "";
-  display: block;
   height: 1px;
+  margin: 1.5rem 1.25rem;
+  padding: 0;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    var(--fh-border-strong) 15%,
-    var(--fh-accent-light) 50%,
-    var(--fh-border-strong) 85%,
+    var(--fh-line) 12%,
+    var(--fh-line) 88%,
     transparent 100%
   );
-}
-
-.fh-section-sep::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) rotate(45deg);
-  width: 7px;
-  height: 7px;
-  background: var(--fh-accent);
-  border: 2px solid var(--fh-bg);
-  box-shadow: 0 0 0 1px rgba(196, 138, 26, 0.35);
+  flex-shrink: 0;
 }
 
 .fh-section-head {
   display: flex;
   align-items: stretch;
   gap: 0;
-  margin-bottom: 1.25rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--fh-border);
+  margin-bottom: 1.35rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--fh-line);
 }
 
 .fh-section-head::before {
   content: "";
-  width: 4px;
+  width: 3px;
   flex-shrink: 0;
-  margin-right: 0.9rem;
-  border-radius: 4px;
+  margin-right: 0.85rem;
+  border-radius: 3px;
   background: linear-gradient(180deg, var(--fh-accent) 0%, var(--fh-accent-light) 100%);
+  opacity: 0.85;
 }
 
 .fh-section-head-text {
@@ -636,8 +609,8 @@ body.template-globalsolutions.template-farmhub h3 {
   flex: 1;
   margin-top: 0.55rem;
   padding: 0.7rem 0.75rem 0.75rem;
-  background: rgba(255, 253, 249, 0.85);
-  border: 1px solid var(--fh-border);
+  background: rgba(255, 252, 247, 0.75);
+  border: 1px solid var(--fh-line);
   border-radius: var(--fh-radius);
   transition: background 0.2s, border-color 0.2s;
 }
