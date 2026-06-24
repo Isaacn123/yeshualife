@@ -1,31 +1,67 @@
-/* FarmHub — video discovery layout (thumbnail grid, search, category rows) */
+/* FarmHub — light, editorial video discovery layout */
 
 :root {
-  --fh-bg: #0f1117;
-  --fh-surface: #1a1d26;
-  --fh-surface-2: #242833;
-  --fh-border: rgba(255, 255, 255, 0.08);
-  --fh-text: #f1f5f9;
-  --fh-muted: #94a3b8;
-  --fh-accent: #6945d8;
-  --fh-accent-hover: #7c5ce8;
-  --fh-orange: #e8a020;
-  --fh-radius: 10px;
+  --fh-bg: #fdf8f0;
+  --fh-bg-mid: #f9f1e4;
+  --fh-bg-alt: #f5ebe0;
+  --fh-surface: #fffdf9;
+  --fh-surface-2: #faf3e8;
+  --fh-border: rgba(80, 60, 40, 0.1);
+  --fh-border-strong: rgba(80, 60, 40, 0.18);
+  --fh-text: #2c2419;
+  --fh-text-soft: #5c5248;
+  --fh-muted: #8a7f72;
+  --fh-accent: #c48a1a;
+  --fh-accent-hover: #a67010;
+  --fh-accent-light: #e8b84a;
+  --fh-accent-soft: rgba(196, 138, 26, 0.14);
+  --fh-gold: #c48a1a;
+  --fh-radius: 12px;
+  --fh-radius-lg: 18px;
+  --fh-shadow-sm: 0 2px 8px rgba(60, 45, 30, 0.06);
+  --fh-shadow: 0 8px 32px rgba(60, 45, 30, 0.08);
+  --fh-shadow-lg: 0 20px 48px rgba(60, 45, 30, 0.1);
+  --fh-font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --fh-font-display: "Fraunces", Georgia, "Times New Roman", serif;
 }
 
 body.template-farmhub,
 body.template-globalsolutions.template-farmhub {
-  background: var(--fh-bg);
+  background: linear-gradient(165deg, var(--fh-bg) 0%, var(--fh-bg-mid) 45%, #f7efe3 100%);
+  background-attachment: fixed;
   color: var(--fh-text);
+  font-family: var(--fh-font);
+  font-size: 1rem;
+  line-height: 1.55;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1;
 }
 
+body.template-farmhub h1,
+body.template-farmhub h2,
+body.template-farmhub h3,
+body.template-globalsolutions.template-farmhub h1,
+body.template-globalsolutions.template-farmhub h2,
+body.template-globalsolutions.template-farmhub h3 {
+  font-family: var(--fh-font-display);
+  font-weight: 600;
+  font-optical-sizing: auto;
+}
+
+/* ── Header ── */
 .fh-header {
-  background: var(--fh-surface);
+  background: rgba(255, 253, 249, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--fh-border);
-  padding: 0.75rem 0;
+  padding: 0.85rem 0;
   position: sticky;
   top: 0;
   z-index: 900;
+  box-shadow: var(--fh-shadow-sm);
 }
 
 .fh-header-inner {
@@ -33,44 +69,52 @@ body.template-globalsolutions.template-farmhub {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem 1rem;
-  max-width: 1400px;
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 1.25rem;
 }
 
 .fh-logo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
   color: var(--fh-text);
   text-decoration: none;
-  font-weight: 800;
-  font-size: 1.15rem;
+  font-family: var(--fh-font-display);
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
   flex-shrink: 0;
 }
 
 .fh-search-form {
   flex: 1;
   min-width: 200px;
-  max-width: 520px;
+  max-width: 480px;
   display: flex;
   gap: 0;
 }
 
 .fh-search-input {
   flex: 1;
-  background: var(--fh-bg);
+  background: var(--fh-surface-2);
   border: 1px solid var(--fh-border);
   border-right: none;
   border-radius: var(--fh-radius) 0 0 var(--fh-radius);
   color: var(--fh-text);
-  padding: 0.55rem 0.85rem;
-  font-size: 0.95rem;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.92rem;
+  font-family: inherit;
+}
+
+.fh-search-input::placeholder {
+  color: var(--fh-muted);
 }
 
 .fh-search-input:focus {
   outline: 2px solid var(--fh-accent);
   outline-offset: 0;
+  background: #fff;
 }
 
 .fh-search-btn {
@@ -78,9 +122,12 @@ body.template-globalsolutions.template-farmhub {
   color: #fff;
   border: none;
   border-radius: 0 var(--fh-radius) var(--fh-radius) 0;
-  padding: 0.55rem 1rem;
+  padding: 0.6rem 1.1rem;
   font-weight: 700;
+  font-family: inherit;
+  font-size: 0.88rem;
   cursor: pointer;
+  transition: background 0.15s;
 }
 
 .fh-search-btn:hover {
@@ -90,80 +137,116 @@ body.template-globalsolutions.template-farmhub {
 .fh-cat-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem 0.65rem;
+  gap: 0.35rem 0.5rem;
   width: 100%;
   font-size: 0.82rem;
+  padding-top: 0.15rem;
 }
 
 .fh-cat-nav a {
   color: var(--fh-muted);
   text-decoration: none;
   white-space: nowrap;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
 }
 
 .fh-cat-nav a:hover {
-  color: var(--fh-orange);
+  color: var(--fh-accent-hover);
+  background: var(--fh-accent-soft);
+  border-color: rgba(196, 138, 26, 0.25);
 }
 
+/* ── Main layout ── */
 .fh-main {
-  max-width: 1400px;
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 0 1.25rem 3rem;
 }
 
-/* Featured hero */
+/* ── Featured hero ── */
 .fh-hero {
-  padding: 1rem 1rem 0;
-  max-width: 1400px;
+  padding: 1.75rem 0 0;
+}
+
+.fh-hero-inner {
+  max-width: 1320px;
   margin: 0 auto;
 }
 
 .fh-hero-card {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 0;
   background: var(--fh-surface);
   border: 1px solid var(--fh-border);
-  border-radius: 14px;
+  border-radius: var(--fh-radius-lg);
   overflow: hidden;
   text-decoration: none;
   color: inherit;
-  transition: border-color 0.2s;
+  box-shadow: var(--fh-shadow-lg);
+  transition: box-shadow 0.25s, transform 0.25s;
 }
 
 .fh-hero-card:hover {
-  border-color: var(--fh-accent);
+  box-shadow: 0 24px 56px rgba(60, 45, 30, 0.12);
+  transform: translateY(-2px);
 }
 
 @media (min-width: 768px) {
   .fh-hero-card {
-    grid-template-columns: 1.4fr 1fr;
+    grid-template-columns: 1.55fr 1fr;
   }
 }
 
 .fh-hero-media {
   position: relative;
   aspect-ratio: 16 / 9;
-  background: #000;
+  background: #2c2419;
+  min-height: 200px;
 }
 
 .fh-hero-media img,
+.fh-hero-media .fh-thumb-video,
 .fh-hero-placeholder {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+}
+
+.fh-hero-media-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(44, 36, 25, 0.12) 0%,
+    rgba(44, 36, 25, 0.4) 100%
+  );
+  pointer-events: none;
 }
 
 .fh-hero-play {
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 4rem;
-  height: 4rem;
-  border: 3px solid #fff;
+  width: 4.25rem;
+  height: 4.25rem;
+  border: 2px solid rgba(255, 255, 255, 0.9);
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   pointer-events: none;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.fh-hero-card:hover .fh-hero-play {
+  transform: scale(1.06);
+  background: rgba(196, 138, 26, 0.55);
+  border-color: #fff;
 }
 
 .fh-hero-play::after {
@@ -172,73 +255,228 @@ body.template-globalsolutions.template-farmhub {
   left: 54%;
   top: 50%;
   transform: translate(-50%, -50%);
-  border: 12px solid transparent;
-  border-left: 18px solid #fff;
+  border: 11px solid transparent;
+  border-left: 17px solid #fff;
 }
 
 .fh-hero-copy {
-  padding: 1.25rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.75rem 1.75rem 1.85rem;
+  background: linear-gradient(160deg, var(--fh-surface) 0%, var(--fh-surface-2) 100%);
+  border-top: 1px solid var(--fh-border);
+}
+
+@media (min-width: 768px) {
+  .fh-hero-copy {
+    border-top: none;
+    border-left: 1px solid var(--fh-border);
+    padding: 2rem 2.25rem;
+  }
+}
+
+.fh-hero-eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.65rem;
 }
 
 .fh-hero-label {
-  color: var(--fh-orange);
-  font-size: 0.75rem;
+  display: inline-block;
+  color: #fff;
+  background: linear-gradient(135deg, var(--fh-accent), var(--fh-accent-light));
+  font-size: 0.68rem;
   font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+}
+
+.fh-hero-category {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--fh-accent-hover);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
 .fh-hero-title {
-  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-  font-weight: 800;
-  margin: 0.35rem 0 0.5rem;
-  line-height: 1.2;
+  font-family: var(--fh-font-display);
+  font-size: clamp(1.55rem, 2.8vw, 2.25rem);
+  font-weight: 600;
+  font-style: normal;
+  margin: 0 0 0.65rem;
+  line-height: 1.12;
+  color: var(--fh-text);
+  letter-spacing: -0.025em;
+  font-optical-sizing: auto;
 }
 
 .fh-hero-desc {
-  color: var(--fh-muted);
-  margin: 0 0 0.5rem;
+  color: var(--fh-text-soft);
+  margin: 0 0 1rem;
   font-size: 0.95rem;
-  line-height: 1.45;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .fh-hero-meta {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+  margin: 0 0 1.15rem;
+  padding: 0;
+  font-size: 0.82rem;
   color: var(--fh-muted);
-  font-size: 0.85rem;
-  margin: 0;
 }
 
-/* Sections */
+.fh-hero-meta li:not(:last-child)::after {
+  content: "·";
+  margin-left: 0.5rem;
+  color: var(--fh-border-strong);
+}
+
+.fh-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.35rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--fh-accent);
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  background: var(--fh-accent-soft);
+  border: 1px solid rgba(196, 138, 26, 0.28);
+  transition: background 0.15s, color 0.15s;
+}
+
+.fh-hero-card:hover .fh-hero-cta {
+  background: var(--fh-accent);
+  color: #fff;
+}
+
+.fh-hero-cta::after {
+  content: "→";
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* ── Section separators & headings ── */
 .fh-sections {
-  padding-top: 1.5rem;
+  padding-top: 0.5rem;
 }
 
-.fh-section {
-  margin-bottom: 2rem;
+.fh-section,
+.fh-row {
+  margin-bottom: 0;
+}
+
+.fh-section--divider {
+  padding-top: 2.25rem;
+  margin-top: 2.25rem;
+  border-top: 1px solid var(--fh-border);
+  position: relative;
+}
+
+.fh-section--divider::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 3.5rem;
+  height: 2px;
+  background: linear-gradient(90deg, var(--fh-accent), var(--fh-accent-light));
+  border-radius: 2px;
+}
+
+.fh-section-head,
+.fh-row-head {
+  margin-bottom: 1.1rem;
+}
+
+.fh-row-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.fh-section-eyebrow {
+  margin: 0 0 0.25rem;
+  font-family: var(--fh-font);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--fh-accent);
 }
 
 .fh-section-title,
 .fh-row-title {
-  font-size: 1.1rem;
-  font-weight: 800;
-  margin: 0 0 0.85rem;
+  font-family: var(--fh-font-display);
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  font-weight: 600;
+  margin: 0;
   color: var(--fh-text);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  font-optical-sizing: auto;
 }
 
 .fh-row-title a {
   color: inherit;
   text-decoration: none;
+  transition: color 0.15s;
 }
 
 .fh-row-title a:hover {
-  color: var(--fh-orange);
+  color: var(--fh-accent);
 }
 
-/* Video grid */
+.fh-row-more {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--fh-muted);
+  text-decoration: none;
+  padding: 0.35rem 0;
+  transition: color 0.15s;
+}
+
+.fh-row-more:hover {
+  color: var(--fh-accent);
+}
+
+.fh-section--creators {
+  background: var(--fh-surface);
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-bottom: 2rem;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+}
+
+.fh-section--creators::before {
+  left: 1.25rem;
+}
+
+/* ── Video grid ── */
 .fh-video-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1rem 0.85rem;
+  gap: 1.35rem 1rem;
 }
 
 .fh-video-card {
@@ -248,7 +486,7 @@ body.template-globalsolutions.template-farmhub {
 }
 
 .fh-video-card:hover .fh-video-card-title {
-  color: var(--fh-orange);
+  color: var(--fh-accent);
 }
 
 .fh-video-card-thumb {
@@ -256,7 +494,15 @@ body.template-globalsolutions.template-farmhub {
   aspect-ratio: 16 / 9;
   border-radius: var(--fh-radius);
   overflow: hidden;
-  background: var(--fh-surface-2);
+  background: var(--fh-bg-alt);
+  box-shadow: var(--fh-shadow-sm);
+  border: 1px solid var(--fh-border);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.fh-video-card:hover .fh-video-card-thumb {
+  box-shadow: var(--fh-shadow);
+  transform: translateY(-2px);
 }
 
 .fh-video-card-thumb img {
@@ -271,7 +517,7 @@ body.template-globalsolutions.template-farmhub {
   height: 100%;
   object-fit: cover;
   display: block;
-  background: #000;
+  background: #2c2419;
   pointer-events: none;
 }
 
@@ -281,9 +527,10 @@ body.template-globalsolutions.template-farmhub {
   margin: auto;
   width: 2.5rem;
   height: 2.5rem;
-  border: 2px solid rgba(255, 255, 255, 0.85);
+  border: 2px solid rgba(255, 255, 255, 0.9);
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
   pointer-events: none;
 }
 
@@ -303,119 +550,112 @@ body.template-globalsolutions.template-farmhub {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1e293b, #0f172a);
+  background: linear-gradient(145deg, #f5ebe0, #ede0d0);
 }
 
 .fh-play-icon {
   width: 0;
   height: 0;
-  border-top: 14px solid transparent;
-  border-bottom: 14px solid transparent;
-  border-left: 22px solid rgba(255, 255, 255, 0.7);
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 20px solid rgba(196, 138, 26, 0.65);
 }
 
 .fh-badge {
   position: absolute;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  padding: 0.15rem 0.4rem;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.82);
-  color: #fff;
+  padding: 0.18rem 0.45rem;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
 }
 
 .fh-badge-duration {
-  bottom: 6px;
-  right: 6px;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(44, 36, 25, 0.82);
+  color: #fff;
 }
 
 .fh-badge-res {
-  bottom: 6px;
-  left: 6px;
-  background: rgba(105, 69, 216, 0.9);
+  bottom: 8px;
+  left: 8px;
+  background: rgba(255, 253, 249, 0.94);
+  color: var(--fh-accent-hover);
+  border: 1px solid rgba(196, 138, 26, 0.3);
 }
 
 .fh-video-card-meta {
-  padding: 0.45rem 0.1rem 0;
+  padding: 0.6rem 0.15rem 0;
 }
 
 .fh-video-card-title {
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-family: var(--fh-font);
+  font-size: 0.93rem;
+  font-weight: 600;
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.4;
+  color: var(--fh-text);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   transition: color 0.15s;
+  letter-spacing: -0.015em;
 }
 
 .fh-video-card-sub {
   font-size: 0.78rem;
   color: var(--fh-muted);
-  margin: 0.2rem 0 0;
+  margin: 0.25rem 0 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* Horizontal scroll row */
-.fh-row {
-  margin-bottom: 2rem;
-}
-
-.fh-row-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
-}
-
-.fh-row-more {
-  font-size: 0.85rem;
-  color: var(--fh-muted);
-  text-decoration: none;
-}
-
-.fh-row-more:hover {
-  color: var(--fh-orange);
-}
-
+/* ── Horizontal scroll row ── */
 .fh-scroll-row {
   display: flex;
-  gap: 0.85rem;
+  gap: 1rem;
   overflow-x: auto;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.65rem;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fh-border-strong) transparent;
 }
 
 .fh-scroll-row .fh-video-card {
-  flex: 0 0 min(280px, 78vw);
+  flex: 0 0 min(260px, 78vw);
   scroll-snap-align: start;
 }
 
-/* Creators */
+/* ── Creators ── */
 .fh-creator-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .fh-creator-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
   text-decoration: none;
   color: var(--fh-text);
   min-width: 100px;
+  padding: 0.75rem;
+  border-radius: var(--fh-radius);
+  transition: background 0.15s;
+}
+
+.fh-creator-card:hover {
+  background: var(--fh-surface-2);
 }
 
 .fh-creator-card:hover .fh-creator-name {
-  color: var(--fh-orange);
+  color: var(--fh-accent);
 }
 
 .fh-creator-avatar {
@@ -425,9 +665,16 @@ body.template-globalsolutions.template-farmhub {
   overflow: hidden;
   background: var(--fh-surface-2);
   border: 2px solid var(--fh-border);
+  box-shadow: var(--fh-shadow-sm);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.fh-creator-card:hover .fh-creator-avatar {
+  border-color: var(--fh-accent);
+  box-shadow: var(--fh-shadow);
 }
 
 .fh-creator-avatar--lg {
@@ -442,19 +689,22 @@ body.template-globalsolutions.template-farmhub {
 }
 
 .fh-creator-initial {
+  font-family: var(--fh-font-display);
   font-size: 2rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--fh-accent);
 }
 
 .fh-creator-name {
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-family: var(--fh-font);
+  font-size: 0.86rem;
+  font-weight: 600;
   text-align: center;
   transition: color 0.15s;
+  letter-spacing: -0.01em;
 }
 
-/* Video detail */
+/* ── Video detail & inner pages ── */
 .fh-video-layout {
   display: grid;
   grid-template-columns: 1fr;
@@ -468,22 +718,29 @@ body.template-globalsolutions.template-farmhub {
 }
 
 .fh-video-player-wrap {
-  background: #000;
+  background: #2c2419;
   border-radius: var(--fh-radius);
   overflow: hidden;
+  box-shadow: var(--fh-shadow);
+  border: 1px solid var(--fh-border);
 }
 
 .fh-detail-video {
   width: 100%;
   max-height: 72vh;
   display: block;
-  background: #000;
+  background: #2c2419;
 }
 
 .fh-video-title {
-  font-size: 1.25rem;
-  font-weight: 800;
+  font-family: var(--fh-font-display);
+  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+  font-weight: 600;
   margin: 0 0 0.5rem;
+  color: var(--fh-text);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  font-optical-sizing: auto;
 }
 
 .fh-video-stats {
@@ -494,16 +751,20 @@ body.template-globalsolutions.template-farmhub {
 
 .fh-video-creator-link {
   display: inline-block;
-  color: var(--fh-accent-hover);
+  color: var(--fh-accent);
   font-weight: 700;
   margin-bottom: 0.5rem;
   text-decoration: none;
 }
 
+.fh-video-creator-link:hover {
+  color: var(--fh-accent-hover);
+}
+
 .fh-video-desc {
-  color: var(--fh-muted);
+  color: var(--fh-text-soft);
   font-size: 0.92rem;
-  line-height: 1.5;
+  line-height: 1.55;
   margin-top: 0.75rem;
 }
 
@@ -516,18 +777,20 @@ body.template-globalsolutions.template-farmhub {
 
 .fh-tag {
   display: inline-block;
-  background: var(--fh-surface-2);
+  background: var(--fh-surface);
   border: 1px solid var(--fh-border);
   color: var(--fh-muted);
   font-size: 0.78rem;
-  padding: 0.2rem 0.55rem;
+  padding: 0.25rem 0.65rem;
   border-radius: 999px;
   text-decoration: none;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
 
 .fh-tag:hover {
-  color: var(--fh-orange);
-  border-color: var(--fh-orange);
+  color: var(--fh-accent-hover);
+  border-color: rgba(196, 138, 26, 0.4);
+  background: var(--fh-accent-soft);
 }
 
 .fh-back {
@@ -535,22 +798,30 @@ body.template-globalsolutions.template-farmhub {
   color: var(--fh-muted);
   text-decoration: none;
   font-size: 0.9rem;
+  font-weight: 600;
   margin-bottom: 1rem;
+  transition: color 0.15s;
 }
 
 .fh-back:hover {
-  color: var(--fh-text);
+  color: var(--fh-accent);
 }
 
 .fh-page-head h1 {
-  font-size: 1.5rem;
-  font-weight: 800;
+  font-family: var(--fh-font-display);
+  font-size: clamp(1.55rem, 3vw, 2.1rem);
+  font-weight: 600;
   margin: 0 0 0.35rem;
+  color: var(--fh-text);
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  font-optical-sizing: auto;
 }
 
 .fh-page-intro {
   color: var(--fh-muted);
   margin: 0 0 1.25rem;
+  line-height: 1.5;
 }
 
 .fh-creator-profile-inner {
@@ -564,11 +835,15 @@ body.template-globalsolutions.template-farmhub {
 .fh-empty-inline {
   color: var(--fh-muted);
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 3rem 1rem;
+  background: var(--fh-surface);
+  border-radius: var(--fh-radius-lg);
+  border: 1px dashed var(--fh-border-strong);
+  margin-top: 2rem;
 }
 
 .fh-related {
   margin-top: 2rem;
-  padding-top: 1rem;
+  padding-top: 1.5rem;
   border-top: 1px solid var(--fh-border);
 }

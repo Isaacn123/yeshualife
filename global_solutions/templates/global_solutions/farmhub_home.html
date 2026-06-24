@@ -5,7 +5,7 @@
 
 {% block extra_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'global_solutions/farmhub.css' %}">
+  {% include "global_solutions/partials/farmhub_assets.html" %}
 {% endblock %}
 
 {% block content %}
@@ -14,47 +14,68 @@
 
 <main class="fh-main">
   {% if featured_video %}
-  <section class="fh-hero container-fluid">
-    <a href="{{ featured_video.get_absolute_url }}" class="fh-hero-card">
-      <div class="fh-hero-media">
-        {% if featured_video.thumbnail_url %}
-          <img src="{{ featured_video.thumbnail_url }}" alt="{{ featured_video.title }}">
-        {% elif featured_video.playback_url and not featured_video.playback_uses_hls %}
-          <video class="fh-thumb-video" preload="metadata" muted playsinline src="{{ featured_video.playback_url }}"></video>
-        {% else %}
-          <div class="fh-video-card-placeholder fh-hero-placeholder"><span class="fh-play-icon"></span></div>
-        {% endif %}
-        <span class="fh-hero-play" aria-hidden="true"></span>
-      </div>
-      <div class="fh-hero-copy">
-        <span class="fh-hero-label">Featured</span>
-        <h1 class="fh-hero-title">{{ featured_video.title }}</h1>
-        {% if featured_video.description %}
-          <p class="fh-hero-desc">{{ featured_video.description|truncatewords:40 }}</p>
-        {% elif hero_subtitle %}
-          <p class="fh-hero-desc">{{ hero_subtitle }}</p>
-        {% endif %}
-        <p class="fh-hero-meta">
-          {% if featured_video.views_display %}{{ featured_video.views_display }} views{% endif %}
-          {% if featured_video.duration_display %} · {{ featured_video.duration_display }}{% endif %}
-          {% if featured_video.creator %} · {{ featured_video.creator.name }}{% endif %}
-        </p>
-      </div>
-    </a>
+  <section class="fh-hero" aria-labelledby="fh-featured-title">
+    <div class="fh-hero-inner">
+      <a href="{{ featured_video.get_absolute_url }}" class="fh-hero-card">
+        <div class="fh-hero-media">
+          {% if featured_video.thumbnail_url %}
+            <img src="{{ featured_video.thumbnail_url }}" alt="">
+          {% elif featured_video.playback_url and not featured_video.playback_uses_hls %}
+            <video class="fh-thumb-video" preload="metadata" muted playsinline src="{{ featured_video.playback_url }}"></video>
+          {% else %}
+            <div class="fh-video-card-placeholder fh-hero-placeholder"><span class="fh-play-icon"></span></div>
+          {% endif %}
+          <div class="fh-hero-media-overlay" aria-hidden="true"></div>
+          <span class="fh-hero-play" aria-hidden="true"></span>
+        </div>
+        <div class="fh-hero-copy">
+          <div class="fh-hero-eyebrow">
+            <span class="fh-hero-label">Featured</span>
+            {% if featured_video.category %}
+              <span class="fh-hero-category">{{ featured_video.category.name }}</span>
+            {% endif %}
+          </div>
+          <h1 class="fh-hero-title" id="fh-featured-title">{{ featured_video.title }}</h1>
+          {% if featured_video.description %}
+            <p class="fh-hero-desc">{{ featured_video.description|truncatewords:40 }}</p>
+          {% elif hero_subtitle %}
+            <p class="fh-hero-desc">{{ hero_subtitle }}</p>
+          {% endif %}
+          <ul class="fh-hero-meta">
+            {% if featured_video.views_display %}
+              <li>{{ featured_video.views_display }} views</li>
+            {% endif %}
+            {% if featured_video.duration_display %}
+              <li>{{ featured_video.duration_display }}</li>
+            {% endif %}
+            {% if featured_video.creator %}
+              <li>{{ featured_video.creator.name }}</li>
+            {% endif %}
+          </ul>
+          <span class="fh-hero-cta">Watch now</span>
+        </div>
+      </a>
+    </div>
   </section>
   {% endif %}
 
   <div class="container-fluid fh-sections">
     {% if trending_videos %}
-      <section class="fh-section">
-        <h2 class="fh-section-title">Trending Now</h2>
+      <section class="fh-section fh-section--divider">
+        <header class="fh-section-head">
+          <p class="fh-section-eyebrow">Popular right now</p>
+          <h2 class="fh-section-title">Trending Now</h2>
+        </header>
         {% include "global_solutions/partials/video_grid.html" with videos=trending_videos %}
       </section>
     {% endif %}
 
     {% if latest_videos %}
-      <section class="fh-section">
-        <h2 class="fh-section-title">New Uploads</h2>
+      <section class="fh-section fh-section--divider">
+        <header class="fh-section-head">
+          <p class="fh-section-eyebrow">Fresh from the field</p>
+          <h2 class="fh-section-title">New Uploads</h2>
+        </header>
         {% include "global_solutions/partials/video_grid.html" with videos=latest_videos %}
       </section>
     {% endif %}
@@ -64,8 +85,11 @@
     {% endfor %}
 
     {% if top_creators %}
-      <section class="fh-section">
-        <h2 class="fh-section-title">Top Farmers &amp; Creators</h2>
+      <section class="fh-section fh-section--divider fh-section--creators">
+        <header class="fh-section-head">
+          <p class="fh-section-eyebrow">Community voices</p>
+          <h2 class="fh-section-title">Top Farmers &amp; Creators</h2>
+        </header>
         <div class="fh-creator-row">
           {% for creator in top_creators %}
             {% include "global_solutions/partials/creator_card.html" with creator=creator %}

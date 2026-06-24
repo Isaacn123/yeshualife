@@ -6,7 +6,7 @@
 {% block extra_css %}
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'business_casual/css/overrides.css' %}">
-  <link rel="stylesheet" href="{% static 'global_solutions/farmhub.css' %}">
+  {% include "global_solutions/partials/farmhub_assets.html" %}
 {% endblock %}
 
 {% block content %}
