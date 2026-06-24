@@ -40,12 +40,14 @@ $VENV_PYTHON manage.py migrate global_solutions --noinput
 echo "==> Collect static files"
 $VENV_PYTHON manage.py collectstatic --noinput
 
-echo "==> Restart app"
+echo "==> Restart app (required for template + static changes)"
 if [ -n "$GUNICORN_SERVICE" ] && command -v systemctl >/dev/null 2>&1; then
   sudo systemctl restart "$GUNICORN_SERVICE"
   echo "    Restarted $GUNICORN_SERVICE"
 else
-  echo "    Set GUNICORN_SERVICE=your-unit to restart (e.g. GUNICORN_SERVICE=gunicorn bash $0)"
+  echo "    REQUIRED: restart gunicorn so Django serves new templates, e.g.:"
+  echo "    GUNICORN_SERVICE=gunicorn bash $0"
+  echo "    (templates are not updated by collectstatic alone)"
 fi
 
 if command -v systemctl >/dev/null 2>&1 && systemctl is-enabled global-solutions-video-worker.service >/dev/null 2>&1; then

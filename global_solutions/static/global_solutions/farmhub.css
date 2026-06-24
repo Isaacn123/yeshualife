@@ -380,7 +380,10 @@ body.template-globalsolutions.template-farmhub h3 {
   flex-direction: column;
 }
 
-.fh-section-panel {
+/* Shared card shell — new (.fh-section-panel) and legacy (.fh-row) markup */
+.fh-section-panel,
+.fh-row,
+.fh-section.fh-section--divider {
   background: var(--fh-panel);
   border: 1px solid var(--fh-panel-border);
   border-radius: var(--fh-radius-lg);
@@ -391,6 +394,40 @@ body.template-globalsolutions.template-farmhub h3 {
     0 6px 20px rgba(60, 45, 30, 0.045);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+}
+
+/* Line + gap between stacked section cards (when no <hr> separator in markup) */
+.fh-section-panel + .fh-section-panel,
+.fh-row + .fh-row,
+.fh-section-panel + .fh-row,
+.fh-row + .fh-section-panel,
+.fh-section.fh-section--divider + .fh-section.fh-section--divider,
+.fh-section.fh-section--divider + .fh-row,
+.fh-row + .fh-section.fh-section--divider {
+  margin-top: 3rem;
+  position: relative;
+}
+
+.fh-section-panel + .fh-section-panel::before,
+.fh-row + .fh-row::before,
+.fh-section-panel + .fh-row::before,
+.fh-row + .fh-section-panel::before,
+.fh-section.fh-section--divider + .fh-section.fh-section--divider::before,
+.fh-section.fh-section--divider + .fh-row::before,
+.fh-row + .fh-section.fh-section--divider::before {
+  content: "";
+  position: absolute;
+  top: -1.5rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--fh-line) 12%,
+    var(--fh-line) 88%,
+    transparent 100%
+  );
 }
 
 .fh-section-sep {
@@ -408,16 +445,31 @@ body.template-globalsolutions.template-farmhub h3 {
   flex-shrink: 0;
 }
 
-.fh-section-head {
+.fh-section-sep + .fh-section-panel,
+.fh-section-sep + .fh-row,
+.fh-section-sep + .fh-section.fh-section--divider {
+  margin-top: 0.75rem;
+}
+
+.fh-section-panel + .fh-section-sep,
+.fh-row + .fh-section-sep,
+.fh-section.fh-section--divider + .fh-section-sep {
+  margin-top: 0;
+}
+
+.fh-section-head,
+.fh-row-head {
   display: flex;
   align-items: stretch;
   gap: 0;
   margin-bottom: 1.35rem;
   padding-bottom: 1.1rem;
   border-bottom: 1px solid var(--fh-line);
+  position: relative;
 }
 
-.fh-section-head::before {
+.fh-section-head::before,
+.fh-row-head::before {
   content: "";
   width: 3px;
   flex-shrink: 0;
@@ -427,13 +479,29 @@ body.template-globalsolutions.template-farmhub h3 {
   opacity: 0.85;
 }
 
+/* Legacy row header: title only, no flex gold bar child */
+.fh-row-head:not(.fh-section-head) {
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-left: 1rem;
+}
+
+.fh-row-head:not(.fh-section-head)::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 1.1rem;
+  width: 3px;
+  margin-right: 0;
+}
+
 .fh-section-head-text {
   flex: 1;
   min-width: 0;
 }
 
-.fh-row-head {
-  display: flex;
+.fh-row-head.fh-section-head {
   align-items: flex-end;
   justify-content: space-between;
   gap: 1rem;
