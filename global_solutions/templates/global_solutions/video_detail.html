@@ -13,7 +13,12 @@
 {% include "nav_bar.html" %}
 {% include "global_solutions/partials/farmhub_header.html" %}
 
-<main class="fh-main container-fluid fh-video-page">
+<main
+  class="fh-main container-fluid fh-video-page"
+  data-video-slug="{{ video.slug }}"
+  data-video-duration="{{ video.duration_seconds|default:0 }}"
+  {% if view_already_counted %}data-view-counted="true"{% endif %}
+>
   <a href="{% url 'global_solutions:farmhub_home' %}" class="fh-back">← FarmHub</a>
 
   <div class="fh-video-layout">

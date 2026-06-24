@@ -18,14 +18,12 @@ from .discovery import (
     search_videos,
     video_to_api_dict,
 )
+from .engagement import record_video_view, session_slugs
 from .models import Creator, GlobalSolutionsVideo, SolutionCategory
 
 
 def _liked_slugs(request) -> set[str]:
-    raw = request.session.get("farmhub_liked", [])
-    if not isinstance(raw, list):
-        return set()
-    return {str(s) for s in raw if s}
+    return session_slugs(request, "farmhub_liked")
 
 
 def _video_like_payload(video: GlobalSolutionsVideo, *, liked: bool, already_liked: bool = False) -> dict:
@@ -147,3 +145,28 @@ def api_video_like(request, slug):
     request.session["farmhub_liked"] = sorted(liked_slugs)
     request.session.modified = True
     return JsonResponse(_video_like_payload(video, liked=True))
+
+
+@csrf_protect
+@require_POST
+def api_video_record_view(request, slug):
+    """
+    Count a view after sufficient watch time (YouTube-style ~30s rule).
+    One count per video per browser session.
+    """
+    import json
+
+    try:
+        body = json.loads(request.body.decode("utf-8") if request.body else "{}")
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        body = {}
+
+    try:
+        watched_seconds = float(body.get("watched_seconds", 0))
+    except (TypeError, ValueError):
+        watched_seconds = 0.0
+
+    payload = record_video_view(request, slug, watched_seconds=watched_seconds)
+    if payload.get("error") == "insufficient_watch_time":
+        return JsonResponse(payload, status=400)
+    return JsonResponse(payload)

@@ -21,6 +21,7 @@ urlpatterns = [
     path("api/videos/recommended/", api.api_videos_recommended, name="api_videos_recommended"),
     path("api/videos/search/", api.api_videos_search, name="api_videos_search"),
     path("api/videos/<slug:slug>/like/", api.api_video_like, name="api_video_like"),
+    path("api/videos/<slug:slug>/view/", api.api_video_record_view, name="api_video_record_view"),
     path("api/videos/category/<slug:slug>/", api.api_videos_category, name="api_videos_category"),
     path("api/categories/", api.api_categories_list, name="api_categories_list"),
     path("api/creators/", api.api_creators_list, name="api_creators_list"),

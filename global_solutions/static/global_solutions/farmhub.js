@@ -153,6 +153,99 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", initLikedState);
+  function setViewsDisplay(slug, viewsDisplay) {
+    document.querySelectorAll('.fh-engagement[data-video-slug="' + slug + '"] .fh-engagement-views').forEach(function (el) {
+      el.textContent = viewsDisplay;
+    });
+  }
+
+  function viewThresholdSeconds(durationSeconds) {
+    var d = parseFloat(durationSeconds);
+    if (d && d > 0) {
+      if (d < 30) {
+        return Math.max(1, d * 0.9);
+      }
+      return 30;
+    }
+    return 30;
+  }
+
+  function recordVideoView(slug, watchedSeconds) {
+    return fetch("/api/videos/" + encodeURIComponent(slug) + "/view/", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "X-CSRFToken": getCsrfToken(),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ watched_seconds: watchedSeconds }),
+    }).then(function (res) {
+      return res.json().then(function (data) {
+        return { ok: res.ok, data: data };
+      });
+    });
+  }
+
+  function initWatchTimeViews() {
+    var page = document.querySelector(".fh-video-page[data-video-slug]");
+    if (!page || page.getAttribute("data-view-counted") === "true") {
+      return;
+    }
+
+    var slug = page.getAttribute("data-video-slug");
+    var video = page.querySelector("video.fh-detail-video, video.gs-video-player-el");
+    if (!slug || !video) {
+      return;
+    }
+
+    var threshold = viewThresholdSeconds(page.getAttribute("data-video-duration"));
+    var watchedSeconds = 0;
+    var lastTime = 0;
+    var recorded = false;
+
+    var tryRecord = function () {
+      if (recorded || watchedSeconds < threshold) {
+        return;
+      }
+      recorded = true;
+      recordVideoView(slug, watchedSeconds).then(function (result) {
+        if (result.ok && result.data.views_display) {
+          setViewsDisplay(slug, result.data.views_display);
+        }
+      });
+    };
+
+    video.addEventListener("loadedmetadata", function () {
+      if (!page.getAttribute("data-video-duration") || page.getAttribute("data-video-duration") === "0") {
+        threshold = viewThresholdSeconds(video.duration);
+      }
+    });
+
+    video.addEventListener("timeupdate", function () {
+      if (recorded || video.paused || video.ended) {
+        lastTime = video.currentTime;
+        return;
+      }
+      var current = video.currentTime;
+      var delta = current - lastTime;
+      if (delta > 0 && delta < 3) {
+        watchedSeconds += delta;
+      }
+      lastTime = current;
+      tryRecord();
+    });
+
+    video.addEventListener("ended", function () {
+      if (!recorded && video.duration && isFinite(video.duration)) {
+        watchedSeconds = Math.max(watchedSeconds, video.duration);
+        tryRecord();
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    initLikedState();
+    initWatchTimeViews();
+  });
   document.addEventListener("click", onClick);
 })();

@@ -10,7 +10,6 @@ from django.views.decorators.http import require_GET, require_POST
 
 from .api_urls import video_api_urls_placeholder_map
 from .b2 import b2_public_url, get_b2_s3_client
-from django.db.models import F
 
 from .discovery import (
     build_farmhub_home_context,
@@ -20,6 +19,7 @@ from .discovery import (
     search_videos,
 )
 from .categories import get_active_categories, resolve_category
+from .engagement import video_view_counted_in_session
 from .models import (
     Creator,
     GlobalSolutionsSettings,
@@ -354,13 +354,12 @@ def farmhub_video(request, slug):
         get_public_videos_qs(),
         slug=slug,
     )
-    GlobalSolutionsVideo.objects.filter(pk=video.pk).update(views=F("views") + 1)
-    video.views += 1
     related = get_related_videos(video, limit=8)
     ctx = {
         "page": _farmhub_page(video.title, video.description[:300]),
         "video": video,
         "related_videos": related,
+        "view_already_counted": video_view_counted_in_session(request, slug),
     }
     return render(request, "global_solutions/video_detail.html", ctx)
 
