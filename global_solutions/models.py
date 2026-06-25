@@ -343,9 +343,11 @@ class GlobalSolutionsVideo(models.Model):
         if not self.original_b2_key:
             return ""
         if getattr(django_settings, "B2_PLAYBACK_USE_PRESIGNED", True):
+            content_type = (self.original_content_type or "video/mp4").strip() or "video/mp4"
             return b2_presigned_get_url(
                 self.original_b2_key,
                 expires_in=getattr(django_settings, "B2_PLAYBACK_PRESIGNED_EXPIRES", 86400),
+                response_content_type=content_type,
             )
         return b2_public_url(self.original_b2_key)
 

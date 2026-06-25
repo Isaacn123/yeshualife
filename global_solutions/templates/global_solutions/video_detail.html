@@ -19,7 +19,7 @@
   data-video-duration="{{ video.duration_seconds|default:0 }}"
   {% if view_already_counted %}data-view-counted="true"{% endif %}
 >
-  <a href="{% url 'global_solutions:farmhub_home' %}" class="fh-back">← FarmHub</a>
+  <a href="{% url 'global_solutions:farmhub_home' %}" class="fh-back">← {{ site_title|default:"Global Solutions" }}</a>
 
   <div class="fh-video-layout">
     <div class="fh-video-player-wrap">
@@ -40,11 +40,11 @@
               class="gs-video-player-el fh-detail-video"
               controls
               playsinline
+              webkit-playsinline
               preload="metadata"
+              src="{{ video.playback_url }}"
               {% if video.poster_image_url %}poster="{{ video.poster_image_url }}"{% endif %}
-            >
-              <source src="{{ video.playback_url }}" type="{{ video.original_content_type|default:'video/mp4' }}">
-            </video>
+            ></video>
           {% endif %}
         </div>
       {% endif %}

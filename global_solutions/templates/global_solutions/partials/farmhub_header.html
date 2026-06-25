@@ -3,7 +3,7 @@
   <div class="container-fluid fh-header-inner">
     <a href="{% url 'global_solutions:farmhub_home' %}" class="fh-logo">
       <img src="{% static 'images/yeshua_logo_nav.png' %}" alt="Yeshua Life" width="36" height="36">
-      <span>FarmHub</span>
+      <span>{{ site_title|default:"Global Solutions" }}</span>
     </a>
     <form class="fh-search-form" action="{% url 'global_solutions:farmhub_search' %}" method="get" role="search">
       <input

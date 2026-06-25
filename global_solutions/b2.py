@@ -56,13 +56,28 @@ def b2_public_url(key: str) -> str:
     return f"{cfg.public_base_url}/{cfg.bucket_name}/{key.lstrip('/')}"
 
 
-def b2_presigned_get_url(key: str, *, expires_in: int = 86400) -> str:
+def b2_presigned_get_url(
+    key: str,
+    *,
+    expires_in: int = 86400,
+    response_content_type: str | None = None,
+) -> str:
     """Readable URL for private buckets (short-lived)."""
     s3 = get_b2_s3_client()
     cfg = get_b2_config()
+    params: dict = {"Bucket": cfg.bucket_name, "Key": key.lstrip("/")}
+    if response_content_type:
+        params["ResponseContentType"] = response_content_type
     return s3.generate_presigned_url(
         ClientMethod="get_object",
-        Params={"Bucket": cfg.bucket_name, "Key": key.lstrip("/")},
+        Params=params,
         ExpiresIn=expires_in,
     )
+
+
+def b2_head_object(key: str) -> dict:
+    """Return S3 HeadObject metadata or raise ClientError."""
+    s3 = get_b2_s3_client()
+    cfg = get_b2_config()
+    return s3.head_object(Bucket=cfg.bucket_name, Key=key.lstrip("/"))
 

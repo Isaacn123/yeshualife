@@ -14,6 +14,14 @@ from .models import (
     SolutionCategory,
 )
 
+SITE_TITLE_DEFAULT = "Global Solutions"
+
+
+def get_site_title() -> str:
+    settings_obj = GlobalSolutionsSettings.objects.first()
+    title = (settings_obj.page_title if settings_obj else SITE_TITLE_DEFAULT).strip()
+    return title or SITE_TITLE_DEFAULT
+
 
 def get_public_videos_qs():
     return GlobalSolutionsVideo.objects.filter(
@@ -124,7 +132,7 @@ def video_to_api_dict(video: GlobalSolutionsVideo) -> dict:
 def build_farmhub_home_context() -> dict:
     """Context for FarmHub discovery homepage."""
     settings_obj = GlobalSolutionsSettings.objects.first()
-    page_title = (settings_obj.page_title if settings_obj else "FarmHub").strip() or "FarmHub"
+    page_title = get_site_title()
     hero_title = (settings_obj.hero_title if settings_obj else page_title).strip() or page_title
     hero_subtitle = (settings_obj.hero_subtitle if settings_obj else "").strip()
     cap = int(getattr(django_settings, "GLOBAL_SOLUTIONS_PUBLIC_VIDEO_CAP", 72))
@@ -137,6 +145,7 @@ def build_farmhub_home_context() -> dict:
             category_sections.append({"category": cat, "videos": videos})
 
     return {
+        "site_title": page_title,
         "hero_title": hero_title,
         "hero_subtitle": hero_subtitle,
         "hero_image_url": (settings_obj.hero_image_url if settings_obj else "").strip(),

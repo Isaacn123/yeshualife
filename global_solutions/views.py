@@ -10,9 +10,11 @@ from django.views.decorators.http import require_GET, require_POST
 
 from .api_urls import video_api_urls_placeholder_map
 from .b2 import b2_public_url, get_b2_s3_client
+from .b2_upload import safe_upload_filename
 
 from .discovery import (
     build_farmhub_home_context,
+    get_site_title,
     get_public_videos_qs,
     get_related_videos,
     get_videos_for_category,
@@ -159,10 +161,9 @@ def update_video_meta(request, video_id):
 def b2_create_multipart_upload(request, video_id):
     video = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
 
-    filename = (request.POST.get("filename") or "").strip()
+    filename = safe_upload_filename(request.POST.get("filename") or "")
     content_type = (request.POST.get("content_type") or "video/mp4").strip()
-
-    if not filename:
+    if not (request.POST.get("filename") or "").strip():
         return JsonResponse({"error": "filename is required"}, status=400)
 
     key = f"global-solutions/videos/{video.storage_path_slug}/{video.id}/{filename}"
@@ -314,7 +315,7 @@ def _farmhub_page(title: str, intro: str = ""):
 @require_GET
 def farmhub_home(request):
     ctx = build_farmhub_home_context()
-    ctx["page"] = _farmhub_page(ctx.get("hero_title", "FarmHub"), ctx.get("hero_subtitle", ""))
+    ctx["page"] = _farmhub_page(ctx.get("hero_title", get_site_title()), ctx.get("hero_subtitle", ""))
     ctx["solution_categories"] = get_active_categories()
     return render(request, "global_solutions/farmhub_home.html", ctx)
 
@@ -325,6 +326,7 @@ def farmhub_category(request, slug):
     videos = get_videos_for_category(category, limit=48)
     ctx = {
         "page": _farmhub_page(category.name, category.description),
+        "site_title": get_site_title(),
         "category": category,
         "videos": videos,
         "farmhub_home_url": request.build_absolute_uri("/farmhub/"),
@@ -342,6 +344,7 @@ def farmhub_creator(request, slug):
     )
     ctx = {
         "page": _farmhub_page(creator.name, creator.bio),
+        "site_title": get_site_title(),
         "creator": creator,
         "videos": videos,
     }
@@ -357,6 +360,7 @@ def farmhub_video(request, slug):
     related = get_related_videos(video, limit=8)
     ctx = {
         "page": _farmhub_page(video.title, video.description[:300]),
+        "site_title": get_site_title(),
         "video": video,
         "related_videos": related,
         "view_already_counted": video_view_counted_in_session(request, slug),
@@ -370,6 +374,7 @@ def farmhub_search(request):
     videos = search_videos(q, limit=48) if q else []
     ctx = {
         "page": _farmhub_page("Search", f"Results for {q}" if q else "Search farming videos"),
+        "site_title": get_site_title(),
         "query": q,
         "videos": videos,
         "categories": get_active_categories(),
