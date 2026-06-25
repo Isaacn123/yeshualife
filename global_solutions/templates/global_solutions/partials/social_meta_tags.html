@@ -1,0 +1,8 @@
+{# Social share preview — only when a poster/thumbnail URL already exists on the video. #}
+{% if share_image %}
+<meta property="og:image" content="{{ share_image }}">
+<meta property="og:image:secure_url" content="{{ share_image }}">
+{% if share_title %}<meta property="og:image:alt" content="{{ share_title }}">{% endif %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{{ share_image }}">
+{% endif %}

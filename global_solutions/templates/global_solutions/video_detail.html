@@ -4,6 +4,9 @@
 {% block body_class %}template-farmhub template-farmhub-video{% endblock %}
 
 {% block extra_css %}
+  {% if video.thumbnail_url %}
+    {% include "global_solutions/partials/social_meta_tags.html" with share_image=video.thumbnail_url share_title=video.title %}
+  {% endif %}
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'business_casual/css/overrides.css' %}">
   {% include "global_solutions/partials/farmhub_assets.html" %}
