@@ -62,4 +62,24 @@ urlpatterns = [
         views.mark_video_processing,
         name="process_start",
     ),
+    path(
+        "global-solutions/api/videos/<uuid:video_id>/thumbnails/",
+        views.video_thumbnails,
+        name="video_thumbnails",
+    ),
+    path(
+        "global-solutions/api/videos/<uuid:video_id>/thumbnails/generate/",
+        views.video_thumbnails_generate,
+        name="video_thumbnails_generate",
+    ),
+    path(
+        "global-solutions/api/videos/<uuid:video_id>/thumbnails/select/",
+        views.video_thumbnail_select,
+        name="video_thumbnail_select",
+    ),
+    path(
+        "global-solutions/api/videos/<uuid:video_id>/thumbnails/upload/",
+        views.video_thumbnail_upload,
+        name="video_thumbnail_upload",
+    ),
 ]

@@ -5,6 +5,7 @@
 
 {% block extra_css %}
   {{ block.super }}
+  <link rel="stylesheet" href="{% static 'global_solutions/thumbnail_picker.css' %}">
   {% compress css %}
   <style>
     .gsu-wrap{padding:1.3rem 0;}
@@ -80,6 +81,30 @@
           </div>
         </div>
       </div>
+
+      <div id="gsu-thumbnail-section" class="gsu-thumbnail-section" hidden>
+        <h3 class="gsu-thumbnail-section__title">Video thumbnail</h3>
+        <p class="gsu-thumbnail-section__help">
+          Pick one of 3 generated frames or upload your own image for fast loading on the public site.
+        </p>
+        <div class="gsu-thumbnail-layout">
+          <div>
+            <video class="gsu-thumbnail-preview-video" controls playsinline preload="metadata"></video>
+            <div class="gsu-thumbnail-current"><strong>Current thumbnail:</strong></div>
+          </div>
+          <div>
+            <div class="gsu-thumbnail-options" aria-label="Thumbnail options"></div>
+            <div class="gsu-thumbnail-actions">
+              <button type="button" class="btn btn-outline-secondary gsu-thumbnail-regenerate">Generate 3 options</button>
+            </div>
+            <label class="gsu-thumbnail-custom">
+              Or upload your own image (JPEG, PNG, WebP, max 5 MB)
+              <input class="gsu-thumbnail-custom-input" type="file" accept="image/jpeg,image/png,image/webp">
+            </label>
+            <div class="gsu-thumbnail-status gsu-help"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -88,6 +113,7 @@
 
 {% block extra_js %}
   {{ block.super }}
+  <script type="text/javascript" src="{% static 'global_solutions/thumbnail_picker.js' %}"></script>
   {% compress js %}
   <script type="text/javascript" src="{% static 'global_solutions/uploader.js' %}"></script>
   {% endcompress %}

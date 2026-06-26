@@ -21,6 +21,10 @@ def video_api_urls_for(video_id: UUID | str) -> dict[str, str]:
         "b2_part_url": reverse("global_solutions:b2_part_url", kwargs={"video_id": vid}),
         "b2_complete": reverse("global_solutions:b2_complete_multipart", kwargs={"video_id": vid}),
         "process": reverse("global_solutions:process_start", kwargs={"video_id": vid}),
+        "thumbnails": reverse("global_solutions:video_thumbnails", kwargs={"video_id": vid}),
+        "thumbnails_generate": reverse("global_solutions:video_thumbnails_generate", kwargs={"video_id": vid}),
+        "thumbnails_select": reverse("global_solutions:video_thumbnail_select", kwargs={"video_id": vid}),
+        "thumbnails_upload": reverse("global_solutions:video_thumbnail_upload", kwargs={"video_id": vid}),
     }
 
 

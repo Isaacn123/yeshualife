@@ -23,4 +23,5 @@ class GlobalSolutionsVideoB2UploadPanel(Panel):
             context["video_id"] = vid
             if pk:
                 context["gs_video_api_urls"] = video_api_urls_for(pk)
+                context["has_uploaded_source"] = bool((getattr(self.instance, "original_b2_key", "") or "").strip())
             return context

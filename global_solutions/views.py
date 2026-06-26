@@ -270,13 +270,98 @@ def b2_complete_multipart_upload(request, video_id):
     video.save(update_fields=["status", "original_size_bytes", "last_error", "updated_at"])
 
     try:
-        from .thumbnails import generate_poster_for_video
+        from .thumbnails import generate_poster_candidates
 
-        generate_poster_for_video(video)
+        candidates = generate_poster_candidates(video)
     except Exception:
-        pass
+        candidates = []
 
-    return JsonResponse({"ok": True, "key": video.original_b2_key, "public_url": b2_public_url(video.original_b2_key)})
+    thumb_payload = {}
+    try:
+        from .thumbnails import list_thumbnail_options
+
+        thumb_payload = list_thumbnail_options(video)
+    except Exception:
+        thumb_payload = {"poster_url": video.poster_image_url or "", "candidates": [], "custom": None}
+
+    return JsonResponse(
+        {
+            "ok": True,
+            "key": video.original_b2_key,
+            "public_url": b2_public_url(video.original_b2_key),
+            "poster_url": video.poster_image_url or "",
+            "candidates": candidates or thumb_payload.get("candidates") or [],
+            "playback_url": video.playback_url,
+        }
+    )
+
+
+@require_GET
+@staff_member_required
+def video_thumbnails(request, video_id):
+    video = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
+    if not video.original_b2_key:
+        return JsonResponse({"error": "No uploaded video yet."}, status=400)
+    from .thumbnails import list_thumbnail_options
+
+    payload = list_thumbnail_options(video)
+    payload["playback_url"] = video.playback_url
+    payload["ok"] = True
+    return JsonResponse(payload)
+
+
+@require_POST
+@staff_member_required
+def video_thumbnails_generate(request, video_id):
+    video = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
+    if not video.original_b2_key:
+        return JsonResponse({"error": "No uploaded video yet."}, status=400)
+    from .thumbnails import generate_poster_candidates, list_thumbnail_options
+
+    try:
+        candidates = generate_poster_candidates(video)
+    except Exception as exc:
+        return JsonResponse({"error": str(exc)}, status=500)
+    if not candidates:
+        return JsonResponse({"error": "Could not generate thumbnails (check ffmpeg on server)."}, status=500)
+    payload = list_thumbnail_options(video)
+    payload["playback_url"] = video.playback_url
+    payload["ok"] = True
+    return JsonResponse(payload)
+
+
+@require_POST
+@staff_member_required
+def video_thumbnail_select(request, video_id):
+    video = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
+    b2_key = (request.POST.get("b2_key") or "").strip()
+    if not b2_key:
+        return JsonResponse({"error": "b2_key is required"}, status=400)
+    from .thumbnails import list_thumbnail_options, select_video_poster
+
+    try:
+        poster_url = select_video_poster(video, b2_key)
+    except ValueError as exc:
+        return JsonResponse({"error": str(exc)}, status=400)
+    return JsonResponse({"ok": True, "poster_url": poster_url, **list_thumbnail_options(video)})
+
+
+@require_POST
+@staff_member_required
+def video_thumbnail_upload(request, video_id):
+    video = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
+    image = request.FILES.get("image")
+    if not image:
+        return JsonResponse({"error": "image file is required"}, status=400)
+    from .thumbnails import list_thumbnail_options, upload_custom_poster
+
+    try:
+        custom = upload_custom_poster(video, image)
+    except ValueError as exc:
+        return JsonResponse({"error": str(exc)}, status=400)
+    except Exception as exc:
+        return JsonResponse({"error": str(exc)}, status=500)
+    return JsonResponse({"ok": True, "custom": custom, **list_thumbnail_options(video)})
 
 
 @require_POST

@@ -6,6 +6,7 @@
   <div class="w-panel__content">
     {% if video_id %}
       {{ gs_video_api_urls|json_script:"gs-video-api-urls" }}
+      <link rel="stylesheet" href="{% static 'global_solutions/thumbnail_picker.css' %}">
       <p class="help">
         Upload goes straight to your configured B2 bucket (large files use multipart). Keys, URLs, size, and HLS fields are filled by the server after upload and processing — you do not enter those manually.
       </p>
@@ -28,6 +29,37 @@
         </div>
         <div class="gs-snippet-upload__status help" id="gsu-status" style="margin-top:0.75rem;">Ready.</div>
       </div>
+
+      <div
+        id="gsu-thumbnail-section"
+        class="gsu-thumbnail-section"
+        {% if not has_uploaded_source %}hidden{% endif %}
+      >
+        <h3 class="gsu-thumbnail-section__title">Video thumbnail</h3>
+        <p class="gsu-thumbnail-section__help">
+          Choose one of 3 auto-generated frames (like YouTube) or upload your own image.
+          The selected thumbnail is stored on B2 and loads instantly on the public site.
+        </p>
+        <div class="gsu-thumbnail-layout">
+          <div>
+            <video class="gsu-thumbnail-preview-video" controls playsinline preload="metadata"></video>
+            <div class="gsu-thumbnail-current"><strong>Current thumbnail:</strong></div>
+          </div>
+          <div>
+            <div class="gsu-thumbnail-options" aria-label="Thumbnail options"></div>
+            <div class="gsu-thumbnail-actions">
+              <button type="button" class="button button-secondary gsu-thumbnail-regenerate">Generate 3 options</button>
+            </div>
+            <label class="gsu-thumbnail-custom">
+              Or upload your own image (JPEG, PNG, WebP, max 5 MB)
+              <input class="gsu-thumbnail-custom-input" type="file" accept="image/jpeg,image/png,image/webp">
+            </label>
+            <div class="gsu-thumbnail-status help"></div>
+          </div>
+        </div>
+      </div>
+
+      <script src="{% static 'global_solutions/thumbnail_picker.js' %}"></script>
       <script src="{% static 'global_solutions/uploader.js' %}"></script>
     {% else %}
       <p class="help">

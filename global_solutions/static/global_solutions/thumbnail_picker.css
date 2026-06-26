@@ -1,0 +1,123 @@
+/* YouTube-style thumbnail picker (staff upload UI) */
+
+.gsu-thumbnail-section {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(17, 24, 39, 0.12);
+  max-width: 42rem;
+}
+
+.gsu-thumbnail-section__title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+}
+
+.gsu-thumbnail-section__help {
+  margin: 0 0 1rem;
+  color: rgba(17, 24, 39, 0.65);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.gsu-thumbnail-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .gsu-thumbnail-layout {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: start;
+  }
+}
+
+.gsu-thumbnail-preview-video {
+  width: 100%;
+  max-height: 220px;
+  background: #111;
+  border-radius: 10px;
+  display: block;
+}
+
+.gsu-thumbnail-current {
+  margin-top: 0.65rem;
+  font-size: 0.82rem;
+  color: rgba(17, 24, 39, 0.7);
+}
+
+.gsu-thumbnail-current img {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  margin-top: 0.35rem;
+  border-radius: 8px;
+  border: 2px solid #007d7e;
+}
+
+.gsu-thumbnail-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.gsu-thumbnail-option {
+  appearance: none;
+  border: 2px solid rgba(17, 24, 39, 0.15);
+  border-radius: 10px;
+  padding: 0;
+  background: #fff;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.gsu-thumbnail-option img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.gsu-thumbnail-option span {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.35rem 0.4rem;
+  text-align: center;
+  color: rgba(17, 24, 39, 0.75);
+}
+
+.gsu-thumbnail-option:hover {
+  border-color: #007d7e;
+}
+
+.gsu-thumbnail-option.is-selected {
+  border-color: #007d7e;
+  box-shadow: 0 0 0 2px rgba(0, 125, 126, 0.25);
+}
+
+.gsu-thumbnail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  margin-top: 0.85rem;
+  align-items: center;
+}
+
+.gsu-thumbnail-status {
+  margin-top: 0.65rem;
+  font-size: 0.85rem;
+  color: rgba(17, 24, 39, 0.7);
+}
+
+.gsu-thumbnail-custom {
+  margin-top: 0.85rem;
+  font-size: 0.85rem;
+}
+
+.gsu-thumbnail-custom input[type="file"] {
+  margin-top: 0.35rem;
+  max-width: 100%;
+}

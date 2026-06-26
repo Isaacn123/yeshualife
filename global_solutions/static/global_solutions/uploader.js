@@ -89,6 +89,10 @@
       b2_part_url: base + "/b2/multipart/part-url/",
       b2_complete: base + "/b2/multipart/complete/",
       process: base + "/process/start/",
+      thumbnails: base + "/thumbnails/",
+      thumbnails_generate: base + "/thumbnails/generate/",
+      thumbnails_select: base + "/thumbnails/select/",
+      thumbnails_upload: base + "/thumbnails/upload/",
     };
   }
 
@@ -118,6 +122,7 @@
     });
     return out;
   }
+  window.expandVideoApiUrlMap = expandVideoApiUrlMap;
 
   async function postForm(url, data) {
     var body = new URLSearchParams();
@@ -186,14 +191,14 @@
     }
 
     setStatus("Completing upload...");
-    await postForm(urls.b2_complete, {
+    var complete = await postForm(urls.b2_complete, {
       upload_id: uploadId,
       parts: JSON.stringify(parts),
       size_bytes: String(file.size),
     });
 
-    setStatus("Upload complete. You can mark for processing.");
-    return true;
+    setStatus("Upload complete. Choose a thumbnail below.");
+    return complete;
   }
 
   function snippetFormValue(name) {
@@ -240,12 +245,14 @@
 
         var file = filesList[0];
         setStatus("Uploading…");
-        await uploadMultipart(file, urls, function (pct) {
+        var complete = await uploadMultipart(file, urls, function (pct) {
           setStatus("Uploading… " + pct + "%");
         });
 
-        setStatus("Upload complete. Reloading…");
-        window.location.reload();
+        if (window.GsThumbnailPicker) {
+          window.GsThumbnailPicker.bootstrapFromUpload(urls, complete);
+        }
+        setStatus("Upload complete. Choose a thumbnail below.");
       } catch (e) {
         setStatus("Error: " + (e && e.message ? e.message : String(e)));
       } finally {
@@ -307,6 +314,7 @@
         var rows = files.map(renderFileRow);
 
         var createUrl = (urlTpl && urlTpl.create) ? urlTpl.create : defaultVideoApiUrls("00000000-0000-0000-0000-000000000000").create;
+        var lastComplete = null;
 
         for (var idx = 0; idx < files.length; idx++) {
           var file = files[idx];
@@ -326,14 +334,20 @@
           var urls = expandVideoApiUrlMap(urlTpl, currentVideoId);
 
           setRowStatus(row, "Uploading...");
-          await uploadMultipart(file, urls, function (pct) {
+          lastComplete = await uploadMultipart(file, urls, function (pct) {
             setRowStatus(row, "Uploading... " + pct + "%");
           });
-          setRowStatus(row, "Uploaded. Ready to mark PROCESSING.");
+          setRowStatus(row, "Uploaded. Choose a thumbnail below.");
         }
 
         processBtn.disabled = false;
-        setStatus("All uploads complete. You can mark the last upload for processing.");
+        if (window.GsThumbnailPicker && currentVideoId) {
+          window.GsThumbnailPicker.bootstrapFromUpload(
+            expandVideoApiUrlMap(urlTpl, currentVideoId),
+            lastComplete
+          );
+        }
+        setStatus("All uploads complete. Choose a thumbnail or mark for processing.");
       } catch (e) {
         setStatus("Error: " + (e && e.message ? e.message : String(e)));
       } finally {
