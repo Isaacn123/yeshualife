@@ -3,7 +3,8 @@
   <a href="{{ video.get_absolute_url }}" class="fh-video-card-link">
     <div class="fh-video-card-thumb">
       {% if video.thumbnail_url %}
-        <img src="{{ video.thumbnail_url }}" alt="" loading="lazy" width="320" height="180">
+        <img src="{{ video.thumbnail_url }}" alt="" loading="lazy" decoding="async">
+        <span class="fh-thumb-play-overlay" aria-hidden="true"></span>
       {% elif video.playback_url and not video.playback_uses_hls %}
         <video
           class="fh-thumb-video"

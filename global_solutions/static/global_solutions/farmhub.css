@@ -657,6 +657,7 @@ body.template-globalsolutions.template-farmhub h3 {
 .fh-video-card-thumb {
   position: relative;
   aspect-ratio: 16 / 9;
+  width: 100%;
   border-radius: var(--fh-radius);
   overflow: hidden;
   background: var(--fh-bg-alt);
@@ -670,33 +671,43 @@ body.template-globalsolutions.template-farmhub h3 {
   transform: translateY(-2px);
 }
 
-.fh-video-card-thumb img {
+.fh-video-card-thumb img,
+.fh-video-card-thumb .fh-thumb-video {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
+  border: 0;
 }
 
 .fh-thumb-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
   background: #2c2419;
   pointer-events: none;
 }
 
 .fh-thumb-play-overlay {
   position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 2.5rem;
-  height: 2.5rem;
-  border: 2px solid rgba(255, 255, 255, 0.9);
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 2px solid rgba(255, 255, 255, 0.92);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(44, 36, 25, 0.45);
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transform: translate(-50%, -50%);
   pointer-events: none;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.fh-video-card:hover .fh-thumb-play-overlay {
+  transform: translate(-50%, -50%) scale(1.06);
+  background: rgba(44, 36, 25, 0.55);
 }
 
 .fh-thumb-play-overlay::after {
@@ -710,8 +721,8 @@ body.template-globalsolutions.template-farmhub h3 {
 }
 
 .fh-video-card-placeholder {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -728,6 +739,7 @@ body.template-globalsolutions.template-farmhub h3 {
 
 .fh-badge {
   position: absolute;
+  z-index: 3;
   font-size: 0.68rem;
   font-weight: 700;
   padding: 0.18rem 0.45rem;
