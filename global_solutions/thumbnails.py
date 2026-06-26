@@ -105,9 +105,16 @@ def ffmpeg_diagnostic() -> dict:
 
 
 def poster_url_for_key(key: str) -> str:
-    if getattr(settings, "B2_POSTER_USE_PRESIGNED", False):
+    use_presigned = getattr(settings, "B2_POSTER_USE_PRESIGNED", None)
+    if use_presigned is None:
+        use_presigned = getattr(settings, "B2_PLAYBACK_USE_PRESIGNED", True)
+    if use_presigned:
         expires = int(getattr(settings, "B2_POSTER_PRESIGNED_EXPIRES", 604800))
-        return b2_presigned_get_url(key, expires_in=expires)
+        return b2_presigned_get_url(
+            key,
+            expires_in=expires,
+            response_content_type="image/jpeg",
+        )
     return b2_public_url(key)
 
 
@@ -286,7 +293,7 @@ def list_thumbnail_options(video) -> dict:
         }
 
     return {
-        "poster_url": (video.poster_image_url or "").strip(),
+        "poster_url": video.thumbnail_url,
         "candidates": candidates,
         "custom": custom,
     }
@@ -385,7 +392,7 @@ def generate_poster_candidates(video, *, count: int = CANDIDATE_COUNT) -> list[d
 
     select_video_poster(video, generated[0]["b2_key"], save=False)
 
-    update_fields = ["poster_image_url", "updated_at"]
+    update_fields = ["poster_image_url", "poster_b2_key", "updated_at"]
     if duration_seconds and not video.duration_seconds:
         video.duration_seconds = duration_seconds
         update_fields.append("duration_seconds")
@@ -400,10 +407,12 @@ def select_video_poster(video, b2_key: str, *, save: bool = True) -> str:
     key = (b2_key or "").strip().lstrip("/")
     if not poster_key_allowed_for_video(video, key):
         raise ValueError("Invalid poster key for this video.")
-    video.poster_image_url = poster_url_for_key(key)
+    url = poster_url_for_key(key)
+    video.poster_b2_key = key
+    video.poster_image_url = url
     if save:
-        video.save(update_fields=["poster_image_url", "updated_at"])
-    return video.poster_image_url
+        video.save(update_fields=["poster_b2_key", "poster_image_url", "updated_at"])
+    return url
 
 
 def upload_custom_poster(video, uploaded_file) -> dict:

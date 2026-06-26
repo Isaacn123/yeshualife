@@ -258,6 +258,12 @@ class GlobalSolutionsVideo(models.Model):
     hls_master_manifest_key = models.CharField(max_length=512, blank=True, default="")
     hls_master_manifest_url = models.URLField(blank=True, default="")
     poster_image_url = models.URLField(blank=True, default="")
+    poster_b2_key = models.CharField(
+        max_length=512,
+        blank=True,
+        default="",
+        help_text="B2 object key for the selected thumbnail (resolved to a readable URL on display).",
+    )
     duration_seconds = models.PositiveIntegerField(null=True, blank=True)
 
     status = models.CharField(
@@ -301,6 +307,11 @@ class GlobalSolutionsVideo(models.Model):
 
     @property
     def thumbnail_url(self) -> str:
+        key = (self.poster_b2_key or "").strip()
+        if key:
+            from .thumbnails import poster_url_for_key
+
+            return poster_url_for_key(key)
         return (self.poster_image_url or "").strip()
 
     @property
@@ -417,6 +428,7 @@ class GlobalSolutionsVideo(models.Model):
                 FieldPanel("hls_master_manifest_key", read_only=True),
                 FieldPanel("hls_master_manifest_url", read_only=True),
                 FieldPanel("poster_image_url", read_only=True),
+                FieldPanel("poster_b2_key", read_only=True),
                 FieldPanel("duration_seconds", read_only=True),
             ],
             heading="Storage & playback (automatic)",

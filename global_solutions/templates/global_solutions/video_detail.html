@@ -36,7 +36,7 @@
               preload="metadata"
               data-playback-src="{{ video.playback_url }}"
               data-playback-hls="true"
-              {% if video.poster_image_url %}poster="{{ video.poster_image_url }}"{% endif %}
+              {% if video.thumbnail_url %}poster="{{ video.thumbnail_url }}"{% endif %}
             ></video>
           {% else %}
             <video
@@ -46,7 +46,7 @@
               webkit-playsinline
               preload="metadata"
               src="{{ video.playback_url }}"
-              {% if video.poster_image_url %}poster="{{ video.poster_image_url }}"{% endif %}
+              {% if video.thumbnail_url %}poster="{{ video.thumbnail_url }}"{% endif %}
             ></video>
           {% endif %}
         </div>

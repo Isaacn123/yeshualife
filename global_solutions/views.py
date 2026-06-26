@@ -282,14 +282,14 @@ def b2_complete_multipart_upload(request, video_id):
 
         thumb_payload = list_thumbnail_options(video)
     except Exception:
-        thumb_payload = {"poster_url": video.poster_image_url or "", "candidates": [], "custom": None}
+        thumb_payload = {"poster_url": video.thumbnail_url or "", "candidates": [], "custom": None}
 
     return JsonResponse(
         {
             "ok": True,
             "key": video.original_b2_key,
             "public_url": b2_public_url(video.original_b2_key),
-            "poster_url": video.poster_image_url or "",
+            "poster_url": video.thumbnail_url or "",
             "candidates": candidates or thumb_payload.get("candidates") or [],
             "playback_url": video.playback_url,
         }

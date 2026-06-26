@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import re
 from dataclasses import dataclass
 
 import boto3
@@ -17,6 +18,14 @@ class B2Config:
     public_base_url: str
 
 
+def _normalize_http_url(url: str) -> str:
+    """Ensure B2 base URLs include a scheme (browsers need https://)."""
+    url = (url or "").strip().rstrip("/")
+    if url and not re.match(r"^https?://", url, re.IGNORECASE):
+        url = "https://" + url.lstrip("/")
+    return url
+
+
 def get_b2_config() -> B2Config:
     """
     Backblaze B2 (S3-compatible) configuration from env vars.
@@ -30,12 +39,12 @@ def get_b2_config() -> B2Config:
       - B2_PUBLIC_BASE_URL (CDN or bucket public base URL used for playback)
     """
     return B2Config(
-        endpoint_url=os.environ["B2_S3_ENDPOINT"],
+        endpoint_url=_normalize_http_url(os.environ["B2_S3_ENDPOINT"]),
         region_name=os.environ.get("B2_REGION", "us-west-002"),
         bucket_name=os.environ["B2_BUCKET"],
         access_key_id=os.environ["B2_KEY_ID"],
         secret_access_key=os.environ["B2_APP_KEY"],
-        public_base_url=os.environ["B2_PUBLIC_BASE_URL"].rstrip("/"),
+        public_base_url=_normalize_http_url(os.environ["B2_PUBLIC_BASE_URL"]),
     )
 
 
