@@ -27,7 +27,12 @@
         <span class="fh-badge fh-badge-res">{{ video.resolution_label }}</span>
       {% endif %}
     </div>
-    <h3 class="fh-video-card-title">{{ video.title }}</h3>
+    <div class="fh-video-card-copy">
+      <h3 class="fh-video-card-title">{{ video.title }}</h3>
+      {% if video.description %}
+        <p class="fh-video-card-desc">{{ video.description|striptags }}</p>
+      {% endif %}
+    </div>
   </a>
   <div class="fh-video-card-meta">
     {% if video.creator or video.category %}

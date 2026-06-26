@@ -659,12 +659,11 @@ body.template-globalsolutions.template-farmhub h3 {
   min-width: 0;
 }
 
-.fh-video-card-link .fh-video-card-title {
-  margin-top: 0.55rem;
-  padding: 0 0.1rem;
+.fh-video-card-link .fh-video-card-copy {
+  padding: 0.65rem 0.2rem 0.15rem;
 }
 
-.fh-video-card:hover .fh-video-card-link .fh-video-card-title {
+.fh-video-card:hover .fh-video-card-title {
   color: var(--fh-accent-hover);
 }
 
@@ -789,8 +788,8 @@ body.template-globalsolutions.template-farmhub h3 {
 
 .fh-video-card-meta {
   flex: 1;
-  margin-top: 0.45rem;
-  padding: 0.65rem 0.75rem 0.7rem;
+  margin-top: 0.35rem;
+  padding: 0.55rem 0.7rem 0.65rem;
   background: rgba(255, 252, 247, 0.75);
   border: 1px solid var(--fh-line);
   border-radius: var(--fh-radius);
@@ -798,19 +797,41 @@ body.template-globalsolutions.template-farmhub h3 {
 }
 
 .fh-video-card-title {
-  font-family: var(--fh-font-display);
-  font-size: 1.02rem;
-  font-weight: 500;
+  font-family: var(--fh-font);
+  font-size: 0.8125rem;
+  font-weight: 600;
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.35;
   color: var(--fh-text);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   transition: color 0.15s;
-  letter-spacing: -0.02em;
-  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+}
+
+.fh-video-card-desc {
+  font-family: var(--fh-font);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--fh-text-soft);
+  margin: 0.35rem 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .fh-video-card-title {
+    font-size: 0.875rem;
+  }
+
+  .fh-video-card-desc {
+    font-size: 0.8125rem;
+  }
 }
 
 .fh-video-card-sub {
@@ -818,10 +839,10 @@ body.template-globalsolutions.template-farmhub h3 {
   flex-wrap: wrap;
   gap: 0.25rem 0.5rem;
   font-family: var(--fh-font);
-  font-size: 0.74rem;
+  font-size: 0.6875rem;
   font-weight: 500;
   color: var(--fh-muted);
-  margin: 0.4rem 0 0;
+  margin: 0 0 0.35rem;
   line-height: 1.4;
 }
 
