@@ -316,14 +316,41 @@ def video_thumbnails_generate(request, video_id):
     video = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
     if not video.original_b2_key:
         return JsonResponse({"error": "No uploaded video yet."}, status=400)
-    from .thumbnails import generate_poster_candidates, list_thumbnail_options
+    from .thumbnails import (
+        ThumbnailGenerationError,
+        ffmpeg_diagnostic,
+        generate_poster_candidates,
+        list_thumbnail_options,
+    )
 
     try:
         candidates = generate_poster_candidates(video)
+    except ThumbnailGenerationError as exc:
+        return JsonResponse(
+            {
+                "error": str(exc),
+                "detail": exc.detail,
+                "ffmpeg": exc.ffmpeg_path or ffmpeg_diagnostic().get("resolved"),
+                "ffmpeg_diagnostic": ffmpeg_diagnostic(),
+            },
+            status=500,
+        )
     except Exception as exc:
-        return JsonResponse({"error": str(exc)}, status=500)
+        return JsonResponse(
+            {
+                "error": str(exc),
+                "ffmpeg_diagnostic": ffmpeg_diagnostic(),
+            },
+            status=500,
+        )
     if not candidates:
-        return JsonResponse({"error": "Could not generate thumbnails (check ffmpeg on server)."}, status=500)
+        return JsonResponse(
+            {
+                "error": "Could not generate thumbnails.",
+                "ffmpeg_diagnostic": ffmpeg_diagnostic(),
+            },
+            status=500,
+        )
     payload = list_thumbnail_options(video)
     payload["playback_url"] = video.playback_url
     payload["ok"] = True

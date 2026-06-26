@@ -34,7 +34,10 @@
       json = {};
     }
     if (!resp.ok) {
-      throw new Error((json && json.error) || ("Request failed: " + resp.status));
+      var msg = (json && json.error) || ("Request failed: " + resp.status);
+      if (json && json.detail) msg += " — " + json.detail;
+      if (json && json.ffmpeg) msg += " (ffmpeg: " + json.ffmpeg + ")";
+      throw new Error(msg);
     }
     return json;
   }

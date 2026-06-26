@@ -19,6 +19,13 @@ class FFmpegNotFoundError(FileNotFoundError):
     """Raised when ffmpeg cannot be located."""
 
 
+class ThumbnailGenerationError(RuntimeError):
+    def __init__(self, message: str, *, detail: str = "", ffmpeg_path: str = ""):
+        super().__init__(message)
+        self.detail = detail
+        self.ffmpeg_path = ffmpeg_path
+
+
 CANDIDATE_COUNT = 3
 
 
@@ -49,14 +56,12 @@ def _resolve_ffmpeg() -> str:
     if bundled:
         return bundled
     raise FFmpegNotFoundError(
-        "ffmpeg not found. Either: (1) `sudo apt install -y ffmpeg`, or "
-        "(2) `pip install imageio-ffmpeg` in your venv, or "
-        "(3) set FFMPEG_BIN=/full/path/to/ffmpeg"
+        "ffmpeg not found. Install imageio-ffmpeg in the same venv gunicorn uses, "
+        "or apt install ffmpeg, or set FFMPEG_BIN=/full/path/to/ffmpeg"
     )
 
 
 def _resolve_ffprobe() -> str | None:
-    """ffprobe is optional; duration can be parsed via ffmpeg if missing."""
     configured = (os.environ.get("FFPROBE_BIN") or getattr(settings, "FFPROBE_BIN", "") or "").strip()
     if configured:
         return configured
@@ -70,16 +75,50 @@ def _resolve_ffprobe() -> str | None:
 
 
 def ensure_ffmpeg_available() -> str:
-    """Return ffmpeg path or raise FFmpegNotFoundError."""
     return _resolve_ffmpeg()
 
 
+def ffmpeg_diagnostic() -> dict:
+    configured = (os.environ.get("FFMPEG_BIN") or getattr(settings, "FFMPEG_BIN", "") or "").strip()
+    bundled = _bundled_ffmpeg()
+    which = shutil.which("ffmpeg")
+    try:
+        resolved = _resolve_ffmpeg()
+        version_proc = subprocess.run(
+            [resolved, "-version"],
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+        lines = (version_proc.stdout or version_proc.stderr or "").splitlines()
+        version = lines[0] if lines else "unknown"
+    except Exception as exc:
+        resolved = ""
+        version = f"unavailable: {exc}"
+    return {
+        "configured": configured or None,
+        "bundled_imageio": bundled,
+        "path_which": which,
+        "resolved": resolved or None,
+        "version": version,
+    }
+
+
 def poster_url_for_key(key: str) -> str:
-    """Stable-enough URL for <img> tags (public CDN path preferred)."""
     if getattr(settings, "B2_POSTER_USE_PRESIGNED", False):
         expires = int(getattr(settings, "B2_POSTER_PRESIGNED_EXPIRES", 604800))
         return b2_presigned_get_url(key, expires_in=expires)
     return b2_public_url(key)
+
+
+def _presigned_source_url(key: str) -> str:
+    s3 = get_b2_s3_client()
+    cfg = get_b2_config()
+    return s3.generate_presigned_url(
+        ClientMethod="get_object",
+        Params={"Bucket": cfg.bucket_name, "Key": key.lstrip("/")},
+        ExpiresIn=3600,
+    )
 
 
 def poster_dir_for_video(video) -> str:
@@ -106,19 +145,7 @@ def poster_key_allowed_for_video(video, key: str) -> bool:
     name = key[len(prefix) :]
     if name in {"poster.jpg", "custom.jpg"}:
         return True
-    if re.fullmatch(r"candidate-[1-9]\d*\.jpg", name):
-        return True
-    return False
-
-
-def _presigned_source_url(key: str) -> str:
-    s3 = get_b2_s3_client()
-    cfg = get_b2_config()
-    return s3.generate_presigned_url(
-        ClientMethod="get_object",
-        Params={"Bucket": cfg.bucket_name, "Key": key.lstrip("/")},
-        ExpiresIn=3600,
-    )
+    return bool(re.fullmatch(r"candidate-[1-9]\d*\.jpg", name))
 
 
 def _probe_metadata_ffprobe(input_url: str, ffprobe: str) -> tuple[int | None, str]:
@@ -151,10 +178,9 @@ def _probe_metadata_ffprobe(input_url: str, ffprobe: str) -> tuple[int | None, s
     return duration, label
 
 
-def _probe_metadata_ffmpeg(input_url: str, ffmpeg: str) -> tuple[int | None, str]:
-    """Fallback when ffprobe is not installed (ffmpeg -i parses stderr)."""
+def _probe_metadata_ffmpeg(input_source: str, ffmpeg: str) -> tuple[int | None, str]:
     proc = subprocess.run(
-        [ffmpeg, "-hide_banner", "-i", input_url],
+        [ffmpeg, "-hide_banner", "-i", input_source],
         capture_output=True,
         text=True,
         timeout=120,
@@ -172,12 +198,12 @@ def _probe_metadata_ffmpeg(input_url: str, ffmpeg: str) -> tuple[int | None, str
     return duration, label
 
 
-def _probe_metadata(input_url: str, ffmpeg: str) -> tuple[int | None, str]:
+def _probe_metadata(input_source: str, ffmpeg: str) -> tuple[int | None, str]:
     ffprobe = _resolve_ffprobe()
     try:
         if ffprobe:
-            return _probe_metadata_ffprobe(input_url, ffprobe)
-        return _probe_metadata_ffmpeg(input_url, ffmpeg)
+            return _probe_metadata_ffprobe(input_source, ffprobe)
+        return _probe_metadata_ffmpeg(input_source, ffmpeg)
     except Exception:
         return None, ""
 
@@ -186,37 +212,39 @@ def _frame_timestamps(duration_seconds: int | None, count: int = CANDIDATE_COUNT
     if duration_seconds and duration_seconds > 6:
         ratios = (0.08, 0.45, 0.82)
         return [max(0.5, min(duration_seconds - 0.5, duration_seconds * r)) for r in ratios[:count]]
-    return [1.0, 4.0, 9.0][:count]
+    return [1.0, 3.0, 6.0][:count]
 
 
-def _format_timestamp(seconds: float) -> str:
-    whole = int(seconds)
-    frac = seconds - whole
-    h, rem = divmod(whole, 3600)
-    m, s = divmod(rem, 60)
-    if h:
-        return f"{h:02d}:{m:02d}:{s:02d}.{int(frac * 100):02d}"
-    return f"{m:02d}:{s:02d}.{int(frac * 100):02d}"
-
-
-def _extract_frame(ffmpeg: str, input_url: str, seconds: float, output_path: Path) -> bool:
+def _extract_frame(ffmpeg: str, input_source: str, seconds: float, output_path: Path) -> tuple[bool, str]:
+    seconds = max(0.0, float(seconds))
     cmd = [
         ffmpeg,
-        "-y",
+        "-nostdin",
+        "-hide_banner",
+        "-loglevel",
+        "error",
         "-ss",
-        _format_timestamp(seconds),
+        f"{seconds:.3f}",
         "-i",
-        input_url,
+        input_source,
         "-frames:v",
         "1",
         "-q:v",
         "3",
         "-vf",
-        "scale='min(1280,iw)':-2",
+        "scale=1280:-2",
+        "-y",
         str(output_path),
     ]
     proc = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
-    return proc.returncode == 0 and output_path.is_file()
+    if proc.returncode == 0 and output_path.is_file() and output_path.stat().st_size > 0:
+        return True, ""
+    detail = (proc.stderr or proc.stdout or "ffmpeg produced no output").strip()
+    return False, detail[:500]
+
+
+def _download_source_video(s3, cfg, key: str, dest: Path) -> None:
+    s3.download_file(cfg.bucket_name, key.lstrip("/"), str(dest))
 
 
 def _b2_object_exists(key: str) -> bool:
@@ -241,15 +269,14 @@ def candidate_dict(video, index: int, *, seconds: float | None = None) -> dict:
 
 
 def list_thumbnail_options(video) -> dict:
-    """Return current poster + any generated candidates already on B2."""
     candidates = []
     for n in range(1, CANDIDATE_COUNT + 1):
         key = candidate_b2_key(video, n)
         if _b2_object_exists(key):
             candidates.append(candidate_dict(video, n))
 
-    custom_key = custom_poster_b2_key(video)
     custom = None
+    custom_key = custom_poster_b2_key(video)
     if _b2_object_exists(custom_key):
         custom = {
             "id": "custom",
@@ -265,40 +292,98 @@ def list_thumbnail_options(video) -> dict:
     }
 
 
+def _upload_generated_frames(
+    video,
+    s3,
+    cfg,
+    frames: list[tuple[int, float, Path]],
+) -> list[dict]:
+    generated: list[dict] = []
+    for index, seconds, poster_path in frames:
+        key = candidate_b2_key(video, index)
+        s3.upload_file(
+            str(poster_path),
+            cfg.bucket_name,
+            key,
+            ExtraArgs={"ContentType": "image/jpeg"},
+        )
+        generated.append(candidate_dict(video, index, seconds=seconds))
+    return generated
+
+
 def generate_poster_candidates(video, *, count: int = CANDIDATE_COUNT) -> list[dict]:
-    """
-    Extract ``count`` JPEG frames from the source video, upload to B2, set default poster.
-    Returns candidate metadata for the staff thumbnail picker.
-    """
     if not video.original_b2_key:
         return []
 
-    ffmpeg = _resolve_ffmpeg()
-    input_url = _presigned_source_url(video.original_b2_key)
+    try:
+        ffmpeg = _resolve_ffmpeg()
+    except FFmpegNotFoundError as exc:
+        raise ThumbnailGenerationError(str(exc), ffmpeg_path="") from exc
+
     s3 = get_b2_s3_client()
     cfg = get_b2_config()
-
+    input_url = _presigned_source_url(video.original_b2_key)
     duration_seconds, resolution_label = _probe_metadata(input_url, ffmpeg)
     timestamps = _frame_timestamps(duration_seconds, count=count)
+    errors: list[str] = []
     generated: list[dict] = []
 
     with tempfile.TemporaryDirectory(prefix="gs_poster_") as tmpdir:
+        tmp = Path(tmpdir)
+        ok_frames: list[tuple[int, float, Path]] = []
+
         for index, seconds in enumerate(timestamps, start=1):
-            poster_path = Path(tmpdir) / f"candidate-{index}.jpg"
-            if not _extract_frame(ffmpeg, input_url, seconds, poster_path):
-                continue
+            poster_path = tmp / f"candidate-{index}.jpg"
+            ok, err = _extract_frame(ffmpeg, input_url, seconds, poster_path)
+            if ok:
+                ok_frames.append((index, seconds, poster_path))
+            elif err:
+                errors.append(f"option {index} @ {seconds:.1f}s (url): {err}")
 
-            key = candidate_b2_key(video, index)
-            s3.upload_file(
-                str(poster_path),
-                cfg.bucket_name,
-                key,
-                ExtraArgs={"ContentType": "image/jpeg"},
-            )
-            generated.append(candidate_dict(video, index, seconds=seconds))
+        if not ok_frames:
+            local_source = tmp / "source.mp4"
+            try:
+                _download_source_video(s3, cfg, video.original_b2_key, local_source)
+            except Exception as exc:
+                raise ThumbnailGenerationError(
+                    "Could not read video from B2 for thumbnail generation.",
+                    detail=f"download failed: {exc}; ffmpeg errors: {' | '.join(errors)}",
+                    ffmpeg_path=ffmpeg,
+                ) from exc
 
-    if generated:
-        select_video_poster(video, generated[0]["b2_key"], save=False)
+            if not local_source.is_file() or local_source.stat().st_size == 0:
+                raise ThumbnailGenerationError(
+                    "Downloaded video file is empty.",
+                    detail=" | ".join(errors),
+                    ffmpeg_path=ffmpeg,
+                )
+
+            if not duration_seconds:
+                duration_seconds, resolution_label = _probe_metadata(str(local_source), ffmpeg)
+                timestamps = _frame_timestamps(duration_seconds, count=count)
+
+            ok_frames = []
+            errors = []
+            for index, seconds in enumerate(timestamps, start=1):
+                poster_path = tmp / f"candidate-{index}.jpg"
+                ok, err = _extract_frame(ffmpeg, str(local_source), seconds, poster_path)
+                if ok:
+                    ok_frames.append((index, seconds, poster_path))
+                elif err:
+                    errors.append(f"option {index} @ {seconds:.1f}s (local): {err}")
+
+        if ok_frames:
+            generated = _upload_generated_frames(video, s3, cfg, ok_frames)
+
+    if not generated:
+        diag = ffmpeg_diagnostic()
+        raise ThumbnailGenerationError(
+            "Could not extract any thumbnail frames from the video.",
+            detail=" | ".join(errors) or "ffmpeg returned no frames",
+            ffmpeg_path=ffmpeg,
+        )
+
+    select_video_poster(video, generated[0]["b2_key"], save=False)
 
     update_fields = ["poster_image_url", "updated_at"]
     if duration_seconds and not video.duration_seconds:
@@ -373,5 +458,7 @@ def upload_custom_poster(video, uploaded_file) -> dict:
 
 
 def generate_poster_for_video(video) -> bool:
-    """Back-compat: generate candidates and use the first as the poster."""
-    return bool(generate_poster_candidates(video))
+    try:
+        return bool(generate_poster_candidates(video))
+    except ThumbnailGenerationError:
+        return False
