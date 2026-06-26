@@ -249,14 +249,22 @@ body.template-globalsolutions.template-farmhub h3 {
   aspect-ratio: 16 / 9;
   background: #2c2419;
   min-height: 200px;
+  width: 100%;
+  overflow: hidden;
 }
 
 .fh-hero-media img,
 .fh-hero-media .fh-thumb-video,
 .fh-hero-placeholder {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none;
+  min-width: 100%;
+  min-height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
@@ -599,6 +607,13 @@ body.template-globalsolutions.template-farmhub h3 {
   grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
   gap: 1.35rem 1.15rem;
   width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 639px) {
+  .fh-video-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 /* Few videos: expand cards to fill the row instead of hugging the left */
@@ -632,12 +647,16 @@ body.template-globalsolutions.template-farmhub h3 {
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
+  min-width: 0;
 }
 
 .fh-video-card-link {
   text-decoration: none;
   color: inherit;
   display: block;
+  width: 100%;
+  min-width: 0;
 }
 
 .fh-video-card-link .fh-video-card-title {
@@ -658,6 +677,7 @@ body.template-globalsolutions.template-farmhub h3 {
   position: relative;
   aspect-ratio: 16 / 9;
   width: 100%;
+  min-width: 0;
   border-radius: var(--fh-radius);
   overflow: hidden;
   background: var(--fh-bg-alt);
@@ -671,16 +691,21 @@ body.template-globalsolutions.template-farmhub h3 {
   transform: translateY(-2px);
 }
 
+/* Global site CSS sets img { max-width: 100% } — posters must scale up to fill the box */
 .fh-video-card-thumb img,
 .fh-video-card-thumb .fh-thumb-video {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none;
+  min-width: 100%;
+  min-height: 100%;
   object-fit: cover;
   object-position: center;
   display: block;
   border: 0;
+  vertical-align: top;
 }
 
 .fh-thumb-video {
@@ -833,7 +858,8 @@ body.template-globalsolutions.template-farmhub h3 {
 }
 
 .fh-scroll-row .fh-video-card {
-  flex: 0 0 min(260px, 78vw);
+  flex: 0 0 min(260px, calc(100vw - 2.5rem));
+  min-width: 0;
   scroll-snap-align: start;
 }
 
@@ -966,10 +992,13 @@ body.template-globalsolutions.template-farmhub h3 {
 }
 
 .fh-detail-video {
-  width: 100%;
+  width: 100% !important;
+  max-width: 100%;
+  height: auto;
   max-height: 72vh;
   display: block;
   background: #2c2419;
+  object-fit: contain;
 }
 
 .fh-video-title {
