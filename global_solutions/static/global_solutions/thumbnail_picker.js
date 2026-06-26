@@ -92,6 +92,25 @@
     return "https://" + url.replace(/^\/+/, "");
   }
 
+  function isPresignedUrl(url) {
+    return /[?&]X-Amz-(Algorithm|Signature)=/i.test(url || "");
+  }
+
+  /** Presigned B2/S3 URLs break if extra query params are appended to the signature. */
+  function imageSrcForDisplay(url) {
+    url = absoluteMediaUrl(url);
+    if (!url || isPresignedUrl(url)) return url;
+    return url + (url.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+  }
+
+  function appendThumbnailImg(parent, url, alt) {
+    var img = document.createElement("img");
+    img.src = imageSrcForDisplay(url);
+    img.alt = alt || "";
+    parent.appendChild(img);
+    return img;
+  }
+
   function setStatus(section, text) {
     var el = section.querySelector(".gsu-thumbnail-status");
     if (el) el.textContent = text;
@@ -112,14 +131,16 @@
   function updateCurrentPoster(section, url) {
     var wrap = section.querySelector(".gsu-thumbnail-current");
     if (!wrap) return;
+    wrap.textContent = "";
+    var heading = document.createElement("strong");
+    heading.textContent = "Current thumbnail:";
+    wrap.appendChild(heading);
     url = absoluteMediaUrl(url);
     if (!url) {
-      wrap.innerHTML = "<strong>Current thumbnail:</strong> none yet";
+      wrap.appendChild(document.createTextNode(" none yet"));
       return;
     }
-    wrap.innerHTML =
-      "<strong>Current thumbnail:</strong>" +
-      '<img src="' + url + (url.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now() + '" alt="Current video thumbnail">';
+    appendThumbnailImg(wrap, url, "Current video thumbnail");
   }
 
   function renderOptions(section, data) {
@@ -141,14 +162,14 @@
       btn.type = "button";
       btn.className = "gsu-thumbnail-option";
       btn.setAttribute("data-b2-key", item.b2_key);
-      var imgUrl = absoluteMediaUrl(item.url);
       if (activeKey && item.b2_key === activeKey) {
         btn.classList.add("is-selected");
         section.setAttribute("data-selected-key", item.b2_key);
       }
-      btn.innerHTML =
-        '<img src="' + imgUrl + (imgUrl.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now() + '" alt="">' +
-        "<span>" + (item.label || "Thumbnail") + "</span>";
+      appendThumbnailImg(btn, item.url, "");
+      var caption = document.createElement("span");
+      caption.textContent = item.label || "Thumbnail";
+      btn.appendChild(caption);
       btn.addEventListener("click", function () {
         selectThumbnail(section, item.b2_key);
       });
