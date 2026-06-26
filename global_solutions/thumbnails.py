@@ -12,7 +12,7 @@ from pathlib import Path
 
 from django.conf import settings
 
-from .b2 import b2_head_object, b2_presigned_get_url, b2_public_url, get_b2_config, get_b2_s3_client
+from .b2 import b2_head_object, b2_presigned_get_url, b2_public_url, ensure_absolute_url, get_b2_config, get_b2_s3_client
 
 
 class FFmpegNotFoundError(FileNotFoundError):
@@ -110,10 +110,12 @@ def poster_url_for_key(key: str) -> str:
         use_presigned = getattr(settings, "B2_PLAYBACK_USE_PRESIGNED", True)
     if use_presigned:
         expires = int(getattr(settings, "B2_POSTER_PRESIGNED_EXPIRES", 604800))
-        return b2_presigned_get_url(
-            key,
-            expires_in=expires,
-            response_content_type="image/jpeg",
+        return ensure_absolute_url(
+            b2_presigned_get_url(
+                key,
+                expires_in=expires,
+                response_content_type="image/jpeg",
+            )
         )
     return b2_public_url(key)
 
@@ -294,6 +296,7 @@ def list_thumbnail_options(video) -> dict:
 
     return {
         "poster_url": video.thumbnail_url,
+        "poster_b2_key": (video.poster_b2_key or "").strip(),
         "candidates": candidates,
         "custom": custom,
     }

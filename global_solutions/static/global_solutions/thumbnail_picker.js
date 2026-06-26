@@ -84,6 +84,14 @@
     }
   }
 
+  function absoluteMediaUrl(url) {
+    url = (url || "").trim();
+    if (!url) return "";
+    if (/^https?:\/\//i.test(url)) return url;
+    if (url.indexOf("//") === 0) return "https:" + url;
+    return "https://" + url.replace(/^\/+/, "");
+  }
+
   function setStatus(section, text) {
     var el = section.querySelector(".gsu-thumbnail-status");
     if (el) el.textContent = text;
@@ -104,13 +112,14 @@
   function updateCurrentPoster(section, url) {
     var wrap = section.querySelector(".gsu-thumbnail-current");
     if (!wrap) return;
+    url = absoluteMediaUrl(url);
     if (!url) {
       wrap.innerHTML = "<strong>Current thumbnail:</strong> none yet";
       return;
     }
     wrap.innerHTML =
       "<strong>Current thumbnail:</strong>" +
-      '<img src="' + url + "?t=" + Date.now() + '" alt="Current video thumbnail">';
+      '<img src="' + url + (url.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now() + '" alt="Current video thumbnail">';
   }
 
   function renderOptions(section, data) {
@@ -126,18 +135,19 @@
       return;
     }
 
-    var activeUrl = data.poster_url || "";
+    var activeKey = (data.poster_b2_key || section.getAttribute("data-selected-key") || "").trim();
     items.forEach(function (item) {
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "gsu-thumbnail-option";
       btn.setAttribute("data-b2-key", item.b2_key);
-      if (item.url === activeUrl) {
+      var imgUrl = absoluteMediaUrl(item.url);
+      if (activeKey && item.b2_key === activeKey) {
         btn.classList.add("is-selected");
         section.setAttribute("data-selected-key", item.b2_key);
       }
       btn.innerHTML =
-        '<img src="' + item.url + "?t=" + Date.now() + '" alt="">' +
+        '<img src="' + imgUrl + (imgUrl.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now() + '" alt="">' +
         "<span>" + (item.label || "Thumbnail") + "</span>";
       btn.addEventListener("click", function () {
         selectThumbnail(section, item.b2_key);
@@ -153,6 +163,7 @@
     try {
       var data = await postForm(urls.thumbnails_select, { b2_key: b2Key });
       markSelected(section, b2Key);
+      section.setAttribute("data-selected-key", b2Key);
       updateCurrentPoster(section, data.poster_url);
       setStatus(section, "Thumbnail saved. It will appear on the public site immediately.");
     } catch (e) {
@@ -170,6 +181,9 @@
       video.src = data.playback_url;
     }
     updateCurrentPoster(section, data.poster_url);
+    if (data.poster_b2_key) {
+      section.setAttribute("data-selected-key", data.poster_b2_key);
+    }
     renderOptions(section, data);
     setStatus(section, "Pick a thumbnail or upload your own image.");
   }
@@ -184,6 +198,9 @@
       video.src = data.playback_url;
     }
     updateCurrentPoster(section, data.poster_url);
+    if (data.poster_b2_key) {
+      section.setAttribute("data-selected-key", data.poster_b2_key);
+    }
     renderOptions(section, data);
     setStatus(section, "Choose the thumbnail you want, or upload a custom image.");
   }

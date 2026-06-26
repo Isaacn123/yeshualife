@@ -312,7 +312,9 @@ class GlobalSolutionsVideo(models.Model):
             from .thumbnails import poster_url_for_key
 
             return poster_url_for_key(key)
-        return (self.poster_image_url or "").strip()
+        from .b2 import ensure_absolute_url
+
+        return ensure_absolute_url((self.poster_image_url or "").strip())
 
     @property
     def duration_display(self) -> str:

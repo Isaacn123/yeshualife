@@ -26,6 +26,18 @@ def _normalize_http_url(url: str) -> str:
     return url
 
 
+def ensure_absolute_url(url: str) -> str:
+    """Browsers treat scheme-less URLs as relative (breaks under /admin/...)."""
+    url = (url or "").strip()
+    if not url:
+        return ""
+    if url.startswith("//"):
+        return "https:" + url
+    if not re.match(r"^https?://", url, re.IGNORECASE):
+        return "https://" + url.lstrip("/")
+    return url
+
+
 def get_b2_config() -> B2Config:
     """
     Backblaze B2 (S3-compatible) configuration from env vars.
@@ -62,7 +74,7 @@ def get_b2_s3_client():
 
 def b2_public_url(key: str) -> str:
     cfg = get_b2_config()
-    return f"{cfg.public_base_url}/{cfg.bucket_name}/{key.lstrip('/')}"
+    return ensure_absolute_url(f"{cfg.public_base_url}/{cfg.bucket_name}/{key.lstrip('/')}")
 
 
 def b2_presigned_get_url(
@@ -77,10 +89,12 @@ def b2_presigned_get_url(
     params: dict = {"Bucket": cfg.bucket_name, "Key": key.lstrip("/")}
     if response_content_type:
         params["ResponseContentType"] = response_content_type
-    return s3.generate_presigned_url(
-        ClientMethod="get_object",
-        Params=params,
-        ExpiresIn=expires_in,
+    return ensure_absolute_url(
+        s3.generate_presigned_url(
+            ClientMethod="get_object",
+            Params=params,
+            ExpiresIn=expires_in,
+        )
     )
 
 
