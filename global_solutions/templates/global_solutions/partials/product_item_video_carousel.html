@@ -43,7 +43,7 @@
                     preload="metadata"
                     data-playback-src="{{ v.playback_url }}"
                     data-playback-hls="true"
-                    {% if v.poster_image_url %}poster="{{ v.poster_image_url }}"{% endif %}
+                    {% if v.thumbnail_url %}poster="{{ v.thumbnail_url }}"{% endif %}
                     {% if v.title %}aria-label="{{ v.title }}"{% endif %}
                   ></video>
                 {% else %}
@@ -52,7 +52,7 @@
                     playsinline
                     muted
                     preload="metadata"
-                    {% if v.poster_image_url %}poster="{{ v.poster_image_url }}"{% endif %}
+                    {% if v.thumbnail_url %}poster="{{ v.thumbnail_url }}"{% endif %}
                     {% if v.title %}aria-label="{{ v.title }}"{% endif %}
                   >
                     <source src="{{ v.playback_url }}" type="{{ v.original_content_type|default:'video/mp4' }}">

@@ -410,12 +410,12 @@ def select_video_poster(video, b2_key: str, *, save: bool = True) -> str:
     key = (b2_key or "").strip().lstrip("/")
     if not poster_key_allowed_for_video(video, key):
         raise ValueError("Invalid poster key for this video.")
-    url = poster_url_for_key(key)
     video.poster_b2_key = key
-    video.poster_image_url = url
+    # Presigned URLs are too long for URLField; resolve at display time via thumbnail_url.
+    video.poster_image_url = ""
     if save:
         video.save(update_fields=["poster_b2_key", "poster_image_url", "updated_at"])
-    return url
+    return poster_url_for_key(key)
 
 
 def upload_custom_poster(video, uploaded_file) -> dict:

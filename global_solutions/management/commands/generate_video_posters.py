@@ -28,7 +28,7 @@ class Command(BaseCommand):
 
         qs = GlobalSolutionsVideo.objects.filter(status=GlobalSolutionsVideoStatus.READY)
         if not force:
-            qs = qs.filter(poster_image_url="")
+            qs = qs.filter(poster_b2_key="")
         if video_id:
             qs = qs.filter(id=video_id)
 

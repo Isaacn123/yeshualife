@@ -299,6 +299,9 @@ class GlobalSolutionsVideo(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = _unique_slug(GlobalSolutionsVideo, self.title, exclude_pk=self.pk)
+        # poster_b2_key is the source of truth; presigned URLs exceed URLField max_length.
+        if (self.poster_b2_key or "").strip():
+            self.poster_image_url = ""
         super().save(*args, **kwargs)
 
     @property
@@ -429,7 +432,6 @@ class GlobalSolutionsVideo(models.Model):
                 FieldPanel("original_size_bytes", read_only=True),
                 FieldPanel("hls_master_manifest_key", read_only=True),
                 FieldPanel("hls_master_manifest_url", read_only=True),
-                FieldPanel("poster_image_url", read_only=True),
                 FieldPanel("poster_b2_key", read_only=True),
                 FieldPanel("duration_seconds", read_only=True),
             ],

@@ -148,7 +148,7 @@ class Command(BaseCommand):
                     try:
                         from global_solutions.thumbnails import generate_poster_for_video
 
-                        if not v.poster_image_url:
+                        if not v.poster_b2_key:
                             generate_poster_for_video(v)
                     except Exception:
                         pass

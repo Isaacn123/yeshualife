@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import re
 from dataclasses import dataclass
+from urllib.parse import urlparse
 
 import boto3
 from botocore.client import Config
@@ -23,6 +24,32 @@ def _normalize_http_url(url: str) -> str:
     url = (url or "").strip().rstrip("/")
     if url and not re.match(r"^https?://", url, re.IGNORECASE):
         url = "https://" + url.lstrip("/")
+    return url
+
+
+def _normalize_public_base_url(public_base_url: str, endpoint_url: str) -> str:
+    """
+    Fix common B2_PUBLIC_BASE_URL mistakes.
+
+    S3-style:  https://s3.us-east-005.backblazeb2.com/bucket/key  (no /file)
+    Friendly:  https://f005.backblazeb2.com/file/bucket/key
+    """
+    url = _normalize_http_url(public_base_url)
+    if not url:
+        return url
+
+    pub = urlparse(url)
+    host = pub.netloc.lower()
+    path = pub.path.rstrip("/")
+
+    # Wrong: S3 hostname with native B2 "/file" path segment.
+    if host.startswith("s3.") and host.endswith(".backblazeb2.com") and path == "/file":
+        return f"{pub.scheme}://{pub.netloc}"
+
+    # Wrong: friendly f### host without /file.
+    if re.fullmatch(r"f\d+\.backblazeb2\.com", host) and path in ("", "/"):
+        return f"{pub.scheme}://{pub.netloc}/file"
+
     return url
 
 
@@ -50,13 +77,17 @@ def get_b2_config() -> B2Config:
       - B2_APP_KEY
       - B2_PUBLIC_BASE_URL (CDN or bucket public base URL used for playback)
     """
+    endpoint_url = _normalize_http_url(os.environ["B2_S3_ENDPOINT"])
     return B2Config(
-        endpoint_url=_normalize_http_url(os.environ["B2_S3_ENDPOINT"]),
+        endpoint_url=endpoint_url,
         region_name=os.environ.get("B2_REGION", "us-west-002"),
         bucket_name=os.environ["B2_BUCKET"],
         access_key_id=os.environ["B2_KEY_ID"],
         secret_access_key=os.environ["B2_APP_KEY"],
-        public_base_url=_normalize_http_url(os.environ["B2_PUBLIC_BASE_URL"]),
+        public_base_url=_normalize_public_base_url(
+            os.environ["B2_PUBLIC_BASE_URL"],
+            endpoint_url,
+        ),
     )
 
 
