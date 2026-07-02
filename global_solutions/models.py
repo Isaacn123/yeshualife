@@ -79,8 +79,8 @@ class GlobalSolutionsSettings(models.Model):
     home_card_link = models.CharField(
         max_length=300,
         blank=True,
-        default="/farmhub/",
-        help_text="Where the button goes. Default: /farmhub/",
+        default="/global-solutions/",
+        help_text="Where the button goes. Default: /global-solutions/",
     )
 
     updated_at = models.DateTimeField(auto_now=True)
@@ -103,7 +103,8 @@ class GlobalSolutionsSettings(models.Model):
     @property
     def home_card_url(self) -> str:
         link = (self.home_card_link or "").strip()
-        if not link or link in {"/farmhub/", "/farmhub"}:
+        root_paths = {"", "/farmhub", "/global-solutions", "/global_solutions", "/globalsolutions"}
+        if link.rstrip("/").lower() in root_paths:
             return reverse("global_solutions:farmhub_home")
         return link
 

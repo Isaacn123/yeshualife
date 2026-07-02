@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.views.decorators.http import require_GET, require_POST
 
 from .api_urls import video_api_urls_placeholder_map
@@ -441,7 +442,7 @@ def farmhub_category(request, slug):
         "site_title": get_site_title(),
         "category": category,
         "videos": videos,
-        "farmhub_home_url": request.build_absolute_uri("/farmhub/"),
+        "farmhub_home_url": request.build_absolute_uri(reverse("global_solutions:farmhub_home")),
     }
     return render(request, "global_solutions/category_page.html", ctx)
 

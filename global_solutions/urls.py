@@ -1,18 +1,30 @@
 from django.urls import path
+from django.views.generic import RedirectView
 
 from . import api, views
 
 
 app_name = "global_solutions"
 
+_redirect = lambda pattern_name: RedirectView.as_view(
+    pattern_name=pattern_name,
+    permanent=True,
+    query_string=True,
+)
 
 urlpatterns = [
-    # FarmHub public discovery (frontend rewrite)
-    path("farmhub/", views.farmhub_home, name="farmhub_home"),
-    path("farmhub/search/", views.farmhub_search, name="farmhub_search"),
-    path("farmhub/category/<slug:slug>/", views.farmhub_category, name="farmhub_category"),
-    path("farmhub/creator/<slug:slug>/", views.farmhub_creator, name="farmhub_creator"),
-    path("farmhub/video/<slug:slug>/", views.farmhub_video, name="farmhub_video"),
+    # Public discovery hub (canonical URLs)
+    path("global-solutions/", views.farmhub_home, name="farmhub_home"),
+    path("global-solutions/search/", views.farmhub_search, name="farmhub_search"),
+    path("global-solutions/category/<slug:slug>/", views.farmhub_category, name="farmhub_category"),
+    path("global-solutions/creator/<slug:slug>/", views.farmhub_creator, name="farmhub_creator"),
+    path("global-solutions/video/<slug:slug>/", views.farmhub_video, name="farmhub_video"),
+    # Legacy /farmhub/ URLs → permanent redirects
+    path("farmhub/", _redirect("global_solutions:farmhub_home")),
+    path("farmhub/search/", _redirect("global_solutions:farmhub_search")),
+    path("farmhub/category/<slug:slug>/", _redirect("global_solutions:farmhub_category")),
+    path("farmhub/creator/<slug:slug>/", _redirect("global_solutions:farmhub_creator")),
+    path("farmhub/video/<slug:slug>/", _redirect("global_solutions:farmhub_video")),
     # Public read API
     path("api/videos/", api.api_videos_list, name="api_videos_list"),
     path("api/videos/trending/", api.api_videos_trending, name="api_videos_trending"),

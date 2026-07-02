@@ -60,7 +60,7 @@ $VENV_PYTHON manage.py generate_video_posters --limit 50 || echo "WARN: poster g
 echo "==> Smoke tests (adjust host if needed)"
 BASE="${SMOKE_BASE_URL:-https://yeshualifeug.com}"
 for path in \
-  "/farmhub/" \
+  "/global-solutions/" \
   "/api/categories/" \
   "/global-solutions/api/ok/" \
   ; do
@@ -72,4 +72,4 @@ echo ""
 echo "Done. Next steps in Wagtail admin:"
 echo "  1. Snippets → Solution categories — review Feeding, Preaching, Crop Farming, etc."
 echo "  2. Snippets → Global Solutions videos — confirm each video has a Category"
-echo "  3. Open $BASE/farmhub/ in the browser"
+echo "  3. Open $BASE/global-solutions/ in the browser"
