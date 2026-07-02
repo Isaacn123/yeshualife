@@ -6,21 +6,32 @@
     <div class="row">
       <div class="col px-4">
         <div class="gs-home-card__frame position-relative overflow-hidden rounded">
-          <div
-            class="bg-holder overlay overlay-1 gs-home-card__bg"
-            style="background-image: url(
-              {%- if card.home_card_image -%}
-                {% image card.home_card_image fill-1920x1080 as gs_card_img %}'{{ gs_card_img.url }}'
-              {%- elif card.hero_image_url -%}
-                '{{ card.hero_image_url }}'
-              {%- else -%}
-                'none'
-              {%- endif -%}
-            );{% if not card.home_card_image and not card.hero_image_url %} background: linear-gradient(135deg, #6b5638 0%, #2c2419 55%, #1a1510 100%);{% endif %}"
-            data-parallax=""
-            data-rellax-percentage="0.5"
-            data-rellax-speed="-2"
-          ></div>
+          {% if card.home_card_image %}
+            {% image card.home_card_image fill-1920x1080 as gs_card_img %}
+            <div
+              class="bg-holder overlay overlay-1 gs-home-card__bg"
+              style="background-image: url('{{ gs_card_img.url }}');"
+              data-parallax=""
+              data-rellax-percentage="0.5"
+              data-rellax-speed="-2"
+            ></div>
+          {% elif card.hero_image_url %}
+            <div
+              class="bg-holder overlay overlay-1 gs-home-card__bg"
+              style="background-image: url('{{ card.hero_image_url }}');"
+              data-parallax=""
+              data-rellax-percentage="0.5"
+              data-rellax-speed="-2"
+            ></div>
+          {% else %}
+            <div
+              class="bg-holder overlay overlay-1 gs-home-card__bg"
+              style="background: linear-gradient(135deg, #6b5638 0%, #2c2419 55%, #1a1510 100%);"
+              data-parallax=""
+              data-rellax-percentage="0.5"
+              data-rellax-speed="-2"
+            ></div>
+          {% endif %}
           <div class="gs-home-card__scrim" aria-hidden="true"></div>
           <div class="gs-home-card__content position-relative py-8 py-md-10 px-3 px-md-4" data-zanim-timeline="{}">
             <div class="overflow-hidden">
