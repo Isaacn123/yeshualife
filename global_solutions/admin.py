@@ -29,7 +29,39 @@ class CreatorAdmin(admin.ModelAdmin):
 
 @admin.register(GlobalSolutionsSettings)
 class GlobalSolutionsSettingsAdmin(admin.ModelAdmin):
-    list_display = ("page_title", "updated_at")
+    list_display = ("page_title", "home_card_enabled", "updated_at")
+    fieldsets = (
+        (
+            "FarmHub page",
+            {
+                "fields": (
+                    "page_title",
+                    "hero_title",
+                    "hero_subtitle",
+                    "hero_image",
+                    "hero_image_url",
+                    "seo_description",
+                ),
+            },
+        ),
+        (
+            "Main site homepage card",
+            {
+                "description": (
+                    "Use Wagtail admin (Snippets) for the image upload picker. "
+                    "Upload Card background image from the media library."
+                ),
+                "fields": (
+                    "home_card_enabled",
+                    "home_card_title",
+                    "home_card_description",
+                    "home_card_image",
+                    "home_card_button_text",
+                    "home_card_link",
+                ),
+            },
+        ),
+    )
 
     def has_add_permission(self, request):
         # Enforce single record by convention (simple + safe).

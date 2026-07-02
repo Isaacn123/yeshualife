@@ -19,6 +19,16 @@ from wagtail.snippets.models import register_snippet
 from .wagtail_panels import GlobalSolutionsVideoB2UploadPanel
 
 
+def _wagtail_image_rendition_url(image, *, spec: str = "fill-1920x1080") -> str:
+    if not image:
+        return ""
+    try:
+        return image.get_rendition(spec).url
+    except Exception:
+        file_obj = getattr(image, "file", None)
+        return file_obj.url if file_obj else ""
+
+
 def _unique_slug(model_cls, base: str, *, exclude_pk=None) -> str:
     base = slugify(base)[:200] or "item"
     slug = base
@@ -43,7 +53,19 @@ class GlobalSolutionsSettings(models.Model):
     page_title = models.CharField(max_length=160, default="Global Solutions")
     hero_title = models.CharField(max_length=160, default="Global Solutions")
     hero_subtitle = models.TextField(blank=True, default="")
-    hero_image_url = models.URLField(blank=True, default="")
+    hero_image = models.ForeignKey(
+        "wagtailimages.Image",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        help_text="Upload a hero image for the Global Solutions hub (recommended).",
+    )
+    hero_image_url = models.URLField(
+        blank=True,
+        default="",
+        help_text="Optional legacy fallback URL if you do not upload an image above.",
+    )
 
     seo_description = models.CharField(max_length=300, blank=True, default="")
 
@@ -69,7 +91,7 @@ class GlobalSolutionsSettings(models.Model):
         null=True,
         blank=True,
         related_name="+",
-        help_text="Background image for the homepage card.",
+        help_text="Upload a wide background image (1920×1080 recommended) for the main site homepage card.",
     )
     home_card_button_text = models.CharField(
         max_length=80,
@@ -113,12 +135,28 @@ class GlobalSolutionsSettings(models.Model):
         label = (self.home_card_button_text or "").strip()
         return label or "Explore Global Solutions"
 
+    @property
+    def resolved_hero_image_url(self) -> str:
+        uploaded = _wagtail_image_rendition_url(self.hero_image)
+        if uploaded:
+            return uploaded
+        return (self.hero_image_url or "").strip()
+
+    @property
+    def home_card_background_url(self) -> str:
+        """Homepage promo card: dedicated upload first, then hub hero upload."""
+        uploaded = _wagtail_image_rendition_url(self.home_card_image)
+        if uploaded:
+            return uploaded
+        return self.resolved_hero_image_url
+
     panels = [
         MultiFieldPanel(
             [
                 FieldPanel("page_title"),
                 FieldPanel("hero_title"),
                 FieldPanel("hero_subtitle"),
+                FieldPanel("hero_image"),
                 FieldPanel("hero_image_url"),
                 FieldPanel("seo_description"),
             ],
@@ -126,6 +164,13 @@ class GlobalSolutionsSettings(models.Model):
         ),
         MultiFieldPanel(
             [
+                HelpPanel(
+                    content=(
+                        "<p><strong>Main site homepage card</strong> (yeshualifeug.com home page, below Latest Updates).</p>"
+                        "<p>Use <strong>Card background image</strong> to upload from the media library — "
+                        "no external image URL needed. Recommended size: 1920×1080 or wider.</p>"
+                    ),
+                ),
                 FieldPanel("home_card_enabled"),
                 FieldPanel("home_card_title"),
                 FieldPanel("home_card_description"),

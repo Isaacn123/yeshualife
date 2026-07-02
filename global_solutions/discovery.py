@@ -148,7 +148,7 @@ def build_farmhub_home_context() -> dict:
         "site_title": page_title,
         "hero_title": hero_title,
         "hero_subtitle": hero_subtitle,
-        "hero_image_url": (settings_obj.hero_image_url if settings_obj else "").strip(),
+        "hero_image_url": settings_obj.resolved_hero_image_url if settings_obj else "",
         "featured_video": get_featured_video(),
         "trending_videos": get_trending_videos(limit=8),
         "latest_videos": get_latest_videos(limit=8),
