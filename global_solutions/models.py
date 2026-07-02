@@ -47,6 +47,42 @@ class GlobalSolutionsSettings(models.Model):
 
     seo_description = models.CharField(max_length=300, blank=True, default="")
 
+    # Main site homepage promo card (BlogIndexPage)
+    home_card_enabled = models.BooleanField(
+        default=True,
+        help_text="Show a Global Solutions card on the main site homepage.",
+    )
+    home_card_title = models.CharField(
+        max_length=160,
+        blank=True,
+        default="Global Solutions",
+        help_text="Headline on the homepage card.",
+    )
+    home_card_description = models.TextField(
+        blank=True,
+        default="",
+        help_text="Short text under the title (1–2 sentences).",
+    )
+    home_card_image = models.ForeignKey(
+        "wagtailimages.Image",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        help_text="Background image for the homepage card.",
+    )
+    home_card_button_text = models.CharField(
+        max_length=80,
+        blank=True,
+        default="Explore Global Solutions",
+    )
+    home_card_link = models.CharField(
+        max_length=300,
+        blank=True,
+        default="/farmhub/",
+        help_text="Where the button goes. Default: /farmhub/",
+    )
+
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -56,12 +92,48 @@ class GlobalSolutionsSettings(models.Model):
     def __str__(self) -> str:
         return "Global Solutions Settings"
 
+    @classmethod
+    def load(cls):
+        return cls.objects.first()
+
+    @property
+    def shows_home_card(self) -> bool:
+        return bool(self.home_card_enabled and (self.home_card_title or "").strip())
+
+    @property
+    def home_card_url(self) -> str:
+        link = (self.home_card_link or "").strip()
+        if not link or link in {"/farmhub/", "/farmhub"}:
+            return reverse("global_solutions:farmhub_home")
+        return link
+
+    @property
+    def home_card_button_label(self) -> str:
+        label = (self.home_card_button_text or "").strip()
+        return label or "Explore Global Solutions"
+
     panels = [
-        FieldPanel("page_title"),
-        FieldPanel("hero_title"),
-        FieldPanel("hero_subtitle"),
-        FieldPanel("hero_image_url"),
-        FieldPanel("seo_description"),
+        MultiFieldPanel(
+            [
+                FieldPanel("page_title"),
+                FieldPanel("hero_title"),
+                FieldPanel("hero_subtitle"),
+                FieldPanel("hero_image_url"),
+                FieldPanel("seo_description"),
+            ],
+            heading="FarmHub page",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("home_card_enabled"),
+                FieldPanel("home_card_title"),
+                FieldPanel("home_card_description"),
+                FieldPanel("home_card_image"),
+                FieldPanel("home_card_button_text"),
+                FieldPanel("home_card_link"),
+            ],
+            heading="Main site homepage card",
+        ),
     ]
 
 

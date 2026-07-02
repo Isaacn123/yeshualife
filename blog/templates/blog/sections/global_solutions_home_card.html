@@ -1,0 +1,57 @@
+{% load wagtailimages_tags %}
+{# Expects: card (GlobalSolutionsSettings with shows_home_card) #}
+{% if card and card.shows_home_card %}
+<section class="gs-home-card text-center py-0 overflow-hidden" id="globalSolutionsHomeCard" aria-labelledby="globalSolutionsHomeCardTitle">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col px-4">
+        <div class="gs-home-card__frame position-relative overflow-hidden rounded">
+          <div
+            class="bg-holder overlay overlay-1 gs-home-card__bg"
+            style="background-image: url(
+              {%- if card.home_card_image -%}
+                {% image card.home_card_image fill-1920x1080 as gs_card_img %}'{{ gs_card_img.url }}'
+              {%- elif card.hero_image_url -%}
+                '{{ card.hero_image_url }}'
+              {%- else -%}
+                'none'
+              {%- endif -%}
+            );{% if not card.home_card_image and not card.hero_image_url %} background: linear-gradient(135deg, #6b5638 0%, #2c2419 55%, #1a1510 100%);{% endif %}"
+            data-parallax=""
+            data-rellax-percentage="0.5"
+            data-rellax-speed="-2"
+          ></div>
+          <div class="gs-home-card__scrim" aria-hidden="true"></div>
+          <div class="gs-home-card__content position-relative py-8 py-md-10 px-3 px-md-4" data-zanim-timeline="{}">
+            <div class="overflow-hidden">
+              <p class="gs-home-card__eyebrow mb-3" data-zanim-xs='{"delay":0.05}'>
+                {{ card.page_title|default:"Global Solutions" }}
+              </p>
+            </div>
+            <div class="overflow-hidden">
+              <h2
+                class="gs-home-card__title text-white mb-3"
+                id="globalSolutionsHomeCardTitle"
+                data-zanim-xs='{"delay":0.1}'
+              >{{ card.home_card_title }}</h2>
+            </div>
+            {% if card.home_card_description %}
+            <div class="overflow-hidden">
+              <p class="gs-home-card__desc mx-auto mb-4" data-zanim-xs='{"delay":0.15}'>
+                {{ card.home_card_description }}
+              </p>
+            </div>
+            {% endif %}
+            <div data-zanim-xs='{"delay":0.22}'>
+              <a class="btn gs-home-card__btn mt-1" href="{{ card.home_card_url }}">
+                {{ card.home_card_button_label }}
+                <span class="gs-home-card__btn-arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}

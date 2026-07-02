@@ -23,6 +23,7 @@ from karamoja_response.models import karamojaResponsePage
 from landClearing.models import LandClearingPage
 from production.models import ProductionPage
 from solutions.models import SolutionsPage
+from global_solutions.models import GlobalSolutionsSettings
 
 # Create your models here.
 
@@ -104,6 +105,10 @@ class BlogIndexPage(Page):
     def serve(self,request):
         context = self.get_context(request=request)
         context['combined_pages'] = self.get_combined_pages()
+        gs_settings = GlobalSolutionsSettings.load()
+        context['global_solutions_home_card'] = (
+            gs_settings if gs_settings and gs_settings.shows_home_card else None
+        )
         return render(request,'blog/blog_index_page.html', context)  
 
 class VideoBlock(blocks.StructBlock):

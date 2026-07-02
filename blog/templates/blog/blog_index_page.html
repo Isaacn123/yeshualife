@@ -46,7 +46,11 @@
         {% endif %}
     {% endif %}
    
-{% endfor %} 
+{% endfor %}
+
+{% if global_solutions_home_card %}
+  {% include "blog/sections/global_solutions_home_card.html" with card=global_solutions_home_card %}
+{% endif %}
 
 
 <div class="d-flex flex-column justify-content-center align-items-center wrap-blog">
