@@ -1,3 +1,9 @@
+.html,
+html,
+body {
+    overflow-x: hidden;
+}
+
 .yesh-header{
     /* background-color:  #202654; */
     background-color: #22252a;
