@@ -1,0 +1,7 @@
+{% load wagtailcore_tags %}
+<section class="payments-page-hero pt-4 pb-4 mt-0 d-flex align-items-center bg-dark">
+    <div class="container px-3 text-center text-md-start">
+        <h1 class="text-white fw-bold mb-2 payments-page-hero__title">{{ page.specific.intro }}</h1>
+        <p class="text-white-50 mb-0 payments-page-hero__lead">{{ page.specific.body|truncatewords:25 }}</p>
+    </div>
+</section>

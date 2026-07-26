@@ -32,11 +32,14 @@ document.addEventListener('DOMContentLoaded', function() {
        // console.log(number === null);
        console.log("PASSED-DATA::",formData);
 
-    if(msgPayment === null || msgPayment.trim() === '' ){
-        alert("Message can't be blank!")
+    if (amount === null || amount.trim() === '') {
+        alert("Please enter a donation amount.");
         return false;
-    }else  if(amount === null || amount.trim() === '' ){
-        alert("Amount can't be blank!")
+    }
+
+    var amountNum = Number(amount);
+    if (isNaN(amountNum) || amountNum < 1000) {
+        alert("Minimum donation is 1,000 UGX.");
         return false;
     }
 
@@ -91,7 +94,20 @@ document.addEventListener('DOMContentLoaded', function() {
             // Hide and show containers
             container1.style.display = "none";
             container2.style.display = "block";
-          
+
+            var formatted = Number(donationAmount).toLocaleString() + '.00';
+            var summaryAmount = document.querySelector('.summary-amount');
+            var summaryLine = document.querySelector('.summary-line-amount');
+            var summaryMessage = document.getElementById('donation-message');
+            if (summaryAmount) {
+                summaryAmount.textContent = formatted;
+            }
+            if (summaryLine) {
+                summaryLine.textContent = formatted + ' UGX';
+            }
+            if (summaryMessage) {
+                summaryMessage.textContent = donationMessage.trim() ? donationMessage : '—';
+            }
 
             // Store the form data object in localStorage
             localStorage.setItem('formData', JSON.stringify(formData));

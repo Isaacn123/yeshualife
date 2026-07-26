@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags compress %}
+{% block body_class %}template-blogindexpage{% endblock  %}
+
+{% block extra_css  %}
+<link rel="stylesheet" href="{% static "css/top-section.css" %}">
+<link href="{% static 'css/payment.css' %}" rel="stylesheet">
+ {% endblock  %}
+
+{% block content %}
+{% include "nav_bar.html" %}
+
+
+{% comment %} {% if forloop.first %} {% endcomment %}
+{% include 'sections/header_py.html' %}
+
+
+<div class="container marketing">
+    {% include "sections/make_payment.html"%}
+</div>
+
+{% comment %} <hr class="featurette-divider">
+<section class="text-align-center">
+    {% include "sections/middle_section.html" %}
+</section> {% endcomment %}
+
+
+<div class="container marketing">
+    <hr class="featurette-divider">
+    <div class="d-flex flex-column featurette justify-content-center align-items-center">
+
+    <div class="col">
+        <img class="featurette-image img-fluid mx-auto d-block w-100" alt="Karamoja banner" src="https://yeshualifeug.com/media/images/KARAMOJAWEBSITEBUNNER.original.png" data-holder-rendered="true">
+      </div>
+
+      <div class="col text-center m-3 p-5">
+        {% comment %} <h2 class="featurette-heading">Your Donation can save a <span class="text-muted">life.</span></h2> {% endcomment %}
+        <p class="lead">Karamoja's anguished cries echo through hunger-stricken lands. Climate change, persistent droughts, and crop failures have spawned famine in this precious region. Families find themselves reduced to consuming leaves for survival. Yeshualife stands as a beacon of hope, committed to combating hunger in Karamoja. Through strategic initiatives, we aim to provide essential relief, ensuring no one is left to endure the harrowing experience of foraging for sustenance in desolation. You can join us in this vital mission by contributing your little donation, making a significant impact on the lives of those in need and fostering a resilient community in the heart of Karamoja.</p>
+      </div>
+
+    </div>
+</div>
+
+{% endblock  %}
+{% compress js %}
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+{% endblock  %}
+{% endcompress %}
+{% comment %} {% compress js %}
+{% block extra_js %}
+<script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+{% endblock  %}
+{% endcompress %} {% endcomment %}
+
+{% block footer %}
+{% include "blog/footer.html" %}
+{% endblock  %}
