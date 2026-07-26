@@ -230,9 +230,6 @@ form .btn.btn-primary:hover {
 
 /* /////// */
 
-body{
-    height: 30vh;
-}
 .modelheader{
 flex-shrink: 0;
 align-items: center;

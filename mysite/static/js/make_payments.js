@@ -3,10 +3,15 @@ document.addEventListener('DOMContentLoaded', function() {
     var container2 = document.getElementById('show-hidden-container');
     var form = document.getElementById('form-data');
     var buttonContinue = document.getElementById('my-button');
+    if (!container1 || !container2 || !form || !buttonContinue) {
+        return;
+    }
     var mtn = document.getElementById("openMtnModalButton");
     var airtel = document.getElementById("openAirtelModalButton");
-    var donationAmount = document.getElementsByName('amount')[0].value;
-    var donationCurrency = document.getElementById('currency').value;
+    var amountField = document.getElementsByName('amount')[0];
+    var donationAmount = amountField ? amountField.value : '';
+    var currencyEl = document.getElementById('currency');
+    var donationCurrency = currencyEl ? currencyEl.value : 'UGX';
 
 
     var box1Container = document.querySelector('.summary-amount');

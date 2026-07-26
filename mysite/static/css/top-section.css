@@ -635,3 +635,80 @@ p {
     padding-bottom: 2.5rem !important;
   }
 }
+
+/* ── Latest Updates polish (keeps same structure) ── */
+#bicycleCta .position-relative.overflow-hidden.rounded,
+#bicycleFeatures .position-relative.overflow-hidden.rounded,
+#bicycleFeatures1 a.d-block {
+  border-radius: 18px !important;
+}
+
+#bicycleCta .position-relative.overflow-hidden.rounded,
+#bicycleFeatures .position-relative.overflow-hidden.rounded {
+  box-shadow: 0 18px 48px rgba(22, 18, 12, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+#bicycleCta .bg-holder.overlay::before,
+#bicycleFeatures .bg-holder::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(12, 10, 7, 0.2) 0%,
+    rgba(12, 10, 7, 0.55) 55%,
+    rgba(12, 10, 7, 0.78) 100%
+  );
+  pointer-events: none;
+}
+
+#bicycleCta h2,
+#bicycleFeatures h2 {
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.38);
+  letter-spacing: -0.02em;
+}
+
+#bicycleCta .btn,
+#bicycleFeatures .btn {
+  border-radius: 999px;
+  padding: 0.7rem 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+#bicycleCta .btn:hover,
+#bicycleFeatures .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(22, 18, 12, 0.24);
+  filter: brightness(1.03);
+}
+
+/* 4-card grid (section_three_update) */
+#bicycleFeatures1 .col-sm-6.col-lg-3 > a.d-block {
+  text-decoration: none;
+  padding-bottom: 0.5rem;
+}
+
+#bicycleFeatures1 img.w-100.rounded {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  box-shadow: 0 12px 28px rgba(22, 18, 12, 0.12);
+}
+
+#bicycleFeatures1 h4 {
+  margin-top: 0.35rem !important;
+  margin-bottom: 0.35rem !important;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+}
+
+#bicycleFeatures1 p.text-body {
+  margin-bottom: 0;
+  opacity: 0.88;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
