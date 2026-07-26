@@ -256,6 +256,79 @@ form .btn.btn-primary:hover {
     max-width: 36rem;
 }
 
+/* Donation form inputs — override legacy global .form-control rules in this file */
+.donation-form-body {
+    background-color: #fafafa;
+}
+
+.donation-form-fields {
+    font-size: 1rem;
+}
+
+.donation-form-fields .donation-field-label {
+    color: #343a40;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.donation-form-fields .donation-field-hint {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.85rem;
+}
+
+.donation-form-fields .donation-field-input,
+.donation-form-fields .donation-field-textarea {
+    border: 1px solid #ced4da !important;
+    border-radius: 0.5rem !important;
+    background-color: #fff !important;
+    color: #212529 !important;
+    box-shadow: 0 1px 2px rgba(22, 18, 12, 0.06);
+    font-weight: 500;
+    letter-spacing: normal;
+    padding: 0.75rem 1rem !important;
+    min-height: auto;
+    height: auto;
+    font-size: 1.05rem !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.donation-form-fields .donation-field-floating > .donation-field-input {
+    height: calc(3.25rem + 2px);
+    padding-top: 1.35rem !important;
+    padding-bottom: 0.45rem !important;
+}
+
+.donation-form-fields .donation-field-floating > label {
+    color: #6c757d;
+    padding-left: 1rem;
+    font-size: 0.9rem;
+}
+
+.donation-form-fields .donation-field-floating > .donation-field-input:focus ~ label,
+.donation-form-fields .donation-field-floating > .donation-field-input:not(:placeholder-shown) ~ label {
+    color: #9a7328;
+}
+
+.donation-form-fields .donation-field-textarea {
+    min-height: 7rem;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.donation-form-fields .donation-field-input:focus,
+.donation-form-fields .donation-field-textarea:focus {
+    border-color: #cc9f3e !important;
+    box-shadow: 0 0 0 0.2rem rgba(204, 159, 62, 0.22) !important;
+    outline: none;
+}
+
+.donation-form-fields .donation-field-input::placeholder,
+.donation-form-fields .donation-field-textarea::placeholder {
+    color: #adb5bd;
+    opacity: 1;
+}
+
 .mtn-background{
     background-color: #ffcb00;
 }

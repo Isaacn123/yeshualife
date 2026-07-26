@@ -19,18 +19,18 @@
                 <p class="mb-0 mt-2 opacity-90">Your generosity makes a difference</p>
             </div>
         
-            <div class="card-body p-md-5 p-4">
-                <form id="form-data">
+            <div class="card-body p-md-5 p-4 donation-form-body">
+                <form id="form-data" class="donation-form-fields">
                     <div class="row g-4">
                         <!-- Amount Input -->
                         <div class="col-12">
-                            <div class="form-floating mb-2">
-                                <input id="amount_id" type="number" name="amount" class="form-control border-2 rounded-3" placeholder="Enter amount" required style="font-size: 1.2rem; height: 60px;">
-                                <label for="amount_id" class="text-muted">
-                                    <i class="fas fa-dollar-sign me-2"></i>Donation Amount (UGX)
+                            <div class="form-floating donation-field-floating mb-2">
+                                <input id="amount_id" type="number" name="amount" class="form-control donation-field-input" placeholder="Enter amount" required min="1000" inputmode="numeric">
+                                <label for="amount_id">
+                                    Donation Amount (UGX)
                                 </label>
                             </div>
-                            <small class="text-muted">
+                            <small class="text-muted donation-field-hint">
                                 <i class="fas fa-info-circle me-1"></i>
                                 Minimum donation: 1,000 UGX
                             </small>
@@ -38,10 +38,10 @@
 
                         <!-- Message Input -->
                         <div class="col-12">
-                            <label for="message_id" class="form-label text-muted mb-2">
-                                <i class="fas fa-message me-2"></i>Your Message (Optional)
+                            <label for="message_id" class="form-label donation-field-label mb-2">
+                                Your Message <span class="text-muted fw-normal">(optional)</span>
                             </label>
-                            <textarea id="message_id" rows="4" name="message" class="form-control-textarea" placeholder="Provide a short message..." style="width: 100%; border: 1px solid #ddd; border-radius: 0.375rem; padding: 0.75rem; font-size: 1rem; resize: none;"></textarea>
+                            <textarea id="message_id" rows="4" name="message" class="form-control donation-field-textarea" placeholder="Share why you're giving today…" maxlength="60"></textarea>
                             <div class="d-flex justify-content-between mt-1">
                                 <small class="text-muted" style="font-size: 11px;">Share why you're giving today</small>
                                 <small class="text-muted"><span id="char-count">0</span>/60</small>
