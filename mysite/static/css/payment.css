@@ -219,6 +219,19 @@ form .btn.btn-primary:hover {
     display: none;
 }
 
+.donation-form-header {
+    background: linear-gradient(135deg, #cc9f3e 0%, #cc913e 100%) !important;
+    background-image: linear-gradient(135deg, #cc9f3e 0%, #cc913e 100%) !important;
+    color: #fff;
+    border-bottom: none;
+}
+
+.donation-form-header h3,
+.donation-form-header h5,
+.donation-form-header p {
+    color: #fff !important;
+}
+
 .mtn-background{
     background-color: #ffcb00;
 }
