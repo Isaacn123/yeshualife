@@ -293,21 +293,8 @@ form .btn.btn-primary:hover {
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.donation-form-fields .donation-field-floating > .donation-field-input {
-    height: calc(3.25rem + 2px);
-    padding-top: 1.35rem !important;
-    padding-bottom: 0.45rem !important;
-}
-
-.donation-form-fields .donation-field-floating > label {
-    color: #6c757d;
-    padding-left: 1rem;
-    font-size: 0.9rem;
-}
-
-.donation-form-fields .donation-field-floating > .donation-field-input:focus ~ label,
-.donation-form-fields .donation-field-floating > .donation-field-input:not(:placeholder-shown) ~ label {
-    color: #9a7328;
+.donation-form-fields .donation-field-input--amount {
+    min-height: 3.25rem;
 }
 
 .donation-form-fields .donation-field-textarea {

@@ -24,12 +24,10 @@
                     <div class="row g-4">
                         <!-- Amount Input -->
                         <div class="col-12">
-                            <div class="form-floating donation-field-floating mb-2">
-                                <input id="amount_id" type="number" name="amount" class="form-control donation-field-input" placeholder="Enter amount" required min="1000" inputmode="numeric">
-                                <label for="amount_id">
-                                    Donation Amount (UGX)
-                                </label>
-                            </div>
+                            <label for="amount_id" class="form-label donation-field-label mb-2">
+                                Donation Amount (UGX)
+                            </label>
+                            <input id="amount_id" type="number" name="amount" class="form-control donation-field-input donation-field-input--amount" placeholder="e.g. 10000" required min="1000" inputmode="numeric">
                             <small class="text-muted donation-field-hint">
                                 <i class="fas fa-info-circle me-1"></i>
                                 Minimum donation: 1,000 UGX
