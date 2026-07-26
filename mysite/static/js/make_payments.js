@@ -33,13 +33,13 @@ document.addEventListener('DOMContentLoaded', function() {
        console.log("PASSED-DATA::",formData);
 
     if (amount === null || amount.trim() === '') {
-        alert("Please enter a donation amount.");
+        alert("Please enter a contribution amount.");
         return false;
     }
 
     var amountNum = Number(amount);
     if (isNaN(amountNum) || amountNum < 1000) {
-        alert("Minimum donation is 1,000 UGX.");
+        alert("Minimum contribution is 1,000 UGX.");
         return false;
     }
 

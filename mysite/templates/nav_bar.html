@@ -40,7 +40,9 @@
                 <li class="nav-item nav-line-h"><a class="btn btn-danger text-uppercase donation" rel="canonical" href="/donation">How you can Help</a></li>
               </ul>
             </li>
+            {% if request.path != '/payments/' and request.path != '/payments' %}
             <li class="nav-item nav-line-h"><a class="btn btn-danger text-uppercase donation" rel="canonical" href="/payments">Give Today</a></li>
+            {% endif %}
             <li class="nav-item nav-line-h"><a class="nav-link" rel="canonical" href="#">
               <svg class="bi" width="24" height="24"><use xlink:href="#cart"></svg>
             </a></li>
