@@ -70,7 +70,6 @@
       {% if video.description %}
         <div class="fh-video-desc">{{ video.description|linebreaks }}</div>
       {% endif %}
-      {% include "global_solutions/partials/similar_clips.html" with similar_videos=similar_videos %}
       {% if video.tags_list %}
         <div class="fh-tags">
           {% for tag in video.tags_list %}
@@ -80,6 +79,8 @@
       {% endif %}
     </aside>
   </div>
+
+  {% include "global_solutions/partials/similar_clips.html" with similar_videos=similar_videos video=video %}
 
   {% if related_videos %}
     <section class="fh-section fh-related">
@@ -94,6 +95,7 @@
   {{ block.super }}
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
   <script src="{% static 'global_solutions/global_solutions.js' %}"></script>
+  <script src="{% static 'global_solutions/product_carousel.js' %}"></script>
   <script src="{% static 'global_solutions/farmhub.js' %}"></script>
 {% endblock %}
 
