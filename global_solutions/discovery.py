@@ -27,6 +27,7 @@ def get_public_videos_qs():
     return GlobalSolutionsVideo.objects.filter(
         is_active=True,
         status=GlobalSolutionsVideoStatus.READY,
+        parent_video__isnull=True,
     ).select_related("category", "creator", "creator__avatar")
 
 
@@ -95,6 +96,13 @@ def get_related_videos(video: GlobalSolutionsVideo, *, limit: int = 8):
     if video.category_id:
         qs = qs.filter(category_id=video.category_id)
     return list(qs.order_by("-views", "-published_at")[:limit])
+
+
+def get_similar_videos_for_detail(video: GlobalSolutionsVideo):
+    """Extra clips attached to this main video (optional uploads in admin)."""
+    if video.parent_video_id:
+        return []
+    return list(video.get_ready_similar_videos())
 
 
 def video_to_api_dict(video: GlobalSolutionsVideo) -> dict:

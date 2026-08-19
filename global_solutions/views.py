@@ -15,6 +15,7 @@ from .b2_upload import safe_upload_filename
 
 from .discovery import (
     build_farmhub_home_context,
+    get_similar_videos_for_detail,
     get_site_title,
     get_public_videos_qs,
     get_related_videos,
@@ -131,6 +132,12 @@ def update_video_meta(request, video_id):
     title = (request.POST.get("title") or "").strip()
     description = (request.POST.get("description") or "").strip()
 
+    if video.parent_video_id:
+        if title:
+            video.title = title
+            video.save(update_fields=["title", "updated_at"])
+        return JsonResponse({"ok": True})
+
     category = resolve_category(category_id=category_id or None, category_slug=category_slug or None)
     if not category:
         return JsonResponse({"error": "Valid category is required"}, status=400)
@@ -154,6 +161,59 @@ def update_video_meta(request, video_id):
     video.title = title
     video.description = description
     video.save(update_fields=["category", "title", "description", "updated_at"])
+    return JsonResponse({"ok": True})
+
+
+@require_POST
+@staff_member_required
+def create_similar_video(request, video_id):
+    """Create an optional extra clip row on the same main video snippet."""
+    parent = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
+    if parent.parent_video_id:
+        return JsonResponse({"error": "Similar clips cannot have their own similar videos."}, status=400)
+
+    title = (request.POST.get("title") or "").strip()
+    if not title:
+        n = parent.similar_videos.count() + 1
+        title = f"Similar clip {n}"
+
+    child = GlobalSolutionsVideo.objects.create(
+        parent_video=parent,
+        category=parent.category,
+        creator=parent.creator,
+        title=title,
+        description="",
+        status=GlobalSolutionsVideoStatus.DRAFT,
+        sort_order=parent.similar_videos.count(),
+        created_by=request.user,
+    )
+    return JsonResponse({"video_id": str(child.id), "title": child.title})
+
+
+@require_POST
+@staff_member_required
+def delete_similar_video(request, video_id):
+    video = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
+    if not video.parent_video_id:
+        return JsonResponse({"error": "Only similar clips can be removed here."}, status=400)
+    video.delete()
+    return JsonResponse({"ok": True})
+
+
+@require_POST
+@staff_member_required
+def update_similar_video_meta(request, video_id):
+    video = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
+    if not video.parent_video_id:
+        return JsonResponse({"error": "Not a similar clip."}, status=400)
+    title = (request.POST.get("title") or "").strip()
+    if title:
+        video.title = title
+        video.save(update_fields=["title", "updated_at"])
+    sort_raw = (request.POST.get("sort_order") or "").strip()
+    if sort_raw.isdigit():
+        video.sort_order = int(sort_raw)
+        video.save(update_fields=["sort_order", "updated_at"])
     return JsonResponse({"ok": True})
 
 
@@ -471,11 +531,13 @@ def farmhub_video(request, slug):
         slug=slug,
     )
     related = get_related_videos(video, limit=8)
+    similar_videos = get_similar_videos_for_detail(video)
     ctx = {
         "page": _farmhub_page(video.title, video.description[:300]),
         "site_title": get_site_title(),
         "video": video,
         "related_videos": related,
+        "similar_videos": similar_videos,
         "view_already_counted": video_view_counted_in_session(request, slug),
     }
     return render(request, "global_solutions/video_detail.html", ctx)

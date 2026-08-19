@@ -55,6 +55,21 @@ urlpatterns = [
         name="update_video_meta",
     ),
     path(
+        "global-solutions/api/videos/<uuid:video_id>/similar/create/",
+        views.create_similar_video,
+        name="create_similar_video",
+    ),
+    path(
+        "global-solutions/api/videos/<uuid:video_id>/similar/delete/",
+        views.delete_similar_video,
+        name="delete_similar_video",
+    ),
+    path(
+        "global-solutions/api/videos/<uuid:video_id>/similar/meta/",
+        views.update_similar_video_meta,
+        name="update_similar_video_meta",
+    ),
+    path(
         "global-solutions/api/videos/<uuid:video_id>/b2/multipart/create/",
         views.b2_create_multipart_upload,
         name="b2_create_multipart",

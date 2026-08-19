@@ -1,0 +1,58 @@
+.gs-similar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.gs-similar-block {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  background: #fafafa;
+}
+
+.gs-similar-block__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.gs-similar-block__head .gs-similar-title {
+  flex: 1 1 14rem;
+  min-width: 12rem;
+}
+
+.gs-similar-block__upload {
+  margin-bottom: 0.75rem;
+}
+
+.gs-similar-progress {
+  max-width: 28rem;
+  height: 8px;
+  background: #e9ecef;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.gs-similar-progress__bar {
+  width: 0;
+  height: 100%;
+  background: #007d7e;
+  transition: width 0.15s ease;
+}
+
+.gs-similar-thumbs .gsu-thumbnail-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .gs-similar-thumbs .gsu-thumbnail-layout {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,28 @@
+{% load static %}
+<div class="w-panel__wrapper gs-similar-panel">
+  <div class="w-panel__header">
+    <h2 class="w-panel__heading w-panel__heading--label">{{ self.heading|default:"Similar videos (optional)" }}</h2>
+  </div>
+  <div class="w-panel__content">
+    {% if can_manage_similar %}
+      <link rel="stylesheet" href="{% static 'global_solutions/thumbnail_picker.css' %}">
+      <link rel="stylesheet" href="{% static 'global_solutions/similar_videos_admin.css' %}">
+      <p class="help">
+        Add extra clips for the same story (e.g. more angles from a Karamoja feeding).
+        Each clip gets its own upload and thumbnail. They appear under the description on the public video page — not as separate hub listings.
+      </p>
+      <div id="gs-similar-list" class="gs-similar-list" data-create-url="{{ similar_create_url }}">
+        {% for block in similar_video_blocks %}
+          {% include "global_solutions/wagtail_panels/similar_video_block.html" with similar=block.similar api_urls_json=block.api_urls_json %}
+        {% endfor %}
+      </div>
+      <button type="button" class="button button-secondary" id="gs-similar-add">+ Add similar video</button>
+      <script src="{% static 'global_solutions/thumbnail_picker.js' %}?v=20260819"></script>
+      <script src="{% static 'global_solutions/similar_videos_admin.js' %}?v=20260819"></script>
+    {% elif video_id %}
+      <p class="help">This row is a similar clip attached to another video. Edit the main video to manage its extra clips.</p>
+    {% else %}
+      <p class="help"><strong>Save this video once</strong>, then return here to add optional similar clips.</p>
+    {% endif %}
+  </div>
+</div>

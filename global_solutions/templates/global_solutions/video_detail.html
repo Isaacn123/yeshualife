@@ -70,6 +70,7 @@
       {% if video.description %}
         <div class="fh-video-desc">{{ video.description|linebreaks }}</div>
       {% endif %}
+      {% include "global_solutions/partials/similar_clips.html" with similar_videos=similar_videos %}
       {% if video.tags_list %}
         <div class="fh-tags">
           {% for tag in video.tags_list %}

@@ -16,7 +16,7 @@ from wagtail.models import Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
-from .wagtail_panels import GlobalSolutionsVideoB2UploadPanel
+from .wagtail_panels import GlobalSolutionsSimilarVideosPanel, GlobalSolutionsVideoB2UploadPanel
 
 
 def _wagtail_image_rendition_url(image, *, spec: str = "fill-1920x1080") -> str:
@@ -345,6 +345,14 @@ class GlobalSolutionsVideo(models.Model):
         related_name="videos",
         help_text="Managed under Snippets → Solution categories (e.g. Feeding, Preaching, Crop Farming).",
     )
+    parent_video = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="similar_videos",
+        help_text="Optional: attach this clip to a main video (shown on that video's detail page only).",
+    )
     creator = models.ForeignKey(
         Creator,
         on_delete=models.SET_NULL,
@@ -402,11 +410,24 @@ class GlobalSolutionsVideo(models.Model):
             models.Index(fields=["slug"]),
             models.Index(fields=["featured", "is_active", "published_at"]),
             models.Index(fields=["category", "is_active", "published_at"]),
+            models.Index(fields=["parent_video", "sort_order"]),
         ]
 
     def __str__(self) -> str:
         cat = self.category.name if self.category_id else "Uncategorized"
+        if self.parent_video_id:
+            return f"{cat}: {self.title} (similar to {self.parent_video.title})"
         return f"{cat}: {self.title}"
+
+    @property
+    def is_similar_clip(self) -> bool:
+        return bool(self.parent_video_id)
+
+    def get_ready_similar_videos(self):
+        return self.similar_videos.filter(
+            is_active=True,
+            status=GlobalSolutionsVideoStatus.READY,
+        ).order_by("sort_order", "created_at")
 
     @property
     def storage_path_slug(self) -> str:
@@ -541,6 +562,7 @@ class GlobalSolutionsVideo(models.Model):
             heading="Discovery stats",
         ),
         GlobalSolutionsVideoB2UploadPanel(heading="Video upload"),
+        GlobalSolutionsSimilarVideosPanel(heading="Similar videos (optional)"),
         MultiFieldPanel(
             [
                 FieldPanel("status", read_only=True),

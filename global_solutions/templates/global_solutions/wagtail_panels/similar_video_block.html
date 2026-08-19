@@ -1,0 +1,41 @@
+{% load static %}
+<div
+  class="gs-similar-block"
+  data-video-id="{{ similar.id }}"
+  data-delete-url="{% url 'global_solutions:delete_similar_video' video_id=similar.id %}"
+  data-meta-url="{% url 'global_solutions:update_similar_video_meta' video_id=similar.id %}"
+>
+  <script type="application/json" class="gs-similar-api-json">{{ api_urls_json|safe }}</script>
+  <div class="gs-similar-block__head">
+    <label class="w-field__label">Clip title</label>
+    <input type="text" class="w-field__input gs-similar-title" value="{{ similar.title }}" maxlength="200" placeholder="e.g. Karamoja feeding — part 2">
+    <button type="button" class="button button-secondary button-small gs-similar-remove">Remove</button>
+  </div>
+  <div class="gs-similar-block__upload">
+    <label class="w-field__label">Video file</label>
+    <input type="file" class="w-field__input gs-similar-file" accept="video/*">
+    <button type="button" class="button gs-similar-upload">Upload to B2</button>
+    <div class="gs-similar-progress"><div class="gs-similar-progress__bar"></div></div>
+    <div class="gs-similar-status help">{% if similar.original_b2_key %}Uploaded{% else %}No file yet{% endif %}</div>
+  </div>
+  <div class="gsu-thumbnail-section gs-similar-thumbs" {% if not similar.original_b2_key %}hidden{% endif %}>
+    <h4 class="gsu-thumbnail-section__title">Thumbnail</h4>
+    <div class="gsu-thumbnail-layout">
+      <div>
+        <video class="gsu-thumbnail-preview-video" controls playsinline preload="metadata"></video>
+        <div class="gsu-thumbnail-current"><strong>Current thumbnail:</strong></div>
+      </div>
+      <div>
+        <div class="gsu-thumbnail-options" aria-label="Thumbnail options"></div>
+        <div class="gsu-thumbnail-actions">
+          <button type="button" class="button button-secondary gsu-thumbnail-regenerate">Generate 3 options</button>
+        </div>
+        <label class="gsu-thumbnail-custom">
+          Or upload your own image
+          <input class="gsu-thumbnail-custom-input" type="file" accept="image/jpeg,image/png,image/webp">
+        </label>
+        <div class="gsu-thumbnail-status help"></div>
+      </div>
+    </div>
+  </div>
+</div>

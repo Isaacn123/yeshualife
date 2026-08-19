@@ -276,6 +276,11 @@
   function bootstrapFromUpload(urls, uploadData) {
     var section = $("gsu-thumbnail-section");
     if (!section) return;
+    bootstrapSection(section, urls, uploadData);
+  }
+
+  function bootstrapSection(section, urls, uploadData) {
+    if (!section) return;
     initSection(section, urls);
     if (uploadData && uploadData.candidates && uploadData.candidates.length) {
       updateCurrentPoster(section, uploadData.poster_url);
@@ -306,5 +311,6 @@
   window.GsThumbnailPicker = {
     init: initSection,
     bootstrapFromUpload: bootstrapFromUpload,
+    bootstrapSection: bootstrapSection,
   };
 })();
