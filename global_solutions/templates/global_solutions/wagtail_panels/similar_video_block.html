@@ -10,14 +10,24 @@
     <label class="w-field__label">Clip title</label>
     <input type="text" class="w-field__input gs-similar-title" value="{{ similar.title }}" maxlength="200" placeholder="e.g. Karamoja feeding — part 2">
     <p class="gs-similar-stats help">{{ similar.views_display }} views · {{ similar.likes_display }} likes</p>
-    <button type="button" class="button button-secondary button-small gs-similar-remove">Remove</button>
   </div>
   <div class="gs-similar-block__upload">
     <label class="w-field__label">Video file</label>
     <input type="file" class="w-field__input gs-similar-file" accept="video/*">
-    <button type="button" class="button gs-similar-upload">Upload to B2</button>
+    <div class="gs-similar-block__upload-actions">
+      <button type="button" class="button gs-similar-upload">Upload to B2</button>
+      <button type="button" class="button button-secondary no gs-similar-delete">Delete clip</button>
+    </div>
     <div class="gs-similar-progress"><div class="gs-similar-progress__bar"></div></div>
-    <div class="gs-similar-status help">{% if similar.original_b2_key %}Uploaded{% else %}No file yet{% endif %}</div>
+    <div class="gs-similar-status help{% if similar.status == 'failed' or similar.last_error %} gs-similar-status--error{% endif %}">
+      {% if similar.last_error %}
+        Upload failed: {{ similar.last_error }}
+      {% elif similar.original_b2_key %}
+        Uploaded
+      {% else %}
+        No file yet
+      {% endif %}
+    </div>
   </div>
   <div class="gsu-thumbnail-section gs-similar-thumbs" {% if not similar.original_b2_key %}hidden{% endif %}>
     <h4 class="gsu-thumbnail-section__title">Thumbnail</h4>

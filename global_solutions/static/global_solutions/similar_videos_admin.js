@@ -45,9 +45,13 @@
     }
   }
 
-  function setStatus(block, text) {
+  function setStatus(block, text, isError) {
     var el = block.querySelector(".gs-similar-status");
-    if (el) el.textContent = text;
+    if (el) {
+      el.textContent = text;
+      el.classList.toggle("gs-similar-status--error", !!isError);
+    }
+    block.classList.toggle("gs-similar-block--error", !!isError);
   }
 
   function setProgress(block, pct) {
@@ -123,11 +127,31 @@
     try {
       await syncTitle(block);
       var complete = await uploadMultipart(fileInput.files[0], urls, block);
-      setStatus(block, "Upload complete. Choose a thumbnail below.");
+      setStatus(block, "Upload complete. Choose a thumbnail below.", false);
       initThumbnail(block, urls, complete);
     } finally {
       if (uploadBtn) uploadBtn.disabled = false;
     }
+  }
+
+  function removeBlock(block) {
+    if (!window.confirm("Delete this similar clip? This cannot be undone.")) {
+      return Promise.resolve(false);
+    }
+    var deleteUrl = block.getAttribute("data-delete-url");
+    if (!deleteUrl) {
+      block.remove();
+      return Promise.resolve(true);
+    }
+    return postForm(deleteUrl, {})
+      .then(function () {
+        block.remove();
+        return true;
+      })
+      .catch(function (e) {
+        setStatus(block, "Delete failed: " + (e.message || String(e)), true);
+        return false;
+      });
   }
 
   function wireBlock(block) {
@@ -138,27 +162,22 @@
     if (uploadBtn) {
       uploadBtn.addEventListener("click", function () {
         uploadBlock(block).catch(function (e) {
-          setStatus(block, "Error: " + (e.message || String(e)));
+          setStatus(block, "Error: " + (e.message || String(e)), true);
         });
       });
     }
 
-    var removeBtn = block.querySelector(".gs-similar-remove");
-    if (removeBtn) {
-      removeBtn.addEventListener("click", function () {
-        if (!window.confirm("Remove this similar clip?")) return;
-        var deleteUrl = block.getAttribute("data-delete-url");
-        if (!deleteUrl) {
-          block.remove();
-          return;
-        }
-        postForm(deleteUrl, {})
-          .then(function () {
-            block.remove();
-          })
-          .catch(function (e) {
-            setStatus(block, "Error: " + (e.message || String(e)));
-          });
+    var deleteBtn = block.querySelector(".gs-similar-delete");
+    if (deleteBtn) {
+      deleteBtn.addEventListener("click", function () {
+        removeBlock(block);
+      });
+    }
+
+    var legacyRemoveBtn = block.querySelector(".gs-similar-remove");
+    if (legacyRemoveBtn) {
+      legacyRemoveBtn.addEventListener("click", function () {
+        removeBlock(block);
       });
     }
 
@@ -188,12 +207,14 @@
       '<div class="gs-similar-block__head">' +
       '<label class="w-field__label">Clip title</label>' +
       '<input type="text" class="w-field__input gs-similar-title" maxlength="200" value="' + (title || "").replace(/"/g, "&quot;") + '">' +
-      '<button type="button" class="button button-secondary button-small gs-similar-remove">Remove</button>' +
       "</div>" +
       '<div class="gs-similar-block__upload">' +
       '<label class="w-field__label">Video file</label>' +
       '<input type="file" class="w-field__input gs-similar-file" accept="video/*">' +
+      '<div class="gs-similar-block__upload-actions">' +
       '<button type="button" class="button gs-similar-upload">Upload to B2</button>' +
+      '<button type="button" class="button button-secondary no gs-similar-delete">Delete clip</button>' +
+      "</div>" +
       '<div class="gs-similar-progress"><div class="gs-similar-progress__bar"></div></div>' +
       '<div class="gs-similar-status help">No file yet</div>' +
       "</div>" +

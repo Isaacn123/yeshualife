@@ -29,6 +29,35 @@
   margin-bottom: 0.75rem;
 }
 
+.gs-similar-block__upload-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.gs-similar-block--error {
+  border-color: #c0392b;
+  background: #fff8f8;
+}
+
+.gs-similar-status--error {
+  color: #c0392b;
+  font-weight: 600;
+}
+
+.gs-similar-delete.button.no {
+  border-color: #c0392b;
+  color: #c0392b;
+}
+
+.gs-similar-block--error .gs-similar-delete {
+  background: #c0392b;
+  border-color: #c0392b;
+  color: #fff;
+}
+
 .gs-similar-progress {
   max-width: 28rem;
   height: 8px;
