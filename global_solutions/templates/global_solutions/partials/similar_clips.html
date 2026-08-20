@@ -14,73 +14,85 @@
   <div class="fh-similar-clips__carousel-wrap">
     <div
       id="fh-similar-{{ video.id }}"
-      class="carousel slide fh-similar-clips__carousel w-100"
+      class="carousel slide fh-similar-clips__carousel"
       data-bs-ride="false"
       data-bs-interval="false"
       data-bs-wrap="true"
       data-bs-touch="true"
       data-bs-keyboard="true"
     >
-      {% if similar_videos|length > 1 %}
-      <div class="carousel-indicators fh-similar-clips__indicators">
-        {% for clip in similar_videos %}
-          <button
-            type="button"
-            data-bs-target="#fh-similar-{{ video.id }}"
-            data-bs-slide-to="{{ forloop.counter0 }}"
-            {% if forloop.first %}class="active" aria-current="true"{% endif %}
-            aria-label="Show clip {{ forloop.counter }}"
-          ></button>
-        {% endfor %}
-      </div>
-      {% endif %}
+      <div class="fh-similar-clips__stage">
+        <div class="carousel-inner">
+          {% for clip in similar_videos %}
+            <div class="carousel-item{% if forloop.first %} active{% endif %}">
+              <figure class="fh-similar-clip__figure">
+                {% if clip.playback_url %}
+                  <div class="fh-similar-clip__media">
+                    {% if clip.playback_uses_hls %}
+                      <video
+                        class="fh-similar-clip__video"
+                        controls
+                        playsinline
+                        preload="metadata"
+                        data-playback-src="{{ clip.playback_url }}"
+                        data-playback-hls="true"
+                        {% if clip.thumbnail_url %}poster="{{ clip.thumbnail_url }}"{% endif %}
+                        {% if clip.title %}aria-label="{{ clip.title }}"{% endif %}
+                      ></video>
+                    {% else %}
+                      <video
+                        class="fh-similar-clip__video"
+                        controls
+                        playsinline
+                        preload="metadata"
+                        src="{{ clip.playback_url }}"
+                        {% if clip.thumbnail_url %}poster="{{ clip.thumbnail_url }}"{% endif %}
+                        {% if clip.title %}aria-label="{{ clip.title }}"{% endif %}
+                      ></video>
+                    {% endif %}
+                  </div>
+                {% endif %}
+                {% if clip.title %}
+                  <figcaption class="fh-similar-clip__caption">{{ clip.title }}</figcaption>
+                {% endif %}
+              </figure>
+            </div>
+          {% endfor %}
+        </div>
 
-      <div class="carousel-inner">
-        {% for clip in similar_videos %}
-          <div class="carousel-item{% if forloop.first %} active{% endif %}">
-            <figure class="fh-similar-clip__figure">
-              {% if clip.playback_url %}
-                <div class="fh-similar-clip__media">
-                  {% if clip.playback_uses_hls %}
-                    <video
-                      class="fh-similar-clip__video"
-                      controls
-                      playsinline
-                      preload="metadata"
-                      data-playback-src="{{ clip.playback_url }}"
-                      data-playback-hls="true"
-                      {% if clip.thumbnail_url %}poster="{{ clip.thumbnail_url }}"{% endif %}
-                      {% if clip.title %}aria-label="{{ clip.title }}"{% endif %}
-                    ></video>
-                  {% else %}
-                    <video
-                      class="fh-similar-clip__video"
-                      controls
-                      playsinline
-                      preload="metadata"
-                      src="{{ clip.playback_url }}"
-                      {% if clip.thumbnail_url %}poster="{{ clip.thumbnail_url }}"{% endif %}
-                      {% if clip.title %}aria-label="{{ clip.title }}"{% endif %}
-                    ></video>
-                  {% endif %}
-                </div>
-              {% endif %}
-              {% if clip.title %}
-                <figcaption class="fh-similar-clip__caption">{{ clip.title }}</figcaption>
-              {% endif %}
-            </figure>
-          </div>
-        {% endfor %}
-      </div>
+        <button
+          class="carousel-control-prev fh-similar-clips__control"
+          type="button"
+          data-bs-target="#fh-similar-{{ video.id }}"
+          data-bs-slide="prev"
+          aria-label="Previous clip"
+        >
+          <span class="fh-similar-clips__control-icon" aria-hidden="true">‹</span>
+          <span class="visually-hidden">Previous clip</span>
+        </button>
+        <button
+          class="carousel-control-next fh-similar-clips__control"
+          type="button"
+          data-bs-target="#fh-similar-{{ video.id }}"
+          data-bs-slide="next"
+          aria-label="Next clip"
+        >
+          <span class="fh-similar-clips__control-icon" aria-hidden="true">›</span>
+          <span class="visually-hidden">Next clip</span>
+        </button>
 
-      <button class="carousel-control-prev fh-similar-clips__control" type="button" data-bs-target="#fh-similar-{{ video.id }}" data-bs-slide="prev">
-        <span class="fh-similar-clips__control-icon" aria-hidden="true">‹</span>
-        <span class="visually-hidden">Previous clip</span>
-      </button>
-      <button class="carousel-control-next fh-similar-clips__control" type="button" data-bs-target="#fh-similar-{{ video.id }}" data-bs-slide="next">
-        <span class="fh-similar-clips__control-icon" aria-hidden="true">›</span>
-        <span class="visually-hidden">Next clip</span>
-      </button>
+        <div class="carousel-indicators fh-similar-clips__indicators">
+          {% for clip in similar_videos %}
+            <button
+              type="button"
+              data-bs-target="#fh-similar-{{ video.id }}"
+              data-bs-slide-to="{{ forloop.counter0 }}"
+              {% if forloop.first %}class="active" aria-current="true"{% endif %}
+              aria-label="Show clip {{ forloop.counter }}"
+            ></button>
+          {% endfor %}
+        </div>
+      </div>
     </div>
   </div>
   {% else %}

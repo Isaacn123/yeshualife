@@ -1183,8 +1183,9 @@ body.template-globalsolutions.template-farmhub h3 {
 }
 
 .fh-similar-clips__carousel-wrap {
-  max-width: 960px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
   min-width: 0;
 }
 
@@ -1197,8 +1198,13 @@ body.template-globalsolutions.template-farmhub h3 {
   overflow: hidden;
 }
 
+.fh-similar-clips__stage {
+  position: relative;
+  container-type: inline-size;
+}
+
 .fh-similar-clips__carousel .carousel-inner {
-  background: #2c2419;
+  background: #1a1612;
 }
 
 .fh-similar-clip__figure {
@@ -1207,24 +1213,24 @@ body.template-globalsolutions.template-farmhub h3 {
 
 .fh-similar-clip__media {
   aspect-ratio: 16 / 9;
-  background: #2c2419;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  background: #1a1612;
+  overflow: hidden;
+  position: relative;
 }
 
 .fh-similar-clip__video {
   width: 100%;
   height: 100%;
-  max-height: 72vh;
   display: block;
-  object-fit: contain;
-  background: #2c2419;
+  object-fit: cover;
+  object-position: center;
+  background: #1a1612;
 }
 
 .fh-similar-clip__caption {
   margin: 0;
-  padding: 0.9rem 1.15rem 1rem;
+  padding: 0.85rem 1rem;
   text-align: center;
   font-weight: 600;
   font-size: 0.98rem;
@@ -1235,39 +1241,49 @@ body.template-globalsolutions.template-farmhub h3 {
 }
 
 .fh-similar-clips__indicators {
-  position: static;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(56.25cqw - 1.85rem);
+  bottom: auto;
   margin: 0;
-  padding: 0.65rem 0.5rem 0;
-  gap: 0.35rem;
+  padding: 0 0.5rem;
+  gap: 0.4rem;
   display: flex;
   justify-content: center;
-  background: var(--fh-surface);
+  align-items: center;
+  z-index: 12;
+  pointer-events: auto;
 }
 
 .fh-similar-clips__indicators [data-bs-target] {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   border: none;
   opacity: 1;
-  background-color: rgba(196, 138, 26, 0.28);
+  margin: 0;
+  background-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
 .fh-similar-clips__indicators .active {
-  background-color: var(--fh-accent);
+  background-color: #fff;
+  transform: scale(1.08);
 }
 
 .fh-similar-clips__control {
-  width: 3rem;
-  height: 3rem;
-  top: 50%;
+  width: 2.75rem;
+  height: 2.75rem;
+  top: calc(28.125cqw);
   transform: translateY(-50%);
   opacity: 1;
   border: none;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 8px 24px rgba(22, 18, 12, 0.18);
-  z-index: 4;
+  box-shadow: 0 8px 24px rgba(22, 18, 12, 0.22);
+  z-index: 15;
+  pointer-events: auto;
 }
 
 .fh-similar-clips__control.carousel-control-prev,
@@ -1276,16 +1292,18 @@ body.template-globalsolutions.template-farmhub h3 {
 }
 
 .fh-similar-clips__control.carousel-control-prev {
-  left: 0.85rem;
+  left: 0.75rem;
+  right: auto;
 }
 
 .fh-similar-clips__control.carousel-control-next {
-  right: 0.85rem;
+  right: 0.75rem;
+  left: auto;
 }
 
 .fh-similar-clips__control-icon {
   display: block;
-  font-size: 1.75rem;
+  font-size: 1.65rem;
   line-height: 1;
   color: var(--fh-text);
   font-weight: 700;
@@ -1294,7 +1312,7 @@ body.template-globalsolutions.template-farmhub h3 {
 .fh-similar-clips__control:hover,
 .fh-similar-clips__control:focus {
   background: #fff;
-  box-shadow: 0 10px 28px rgba(22, 18, 12, 0.22);
+  box-shadow: 0 10px 28px rgba(22, 18, 12, 0.28);
 }
 
 .fh-similar-clip--single {
