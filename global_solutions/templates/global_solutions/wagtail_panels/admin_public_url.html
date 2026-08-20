@@ -1,16 +1,44 @@
-{% if public_video_url %}
-<div class="gs-admin-public-url">
-  <label class="w-field__label">Public page link</label>
-  <div class="gs-admin-public-url__row">
-    <input
-      type="text"
-      class="w-field__input gs-admin-public-url__input"
-      readonly
-      value="{{ public_video_url }}"
-    >
-    <button type="button" class="button button-secondary gs-admin-copy-url">Copy link</button>
-    <a href="{{ public_video_url }}" class="button button-secondary" target="_blank" rel="noopener noreferrer">Open</a>
+{% if embed_video_url or public_video_url %}
+<div class="gs-admin-public-urls">
+  {% if embed_video_url %}
+  <div class="gs-admin-public-url gs-admin-public-url--embed">
+    <label class="w-field__label">Embed link (video only)</label>
+    <div class="gs-admin-public-url__row">
+      <input
+        type="text"
+        class="w-field__input gs-admin-public-url__input"
+        readonly
+        value="{{ embed_video_url }}"
+      >
+      <button type="button" class="button gs-admin-copy-url">Copy embed link</button>
+      <a href="{{ embed_video_url }}" class="button button-secondary" target="_blank" rel="noopener noreferrer">Preview</a>
+    </div>
+    <p class="help">
+      Opens <strong>only the player</strong> — paste this into <strong>Video</strong> embed fields on blog/content pages
+      (page 63 and similar), the same way you paste YouTube links. Video must be <strong>Ready</strong>.
+    </p>
   </div>
-  <p class="help">Share after status is <strong>Ready</strong>. Similar clips open on the main video page.</p>
+  {% endif %}
+
+  {% if public_video_url %}
+  <div class="gs-admin-public-url">
+    <label class="w-field__label">Share page link (full page)</label>
+    <div class="gs-admin-public-url__row">
+      <input
+        type="text"
+        class="w-field__input gs-admin-public-url__input"
+        readonly
+        value="{{ public_video_url }}"
+      >
+      <button type="button" class="button button-secondary gs-admin-copy-url">Copy page link</button>
+      <a href="{{ public_video_url }}" class="button button-secondary" target="_blank" rel="noopener noreferrer">Open</a>
+    </div>
+    <p class="help">
+      Full Global Solutions page with title, description, and similar clips — use for WhatsApp/social sharing, not for embed fields.
+    </p>
+  </div>
+  {% endif %}
 </div>
+{% elif video_id %}
+<p class="help"><strong>Save once</strong> (title is enough) to generate copyable links here.</p>
 {% endif %}

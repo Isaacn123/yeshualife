@@ -7,6 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_GET, require_POST
 
@@ -188,7 +189,7 @@ def create_similar_video(request, video_id):
         sort_order=parent.similar_videos.count(),
         created_by=request.user,
     )
-    from .wagtail_panels import admin_public_video_url
+    from .wagtail_panels import admin_embed_video_url, admin_public_video_url
 
     return JsonResponse(
         {
@@ -196,6 +197,7 @@ def create_similar_video(request, video_id):
             "title": child.title,
             "slug": child.slug,
             "public_url": admin_public_video_url(child),
+            "embed_url": admin_embed_video_url(child),
         }
     )
 
@@ -532,6 +534,20 @@ def farmhub_creator(request, slug):
         "videos": videos,
     }
     return render(request, "global_solutions/creator_page.html", ctx)
+
+
+@xframe_options_exempt
+@require_GET
+def video_embed(request, slug):
+    """Minimal player page for Wagtail EmbedBlock iframes (fresh B2 playback URLs)."""
+    video = get_object_or_404(
+        GlobalSolutionsVideo.objects.filter(
+            is_active=True,
+            status=GlobalSolutionsVideoStatus.READY,
+        ),
+        slug=slug,
+    )
+    return render(request, "global_solutions/video_embed.html", {"video": video})
 
 
 @ensure_csrf_cookie

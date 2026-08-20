@@ -1,6 +1,19 @@
-.gs-admin-public-url {
+.gs-admin-public-urls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   margin: 0.75rem 0 1rem;
   max-width: 42rem;
+}
+
+.gs-admin-public-url {
+  margin: 0;
+  max-width: none;
+}
+
+.gs-admin-public-url--embed .gs-admin-copy-url {
+  background: #007d7e;
+  color: #fff;
 }
 
 .gs-admin-public-url__row {

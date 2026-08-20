@@ -8,10 +8,11 @@ from django.conf import settings
 from wagtail.admin.panels import Panel
 
 from .api_urls import video_api_urls_for
+from .embed_finder import embed_iframe_url
 
 
 def admin_public_video_url(video) -> str:
-    """Absolute public URL for a main video or similar clip (parent page + #clip- hash)."""
+    """Full share page (nav, description, similar clips)."""
     slug = (getattr(video, "slug", "") or "").strip()
     if not slug:
         return ""
@@ -20,6 +21,14 @@ def admin_public_video_url(video) -> str:
     if base:
         return f"{base}{path}"
     return path
+
+
+def admin_embed_video_url(video) -> str:
+    """Player-only URL for Wagtail Video embed fields and iframe previews."""
+    slug = (getattr(video, "slug", "") or "").strip()
+    if not slug:
+        return ""
+    return embed_iframe_url(video)
 
 
 class GlobalSolutionsVideoB2UploadPanel(Panel):
@@ -40,6 +49,7 @@ class GlobalSolutionsVideoB2UploadPanel(Panel):
                 context["gs_video_api_urls"] = video_api_urls_for(pk)
                 context["has_uploaded_source"] = bool((getattr(self.instance, "original_b2_key", "") or "").strip())
                 context["public_video_url"] = admin_public_video_url(self.instance)
+                context["embed_video_url"] = admin_embed_video_url(self.instance)
             return context
 
 
@@ -70,6 +80,7 @@ class GlobalSolutionsSimilarVideosPanel(Panel):
                             "similar": sv,
                             "api_urls_json": json.dumps(video_api_urls_for(sv.pk)),
                             "public_video_url": admin_public_video_url(sv),
+                            "embed_video_url": admin_embed_video_url(sv),
                         }
                     )
                 context["similar_video_blocks"] = blocks

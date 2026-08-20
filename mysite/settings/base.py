@@ -337,9 +337,12 @@ my_custom_provider = {
 
 WAGTAILEMBEDS_FINDERS = [
     {
-        'class': 'wagtail.embeds.finders.oembed',
-        'providers': [youtube, vimeo],
-    }
+        "class": "global_solutions.embed_finder",
+    },
+    {
+        "class": "wagtail.embeds.finders.oembed",
+        "providers": [youtube, vimeo],
+    },
 ]
 
 WAGTAILEMBEDS_RESPONSIVE_HTML = True

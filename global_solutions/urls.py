@@ -19,12 +19,14 @@ urlpatterns = [
     path("global-solutions/category/<slug:slug>/", views.farmhub_category, name="farmhub_category"),
     path("global-solutions/creator/<slug:slug>/", views.farmhub_creator, name="farmhub_creator"),
     path("global-solutions/video/<slug:slug>/", views.farmhub_video, name="farmhub_video"),
+    path("global-solutions/embed/<slug:slug>/", views.video_embed, name="video_embed"),
     # Legacy /farmhub/ URLs → permanent redirects
     path("farmhub/", _redirect("global_solutions:farmhub_home")),
     path("farmhub/search/", _redirect("global_solutions:farmhub_search")),
     path("farmhub/category/<slug:slug>/", _redirect("global_solutions:farmhub_category")),
     path("farmhub/creator/<slug:slug>/", _redirect("global_solutions:farmhub_creator")),
     path("farmhub/video/<slug:slug>/", _redirect("global_solutions:farmhub_video")),
+    path("farmhub/embed/<slug:slug>/", _redirect("global_solutions:video_embed")),
     # Public read API
     path("api/videos/", api.api_videos_list, name="api_videos_list"),
     path("api/videos/trending/", api.api_videos_trending, name="api_videos_trending"),

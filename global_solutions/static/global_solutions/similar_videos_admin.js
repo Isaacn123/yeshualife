@@ -195,26 +195,41 @@
     }
   }
 
-  function publicUrlHtml(url) {
-    if (!url) return "";
-    return (
-      '<div class="gs-admin-public-url">' +
-      '<label class="w-field__label">Public page link</label>' +
-      '<div class="gs-admin-public-url__row">' +
-      '<input type="text" class="w-field__input gs-admin-public-url__input" readonly value="' +
-      String(url).replace(/"/g, "&quot;") +
-      '">' +
-      '<button type="button" class="button button-secondary gs-admin-copy-url">Copy link</button>' +
-      '<a href="' +
-      String(url).replace(/"/g, "&quot;") +
-      '" class="button button-secondary" target="_blank" rel="noopener noreferrer">Open</a>' +
-      "</div>" +
-      '<p class="help">Share after status is <strong>Ready</strong>. Similar clips open on the main video page.</p>' +
-      "</div>"
-    );
+  function adminLinksHtml(embedUrl, publicUrl) {
+    var html = '<div class="gs-admin-public-urls">';
+    if (embedUrl) {
+      html +=
+        '<div class="gs-admin-public-url gs-admin-public-url--embed">' +
+        '<label class="w-field__label">Embed link (video only)</label>' +
+        '<div class="gs-admin-public-url__row">' +
+        '<input type="text" class="w-field__input gs-admin-public-url__input" readonly value="' +
+        String(embedUrl).replace(/"/g, "&quot;") +
+        '">' +
+        '<button type="button" class="button gs-admin-copy-url">Copy embed link</button>' +
+        '<a href="' +
+        String(embedUrl).replace(/"/g, "&quot;") +
+        '" class="button button-secondary" target="_blank" rel="noopener noreferrer">Preview</a>' +
+        "</div></div>";
+    }
+    if (publicUrl) {
+      html +=
+        '<div class="gs-admin-public-url">' +
+        '<label class="w-field__label">Share page link (full page)</label>' +
+        '<div class="gs-admin-public-url__row">' +
+        '<input type="text" class="w-field__input gs-admin-public-url__input" readonly value="' +
+        String(publicUrl).replace(/"/g, "&quot;") +
+        '">' +
+        '<button type="button" class="button button-secondary gs-admin-copy-url">Copy page link</button>' +
+        '<a href="' +
+        String(publicUrl).replace(/"/g, "&quot;") +
+        '" class="button button-secondary" target="_blank" rel="noopener noreferrer">Open</a>' +
+        "</div></div>";
+    }
+    html += "</div>";
+    return html;
   }
 
-  function buildBlockFromTemplate(videoId, title, apiUrlsJson, deleteUrl, metaUrl, publicUrl) {
+  function buildBlockFromTemplate(videoId, title, apiUrlsJson, deleteUrl, metaUrl, publicUrl, embedUrl) {
     var wrap = document.createElement("div");
     wrap.className = "gs-similar-block";
     wrap.setAttribute("data-video-id", videoId);
@@ -226,7 +241,7 @@
       '<div class="gs-similar-block__head">' +
       '<label class="w-field__label">Clip title</label>' +
       '<input type="text" class="w-field__input gs-similar-title" maxlength="200" value="' + (title || "").replace(/"/g, "&quot;") + '">' +
-      publicUrlHtml(publicUrl) +
+      adminLinksHtml(embedUrl, publicUrl) +
       "</div>" +
       '<div class="gs-similar-block__upload">' +
       '<label class="w-field__label">Video file</label>' +
@@ -286,7 +301,8 @@
             JSON.stringify(urls),
             "/global-solutions/api/videos/" + videoId + "/similar/delete/",
             "/global-solutions/api/videos/" + videoId + "/similar/meta/",
-            data.public_url || ""
+            data.public_url || "",
+            data.embed_url || ""
           );
           list.appendChild(block);
           wireBlock(block);
