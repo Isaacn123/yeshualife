@@ -176,12 +176,46 @@
     if (firstVideo) {
       attachHls(firstVideo);
     }
+
+    function openFromHash() {
+      var hash = window.location.hash;
+      if (!hash || hash.indexOf("#clip-") !== 0) {
+        return;
+      }
+      var slide = root.querySelector(hash);
+      if (!slide) {
+        return;
+      }
+      var index = parseInt(slide.getAttribute("data-slide-index"), 10);
+      if (!isNaN(index)) {
+        goTo(index);
+      }
+      window.setTimeout(function () {
+        slide.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }, 80);
+    }
+
+    openFromHash();
+  }
+
+  function scrollToClipHash(section) {
+    var hash = window.location.hash;
+    if (!hash || hash.indexOf("#clip-") !== 0) {
+      return;
+    }
+    var target = section.querySelector(hash);
+    if (target) {
+      window.setTimeout(function () {
+        target.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }, 120);
+    }
   }
 
   function initSimilarClips() {
     document.querySelectorAll(".fh-similar-clips").forEach(function (section) {
       section.querySelectorAll('video[data-playback-hls="true"][data-playback-src]').forEach(attachHls);
       section.querySelectorAll("[data-fh-similar-carousel]").forEach(initSimilarClipsCarousel);
+      scrollToClipHash(section);
     });
   }
 

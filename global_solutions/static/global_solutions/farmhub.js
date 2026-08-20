@@ -8,6 +8,10 @@
     if (meta && meta.content) {
       return meta.content;
     }
+    var input = document.querySelector("[name=csrfmiddlewaretoken]");
+    if (input && input.value) {
+      return input.value;
+    }
     var match = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
     return match ? decodeURIComponent(match[1]) : "";
   }
@@ -162,12 +166,25 @@
   function viewThresholdSeconds(durationSeconds) {
     var d = parseFloat(durationSeconds);
     if (d && d > 0) {
-      if (d < 30) {
-        return Math.max(1, d * 0.9);
+      if (d <= 15) {
+        return Math.max(3, d * 0.5);
       }
-      return 30;
+      if (d < 60) {
+        return Math.max(8, d * 0.5);
+      }
+      return 15;
     }
-    return 30;
+    return 12;
+  }
+
+  function markViewCounted(slug) {
+    var page = document.querySelector('.fh-video-page[data-video-slug="' + slug + '"]');
+    if (page) {
+      page.setAttribute("data-view-counted", "true");
+    }
+    document.querySelectorAll('[data-video-slug="' + slug + '"]').forEach(function (el) {
+      el.setAttribute("data-view-counted", "true");
+    });
   }
 
   function recordVideoView(slug, watchedSeconds) {
@@ -186,39 +203,53 @@
     });
   }
 
-  function initWatchTimeViews() {
-    var page = document.querySelector(".fh-video-page[data-video-slug]");
-    if (!page || page.getAttribute("data-view-counted") === "true") {
+  function bindWatchTimeTracking(video, slug, durationSeconds, alreadyCounted) {
+    if (!video || !slug || alreadyCounted) {
       return;
     }
 
-    var slug = page.getAttribute("data-video-slug");
-    var video = page.querySelector("video.fh-detail-video");
-    if (!slug || !video) {
-      return;
-    }
-
-    var threshold = viewThresholdSeconds(page.getAttribute("data-video-duration"));
+    var threshold = viewThresholdSeconds(durationSeconds);
     var watchedSeconds = 0;
-    var lastTime = 0;
+    var lastTime = video.currentTime || 0;
     var recorded = false;
+    var pending = false;
 
     var tryRecord = function () {
-      if (recorded || watchedSeconds < threshold) {
+      if (pending || recorded || watchedSeconds < threshold) {
         return;
       }
-      recorded = true;
-      recordVideoView(slug, watchedSeconds).then(function (result) {
-        if (result.ok && result.data.views_display) {
-          setViewsDisplay(slug, result.data.views_display);
-        }
-      });
+      pending = true;
+      recordVideoView(slug, watchedSeconds)
+        .then(function (result) {
+          pending = false;
+          if (!result.ok) {
+            return;
+          }
+          if (result.data.counted || result.data.already_counted) {
+            recorded = true;
+            markViewCounted(slug);
+          }
+          if (result.data.views_display != null) {
+            setViewsDisplay(slug, result.data.views_display);
+          }
+        })
+        .catch(function () {
+          pending = false;
+        });
     };
 
     video.addEventListener("loadedmetadata", function () {
-      if (!page.getAttribute("data-video-duration") || page.getAttribute("data-video-duration") === "0") {
+      if (!durationSeconds || durationSeconds === "0" || durationSeconds === 0) {
         threshold = viewThresholdSeconds(video.duration);
       }
+    });
+
+    video.addEventListener("play", function () {
+      lastTime = video.currentTime;
+    });
+
+    video.addEventListener("seeked", function () {
+      lastTime = video.currentTime;
     });
 
     video.addEventListener("timeupdate", function () {
@@ -239,6 +270,39 @@
       if (!recorded && video.duration && isFinite(video.duration)) {
         watchedSeconds = Math.max(watchedSeconds, video.duration);
         tryRecord();
+      }
+    });
+  }
+
+  function initWatchTimeViews() {
+    var page = document.querySelector(".fh-video-page[data-video-slug]");
+    if (!page) {
+      return;
+    }
+
+    var mainSlug = page.getAttribute("data-video-slug");
+    var mainVideo = page.querySelector("video.fh-detail-video");
+    var mainCounted = page.getAttribute("data-view-counted") === "true";
+    if (mainSlug && mainVideo) {
+      bindWatchTimeTracking(
+        mainVideo,
+        mainSlug,
+        page.getAttribute("data-video-duration"),
+        mainCounted
+      );
+    }
+
+    document.querySelectorAll(".fh-similar-clips [data-video-slug]").forEach(function (slide) {
+      var slug = slide.getAttribute("data-video-slug");
+      var clipVideo = slide.querySelector("video");
+      var clipCounted = slide.getAttribute("data-view-counted") === "true";
+      if (slug && clipVideo) {
+        bindWatchTimeTracking(
+          clipVideo,
+          slug,
+          slide.getAttribute("data-video-duration"),
+          clipCounted
+        );
       }
     });
   }

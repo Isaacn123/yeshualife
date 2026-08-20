@@ -1262,6 +1262,30 @@ body.template-globalsolutions.template-farmhub h3 {
   line-height: 1.4;
   background: var(--fh-surface);
   border-top: 1px solid var(--fh-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.fh-similar-clip__caption-title {
+  display: block;
+}
+
+.fh-similar-clip__caption .fh-engagement {
+  width: 100%;
+  margin: 0;
+  padding: 0.35rem 0 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  justify-content: center;
+}
+
+.fh-similar-clip__caption .fh-engagement--compact .fh-engagement-stats {
+  justify-content: center;
+}
+
+.fh-similar-clip__caption .fh-engagement--compact .fh-engagement-actions {
+  justify-content: center;
 }
 
 .fh-similar-clips__indicators {
@@ -1542,6 +1566,24 @@ body.template-globalsolutions.template-farmhub h3 {
 .fh-engagement--compact .fh-like-btn,
 .fh-engagement--compact .fh-share-btn {
   padding: 0.4rem 0.45rem;
+}
+
+.fh-engagement--compact.fh-engagement--labeled .fh-like-btn-label,
+.fh-engagement--compact.fh-engagement--labeled .fh-share-btn-label {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  border: 0;
+}
+
+.fh-engagement--compact.fh-engagement--labeled .fh-like-btn,
+.fh-engagement--compact.fh-engagement--labeled .fh-share-btn {
+  padding: 0.38rem 0.62rem;
 }
 
 .fh-toast {

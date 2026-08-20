@@ -7,6 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_GET, require_POST
 
 from .api_urls import video_api_urls_placeholder_map
@@ -23,7 +24,7 @@ from .discovery import (
     search_videos,
 )
 from .categories import get_active_categories, resolve_category
-from .engagement import video_view_counted_in_session
+from .engagement import session_slugs, video_view_counted_in_session
 from .models import (
     Creator,
     GlobalSolutionsSettings,
@@ -524,6 +525,7 @@ def farmhub_creator(request, slug):
     return render(request, "global_solutions/creator_page.html", ctx)
 
 
+@ensure_csrf_cookie
 @require_GET
 def farmhub_video(request, slug):
     video = get_object_or_404(
@@ -539,6 +541,7 @@ def farmhub_video(request, slug):
         "related_videos": related,
         "similar_videos": similar_videos,
         "view_already_counted": video_view_counted_in_session(request, slug),
+        "viewed_slugs": session_slugs(request, "farmhub_viewed"),
     }
     return render(request, "global_solutions/video_detail.html", ctx)
 

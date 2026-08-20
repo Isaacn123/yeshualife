@@ -485,6 +485,11 @@ class GlobalSolutionsVideo(models.Model):
         return str(n)
 
     def get_absolute_url(self) -> str:
+        if self.parent_video_id:
+            parent_slug = GlobalSolutionsVideo.objects.filter(pk=self.parent_video_id).values_list("slug", flat=True).first()
+            if parent_slug:
+                base = reverse("global_solutions:farmhub_video", kwargs={"slug": parent_slug})
+                return f"{base}#clip-{self.slug}"
         return reverse("global_solutions:farmhub_video", kwargs={"slug": self.slug})
 
     @property

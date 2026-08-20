@@ -18,7 +18,7 @@ from .discovery import (
     search_videos,
     video_to_api_dict,
 )
-from .engagement import record_video_view, session_slugs
+from .engagement import get_engagement_video, record_video_view, session_slugs
 from .models import Creator, GlobalSolutionsVideo, SolutionCategory
 
 
@@ -134,7 +134,7 @@ def api_creators_list(request):
 @require_POST
 def api_video_like(request, slug):
     """Increment like count once per browser session per video."""
-    video = get_object_or_404(get_public_videos_qs(), slug=slug)
+    video = get_engagement_video(slug)
     liked_slugs = _liked_slugs(request)
     if slug in liked_slugs:
         return JsonResponse(_video_like_payload(video, liked=True, already_liked=True))
@@ -151,7 +151,7 @@ def api_video_like(request, slug):
 @require_POST
 def api_video_record_view(request, slug):
     """
-    Count a view after sufficient watch time (YouTube-style ~30s rule).
+    Count a view after sufficient watch time (session deduplicated).
     One count per video per browser session.
     """
     import json

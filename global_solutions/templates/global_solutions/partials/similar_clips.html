@@ -20,7 +20,15 @@
       <div class="fh-similar-clips__viewport">
         <div class="fh-similar-clips__track">
           {% for clip in similar_videos %}
-            <div class="fh-similar-clips__slide{% if forloop.first %} is-active{% endif %}" data-slide-index="{{ forloop.counter0 }}"{% if not forloop.first %} hidden{% endif %}>
+            <div
+              class="fh-similar-clips__slide{% if forloop.first %} is-active{% endif %}"
+              id="clip-{{ clip.slug }}"
+              data-slide-index="{{ forloop.counter0 }}"
+              data-video-slug="{{ clip.slug }}"
+              data-video-duration="{{ clip.duration_seconds|default:0 }}"
+              {% if clip.slug in viewed_slugs %}data-view-counted="true"{% endif %}
+              {% if not forloop.first %} hidden{% endif %}
+            >
               <figure class="fh-similar-clip__figure">
                 {% if clip.playback_url %}
                   <div class="fh-similar-clip__media">
@@ -48,9 +56,12 @@
                     {% endif %}
                   </div>
                 {% endif %}
-                {% if clip.title %}
-                  <figcaption class="fh-similar-clip__caption">{{ clip.title }}</figcaption>
-                {% endif %}
+                <figcaption class="fh-similar-clip__caption">
+                  {% if clip.title %}
+                    <span class="fh-similar-clip__caption-title">{{ clip.title }}</span>
+                  {% endif %}
+                  {% include "global_solutions/partials/video_engagement.html" with video=clip compact=True show_action_labels=True %}
+                </figcaption>
               </figure>
             </div>
           {% endfor %}
@@ -90,7 +101,13 @@
   </div>
   {% else %}
     {% with clip=similar_videos.0 %}
-      <figure class="fh-similar-clip fh-similar-clip--single">
+      <figure
+        class="fh-similar-clip fh-similar-clip--single fh-similar-clips__slide"
+        id="clip-{{ clip.slug }}"
+        data-video-slug="{{ clip.slug }}"
+        data-video-duration="{{ clip.duration_seconds|default:0 }}"
+        {% if clip.slug in viewed_slugs %}data-view-counted="true"{% endif %}
+      >
         {% if clip.playback_url %}
           <div class="fh-similar-clip__media fh-similar-clip__media--single">
             {% if clip.playback_uses_hls %}
@@ -115,9 +132,12 @@
             {% endif %}
           </div>
         {% endif %}
-        {% if clip.title %}
-          <figcaption class="fh-similar-clip__caption">{{ clip.title }}</figcaption>
-        {% endif %}
+        <figcaption class="fh-similar-clip__caption">
+          {% if clip.title %}
+            <span class="fh-similar-clip__caption-title">{{ clip.title }}</span>
+          {% endif %}
+          {% include "global_solutions/partials/video_engagement.html" with video=clip compact=True show_action_labels=True %}
+        </figcaption>
       </figure>
     {% endwith %}
   {% endif %}

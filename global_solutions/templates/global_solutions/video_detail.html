@@ -22,6 +22,7 @@
   data-video-duration="{{ video.duration_seconds|default:0 }}"
   {% if view_already_counted %}data-view-counted="true"{% endif %}
 >
+  {% csrf_token %}
   <a href="{% url 'global_solutions:farmhub_home' %}" class="fh-back">← {{ site_title|default:"Global Solutions" }}</a>
 
   <div class="fh-video-layout">
@@ -78,7 +79,7 @@
     </aside>
   </div>
 
-  {% include "global_solutions/partials/similar_clips.html" with similar_videos=similar_videos video=video %}
+  {% include "global_solutions/partials/similar_clips.html" with similar_videos=similar_videos video=video viewed_slugs=viewed_slugs %}
 
   {% if related_videos %}
     <section class="fh-section fh-related">
@@ -93,8 +94,8 @@
   {{ block.super }}
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
   <script src="{% static 'global_solutions/global_solutions.js' %}"></script>
-  <script src="{% static 'global_solutions/similar_clips.js' %}?v=20260820e2"></script>
-  <script src="{% static 'global_solutions/farmhub.js' %}"></script>
+  <script src="{% static 'global_solutions/similar_clips.js' %}?v=20260820g"></script>
+  <script src="{% static 'global_solutions/farmhub.js' %}?v=20260820h"></script>
 {% endblock %}
 
 {% block footer %}{% include "blog/footer.html" %}{% endblock %}

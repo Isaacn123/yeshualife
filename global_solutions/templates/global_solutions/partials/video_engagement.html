@@ -1,15 +1,13 @@
 {# Video engagement: views, like, share. Expects: video #}
 <div
-  class="fh-engagement{% if compact %} fh-engagement--compact{% endif %}"
+  class="fh-engagement{% if compact %} fh-engagement--compact{% endif %}{% if show_action_labels %} fh-engagement--labeled{% endif %}"
   data-video-slug="{{ video.slug }}"
 >
   <div class="fh-engagement-stats">
-    {% if video.views_display %}
-      <span class="fh-engagement-stat" title="Views">
-        <span class="fh-engagement-icon fh-engagement-icon--views" aria-hidden="true"></span>
-        <span class="fh-engagement-views">{{ video.views_display }}</span>
-      </span>
-    {% endif %}
+    <span class="fh-engagement-stat" title="Views">
+      <span class="fh-engagement-icon fh-engagement-icon--views" aria-hidden="true"></span>
+      <span class="fh-engagement-views">{{ video.views_display }}</span>
+    </span>
     <span class="fh-engagement-stat fh-engagement-stat--likes" title="Likes">
       <span class="fh-engagement-icon fh-engagement-icon--likes" aria-hidden="true"></span>
       <span class="fh-engagement-likes">{{ video.likes_display }}</span>
