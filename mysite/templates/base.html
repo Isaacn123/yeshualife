@@ -145,11 +145,51 @@
             {% block content %}{% endblock %}
         </main>
       {% block footer %}{% endblock  %}
+
+        <div
+          class="modal fade content-image-lightbox"
+          id="contentImageLightbox"
+          tabindex="-1"
+          aria-labelledby="contentImageLightboxLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-lg-down">
+            <div class="modal-content content-image-lightbox__content">
+              <div class="modal-header border-0 pb-0">
+                <h2 class="visually-hidden" id="contentImageLightboxLabel">Media preview</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close preview"></button>
+              </div>
+              <div class="modal-body content-image-lightbox__body p-2 p-md-3">
+                <img class="content-image-lightbox__img" alt="" hidden>
+                <div class="content-image-lightbox__iframe-wrap ratio ratio-16x9" hidden>
+                  <iframe
+                    class="content-image-lightbox__iframe"
+                    title="Video preview"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                    hidden
+                  ></iframe>
+                </div>
+                <div class="content-image-lightbox__video-wrap ratio ratio-16x9" hidden>
+                  <video
+                    class="content-image-lightbox__video"
+                    controls
+                    playsinline
+                    hidden
+                  ></video>
+                </div>
+                <p class="content-image-lightbox__caption text-center small mt-2 mb-0" hidden></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {# Global javascript #}
         {% compress js %}
         <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/mysite.js' %}"></script>
         <script src="{% static 'css/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/content-image-lightbox.js' %}?v=20260820b"></script>
         <script type="application/ld+json">
             {
               "@context": "http://schema.org",

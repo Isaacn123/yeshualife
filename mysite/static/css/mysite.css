@@ -108,6 +108,21 @@ h3 a:hover{
 }
 .section.blog-content-section {
     padding-top: 3rem;
+    width: 100%;
+    align-self: stretch;
+}
+
+/* Detail pages: parent flex centers children and was shrinking the article column */
+body.template-blogpage .wrapper > .d-flex.flex-column.align-items-center,
+body.template-globalsolutions-detail .wrapper > .d-flex.flex-column.align-items-center {
+    align-items: stretch !important;
+    width: 100%;
+}
+
+body.template-blogpage .wrapper > .d-flex.flex-column.align-items-center > .content.text-center,
+body.template-globalsolutions-detail .wrapper > .d-flex.flex-column.align-items-center > .content.text-center {
+    align-self: center;
+    width: 100%;
 }
 
 .container-medium, .container-small, .container-large {
@@ -117,28 +132,63 @@ h3 a:hover{
 
 .container-medium {
     width: 100%;
-    max-width: 70rem;
+    max-width: 72rem;
     margin-left: auto;
     margin-right: auto;
     position: relative;
 }
 
 .blog-content-grid {
-    grid-column-gap: 5rem;
-    grid-row-gap: 5rem;
+    grid-column-gap: 2.5rem;
+    grid-row-gap: 2.5rem;
     grid-template-rows: auto;
-    grid-template-columns: 1fr 1.75fr;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 260px);
     grid-auto-columns: 1fr;
     align-items: start;
     display: grid;
+    width: 100%;
+}
+
+/* Main article on the left (wide), share sidebar on the right (narrow) */
+.blog-content-grid > div:first-child {
+    order: 2;
+}
+
+.blog-content-grid > div:last-child {
+    order: 1;
+    min-width: 0;
+}
+
+.blog-content-grid > div:last-child p,
+.blog-content-grid > div:last-child > div {
+    max-width: none;
+}
+
+.blog-content-section .richtext-image {
+    width: 100%;
+    height: auto !important;
+    max-height: none;
 }
 
 @media screen and (max-width: 768px) {
     /* Adjust grid layout for smaller screens */
     .blog-content-grid {
-        grid-template-columns: 1fr; /* Change to single column layout */
-        grid-column-gap: 0; /* Adjust gap for smaller screens  it was 2rm*/
-        grid-row-gap: 2rem; /* Adjust gap for smaller screens */
+        grid-template-columns: 1fr;
+        grid-column-gap: 0;
+        grid-row-gap: 2rem;
+    }
+
+    .blog-content-grid > div:first-child {
+        order: 2;
+    }
+
+    .blog-content-grid > div:last-child {
+        order: 1;
+    }
+
+    .post-sidebar {
+        max-width: none;
+        margin-left: 0;
     }
 }
 
@@ -292,6 +342,8 @@ h4 {
     position: -webkit-sticky;
     position: sticky;
     top: 8rem;
+    max-width: 260px;
+    margin-left: auto;
 }
 
 .text-size-large {
