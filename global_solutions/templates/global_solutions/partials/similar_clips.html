@@ -13,18 +13,14 @@
   {% if similar_videos|length > 1 %}
   <div class="fh-similar-clips__carousel-wrap">
     <div
+      class="fh-similar-clips__carousel"
+      data-fh-similar-carousel
       id="fh-similar-{{ video.id }}"
-      class="carousel slide fh-similar-clips__carousel"
-      data-bs-ride="false"
-      data-bs-interval="false"
-      data-bs-wrap="true"
-      data-bs-touch="true"
-      data-bs-keyboard="true"
     >
-      <div class="fh-similar-clips__stage">
-        <div class="carousel-inner">
+      <div class="fh-similar-clips__viewport">
+        <div class="fh-similar-clips__track carousel-inner">
           {% for clip in similar_videos %}
-            <div class="carousel-item{% if forloop.first %} active{% endif %}">
+            <div class="fh-similar-clips__slide carousel-item{% if forloop.first %} active{% endif %}"{% if not forloop.first %} aria-hidden="true"{% endif %}>
               <figure class="fh-similar-clip__figure">
                 {% if clip.playback_url %}
                   <div class="fh-similar-clip__media">
@@ -61,33 +57,28 @@
         </div>
 
         <button
-          class="carousel-control-prev fh-similar-clips__control"
+          class="fh-similar-clips__control fh-similar-clips__control--prev"
           type="button"
-          data-bs-target="#fh-similar-{{ video.id }}"
-          data-bs-slide="prev"
           aria-label="Previous clip"
         >
           <span class="fh-similar-clips__control-icon" aria-hidden="true">‹</span>
-          <span class="visually-hidden">Previous clip</span>
         </button>
         <button
-          class="carousel-control-next fh-similar-clips__control"
+          class="fh-similar-clips__control fh-similar-clips__control--next"
           type="button"
-          data-bs-target="#fh-similar-{{ video.id }}"
-          data-bs-slide="next"
           aria-label="Next clip"
         >
           <span class="fh-similar-clips__control-icon" aria-hidden="true">›</span>
-          <span class="visually-hidden">Next clip</span>
         </button>
 
-        <div class="carousel-indicators fh-similar-clips__indicators">
+        <div class="fh-similar-clips__indicators" role="tablist" aria-label="Choose clip">
           {% for clip in similar_videos %}
             <button
               type="button"
-              data-bs-target="#fh-similar-{{ video.id }}"
-              data-bs-slide-to="{{ forloop.counter0 }}"
-              {% if forloop.first %}class="active" aria-current="true"{% endif %}
+              class="fh-similar-clips__dot{% if forloop.first %} active{% endif %}"
+              data-slide-index="{{ forloop.counter0 }}"
+              role="tab"
+              {% if forloop.first %}aria-current="true"{% endif %}
               aria-label="Show clip {{ forloop.counter }}"
             ></button>
           {% endfor %}
