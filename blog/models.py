@@ -91,11 +91,19 @@ class BlogIndexPage(Page):
         production_page = ProductionPage.objects.live().order_by('-first_published_at')[:1]
         solution_page = SolutionsPage.objects.live().order_by('-first_published_at')[:1]
         landClearing_page = LandClearingPage.objects.live().order_by('-first_published_at')[:2]
+        blog_pages = BlogPage.objects.live().descendant_of(self).order_by('-first_published_at')[:2]
 
 
         # combined the querysets
         _combined_pages = sorted(
-            chain(awards_pages,landClearing_page,production_page,solution_page, response_page),
+            chain(
+                awards_pages,
+                landClearing_page,
+                production_page,
+                solution_page,
+                response_page,
+                blog_pages,
+            ),
             key=lambda page: page.first_published_at,
             reverse=True
         )
