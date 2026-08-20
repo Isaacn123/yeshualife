@@ -1,0 +1,21 @@
+.gs-admin-public-url {
+  margin: 0.75rem 0 1rem;
+  max-width: 42rem;
+}
+
+.gs-admin-public-url__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.gs-admin-public-url__input {
+  flex: 1 1 16rem;
+  min-width: 12rem;
+  font-size: 0.875rem;
+}
+
+.gs-similar-block .gs-admin-public-url {
+  margin-top: 0.5rem;
+}

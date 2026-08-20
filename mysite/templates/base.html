@@ -31,26 +31,21 @@
      <style>
       .image-blog-main {
           width: 100%;
-          {% comment %} 
-          height: 400px; /* Adjust based on your design */
-          object-fit: cover; {% endcomment %}
+          max-width: 100%;
+          height: auto;
+          object-fit: contain;
           margin-left: auto;
           margin-right: auto;
-          height: auto;  /* Maintain aspect ratio */
-          display: block; /* Remove any default margin or padding */
-          max-width: 100%; /* Make sure it does not stretch beyond its original size */
+          display: block;
       }
-      /* Add this media query to adjust the height for screens wider than 996px */
-    .richtext-image {
-        width: 100%; /* Ensure it takes up the full width of its container */
-        height: auto; /* Default to auto to maintain aspect ratio */
-        display: block; /* Remove any default margin or padding */
-        max-width: 100%; /* Make sure it does not stretch beyond its original size */
+      .richtext-image {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+        display: block;
     }
 
-    {% comment %} h1 {
-      font-size: 1rem; /* Adjust to your preference for mobile views */
-    } {% endcomment %}
       @media (max-width:767px) {
       h1{
         font-size: 2.1rem !important;
@@ -60,19 +55,27 @@
       }
       .image-blog-main {
         width: 100% !important;
-        height: 480px!important; /* Or whatever height makes sense for your layout */
-        display: block; /* Remove any default margin or padding */
-        max-width: 100%; /* Make sure it does not stretch beyond its original size */
+        height: auto !important;
+        max-height: none !important;
+        object-fit: contain !important;
     }
+      .richtext-image {
+        height: auto !important;
+        max-height: none !important;
+        object-fit: contain !important;
+      }
       }
       @media (min-width: 996px) {
         .richtext-image {
-          height: 533px!important;
+          height: auto !important;
+          max-height: none !important;
+          object-fit: contain !important;
         }
     .image-blog-main {
         width: 100% !important;
-        height: 500px!important; /* Or whatever height makes sense for your layout */
-        object-fit: cover!important; /* Use this to cover the area if the aspect ratio doesn't match */
+        height: auto !important;
+        max-height: none !important;
+        object-fit: contain !important;
     }
 }
 

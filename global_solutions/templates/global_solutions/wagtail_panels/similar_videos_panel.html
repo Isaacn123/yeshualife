@@ -7,18 +7,23 @@
     {% if can_manage_similar %}
       <link rel="stylesheet" href="{% static 'global_solutions/thumbnail_picker.css' %}">
       <link rel="stylesheet" href="{% static 'global_solutions/similar_videos_admin.css' %}">
+      <link rel="stylesheet" href="{% static 'global_solutions/admin_public_url.css' %}">
+      <p class="help">
+        Optional extra clips appear only on this video&apos;s public page (under the description), not in the main video list or category carousels.
+      </p>
       <p class="help">
         Add extra clips for the same story (e.g. more angles from a Karamoja feeding).
         Each clip gets its own upload and thumbnail. They appear under the description on the public video page — not as separate hub listings.
       </p>
       <div id="gs-similar-list" class="gs-similar-list" data-create-url="{{ similar_create_url }}">
         {% for block in similar_video_blocks %}
-          {% include "global_solutions/wagtail_panels/similar_video_block.html" with similar=block.similar api_urls_json=block.api_urls_json %}
+          {% include "global_solutions/wagtail_panels/similar_video_block.html" with similar=block.similar api_urls_json=block.api_urls_json public_video_url=block.public_video_url %}
         {% endfor %}
       </div>
       <button type="button" class="button button-secondary" id="gs-similar-add">+ Add similar video</button>
       <script src="{% static 'global_solutions/thumbnail_picker.js' %}?v=20260819"></script>
-      <script src="{% static 'global_solutions/similar_videos_admin.js' %}?v=20260820c"></script>
+      <script src="{% static 'global_solutions/similar_videos_admin.js' %}?v=20260820d"></script>
+      <script src="{% static 'global_solutions/admin_copy_url.js' %}?v=20260820"></script>
     {% elif video_id %}
       <p class="help">This row is a similar clip attached to another video. Edit the main video to manage its extra clips.</p>
     {% else %}

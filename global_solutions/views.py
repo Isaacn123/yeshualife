@@ -188,7 +188,16 @@ def create_similar_video(request, video_id):
         sort_order=parent.similar_videos.count(),
         created_by=request.user,
     )
-    return JsonResponse({"video_id": str(child.id), "title": child.title})
+    from .wagtail_panels import admin_public_video_url
+
+    return JsonResponse(
+        {
+            "video_id": str(child.id),
+            "title": child.title,
+            "slug": child.slug,
+            "public_url": admin_public_video_url(child),
+        }
+    )
 
 
 @require_POST

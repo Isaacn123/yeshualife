@@ -1,0 +1,16 @@
+{% if public_video_url %}
+<div class="gs-admin-public-url">
+  <label class="w-field__label">Public page link</label>
+  <div class="gs-admin-public-url__row">
+    <input
+      type="text"
+      class="w-field__input gs-admin-public-url__input"
+      readonly
+      value="{{ public_video_url }}"
+    >
+    <button type="button" class="button button-secondary gs-admin-copy-url">Copy link</button>
+    <a href="{{ public_video_url }}" class="button button-secondary" target="_blank" rel="noopener noreferrer">Open</a>
+  </div>
+  <p class="help">Share after status is <strong>Ready</strong>. Similar clips open on the main video page.</p>
+</div>
+{% endif %}

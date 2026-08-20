@@ -80,6 +80,9 @@ class GlobalSolutionsBlockAdmin(admin.ModelAdmin):
 
 @admin.register(GlobalSolutionsVideo)
 class GlobalSolutionsVideoAdmin(admin.ModelAdmin):
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(parent_video__isnull=True)
+
     list_display = (
         "title",
         "category",

@@ -4,9 +4,22 @@ from __future__ import annotations
 
 import json
 
+from django.conf import settings
 from wagtail.admin.panels import Panel
 
 from .api_urls import video_api_urls_for
+
+
+def admin_public_video_url(video) -> str:
+    """Absolute public URL for a main video or similar clip (parent page + #clip- hash)."""
+    slug = (getattr(video, "slug", "") or "").strip()
+    if not slug:
+        return ""
+    path = video.get_absolute_url()
+    base = (getattr(settings, "WAGTAILADMIN_BASE_URL", "") or "").rstrip("/")
+    if base:
+        return f"{base}{path}"
+    return path
 
 
 class GlobalSolutionsVideoB2UploadPanel(Panel):
@@ -26,6 +39,7 @@ class GlobalSolutionsVideoB2UploadPanel(Panel):
             if pk:
                 context["gs_video_api_urls"] = video_api_urls_for(pk)
                 context["has_uploaded_source"] = bool((getattr(self.instance, "original_b2_key", "") or "").strip())
+                context["public_video_url"] = admin_public_video_url(self.instance)
             return context
 
 
@@ -55,6 +69,7 @@ class GlobalSolutionsSimilarVideosPanel(Panel):
                         {
                             "similar": sv,
                             "api_urls_json": json.dumps(video_api_urls_for(sv.pk)),
+                            "public_video_url": admin_public_video_url(sv),
                         }
                     )
                 context["similar_video_blocks"] = blocks

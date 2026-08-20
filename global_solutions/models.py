@@ -318,7 +318,6 @@ class GlobalSolutionsVideoStatus(models.TextChoices):
     FAILED = "failed", "Failed"
 
 
-@register_snippet
 class GlobalSolutionsVideo(models.Model):
     """
     Stores metadata + B2 object keys/URLs for a single uploaded clip.

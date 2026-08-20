@@ -1,12 +1,19 @@
-from django.db.models import QuerySet
-from wagtail import hooks
+from wagtail.snippets.models import register_snippet
+from wagtail.snippets.views.snippets import SnippetViewSet
 
 from .models import GlobalSolutionsVideo
 
 
-@hooks.register("construct_snippet_listing_queryset")
-def hide_similar_clips_from_snippet_index(model, queryset: QuerySet) -> QuerySet:
-    """Main video list shows only top-level entries; similar clips are edited on the parent."""
-    if model is GlobalSolutionsVideo:
-        return queryset.filter(parent_video__isnull=True)
-    return queryset
+class GlobalSolutionsVideoViewSet(SnippetViewSet):
+    """
+    Main Wagtail video list shows only top-level entries.
+    Optional similar clips are managed on the parent video edit page.
+    """
+
+    model = GlobalSolutionsVideo
+
+    def get_queryset(self, request):
+        return self.model._default_manager.filter(parent_video__isnull=True)
+
+
+register_snippet(GlobalSolutionsVideo, viewset=GlobalSolutionsVideoViewSet)

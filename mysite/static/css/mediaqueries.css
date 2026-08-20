@@ -222,22 +222,26 @@
 /* Default styles for images */
 img {
     max-width: 100%;
-    /* height: auto !important; */
-    object-fit: cover;
-  }
-  
-  /* Media query for mobile devices */
-  @media (max-width: 767px) {
-    img {
-      /* Additional styles for mobile */
-      max-width: 80%; /* Adjust as needed */
+    height: auto;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 767px) {
+    .blog-content-section img,
+    .content.text-center img,
+    .image-blog-main,
+    .richtext-image {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        object-fit: contain !important;
     }
 
     .img-list-box img{
         width: 100% !important;
         max-width: 100% !important;
     }
-  }
+}
 
   
 
