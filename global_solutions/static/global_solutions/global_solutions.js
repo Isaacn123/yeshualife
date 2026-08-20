@@ -23,7 +23,7 @@
     document
       .querySelectorAll('video[data-playback-hls="true"][data-playback-src]')
       .forEach(function (video) {
-        if (video.closest(".gs-video-player")) {
+        if (video.closest(".gs-video-player") || video.closest(".fh-similar-clips")) {
           return;
         }
         attachPlayback(video);

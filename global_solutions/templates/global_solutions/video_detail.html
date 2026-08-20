@@ -27,29 +27,27 @@
   <div class="fh-video-layout">
     <div class="fh-video-player-wrap">
       {% if video.playback_url %}
-        <div class="gs-video-player is-paused fh-detail-player">
-          {% if video.playback_uses_hls %}
-            <video
-              class="gs-video-player-el fh-detail-video"
-              controls
-              playsinline
-              preload="metadata"
-              data-playback-src="{{ video.playback_url }}"
-              data-playback-hls="true"
-              {% if video.thumbnail_url %}poster="{{ video.thumbnail_url }}"{% endif %}
-            ></video>
-          {% else %}
-            <video
-              class="gs-video-player-el fh-detail-video"
-              controls
-              playsinline
-              webkit-playsinline
-              preload="metadata"
-              src="{{ video.playback_url }}"
-              {% if video.thumbnail_url %}poster="{{ video.thumbnail_url }}"{% endif %}
-            ></video>
-          {% endif %}
-        </div>
+        {% if video.playback_uses_hls %}
+          <video
+            class="fh-detail-video"
+            controls
+            playsinline
+            preload="metadata"
+            data-playback-src="{{ video.playback_url }}"
+            data-playback-hls="true"
+            {% if video.thumbnail_url %}poster="{{ video.thumbnail_url }}"{% endif %}
+          ></video>
+        {% else %}
+          <video
+            class="fh-detail-video"
+            controls
+            playsinline
+            webkit-playsinline
+            preload="metadata"
+            src="{{ video.playback_url }}"
+            {% if video.thumbnail_url %}poster="{{ video.thumbnail_url }}"{% endif %}
+          ></video>
+        {% endif %}
       {% endif %}
     </div>
 
@@ -95,7 +93,7 @@
   {{ block.super }}
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
   <script src="{% static 'global_solutions/global_solutions.js' %}"></script>
-  <script src="{% static 'global_solutions/product_carousel.js' %}"></script>
+  <script src="{% static 'global_solutions/similar_clips.js' %}?v=20260820"></script>
   <script src="{% static 'global_solutions/farmhub.js' %}"></script>
 {% endblock %}
 

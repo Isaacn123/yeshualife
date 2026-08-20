@@ -193,7 +193,7 @@
     }
 
     var slug = page.getAttribute("data-video-slug");
-    var video = page.querySelector("video.fh-detail-video, video.gs-video-player-el");
+    var video = page.querySelector("video.fh-detail-video");
     if (!slug || !video) {
       return;
     }
