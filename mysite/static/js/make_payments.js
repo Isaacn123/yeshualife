@@ -33,13 +33,13 @@ document.addEventListener('DOMContentLoaded', function() {
        console.log("PASSED-DATA::",formData);
 
     if (amount === null || amount.trim() === '') {
-        alert("Please enter a contribution amount.");
+        alert("Please enter a payment amount.");
         return false;
     }
 
     var amountNum = Number(amount);
     if (isNaN(amountNum) || amountNum < 1000) {
-        alert("Minimum contribution is 1,000 UGX.");
+        alert("Minimum payment is 1,000 UGX.");
         return false;
     }
 
@@ -134,13 +134,13 @@ document.addEventListener('DOMContentLoaded', function() {
              document.getElementById('phoneid').value = ''; // Clear the phone input field
              document.getElementById('donorName').value = formData.name;
              document.getElementById('donationAmount').value = formData.donationAmount;
-             document.getElementById('my-button-mtn').textContent = 'Give ' + Number(formData.donationAmount).toLocaleString() + ' UGX';
+             document.getElementById('my-button-mtn').textContent = 'Pay ' + Number(formData.donationAmount).toLocaleString() + ' UGX';
              document.getElementById('currency').value = formData.currency;
              document.getElementById('fullname').value = formData.name;
              document.getElementById('message').value = formData.message;
      
              // Set the button text with the amount
-             document.getElementById(btn).textContent = 'Give ' + Number(formData.donationAmount).toLocaleString() + ' UGX';
+             document.getElementById(btn).textContent = 'Pay ' + Number(formData.donationAmount).toLocaleString() + ' UGX';
              
             // button.textContent = "Pay "+ formData.currency + " "+ donationAmount;
 
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
              document.getElementById('message').value = formData.message;
      
              // Set the button text with the amount
-             document.getElementById(btn).textContent = 'Give ' + Number(formData.donationAmount).toLocaleString() + ' UGX';
+             document.getElementById(btn).textContent = 'Pay ' + Number(formData.donationAmount).toLocaleString() + ' UGX';
              
             // button.textContent = "Pay "+ formData.currency + " "+ donationAmount;
 

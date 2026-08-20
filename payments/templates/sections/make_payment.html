@@ -13,10 +13,10 @@
             <!-- Header with gradient -->
             <div class="card-header donation-form-header text-center py-4">
                 <h3 class="mb-0 fw-bold text-white">
-                    <i class="fas fa-heart me-2"></i>
-                    Make a Contribution
+                    <i class="fas fa-credit-card me-2"></i>
+                    Make a Payment
                 </h3>
-                <p class="mb-0 mt-2 opacity-90">Your generosity makes a difference</p>
+                <p class="mb-0 mt-2 opacity-90">Pay securely for Yeshua Life products and services</p>
             </div>
         
             <div class="card-body p-md-5 p-4 donation-form-body">
@@ -25,23 +25,23 @@
                         <!-- Amount Input -->
                         <div class="col-12">
                             <label for="amount_id" class="form-label donation-field-label mb-2">
-                                Contribution (UGX)
+                                Payment amount (UGX)
                             </label>
                             <input id="amount_id" type="number" name="amount" class="form-control donation-field-input donation-field-input--amount" placeholder="e.g. 10000" required min="1000" inputmode="numeric">
                             <small class="text-muted donation-field-hint">
                                 <i class="fas fa-info-circle me-1"></i>
-                                Minimum contribution: 1,000 UGX
+                                Minimum payment: 1,000 UGX
                             </small>
                         </div>
 
                         <!-- Message Input -->
                         <div class="col-12">
                             <label for="message_id" class="form-label donation-field-label mb-2">
-                                Your Message <span class="text-muted fw-normal">(optional)</span>
+                                Order note <span class="text-muted fw-normal">(optional)</span>
                             </label>
-                            <textarea id="message_id" rows="4" name="message" class="form-control donation-field-textarea" placeholder="Share why you're giving today…" maxlength="60"></textarea>
+                            <textarea id="message_id" rows="4" name="message" class="form-control donation-field-textarea" placeholder="e.g. Sogam order, quantity, delivery details…" maxlength="60"></textarea>
                             <div class="d-flex justify-content-between mt-1">
-                                <small class="text-muted" style="font-size: 11px;">Share why you're giving today</small>
+                                <small class="text-muted" style="font-size: 11px;">Product or order reference</small>
                                 <small class="text-muted"><span id="char-count">0</span>/60</small>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                                 style="background: linear-gradient(135deg, #cc9f3e 0%, #cc913e 100%); border: none; transition: all 0.3s ease;">
                                 <span class="btn-text">
                                     <i class="fas fa-arrow-right me-2"></i>
-                                    Proceed to Give
+                                    Proceed to Payment
                                 </span>
                                 <div class="btn-loading d-none">
                                     <div class="spinner-border spinner-border-sm me-2" role="status"></div>
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update message in summary in real-time
             const summaryMessage = document.getElementById('donation-message');
             if (summaryMessage) {
-                summaryMessage.textContent = this.value || 'Enter your message above';
+                summaryMessage.textContent = this.value || 'Add an order note above';
             }
         });
     }
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         if (summaryMessage && message) {
-            summaryMessage.textContent = message || 'Thank you for your generous donation';
+            summaryMessage.textContent = message || 'Thank you — we received your order note';
         }
         
         // Update other amount displays in the new layout

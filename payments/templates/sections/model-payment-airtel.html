@@ -39,7 +39,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="d-flex flex-column ps-md-5 px-md-0 px-4 mb-4"> <span>Donation<span
+                                <div class="d-flex flex-column ps-md-5 px-md-0 px-4 mb-4"> <span>Payment amount<span
                                             class="ps-1">Amount</span></span>
                                     <div class="inputWithIcon">
                                 <input id="airtel-donationAmount" type="text" class="form-control" placeholder="500" disabled> <span
@@ -129,7 +129,7 @@
                     console.log("Airtel button clicked, form data:", currentFormData);
                     
                     if(!currentFormData.donationAmount) {
-                        alert('Please enter a donation amount first!');
+                        alert('Please enter a payment amount first!');
                         return;
                     }
                     
@@ -140,7 +140,7 @@
                     document.getElementById('airtel-currency').value = currentFormData.currency;
                     document.getElementById('airtel-fullname').value = currentFormData.name;
                     document.getElementById('airtel-message').value = currentFormData.message;
-                    document.getElementById('airtel-pay-button').textContent = 'Give ' + Number(currentFormData.donationAmount).toLocaleString() + ' UGX';
+                    document.getElementById('airtel-pay-button').textContent = 'Pay ' + Number(currentFormData.donationAmount).toLocaleString() + ' UGX';
                     
                     // Store in localStorage for consistency
                     localStorage.setItem('formData', JSON.stringify(currentFormData));
