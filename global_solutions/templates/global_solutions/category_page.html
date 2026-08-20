@@ -3,6 +3,10 @@
 
 {% block body_class %}template-farmhub template-farmhub-category{% endblock %}
 
+{% block social_meta %}
+  {% include "global_solutions/partials/social_meta_tags.html" with share_title=category.name share_description=category.description share_image=videos.0.thumbnail_url %}
+{% endblock %}
+
 {% block extra_css %}
   {{ block.super }}
   {% include "global_solutions/partials/farmhub_assets.html" %}

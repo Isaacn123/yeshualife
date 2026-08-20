@@ -1,7 +1,12 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static social_tags %}
 
 {% block body_class %}template-farmhub template-farmhub-search{% endblock %}
+
+{% block social_meta %}
+  {% gs_settings as gs %}
+  {% include "global_solutions/partials/social_meta_tags.html" with share_title="Search Global Solutions" share_description=query|default:gs.seo_description share_image=gs.resolved_hero_image_url %}
+{% endblock %}
 
 {% block extra_css %}
   {{ block.super }}

@@ -1,7 +1,12 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static social_tags %}
 
 {% block body_class %}template-globalsolutions{% endblock %}
+
+{% block social_meta %}
+  {% gs_settings as gs %}
+  {% include "global_solutions/partials/social_meta_tags.html" with share_title=gs.hero_title|default:gs.page_title share_description=gs.seo_description|default:gs.hero_subtitle share_image=gs.resolved_hero_image_url %}
+{% endblock %}
 
 {% block extra_css %}
   {{ block.super }}
