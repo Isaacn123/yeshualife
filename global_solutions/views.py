@@ -189,7 +189,7 @@ def create_similar_video(request, video_id):
         sort_order=parent.similar_videos.count(),
         created_by=request.user,
     )
-    from .wagtail_panels import admin_embed_video_url, admin_public_video_url
+    from .public_urls import admin_embed_video_url, admin_public_video_url
 
     return JsonResponse(
         {

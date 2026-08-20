@@ -4,31 +4,10 @@ from __future__ import annotations
 
 import json
 
-from django.conf import settings
 from wagtail.admin.panels import Panel
 
 from .api_urls import video_api_urls_for
-from .embed_finder import embed_iframe_url
-
-
-def admin_public_video_url(video) -> str:
-    """Full share page (nav, description, similar clips)."""
-    slug = (getattr(video, "slug", "") or "").strip()
-    if not slug:
-        return ""
-    path = video.get_absolute_url()
-    base = (getattr(settings, "WAGTAILADMIN_BASE_URL", "") or "").rstrip("/")
-    if base:
-        return f"{base}{path}"
-    return path
-
-
-def admin_embed_video_url(video) -> str:
-    """Player-only URL for Wagtail Video embed fields and iframe previews."""
-    slug = (getattr(video, "slug", "") or "").strip()
-    if not slug:
-        return ""
-    return embed_iframe_url(video)
+from .public_urls import admin_embed_video_url, admin_public_video_url
 
 
 class GlobalSolutionsVideoB2UploadPanel(Panel):

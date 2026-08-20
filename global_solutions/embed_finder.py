@@ -7,13 +7,12 @@ from html import escape
 from urllib.parse import urlparse
 
 from django.conf import settings
-from django.urls import reverse
-
 from wagtail.embeds.exceptions import EmbedNotFoundException
 from wagtail.embeds.finders.base import EmbedFinder
 
 from .discovery import get_public_videos_qs
 from .models import GlobalSolutionsVideo, GlobalSolutionsVideoStatus
+from .public_urls import embed_iframe_url
 
 # Public detail URLs (with optional #clip- fragment) and direct embed URLs.
 _PAGE_PATH_RE = re.compile(
@@ -106,14 +105,6 @@ def resolve_video_for_embed(parent_slug: str, clip_slug: str | None = None) -> G
     if get_public_videos_qs().filter(pk=by_slug.pk).exists():
         return by_slug
     return None
-
-
-def embed_iframe_url(video: GlobalSolutionsVideo) -> str:
-    path = reverse("global_solutions:video_embed", kwargs={"slug": video.slug})
-    base = (getattr(settings, "WAGTAILADMIN_BASE_URL", "") or "").rstrip("/")
-    if base:
-        return f"{base}{path}"
-    return path
 
 
 class GlobalSolutionsVideoEmbedFinder(EmbedFinder):
