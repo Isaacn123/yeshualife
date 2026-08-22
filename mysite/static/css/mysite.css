@@ -146,7 +146,7 @@ body.template-globalsolutions-detail .wrapper > .d-flex.flex-column.align-items-
     grid-column-gap: 0.5rem;
     grid-row-gap: 1rem;
     grid-template-rows: auto;
-    grid-template-columns: max-content minmax(0, 1fr);
+    grid-template-columns: minmax(0, max-content) minmax(0, 1fr);
     grid-auto-columns: 1fr;
     align-items: start;
     display: grid;
@@ -186,40 +186,65 @@ body.template-globalsolutions-detail .wrapper > .d-flex.flex-column.align-items-
     object-fit: contain;
 }
 
+/* Wagtail embeds/images often ship with fixed width attributes that blow out mobile layout */
+.blog-content-section .responsive-object {
+    max-width: 100%;
+    width: 100%;
+}
+
+.blog-content-section iframe {
+    max-width: 100%;
+}
+
+.blog-content-section [class*="block-video"] {
+    max-width: 100%;
+    width: 100%;
+    float: none !important;
+    clear: both;
+}
+
 @media screen and (max-width: 768px) {
     .blog-content-section {
         padding-left: 1rem;
         padding-right: 1rem;
+        overflow-x: clip;
     }
 
     .content.text-center .image-blog-main,
     .blog-content-section .image-blog-main,
-    .blog-content-section .richtext-image {
+    .blog-content-section .richtext-image,
+    .blog-content-section img[width] {
         width: 100% !important;
         height: auto !important;
+        max-width: 100% !important;
         max-height: none !important;
         object-fit: contain !important;
     }
-}
 
-@media screen and (max-width: 768px) {
-    /* Adjust grid layout for smaller screens */
+    /* Prevent iOS Safari from zooming out to fit overflowing grid tracks */
     .blog-content-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         grid-column-gap: 0;
         grid-row-gap: 2rem;
     }
 
     .blog-content-grid > div:first-child {
         order: 2;
+        width: 100%;
+        max-width: 100%;
     }
 
     .blog-content-grid > div:last-child {
         order: 1;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
     }
 
     .post-sidebar {
-        max-width: none;
+        position: static;
+        width: 100%;
+        max-width: 100%;
     }
 }
 
@@ -457,6 +482,8 @@ h4 {
 }
 .responsive-object {
     position: relative;
+    max-width: 100%;
+    width: 100%;
 }
 .responsive-object iframe,
 .responsive-object object,
@@ -466,6 +493,7 @@ h4 {
     left: 0;
     width: 100%;
     height: 100%;
+    max-width: 100%;
 }
 
 .block-video-center {
