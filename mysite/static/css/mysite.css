@@ -180,7 +180,7 @@ body.template-globalsolutions-detail .wrapper > .d-flex.flex-column.align-items-
     display: block;
 }
 
-.blog-content-section img {
+.blog-content-section img:not(.yeshua-logo) {
     max-width: 100%;
     height: auto;
     object-fit: contain;
@@ -242,9 +242,26 @@ body.template-globalsolutions-detail .wrapper > .d-flex.flex-column.align-items-
     }
 
     .post-sidebar {
-        position: static;
-        width: 100%;
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+    }
+
+    .post-sidebar .logo-component {
         max-width: 100%;
+        min-width: 0;
+        align-items: center;
+    }
+
+    .post-sidebar .yeshua-logo,
+    .blog-content-grid .post-sidebar .yeshua-logo {
+        height: 2.1rem !important;
+        width: auto !important;
+        max-width: 100% !important;
+        max-height: 2.1rem !important;
+        object-fit: contain;
+        flex-shrink: 0;
     }
 }
 
@@ -310,8 +327,12 @@ h4 {
     display: flex;
 }
 .yeshua-logo{
-        height: 2.975rem;
-    }
+    height: 2.975rem;
+    width: auto;
+    max-width: 100%;
+    max-height: 2.975rem;
+    object-fit: contain;
+}
 .yeshua{
     font-weight: 500;
     font-size: 20px;
@@ -418,6 +439,10 @@ h4 {
 .blog-content-grid .post-sidebar .yeshua-logo {
     height: 2.1rem;
     width: auto;
+    max-width: 100%;
+    max-height: 2.1rem;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .blog-content-grid .post-sidebar .text-size-large {
