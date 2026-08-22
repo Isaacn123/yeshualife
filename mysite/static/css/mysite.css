@@ -265,6 +265,22 @@ body.template-globalsolutions-detail .wrapper > .d-flex.flex-column.align-items-
     }
 }
 
+@media screen and (min-width: 769px) {
+    /* Use full detail-page width on large screens; avoid double side gutters */
+    body.template-blogpage .section.blog-content-section,
+    body.template-globalsolutions-detail .section.blog-content-section {
+        padding-left: 0;
+        padding-right: 0;
+        overflow-x: visible;
+    }
+
+    body.template-blogpage .blog-content-section .container-medium,
+    body.template-globalsolutions-detail .blog-content-section .container-medium {
+        max-width: none;
+        width: 100%;
+    }
+}
+
 
 /* footer section */
 
