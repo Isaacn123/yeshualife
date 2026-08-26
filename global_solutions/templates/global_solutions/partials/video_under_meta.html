@@ -1,0 +1,11 @@
+{# Compact page-visit + category row under the video player. #}
+<div class="fh-video-under">
+  <span class="fh-engagement-stat fh-engagement-stat--page-views" title="Page views">
+    <span class="fh-engagement-icon fh-engagement-icon--page-views" aria-hidden="true"></span>
+    <span class="fh-engagement-label">Page views</span>
+    <span class="fh-engagement-page-views">{{ video.page_views_display }}</span>
+  </span>
+  {% if video.category %}
+    <a href="{% url 'global_solutions:farmhub_category' slug=video.category.slug %}" class="fh-tag fh-video-under__category">{{ video.category.name }}</a>
+  {% endif %}
+</div>
