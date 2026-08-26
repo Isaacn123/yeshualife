@@ -692,8 +692,11 @@ p {
 }
 
 #bicycleFeatures1 img.w-100.rounded {
-  aspect-ratio: 16 / 9;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
   object-fit: cover;
+  object-position: center;
   box-shadow: 0 12px 28px rgba(22, 18, 12, 0.12);
 }
 
@@ -713,29 +716,41 @@ p {
   overflow: hidden;
 }
 
-@media (max-width: 575.98px) {
+@media (max-width: 767.98px) {
   #bicycleFeatures1 .container-fluid {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
-  #bicycleFeatures1 .row {
-    justify-content: center;
+  #bicycleFeatures1 .row.m-0 > [class*="col-"] {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 
   #bicycleFeatures1 .col-sm-6.col-lg-3 {
-    max-width: 22rem;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: none;
+    width: 100%;
+    text-align: left;
   }
 
   #bicycleFeatures1 .col-sm-6.col-lg-3 > a.d-block {
-    text-align: center;
+    width: 100%;
+    text-align: left;
+  }
+
+  #bicycleFeatures1 img.w-100.rounded {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 10 !important;
+    object-fit: cover !important;
+    object-position: center;
   }
 
   #bicycleFeatures1 h4,
   #bicycleFeatures1 h6,
   #bicycleFeatures1 p.text-body {
-    text-align: center;
+    text-align: left;
+    width: 100%;
   }
 }
