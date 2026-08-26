@@ -116,24 +116,62 @@
       });
   }
 
+  function recordVideoShare(slug) {
+    return fetch("/api/videos/" + encodeURIComponent(slug) + "/share/", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "X-CSRFToken": getCsrfToken(),
+        "Content-Type": "application/json",
+      },
+    }).then(function (res) {
+      return res.json().then(function (data) {
+        return { ok: res.ok, data: data };
+      });
+    });
+  }
+
+  function notifyShareCounted(slug) {
+    if (!slug) {
+      return;
+    }
+    recordVideoShare(slug)
+      .then(function (result) {
+        if (result.ok && result.data.shares_display != null) {
+          setSharesDisplay(slug, result.data.shares_display);
+        }
+      })
+      .catch(function () {});
+  }
+
   function shareVideo(btn) {
     var path = btn.getAttribute("data-share-path") || "";
     var title = btn.getAttribute("data-share-title") || document.title;
+    var slug =
+      btn.getAttribute("data-video-slug") ||
+      (btn.closest(".fh-engagement") && btn.closest(".fh-engagement").getAttribute("data-video-slug"));
     var url = new URL(path, window.location.origin).href;
 
     if (navigator.share) {
-      navigator.share({ title: title, url: url }).catch(function () {});
+      navigator
+        .share({ title: title, url: url })
+        .then(function () {
+          notifyShareCounted(slug);
+        })
+        .catch(function () {});
       return;
     }
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(url).then(function () {
         showToast("Link copied to clipboard");
+        notifyShareCounted(slug);
       });
       return;
     }
 
     window.prompt("Copy this link:", url);
+    notifyShareCounted(slug);
   }
 
   function onClick(event) {
@@ -160,6 +198,12 @@
   function setViewsDisplay(slug, viewsDisplay) {
     document.querySelectorAll('.fh-engagement[data-video-slug="' + slug + '"] .fh-engagement-views').forEach(function (el) {
       el.textContent = viewsDisplay;
+    });
+  }
+
+  function setSharesDisplay(slug, sharesDisplay) {
+    document.querySelectorAll('.fh-engagement[data-video-slug="' + slug + '"] .fh-engagement-shares').forEach(function (el) {
+      el.textContent = sharesDisplay;
     });
   }
 
@@ -276,35 +320,46 @@
 
   function initWatchTimeViews() {
     var page = document.querySelector(".fh-video-page[data-video-slug]");
-    if (!page) {
+    if (page) {
+      var mainSlug = page.getAttribute("data-video-slug");
+      var mainVideo = page.querySelector("video.fh-detail-video");
+      var mainCounted = page.getAttribute("data-view-counted") === "true";
+      if (mainSlug && mainVideo) {
+        bindWatchTimeTracking(
+          mainVideo,
+          mainSlug,
+          page.getAttribute("data-video-duration"),
+          mainCounted
+        );
+      }
+
+      document.querySelectorAll(".fh-similar-clips [data-video-slug]").forEach(function (slide) {
+        var slug = slide.getAttribute("data-video-slug");
+        var clipVideo = slide.querySelector("video");
+        var clipCounted = slide.getAttribute("data-view-counted") === "true";
+        if (slug && clipVideo) {
+          bindWatchTimeTracking(
+            clipVideo,
+            slug,
+            slide.getAttribute("data-video-duration"),
+            clipCounted
+          );
+        }
+      });
       return;
     }
 
-    var mainSlug = page.getAttribute("data-video-slug");
-    var mainVideo = page.querySelector("video.fh-detail-video");
-    var mainCounted = page.getAttribute("data-view-counted") === "true";
-    if (mainSlug && mainVideo) {
-      bindWatchTimeTracking(
-        mainVideo,
-        mainSlug,
-        page.getAttribute("data-video-duration"),
-        mainCounted
-      );
+    var embed = document.querySelector(".gs-embed-player[data-video-slug]");
+    if (!embed) {
+      return;
     }
 
-    document.querySelectorAll(".fh-similar-clips [data-video-slug]").forEach(function (slide) {
-      var slug = slide.getAttribute("data-video-slug");
-      var clipVideo = slide.querySelector("video");
-      var clipCounted = slide.getAttribute("data-view-counted") === "true";
-      if (slug && clipVideo) {
-        bindWatchTimeTracking(
-          clipVideo,
-          slug,
-          slide.getAttribute("data-video-duration"),
-          clipCounted
-        );
-      }
-    });
+    bindWatchTimeTracking(
+      embed.querySelector("video"),
+      embed.getAttribute("data-video-slug"),
+      embed.getAttribute("data-video-duration"),
+      embed.getAttribute("data-view-counted") === "true"
+    );
   }
 
   document.addEventListener("DOMContentLoaded", function () {

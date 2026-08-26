@@ -1,16 +1,30 @@
-{# Video engagement: views, like, share. Expects: video #}
+{# Video engagement stats. Expects: video; optional show_page_views for detail page #}
 <div
   class="fh-engagement{% if compact %} fh-engagement--compact{% endif %}{% if show_action_labels %} fh-engagement--labeled{% endif %}"
   data-video-slug="{{ video.slug }}"
 >
   <div class="fh-engagement-stats">
-    <span class="fh-engagement-stat" title="Views">
+    {% if show_page_views %}
+    <span class="fh-engagement-stat fh-engagement-stat--page-views" title="Page views">
+      <span class="fh-engagement-icon fh-engagement-icon--page-views" aria-hidden="true"></span>
+      <span class="fh-engagement-label">Page views</span>
+      <span class="fh-engagement-page-views">{{ video.page_views_display }}</span>
+    </span>
+    {% endif %}
+    <span class="fh-engagement-stat fh-engagement-stat--plays" title="Video views">
       <span class="fh-engagement-icon fh-engagement-icon--views" aria-hidden="true"></span>
+      <span class="fh-engagement-label">Views</span>
       <span class="fh-engagement-views">{{ video.views_display }}</span>
     </span>
     <span class="fh-engagement-stat fh-engagement-stat--likes" title="Likes">
       <span class="fh-engagement-icon fh-engagement-icon--likes" aria-hidden="true"></span>
+      <span class="fh-engagement-label">Likes</span>
       <span class="fh-engagement-likes">{{ video.likes_display }}</span>
+    </span>
+    <span class="fh-engagement-stat fh-engagement-stat--shares" title="Shares">
+      <span class="fh-engagement-icon fh-engagement-icon--shares" aria-hidden="true"></span>
+      <span class="fh-engagement-label">Shares</span>
+      <span class="fh-engagement-shares">{{ video.shares_display }}</span>
     </span>
   </div>
   <div class="fh-engagement-actions">
@@ -27,6 +41,7 @@
     <button
       type="button"
       class="fh-share-btn"
+      data-video-slug="{{ video.slug }}"
       data-share-path="{{ video.get_absolute_url }}"
       data-share-title="{{ video.title }}"
       aria-label="Share {{ video.title }}"

@@ -25,7 +25,12 @@ from .discovery import (
     search_videos,
 )
 from .categories import get_active_categories, resolve_category
-from .engagement import session_slugs, video_view_counted_in_session
+from .engagement import (
+    apply_view_tracking_cookie,
+    record_page_visit,
+    video_view_counted_in_session,
+    viewed_slugs_for_device,
+)
 from .models import (
     Creator,
     GlobalSolutionsSettings,
@@ -537,6 +542,7 @@ def farmhub_creator(request, slug):
 
 
 @xframe_options_exempt
+@ensure_csrf_cookie
 @require_GET
 def video_embed(request, slug):
     """Minimal player page for Wagtail EmbedBlock iframes (fresh B2 playback URLs)."""
@@ -547,7 +553,15 @@ def video_embed(request, slug):
         ),
         slug=slug,
     )
-    return render(request, "global_solutions/video_embed.html", {"video": video})
+    response = render(
+        request,
+        "global_solutions/video_embed.html",
+        {
+            "video": video,
+            "view_already_counted": video_view_counted_in_session(request, slug),
+        },
+    )
+    return apply_view_tracking_cookie(request, response)
 
 
 @ensure_csrf_cookie
@@ -557,6 +571,7 @@ def farmhub_video(request, slug):
         get_public_videos_qs(),
         slug=slug,
     )
+    video = record_page_visit(request, slug)
     related = get_related_videos(video, limit=8)
     similar_videos = get_similar_videos_for_detail(video)
     ctx = {
@@ -566,9 +581,10 @@ def farmhub_video(request, slug):
         "related_videos": related,
         "similar_videos": similar_videos,
         "view_already_counted": video_view_counted_in_session(request, slug),
-        "viewed_slugs": session_slugs(request, "farmhub_viewed"),
+        "viewed_slugs": viewed_slugs_for_device(request),
     }
-    return render(request, "global_solutions/video_detail.html", ctx)
+    response = render(request, "global_solutions/video_detail.html", ctx)
+    return apply_view_tracking_cookie(request, response)
 
 
 @require_GET

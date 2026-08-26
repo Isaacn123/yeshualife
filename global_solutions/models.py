@@ -360,8 +360,16 @@ class GlobalSolutionsVideo(models.Model):
         related_name="videos",
     )
 
-    views = models.PositiveIntegerField(default=0)
+    views = models.PositiveIntegerField(
+        default=0,
+        help_text="Video plays after sufficient watch time (detail page or embed).",
+    )
+    page_views = models.PositiveIntegerField(
+        default=0,
+        help_text="Visits to the video detail page (not embed plays).",
+    )
     likes = models.PositiveIntegerField(default=0)
+    shares = models.PositiveIntegerField(default=0)
     featured = models.BooleanField(default=False)
     resolution_label = models.CharField(
         max_length=16,
@@ -472,8 +480,16 @@ class GlobalSolutionsVideo(models.Model):
         return self._count_display(self.views)
 
     @property
+    def page_views_display(self) -> str:
+        return self._count_display(self.page_views)
+
+    @property
     def likes_display(self) -> str:
         return self._count_display(self.likes)
+
+    @property
+    def shares_display(self) -> str:
+        return self._count_display(self.shares)
 
     @staticmethod
     def _count_display(n: int) -> str:
@@ -560,7 +576,9 @@ class GlobalSolutionsVideo(models.Model):
         MultiFieldPanel(
             [
                 FieldPanel("views", read_only=True),
+                FieldPanel("page_views", read_only=True),
                 FieldPanel("likes", read_only=True),
+                FieldPanel("shares", read_only=True),
                 FieldPanel("resolution_label", read_only=True),
             ],
             heading="Discovery stats",

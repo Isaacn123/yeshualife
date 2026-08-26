@@ -9,7 +9,7 @@
   <div class="gs-similar-block__head">
     <label class="w-field__label">Clip title</label>
     <input type="text" class="w-field__input gs-similar-title" value="{{ similar.title }}" maxlength="200" placeholder="e.g. Karamoja feeding — part 2">
-    <p class="gs-similar-stats help">{{ similar.views_display }} views · {{ similar.likes_display }} likes</p>
+    <p class="gs-similar-stats help">{{ similar.page_views_display }} page views · {{ similar.views_display }} views · {{ similar.likes_display }} likes · {{ similar.shares_display }} shares</p>
     {% include "global_solutions/wagtail_panels/admin_public_url.html" with public_video_url=public_video_url embed_video_url=embed_video_url %}
   </div>
   <div class="gs-similar-block__upload">

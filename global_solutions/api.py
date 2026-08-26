@@ -18,7 +18,13 @@ from .discovery import (
     search_videos,
     video_to_api_dict,
 )
-from .engagement import get_engagement_video, record_video_view, session_slugs
+from .engagement import (
+    apply_view_tracking_cookie,
+    get_engagement_video,
+    record_video_share,
+    record_video_view,
+    session_slugs,
+)
 from .models import Creator, GlobalSolutionsVideo, SolutionCategory
 
 
@@ -149,6 +155,15 @@ def api_video_like(request, slug):
 
 @csrf_protect
 @require_POST
+def api_video_share(request, slug):
+    """Increment share count when a visitor shares or copies a video link."""
+    video = get_engagement_video(slug)
+    payload = record_video_share(request, slug)
+    return JsonResponse(payload)
+
+
+@csrf_protect
+@require_POST
 def api_video_record_view(request, slug):
     """
     Count a view after sufficient watch time (session deduplicated).
@@ -168,5 +183,7 @@ def api_video_record_view(request, slug):
 
     payload = record_video_view(request, slug, watched_seconds=watched_seconds)
     if payload.get("error") == "insufficient_watch_time":
-        return JsonResponse(payload, status=400)
-    return JsonResponse(payload)
+        response = JsonResponse(payload, status=400)
+    else:
+        response = JsonResponse(payload)
+    return apply_view_tracking_cookie(request, response)

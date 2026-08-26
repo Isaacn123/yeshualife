@@ -30,16 +30,23 @@
   </style>
 </head>
 <body>
-  <div class="gs-embed-player">
+  <div
+    class="gs-embed-player"
+    data-video-slug="{{ video.slug }}"
+    data-video-duration="{{ video.duration_seconds|default:0 }}"
+    {% if view_already_counted %}data-view-counted="true"{% endif %}
+  >
     {% if video.playback_url %}
       {% include "global_solutions/partials/video_native.html" with v=video video_class="gs-embed-video" %}
     {% else %}
       <p style="color:#fff;padding:1rem;">Video is not ready for playback yet.</p>
     {% endif %}
   </div>
+  {% csrf_token %}
   {% if video.playback_uses_hls %}
     <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
     <script src="{% static 'global_solutions/global_solutions.js' %}"></script>
   {% endif %}
+  <script src="{% static 'global_solutions/farmhub.js' %}?v=20260826c"></script>
 </body>
 </html>
