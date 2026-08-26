@@ -1,213 +1,109 @@
 {% extends "base.html" %}
-
 {% load static %}
-
-
 
 {% block body_class %}template-farmhub template-farmhub-video{% endblock %}
 
-
-
 {% block social_meta %}
-
   {% include "global_solutions/partials/social_meta_tags.html" with share_title=video.title share_description=video.description|truncatewords:50 share_image=video.thumbnail_url share_type="video.other" %}
-
 {% endblock %}
-
-
 
 {% block extra_css %}
-
   {{ block.super }}
-
   <link rel="stylesheet" href="{% static 'business_casual/css/overrides.css' %}">
-
   {% include "global_solutions/partials/farmhub_assets.html" %}
-
 {% endblock %}
 
-
-
 {% block content %}
-
 {% include "nav_bar.html" %}
-
 {% include "global_solutions/partials/farmhub_header.html" %}
 
-
-
 <main
-
   class="fh-main container-fluid fh-video-page"
-
   data-video-slug="{{ video.slug }}"
-
   data-video-duration="{{ video.duration_seconds|default:0 }}"
-
   {% if view_already_counted %}data-view-counted="true"{% endif %}
-
 >
-
   {% csrf_token %}
-
   <a href="{% url 'global_solutions:farmhub_home' %}" class="fh-back">← {{ site_title|default:"Global Solutions" }}</a>
 
-
-
   <div class="fh-video-layout">
-
     <div class="fh-video-player-wrap">
-
       {% if video.playback_url %}
-
         {% if video.playback_uses_hls %}
-
           <video
-
             class="fh-detail-video"
-
             controls
-
             playsinline
-
             preload="metadata"
-
             data-playback-src="{{ video.playback_url }}"
-
             data-playback-hls="true"
-
             {% if video.thumbnail_url %}poster="{{ video.thumbnail_url }}"{% endif %}
-
           ></video>
-
         {% else %}
-
           <video
-
             class="fh-detail-video"
-
             controls
-
             playsinline
-
             webkit-playsinline
-
             preload="metadata"
-
             src="{{ video.playback_url }}"
-
             {% if video.thumbnail_url %}poster="{{ video.thumbnail_url }}"{% endif %}
-
           ></video>
-
         {% endif %}
-
       {% endif %}
-
     </div>
-
-
 
     {% include "global_solutions/partials/video_under_meta.html" with video=video %}
 
-
-
     <aside class="fh-video-sidebar">
-
       <h1 class="fh-video-title">{{ video.title }}</h1>
-
       {% include "global_solutions/partials/video_engagement.html" with video=video %}
-
       <p class="fh-video-stats">
-
         {% if video.published_at %}{{ video.published_at|date:"M j, Y" }}{% endif %}
-
         {% if video.duration_display %}{% if video.published_at %} · {% endif %}{{ video.duration_display }}{% endif %}
-
         {% if video.resolution_label %} · {{ video.resolution_label }}{% endif %}
-
       </p>
-
       {% if video.creator %}
-
         <a href="{{ video.creator.get_absolute_url }}" class="fh-video-creator-link">{{ video.creator.name }}</a>
-
       {% endif %}
-
+      {% if video.description_lead %}
+        <div class="fh-video-desc fh-video-desc--lead">{{ video.description_lead|linebreaks }}</div>
+      {% endif %}
     </aside>
 
-
-
-    {% if video.description or video.tags_list %}
-
+    {% if video.description_rest or video.tags_list %}
     <div class="fh-video-body">
-
-      {% if video.description %}
-
-        <div class="fh-video-desc">{{ video.description|linebreaks }}</div>
-
+      {% if video.description_rest %}
+        <div class="fh-video-desc">{{ video.description_rest|linebreaks }}</div>
       {% endif %}
-
       {% if video.tags_list %}
-
         <div class="fh-tags">
-
           {% for tag in video.tags_list %}
-
             <a href="{% url 'global_solutions:farmhub_search' %}?q={{ tag|urlencode }}" class="fh-tag">{{ tag }}</a>
-
           {% endfor %}
-
         </div>
-
       {% endif %}
-
     </div>
-
     {% endif %}
-
   </div>
-
-
 
   {% include "global_solutions/partials/similar_clips.html" with similar_videos=similar_videos video=video viewed_slugs=viewed_slugs %}
 
-
-
   {% if related_videos %}
-
     <section class="fh-section fh-related">
-
       <h2 class="fh-section-title">Related Videos</h2>
-
       {% include "global_solutions/partials/video_grid.html" with videos=related_videos grid_class="fh-video-grid--related" %}
-
     </section>
-
   {% endif %}
-
 </main>
-
 {% endblock %}
-
-
 
 {% block extra_js %}
-
   {{ block.super }}
-
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
-
   <script src="{% static 'global_solutions/global_solutions.js' %}"></script>
-
   <script src="{% static 'global_solutions/similar_clips.js' %}?v=20260820g"></script>
-
   <script src="{% static 'global_solutions/farmhub.js' %}?v=20260826c"></script>
-
 {% endblock %}
 
-
-
 {% block footer %}{% include "blog/footer.html" %}{% endblock %}
-
-

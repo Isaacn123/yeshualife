@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import uuid
 
 from django.conf import settings as django_settings
@@ -453,6 +454,28 @@ class GlobalSolutionsVideo(models.Model):
     @property
     def tags_list(self) -> list[str]:
         return [t.strip() for t in self.tags.split(",") if t.strip()]
+
+    def _description_paragraphs(self) -> list[str]:
+        text = (self.description or "").strip()
+        if not text:
+            return []
+        return [p.strip() for p in re.split(r"\n\s*\n", text) if p.strip()]
+
+    @property
+    def description_lead(self) -> str:
+        """First two paragraphs for the video detail sidebar."""
+        paragraphs = self._description_paragraphs()
+        if not paragraphs:
+            return ""
+        return "\n\n".join(paragraphs[:2])
+
+    @property
+    def description_rest(self) -> str:
+        """Remaining paragraphs shown below the video in the main column."""
+        paragraphs = self._description_paragraphs()
+        if len(paragraphs) <= 2:
+            return ""
+        return "\n\n".join(paragraphs[2:])
 
     @property
     def thumbnail_url(self) -> str:
