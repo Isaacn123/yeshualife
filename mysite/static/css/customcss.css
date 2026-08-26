@@ -91,6 +91,24 @@
   }
 }
 
+@media (max-width: 767.98px) {
+  .yl-news-card__media {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+  }
+
+  .yl-news-card__img {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+}
+
 .yl-news-card {
   min-width: 0;
   height: 100%;
@@ -119,16 +137,22 @@
 
 .yl-news-card__media {
   position: relative;
+  width: 100%;
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background: linear-gradient(135deg, #dce8d4 0%, #c8d8bc 100%);
+  line-height: 0;
 }
 
 .yl-news-card__img {
+  position: absolute;
+  inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
+  max-width: none;
   object-fit: cover;
-  display: block;
+  object-position: center;
   transition: transform 0.35s ease;
 }
 
@@ -229,6 +253,130 @@
 .yl-news-card__link:hover .yl-news-card__cta,
 .yl-news-card__link:focus-visible .yl-news-card__cta {
   color: var(--yl-news-green-dark);
+}
+
+/* ── Financial support CTA ── */
+.yl-support-cta {
+  padding: 3.5rem 0 4.5rem;
+  background: linear-gradient(180deg, #faf8f4 0%, #f3f6ef 100%);
+}
+
+.yl-support-cta__card {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  border-radius: 18px;
+  border: 1px solid rgba(61, 90, 45, 0.14);
+  background:
+    linear-gradient(145deg, rgba(255, 253, 249, 0.98) 0%, rgba(243, 246, 239, 0.98) 100%);
+  box-shadow: 0 14px 36px rgba(44, 36, 25, 0.08);
+}
+
+.yl-support-cta__eyebrow {
+  display: inline-block;
+  margin: 0 0 0.85rem;
+  padding: 0.28rem 0.75rem;
+  border-radius: 999px;
+  font-family: var(--yl-news-font, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--yl-news-green-dark, #2f5429);
+  background: rgba(61, 107, 53, 0.1);
+  border: 1px solid rgba(61, 107, 53, 0.18);
+}
+
+.yl-support-cta__title {
+  margin: 0 0 1rem;
+  font-family: var(--yl-news-display, "Fraunces", Georgia, serif);
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--yl-news-text, #2c2419);
+}
+
+.yl-support-cta__lead {
+  margin: 0 auto 1.75rem;
+  max-width: 36rem;
+  font-family: var(--yl-news-font, "Plus Jakarta Sans", sans-serif);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--yl-news-muted, #5c6b52);
+}
+
+.yl-support-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem 1rem;
+}
+
+.yl-support-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 10.5rem;
+  padding: 0.72rem 1.45rem;
+  border-radius: 999px;
+  font-family: var(--yl-news-font, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.yl-support-cta__btn--primary {
+  color: #fff;
+  background: linear-gradient(135deg, #3d6b35 0%, #2f5429 100%);
+  border: 1px solid rgba(47, 84, 41, 0.5);
+  box-shadow: 0 8px 22px rgba(47, 84, 41, 0.22);
+}
+
+.yl-support-cta__btn--primary:hover,
+.yl-support-cta__btn--primary:focus-visible {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(47, 84, 41, 0.28);
+}
+
+.yl-support-cta__btn--secondary {
+  color: var(--yl-news-green-dark, #2f5429);
+  background: rgba(255, 253, 249, 0.95);
+  border: 1px solid rgba(61, 107, 53, 0.28);
+}
+
+.yl-support-cta__btn--secondary:hover,
+.yl-support-cta__btn--secondary:focus-visible {
+  color: var(--yl-news-green-dark, #2f5429);
+  background: rgba(61, 107, 53, 0.08);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 767.98px) {
+  .yl-support-cta {
+    padding: 2.5rem 0 3.5rem;
+  }
+
+  .yl-support-cta__card {
+    padding: 1.75rem 1.25rem;
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+  }
+
+  .yl-support-cta__actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .yl-support-cta__btn {
+    width: 100%;
+    max-width: 18rem;
+  }
 }
 
 /* ── Home feature spotlight (featurette replacements) ── */

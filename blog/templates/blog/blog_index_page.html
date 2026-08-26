@@ -4,13 +4,17 @@
 
 {% block body_class %}template-blogindexpage{% endblock  %}
 
-{% compress css %}
 {% block extra_css  %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+{% compress css %}
 <link rel="stylesheet" href="{% static "css/top-section.css" %}">
+<link rel="stylesheet" href="{% static "css/customcss.css" %}">
 <link rel="stylesheet" href="{% static "css/loaders.min.css" %}">
 <link rel="stylesheet" href="{% static "css/theme.min.css" %}">
-{% endblock  %}
 {% endcompress %}
+{% endblock  %}
 
 {% block  content %}
 
@@ -102,14 +106,7 @@
 </div>
 {% include "blog/sections/section_ds.html" %} 
 
- <section class="content-section bg-primary2 text-white">
-    <div class="container px-4 px-lg-5 text-center">
-        <h2 class="mb-4" style="font-weight:600">Your financial support empowers us to implement vital programs and initiatives.</h2>
-        <h6 style="font-size:8px; font-weight:200;">Have questions, ideas, or just want to say hello? We'd love to hear from you!</h6>
-        <a class="btn btn-xl btn-light me-4 btn-danger" href="/payments">Pay Online</a>
-        <a class="btn btn-xl btn-dark" href="#!">Support</a>
-    </div>
-</section>
+{% include "blog/sections/yl_support_cta.html" %}
 
 
 
