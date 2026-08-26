@@ -15,6 +15,7 @@ from .api_urls import video_api_urls_placeholder_map
 from .b2 import b2_public_url, get_b2_s3_client
 from .b2_upload import safe_upload_filename
 
+from .description_utils import split_description_text
 from .discovery import (
     build_farmhub_home_context,
     get_similar_videos_for_detail,
@@ -574,10 +575,13 @@ def farmhub_video(request, slug):
     video = record_page_visit(request, slug)
     related = get_related_videos(video, limit=8)
     similar_videos = get_similar_videos_for_detail(video)
+    description_lead, description_rest = split_description_text(video.description)
     ctx = {
         "page": _farmhub_page(video.title, video.description[:300]),
         "site_title": get_site_title(),
         "video": video,
+        "description_lead": description_lead,
+        "description_rest": description_rest,
         "related_videos": related,
         "similar_videos": similar_videos,
         "view_already_counted": video_view_counted_in_session(request, slug),

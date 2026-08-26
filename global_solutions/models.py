@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import re
 import uuid
 
 from django.conf import settings as django_settings
@@ -456,19 +455,9 @@ class GlobalSolutionsVideo(models.Model):
         return [t.strip() for t in self.tags.split(",") if t.strip()]
 
     def _split_description(self, word_limit: int = 60) -> tuple[str, str]:
-        text = (self.description or "").strip()
-        if not text:
-            return "", ""
-        word_end = 0
-        count = 0
-        for match in re.finditer(r"\S+", text):
-            count += 1
-            if count == word_limit:
-                word_end = match.end()
-                break
-        if count <= word_limit:
-            return text, ""
-        return text[:word_end].rstrip(), text[word_end:].lstrip()
+        from .description_utils import split_description_text
+
+        return split_description_text(self.description, word_limit)
 
     @property
     def description_lead(self) -> str:
