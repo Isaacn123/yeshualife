@@ -455,27 +455,32 @@ class GlobalSolutionsVideo(models.Model):
     def tags_list(self) -> list[str]:
         return [t.strip() for t in self.tags.split(",") if t.strip()]
 
-    def _description_paragraphs(self) -> list[str]:
+    def _split_description(self, word_limit: int = 60) -> tuple[str, str]:
         text = (self.description or "").strip()
         if not text:
-            return []
-        return [p.strip() for p in re.split(r"\n\s*\n", text) if p.strip()]
+            return "", ""
+        word_end = 0
+        count = 0
+        for match in re.finditer(r"\S+", text):
+            count += 1
+            if count == word_limit:
+                word_end = match.end()
+                break
+        if count <= word_limit:
+            return text, ""
+        return text[:word_end].rstrip(), text[word_end:].lstrip()
 
     @property
     def description_lead(self) -> str:
-        """First two paragraphs for the video detail sidebar."""
-        paragraphs = self._description_paragraphs()
-        if not paragraphs:
-            return ""
-        return "\n\n".join(paragraphs[:2])
+        """First 60 words for the video detail sidebar."""
+        lead, _ = self._split_description()
+        return lead
 
     @property
     def description_rest(self) -> str:
-        """Remaining paragraphs shown below the video in the main column."""
-        paragraphs = self._description_paragraphs()
-        if len(paragraphs) <= 2:
-            return ""
-        return "\n\n".join(paragraphs[2:])
+        """Remaining description shown below the video in the main column."""
+        _, rest = self._split_description()
+        return rest
 
     @property
     def thumbnail_url(self) -> str:
