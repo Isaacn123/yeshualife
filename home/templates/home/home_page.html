@@ -5,7 +5,11 @@
 {% block body_class %}template-blogindexpage{% endblock  %}
 
 {% block extra_css  %}
-<link rel="stylesheet" href="{% static "css/top-section.css" %}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/customcss.css' %}">
+<link rel="stylesheet" href="{% static 'css/top-section.css' %}">
 {% endblock  %}
 
 
@@ -53,9 +57,8 @@
          </div>
 
          
- 
+         
 
-    <pre>{{ post|pprint }}</pre>
     {% for post in  page.get_children %}
     {% if forloop.counter == 2 %}
     {% comment %} <p>This is the second page: {{ post.title }}</p> {% endcomment %}

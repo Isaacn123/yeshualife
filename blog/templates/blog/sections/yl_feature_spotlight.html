@@ -1,0 +1,43 @@
+{% load static wagtailcore_tags wagtailimages_tags global_solutions_extras %}
+
+<section class="yl-feature-spotlight yl-feature-spotlight--{% if image_first %}image-left{% else %}image-right{% endif %}">
+  {% with article=post.specific %}
+  <div class="row align-items-center g-4 g-lg-5">
+    <div class="col-lg-5 yl-feature-spotlight__media-col{% if image_first %} order-lg-1{% else %} order-lg-2{% endif %}">
+      <a href="{% pageurl post %}" class="yl-feature-spotlight__media-link">
+        {% if article.image %}
+          {% srcset_image article.image class="yl-feature-spotlight__img" width-{600,800,960} sizes="(max-width: 767px) 100vw, (max-width: 991px) 45vw, 480px" %}
+        {% else %}
+          <div class="yl-feature-spotlight__placeholder" aria-hidden="true"></div>
+        {% endif %}
+      </a>
+    </div>
+
+    <div class="col-lg-7 yl-feature-spotlight__copy-col{% if image_first %} order-lg-2{% else %} order-lg-1{% endif %}">
+      {% if article.date %}
+        <time class="yl-feature-spotlight__date" datetime="{{ article.date|date:'Y-m-d' }}">
+          {{ article.date|date:"M j, Y" }}
+        </time>
+      {% endif %}
+
+      <h2 class="{{ post.title|title_scale_class:'yl-feature-spotlight__title' }}">
+        <a href="{% pageurl post %}">{{ post.title }}</a>
+      </h2>
+
+      {% if article.intro %}
+        <p class="yl-feature-spotlight__lead">{{ article.intro }}</p>
+      {% endif %}
+
+      {% with body_text=article.body|striptags %}
+        {% if body_text %}
+          {% if not article.intro or body_text|length > 120 %}
+            <p class="yl-feature-spotlight__text">{{ body_text|truncatewords:55 }}</p>
+          {% endif %}
+        {% endif %}
+      {% endwith %}
+
+      <a href="{% pageurl post %}" class="yl-feature-spotlight__cta">Read full story<span aria-hidden="true"> →</span></a>
+    </div>
+  </div>
+  {% endwith %}
+</section>
