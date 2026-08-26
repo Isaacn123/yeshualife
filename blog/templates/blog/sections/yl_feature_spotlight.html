@@ -24,15 +24,11 @@
         <a href="{% pageurl post %}">{{ post.title }}</a>
       </h2>
 
-      {% if article.intro %}
-        <p class="yl-feature-spotlight__lead">{{ article.intro }}</p>
-      {% endif %}
-
       {% with body_text=article.body|striptags %}
         {% if body_text %}
-          {% if not article.intro or body_text|length > 120 %}
-            <p class="yl-feature-spotlight__text">{{ body_text|truncatewords:55 }}</p>
-          {% endif %}
+          <p class="yl-feature-spotlight__text">{{ body_text|truncatewords:55 }}</p>
+        {% elif article.intro %}
+          <p class="yl-feature-spotlight__text">{{ article.intro }}</p>
         {% endif %}
       {% endwith %}
 

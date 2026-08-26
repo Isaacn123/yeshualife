@@ -251,6 +251,7 @@
 
 .yl-feature-spotlight__media-link {
   display: block;
+  aspect-ratio: 5 / 4;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid rgba(61, 90, 45, 0.14);
@@ -268,9 +269,9 @@
 .yl-feature-spotlight__img {
   display: block;
   width: 100%;
-  height: auto;
-  aspect-ratio: 5 / 4;
+  height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 
 .yl-feature-spotlight__placeholder {
@@ -382,6 +383,18 @@
 @media (max-width: 991px) {
   .yl-feature-spotlight__copy-col {
     padding-top: 0.25rem;
+  }
+
+  .yl-feature-spotlight__media-link {
+    aspect-ratio: 5 / 4;
+  }
+
+  .yl-feature-spotlight__img {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    object-position: center;
   }
 }
 
