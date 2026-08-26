@@ -1,4 +1,5 @@
 {# Expects: video (GlobalSolutionsVideo with discovery fields) #}
+{% load global_solutions_extras %}
 <article class="fh-video-card" data-video-slug="{{ video.slug }}">
   <a href="{{ video.get_absolute_url }}" class="fh-video-card-link">
     <div class="fh-video-card-thumb">
@@ -28,7 +29,7 @@
       {% endif %}
     </div>
     <div class="fh-video-card-copy">
-      <h3 class="fh-video-card-title">{{ video.title }}</h3>
+      <h3 class="{{ video.title|title_scale_class:'fh-video-card-title' }}">{{ video.title }}</h3>
       {% if video.description %}
         <p class="fh-video-card-desc">{{ video.description|striptags }}</p>
       {% endif %}

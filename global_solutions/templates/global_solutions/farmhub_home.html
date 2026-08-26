@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static social_tags %}
+{% load static social_tags global_solutions_extras %}
 
 {% block body_class %}template-globalsolutions template-farmhub{% endblock %}
 
@@ -40,7 +40,7 @@
               <span class="fh-hero-category">{{ featured_video.category.name }}</span>
             {% endif %}
           </div>
-          <h1 class="fh-hero-title" id="fh-featured-title">{{ featured_video.title }}</h1>
+          <h1 class="{{ featured_video.title|title_scale_class:'fh-hero-title' }}" id="fh-featured-title">{{ featured_video.title }}</h1>
           {% if featured_video.description %}
             <p class="fh-hero-desc">{{ featured_video.description|truncatewords:40 }}</p>
           {% elif hero_subtitle %}

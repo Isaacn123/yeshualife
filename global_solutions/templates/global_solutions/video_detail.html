@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load global_solutions_extras %}
 
 {% block body_class %}template-farmhub template-farmhub-video{% endblock %}
 
@@ -56,7 +57,7 @@
     {% include "global_solutions/partials/video_under_meta.html" with video=video %}
 
     <aside class="fh-video-sidebar">
-      <h1 class="fh-video-title">{{ video.title }}</h1>
+      <h1 class="{{ video.title|title_scale_class:'fh-video-title' }}">{{ video.title }}</h1>
       {% include "global_solutions/partials/video_engagement.html" with video=video %}
       <p class="fh-video-stats">
         {% if video.published_at %}{{ video.published_at|date:"M j, Y" }}{% endif %}
