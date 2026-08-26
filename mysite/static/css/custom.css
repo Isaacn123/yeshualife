@@ -17,6 +17,15 @@ p{
     position: relative;
 }
 
+.blog-content-section .responsive-object.yl-inline-embed {
+    cursor: default;
+}
+
+.blog-content-section .responsive-object.yl-inline-embed::after,
+.blog-content-section .responsive-object.yl-inline-embed.content-lightbox-media::after {
+    display: none;
+}
+
 .blog-content-section .responsive-object.content-lightbox-media::after,
 .content-lightbox-iframe-host.content-lightbox-media::after {
     content: "";

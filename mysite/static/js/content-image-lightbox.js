@@ -55,6 +55,19 @@
     return url + (url.indexOf("?") === -1 ? "?" : "&") + "autoplay=1";
   }
 
+  function isInlinePlayableEmbed(iframe) {
+    var src = (iframe.getAttribute("src") || "").toLowerCase();
+    return (
+      /\/global-solutions\/embed\//.test(src) ||
+      /\/farmhub\/embed\//.test(src)
+    );
+  }
+
+  function markInlineEmbed(container, iframe) {
+    container.classList.add("yl-inline-embed");
+    iframe.classList.add("yl-inline-embed__iframe");
+  }
+
   function initContentMediaLightbox() {
     var modalEl = document.getElementById("contentImageLightbox");
     if (!modalEl || !window.bootstrap || !window.bootstrap.Modal) {
@@ -199,6 +212,10 @@
       if (!iframe) {
         return;
       }
+      if (isInlinePlayableEmbed(iframe)) {
+        markInlineEmbed(container, iframe);
+        return;
+      }
       bindClickable(container, function () {
         openIframePreview(iframe);
       }, getCaption(iframe) || "View video preview");
@@ -206,6 +223,10 @@
 
     document.querySelectorAll(CONTENT_IFRAME_SELECTOR).forEach(function (iframe) {
       if (iframe.closest(".responsive-object") || iframe.closest(".content-lightbox-iframe-host")) {
+        return;
+      }
+      if (isInlinePlayableEmbed(iframe)) {
+        markInlineEmbed(iframe.parentElement || iframe, iframe);
         return;
       }
 
