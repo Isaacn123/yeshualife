@@ -55,19 +55,26 @@
 
     <aside class="fh-video-sidebar">
       <h1 class="fh-video-title">{{ video.title }}</h1>
-      {% include "global_solutions/partials/video_engagement.html" with video=video show_page_views=True %}
-      <p class="fh-video-stats">
-        {% if video.published_at %}{{ video.published_at|date:"M j, Y" }}{% endif %}
-        {% if video.duration_display %}{% if video.published_at %} · {% endif %}{{ video.duration_display }}{% endif %}
-        {% if video.resolution_label %} · {{ video.resolution_label }}{% endif %}
-      </p>
-      {% if video.creator %}
-        <a href="{{ video.creator.get_absolute_url }}" class="fh-video-creator-link">{{ video.creator.name }}</a>
-      {% endif %}
-      {% if video.category %}
-        <a href="{% url 'global_solutions:farmhub_category' slug=video.category.slug %}" class="fh-tag">{{ video.category.name }}</a>
-      {% endif %}
     </aside>
+
+    <div class="fh-video-meta">
+      {% include "global_solutions/partials/video_engagement.html" with video=video show_page_views=True %}
+      <div class="fh-video-meta-details">
+        {% if video.published_at or video.duration_display or video.resolution_label %}
+          <p class="fh-video-stats">
+            {% if video.published_at %}{{ video.published_at|date:"M j, Y" }}{% endif %}
+            {% if video.duration_display %}{% if video.published_at %} · {% endif %}{{ video.duration_display }}{% endif %}
+            {% if video.resolution_label %} · {{ video.resolution_label }}{% endif %}
+          </p>
+        {% endif %}
+        {% if video.creator %}
+          <a href="{{ video.creator.get_absolute_url }}" class="fh-video-creator-link">{{ video.creator.name }}</a>
+        {% endif %}
+        {% if video.category %}
+          <a href="{% url 'global_solutions:farmhub_category' slug=video.category.slug %}" class="fh-tag">{{ video.category.name }}</a>
+        {% endif %}
+      </div>
+    </div>
 
     {% if video.description or video.tags_list %}
     <div class="fh-video-body">
