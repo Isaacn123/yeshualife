@@ -1,106 +1,95 @@
 {% extends "base.html" %}
-{% comment %} betterhtml {% endcomment %}
-{% load static wagtailcore_tags  wagtailimages_tags  compress %}    
+{% load static wagtailcore_tags wagtailimages_tags compress global_solutions_extras %}
 
-{% block body_class %}template-blogpage{%  endblock  %}
+{% block body_class %}template-blogpage{% endblock %}
 
 {% block extra_css %}
-<style>
-    .responsive-object {
-        position: relative;
-        max-width: 100%;
-        width: 100%;
-    }
-    .responsive-object iframe,
-    .responsive-object object,
-    .responsive-object embed {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        max-width: 100%;
-    }
-    
-    .block-video-center {
-        display: grid;
-        /* margin auto works here because embed adapts to size of container */
-        margin: auto;
-        overflow: hidden;
-        font: italic 12px Georgia, serif;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+{% compress css %}
+<link href="{% static 'css/customcss.css' %}" rel="stylesheet">
+{% endcompress %}
+{% endblock %}
 
-    .image-blog-main {
-        width: 100%;
-        max-width: 100%;
-        height: auto;
-        object-fit: contain;
-    }
-</style>
-{% endblock  %}
 {% block content %}
 {% include "nav_bar.html" %}
-<div class="container">
-    <div class="wrapper">
-        <div class="d-flex flex-column justify-content-center align-items-center ">
-            <div class="top-back-btn">
-                <a href="{{page.get_parent.url}}" class="bac-button w-inline-block"><div class="icon-2 w-embed"><svg width="420" height="420" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M7.828 10.9999H20V12.9999H7.828L13.192 18.3639L11.778 19.7779L4 11.9999L11.778 4.22192L13.192 5.63592L7.828 10.9999Z" fill="currentColor"></path>
-                    </svg>
-                    </div>
-                </a>
-            </div>
 
-          <div class="content text-center">
-            <h1 class="p-3">{{page.title}}</h1>
-            {% srcset_image page.image class="image-blog-main" width-{1080,800} sizes="(max-width: 991px) 90vw, 87vw" alt="Descriptive Alt Text" %}
+<article class="yl-article">
+  <div class="yl-article__wrap">
+    <header class="yl-article__header container-medium">
+      <a href="{{ page.get_parent.url }}" class="yl-article__back">
+        <span aria-hidden="true">←</span> Back to stories
+      </a>
 
-            <div class="blog-metadata-large"><p class="meta"> {{page.date}}</p></div>
+      <div class="yl-article__meta">
+        {% if page.date %}
+          <time class="yl-article__date" datetime="{{ page.date|date:'Y-m-d' }}">
+            {{ page.date|date:"M j, Y" }}
+          </time>
+        {% endif %}
+        <span class="yl-article__tag">Field update</span>
+      </div>
+
+      <h1 class="{{ page.title|title_scale_class:'yl-article__title' }}">{{ page.title }}</h1>
+
+      {% if page.intro %}
+        <p class="yl-article__intro">{{ page.intro }}</p>
+      {% endif %}
+    </header>
+
+    {% if page.image %}
+      <figure class="yl-article__figure container-medium">
+        {% srcset_image page.image class="yl-article__hero-img image-blog-main" width-{1080,800,640} sizes="(max-width: 767px) 100vw, min(72rem, 92vw)" alt=page.image.title|default:page.title %}
+        {% if page.caption %}
+          <figcaption class="yl-article__caption">{{ page.caption }}</figcaption>
+        {% endif %}
+      </figure>
+    {% endif %}
+
+    <section class="section blog-content-section yl-article__content">
+      <div class="container-medium">
+        <div class="blog-content-grid yl-article__grid">
+          <div class="yl-article__sidebar-col">
+            {% include "blog/aside.html" with page=page %}
           </div>
-          <section class="section blog-content-section">
 
-            <div class="container-medium">
-                <div class="blog-content-grid">
-                    <div>{% include "blog/aside.html"  with page=page %}</div>
-                    <div>
-                        <p>{{page.body|richtext}}</p>
-                       
-                           <!-- Add this: -->
-                           {% comment %} {% image page.image fill-320x240 %} {% endcomment %}
-                           <p>{{ page.caption }}</p>
+          <div class="yl-article__body-col">
+            {% if page.body %}
+              <div class="yl-article__richtext">{{ page.body|richtext }}</div>
+            {% endif %}
 
+            {% for block in page.body_video %}
+              {% if block.block_type == 'video' %}
+                <figure class="yl-article__video block-{{ block.block_type }}-{{ block.value.float }} block-{{ block.value.size }}">
+                  {% include_block block.value.video %}
+                  {% if block.value.caption %}
+                    <figcaption class="yl-article__caption">{{ block.value.caption }}</figcaption>
+                  {% endif %}
+                </figure>
+              {% endif %}
+            {% endfor %}
 
-                           {% for block  in page.body_video  %}
-                           
-                           {% if block.block_type == 'video' %}
-                           
-                           <div class="block-{{ block.block_type }}-{{ block.value.float }} block-{{ block.value.size }}">
-                            {% include_block block.value.video|safe %}
-                            {{ block.value.caption }}
-                            </div>
-                           
-                           {% endif %}
-                           
-                           {% endfor %}
-
-                        
-                           
-                        <p><a href="{{page.get_parent.url}}">Return Home</a></p>
-                    </div>
-                </div>
-            </div>
-
-          </section>
+            <footer class="yl-article__footer">
+              <a href="{{ page.get_parent.url }}" class="yl-article__footer-link">
+                <span aria-hidden="true">←</span> Back to all stories
+              </a>
+            </footer>
+          </div>
         </div>
-    </div>
-</div>
-{% endblock  %}
+      </div>
+    </section>
+  </div>
+</article>
+{% endblock %}
+
 {% compress js %}
 {% block extra_js %}
 <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-{% endblock  %}
+{% endblock %}
 {% endcompress %}
+
 {% block footer %}
 {% include "blog/footer.html" %}
-{% endblock  %}
+{% endblock %}

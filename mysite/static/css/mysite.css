@@ -212,6 +212,8 @@ body.template-globalsolutions-detail .wrapper > .d-flex.flex-column.align-items-
 
     .content.text-center .image-blog-main,
     .blog-content-section .image-blog-main,
+    .yl-article__hero-img,
+    .yl-article__richtext img,
     .blog-content-section .richtext-image,
     .blog-content-section img[width] {
         width: 100% !important;
@@ -228,13 +230,15 @@ body.template-globalsolutions-detail .wrapper > .d-flex.flex-column.align-items-
         grid-row-gap: 2rem;
     }
 
-    .blog-content-grid > div:first-child {
+    .blog-content-grid > div:first-child,
+    .yl-article__sidebar-col {
         order: 2;
         width: 100%;
         max-width: 100%;
     }
 
-    .blog-content-grid > div:last-child {
+    .blog-content-grid > div:last-child,
+    .yl-article__body-col {
         order: 1;
         width: 100%;
         max-width: 100%;
