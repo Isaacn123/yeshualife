@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags wagtailimages_tags compress global_solutions_extras %}
+{% load static wagtailcore_tags wagtailimages_tags compress global_solutions_extras blog_richtext %}
 
 {% block body_class %}template-blogpage{% endblock %}
 
@@ -56,7 +56,7 @@
 
           <div class="yl-article__body-col">
             {% if page.body %}
-              <div class="yl-article__richtext">{{ page.body|richtext }}</div>
+              <div class="yl-article__richtext">{{ page.body|blog_richtext }}</div>
             {% endif %}
 
             {% for block in page.body_video %}

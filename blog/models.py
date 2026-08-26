@@ -153,7 +153,23 @@ class BlogPage(Page):
     ], blank=True,use_json_field=True)
 
     # video = InlineVideoBlock()
-    body = RichTextField(blank=True)
+    body = RichTextField(
+        blank=True,
+        features=[
+            "h2",
+            "h3",
+            "h4",
+            "bold",
+            "italic",
+            "ol",
+            "ul",
+            "hr",
+            "link",
+            "document-link",
+            "image",
+            "embed",
+        ],
+    )
 
     combined_content =  StreamField([
         ('combined_content', VideoAndRichTextBlock()),
