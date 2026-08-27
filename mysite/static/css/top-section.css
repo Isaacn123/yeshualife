@@ -447,6 +447,62 @@ p {
     line-height: 4rem;
  }
 
+@media (max-width: 767.98px) {
+  .navbar-collapse {
+    padding-top: 0.5rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .navbar-collapse .nav-line-h {
+    line-height: 1.5;
+  }
+
+  .navbar-collapse .nav-link,
+  .navbar-collapse .dropdown-toggle {
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+  }
+
+  .navbar-collapse .dropdown-menu {
+    position: static !important;
+    float: none;
+    display: none;
+    width: 100%;
+    margin: 0;
+    padding: 0.25rem 0 0.5rem;
+    border: 0;
+    border-radius: 0;
+    background-color: rgba(255, 255, 255, 0.06);
+    box-shadow: none;
+  }
+
+  .navbar-collapse .dropdown-menu.show {
+    display: block;
+  }
+
+  .navbar-collapse .dropdown-item {
+    color: rgba(255, 255, 255, 0.88);
+    padding: 0.6rem 1rem 0.6rem 1.35rem;
+  }
+
+  .navbar-collapse .dropdown-item:hover,
+  .navbar-collapse .dropdown-item:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  .navbar-collapse .dropdown-divider {
+    border-color: rgba(255, 255, 255, 0.14);
+    margin: 0.35rem 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-nav .dropdown-menu {
+    margin-top: 0.35rem;
+  }
+}
+
 
  .content-section {
     padding-top: 7.5rem;
@@ -670,28 +726,49 @@ p {
 }
 
 #bicycleCta .yl-latest-hero__title {
-  max-width: 44rem;
+  max-width: 48rem;
   margin-left: auto;
   margin-right: auto;
-  font-size: clamp(1.5rem, 3.8vw, 2.65rem);
+  font-size: clamp(1.5rem, 1.15rem + 2.4vw, 3rem);
   font-weight: 600;
   line-height: 1.14;
   text-wrap: balance;
 }
 
 #bicycleCta .yl-latest-hero__title--medium {
-  font-size: clamp(1.35rem, 3.2vw, 2.15rem);
+  max-width: 50rem;
+  font-size: clamp(1.35rem, 1rem + 2.1vw, 2.55rem);
   line-height: 1.16;
 }
 
 #bicycleCta .yl-latest-hero__title--long {
-  font-size: clamp(1.2rem, 2.8vw, 1.85rem);
+  max-width: 54rem;
+  font-size: clamp(1.25rem, 0.9rem + 1.85vw, 2.4rem);
   line-height: 1.18;
 }
 
 #bicycleCta .yl-latest-hero__title--xl {
-  font-size: clamp(1.08rem, 2.4vw, 1.55rem);
+  max-width: 56rem;
+  font-size: clamp(1.15rem, 0.8rem + 1.65vw, 2.05rem);
   line-height: 1.2;
+}
+
+@media (min-width: 992px) {
+  #bicycleCta .yl-latest-hero__title {
+    font-size: clamp(2rem, 1.35rem + 1.75vw, 3.1rem);
+  }
+
+  #bicycleCta .yl-latest-hero__title--medium {
+    font-size: clamp(1.85rem, 1.2rem + 1.55vw, 2.65rem);
+  }
+
+  #bicycleCta .yl-latest-hero__title--long {
+    font-size: clamp(1.75rem, 1.1rem + 1.35vw, 2.5rem);
+  }
+
+  #bicycleCta .yl-latest-hero__title--xl {
+    font-size: clamp(1.55rem, 1rem + 1.15vw, 2.15rem);
+  }
 }
 
 @media (max-width: 767.98px) {

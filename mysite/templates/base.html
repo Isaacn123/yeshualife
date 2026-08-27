@@ -78,36 +78,7 @@
         height: auto !important;
         max-height: none !important;
         object-fit: contain !important;
-    }
-}
-
-.dropdown {
-  display: none; /* Hide dropdown by default */
-  background-color: #444;
-}
-
-.nav-item .dropdown li {
-  margin: 0;
-  border-top: 1px solid #555;
-}
-
-.nav-item .dropdown li:first-child {
-  border-top: none;
-}
-
-.nav-item .dropdown a {
-  padding: 0.5rem 1rem;
-  display: block;
-  color: #fff;
-  text-decoration: none;
-}
-
-/* Media Query for Mobile */
-@media (max-width: 768px) {
- 
-  .dropdown {
-    display: block;
-  }
+      }
 }
 
 .top-img-section{
@@ -199,9 +170,8 @@
 
         {# Global javascript #}
         {% compress js %}
-        <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/mysite.js' %}"></script>
         <script src="{% static 'css/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/mysite.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/content-image-lightbox.js' %}?v=20260826a"></script>
         <script type="application/ld+json">
             {

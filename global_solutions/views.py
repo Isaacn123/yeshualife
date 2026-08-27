@@ -55,6 +55,28 @@ class PageLike:
 # --------------------------
 
 
+def _is_truthy(value: str | None) -> bool:
+    return (value or "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _clear_derived_video_fields(video: GlobalSolutionsVideo) -> list[str]:
+    """Drop transcoded/thumbnail metadata when the source file is replaced."""
+    video.hls_master_manifest_key = ""
+    video.hls_master_manifest_url = ""
+    video.poster_b2_key = ""
+    video.poster_image_url = ""
+    video.duration_seconds = None
+    video.resolution_label = ""
+    return [
+        "hls_master_manifest_key",
+        "hls_master_manifest_url",
+        "poster_b2_key",
+        "poster_image_url",
+        "duration_seconds",
+        "resolution_label",
+    ]
+
+
 @require_GET
 @staff_member_required
 def upload_center(request):
@@ -139,6 +161,7 @@ def update_video_meta(request, video_id):
     category_slug = (request.POST.get("category_slug") or "").strip()
     title = (request.POST.get("title") or "").strip()
     description = (request.POST.get("description") or "").strip()
+    replace = _is_truthy(request.POST.get("replace"))
 
     if video.parent_video_id:
         if title:
@@ -151,6 +174,20 @@ def update_video_meta(request, video_id):
         return JsonResponse({"error": "Valid category is required"}, status=400)
     if not title:
         return JsonResponse({"error": "title is required"}, status=400)
+
+    if replace:
+        if video.status == GlobalSolutionsVideoStatus.UPLOADING:
+            return JsonResponse({"error": "Wait for the current upload to finish before replacing."}, status=400)
+        if video.status == GlobalSolutionsVideoStatus.PROCESSING:
+            return JsonResponse({"error": "Wait for processing to finish before replacing the video."}, status=400)
+        if video.original_b2_key and video.category_id != category.pk:
+            return JsonResponse({"error": "Cannot change category when replacing an uploaded video."}, status=400)
+        if not video.original_b2_key:
+            video.category = category
+        video.title = title
+        video.description = description
+        video.save(update_fields=["category", "title", "description", "updated_at"])
+        return JsonResponse({"ok": True})
 
     if video.status in (GlobalSolutionsVideoStatus.PROCESSING, GlobalSolutionsVideoStatus.READY):
         return JsonResponse({"error": "Cannot edit metadata while processing or ready."}, status=400)
@@ -246,6 +283,7 @@ def b2_create_multipart_upload(request, video_id):
         return JsonResponse({"error": "filename is required"}, status=400)
 
     key = f"global-solutions/videos/{video.storage_path_slug}/{video.id}/{filename}"
+    replacing = bool((video.original_b2_key or "").strip())
 
     s3 = get_b2_s3_client()
     # B2 requires ContentType to be set at upload creation for correct metadata
@@ -259,7 +297,10 @@ def b2_create_multipart_upload(request, video_id):
     video.original_b2_key = key
     video.original_content_type = content_type
     video.last_error = ""
-    video.save(update_fields=["status", "original_b2_key", "original_content_type", "last_error", "updated_at"])
+    update_fields = ["status", "original_b2_key", "original_content_type", "last_error", "updated_at"]
+    if replacing:
+        update_fields.extend(_clear_derived_video_fields(video))
+    video.save(update_fields=update_fields)
 
     return JsonResponse({"upload_id": upload_id, "key": key})
 

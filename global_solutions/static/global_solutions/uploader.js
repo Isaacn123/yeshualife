@@ -207,17 +207,37 @@
     return (el.value || "").trim();
   }
 
-  async function syncSnippetMeta(urls) {
+  async function syncSnippetMeta(urls, options) {
+    options = options || {};
     var category = snippetFormValue("category");
     var title = snippetFormValue("title");
     var description = snippetFormValue("description");
     if (!title) throw new Error("Enter a title in the Details section above (you can save the form after upload if you prefer).");
     if (!category) throw new Error("Choose a Category in the Details section.");
-    await postForm(urls.meta, {
+    var payload = {
       category: category,
       title: title,
       description: description,
-    });
+    };
+    if (options.replace) payload.replace = "1";
+    await postForm(urls.meta, payload);
+  }
+
+  function snippetHasUploadedSource(snippetRoot) {
+    return snippetRoot.getAttribute("data-has-uploaded-source") === "1";
+  }
+
+  function snippetUsesHls(snippetRoot) {
+    return snippetRoot.getAttribute("data-transcode-hls") === "1";
+  }
+
+  function setProcessButtonState(processBtn, snippetRoot, enabled) {
+    if (!processBtn || !snippetRoot) return;
+    if (!snippetUsesHls(snippetRoot)) {
+      processBtn.disabled = true;
+      return;
+    }
+    processBtn.disabled = !enabled;
   }
 
   function initSnippet(snippetRoot) {
@@ -228,10 +248,25 @@
     var currentVideoId = snippetRoot.getAttribute("data-video-id");
     if (!currentVideoId) return;
 
+    setProcessButtonState(
+      processBtn,
+      snippetRoot,
+      snippetRoot.getAttribute("data-needs-processing") === "1"
+    );
+
     uploadBtn.addEventListener("click", async function () {
       try {
         var filesList = $("gsu-file").files;
         if (!filesList || !filesList.length) throw new Error("Select a video file to upload.");
+        var replacing = snippetHasUploadedSource(snippetRoot);
+        if (
+          replacing &&
+          !window.confirm(
+            "Replace the current main video file? The old file will be overwritten and you may need to choose a new thumbnail and run processing again."
+          )
+        ) {
+          return;
+        }
 
         var tpl = parseVideoApiUrlsJson();
         var urls = expandVideoApiUrlMap(tpl, currentVideoId);
@@ -239,22 +274,36 @@
         uploadBtn.disabled = true;
         processBtn.disabled = true;
         setProgress(0);
-        setStatus("Syncing title and type from this form…");
+        setStatus(replacing ? "Preparing to replace video…" : "Syncing title and type from this form…");
 
-        await syncSnippetMeta(urls);
+        await syncSnippetMeta(urls, { replace: replacing });
 
         var file = filesList[0];
-        setStatus("Uploading…");
+        setStatus(replacing ? "Uploading replacement…" : "Uploading…");
         var complete = await uploadMultipart(file, urls, function (pct) {
-          setStatus("Uploading… " + pct + "%");
+          setStatus((replacing ? "Uploading replacement… " : "Uploading… ") + pct + "%");
         });
 
+        snippetRoot.setAttribute("data-has-uploaded-source", "1");
+        uploadBtn.textContent = "Replace video on B2";
         if (window.GsThumbnailPicker) {
           window.GsThumbnailPicker.bootstrapFromUpload(urls, complete);
         }
-        setStatus("Upload complete. Choose a thumbnail below.");
+        var thumbSection = $("gsu-thumbnail-section");
+        if (thumbSection) thumbSection.hidden = false;
+        setProcessButtonState(processBtn, snippetRoot, snippetUsesHls(snippetRoot));
+        setStatus(
+          replacing
+            ? "Replacement uploaded. Choose a thumbnail below and mark for processing if needed."
+            : "Upload complete. Choose a thumbnail below."
+        );
       } catch (e) {
         setStatus("Error: " + (e && e.message ? e.message : String(e)));
+        setProcessButtonState(
+          processBtn,
+          snippetRoot,
+          snippetRoot.getAttribute("data-needs-processing") === "1"
+        );
       } finally {
         uploadBtn.disabled = false;
       }

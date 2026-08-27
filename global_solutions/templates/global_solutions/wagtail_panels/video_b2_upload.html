@@ -16,15 +16,28 @@
         id="gs-snippet-root"
         class="gs-snippet-upload"
         data-video-id="{{ video_id }}"
+        data-has-uploaded-source="{% if has_uploaded_source %}1{% else %}0{% endif %}"
+        data-transcode-hls="{% if transcode_hls %}1{% else %}0{% endif %}"
+        data-needs-processing="{% if needs_processing %}1{% else %}0{% endif %}"
       >
+        {% if has_uploaded_source %}
+          <div class="gs-snippet-upload__current help">
+            <strong>Current video:</strong>
+            {% if uploaded_filename %}{{ uploaded_filename }}{% else %}Uploaded{% endif %}
+            {% if video_status %}<span class="gs-snippet-upload__status"> · Status: {{ video_status }}</span>{% endif %}
+          </div>
+          <p class="help">Choose a new file below to replace the main video. Thumbnails and transcoded output will be regenerated after upload{% if transcode_hls %} and processing{% endif %}.</p>
+        {% endif %}
         <div class="gs-snippet-upload__field">
           <label class="w-field__label" for="gsu-file">Video file</label>
           <input id="gsu-file" class="w-field__input" type="file" accept="video/*">
           <p class="help">Recommended: MP4 (H.264 + AAC).</p>
         </div>
         <div class="gs-snippet-upload__actions">
-          <button type="button" class="button" id="gsu-upload-btn">Upload to B2</button>
-          <button type="button" class="button button-secondary" id="gsu-process-btn" disabled>Mark for processing</button>
+          <button type="button" class="button" id="gsu-upload-btn">
+            {% if has_uploaded_source %}Replace video on B2{% else %}Upload to B2{% endif %}
+          </button>
+          <button type="button" class="button button-secondary" id="gsu-process-btn"{% if not needs_processing %} disabled{% endif %}>Mark for processing</button>
         </div>
         <div class="gs-snippet-upload__progress" style="max-width:28rem;margin-top:0.75rem;">
           <div id="gsu-progress" style="width:0%;height:8px;background:#007d7e;border-radius:4px;"></div>
@@ -63,7 +76,7 @@
 
       <script src="{% static 'global_solutions/thumbnail_picker.js' %}?v=20260626"></script>
       <script src="{% static 'global_solutions/admin_copy_url.js' %}?v=20260820"></script>
-      <script src="{% static 'global_solutions/uploader.js' %}"></script>
+      <script src="{% static 'global_solutions/uploader.js' %}?v=20260827"></script>
     {% else %}
       <p class="help">
         <strong>Save this snippet once</strong> (title, type, and description are enough). After it has been saved, return here to upload the video file; metadata from B2 and transcoding will appear automatically after upload and processing.

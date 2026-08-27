@@ -3,10 +3,14 @@
 from __future__ import annotations
 
 import json
+import os
+
+from django.conf import settings
 
 from wagtail.admin.panels import Panel
 
 from .api_urls import video_api_urls_for
+from .models import GlobalSolutionsVideoStatus
 from .public_urls import admin_embed_video_url, admin_public_video_url
 
 
@@ -25,10 +29,17 @@ class GlobalSolutionsVideoB2UploadPanel(Panel):
             vid = str(pk) if pk else ""
             context["video_id"] = vid
             if pk:
+                instance = self.instance
+                original_key = (getattr(instance, "original_b2_key", "") or "").strip()
+                status = getattr(instance, "status", "")
                 context["gs_video_api_urls"] = video_api_urls_for(pk)
-                context["has_uploaded_source"] = bool((getattr(self.instance, "original_b2_key", "") or "").strip())
-                context["public_video_url"] = admin_public_video_url(self.instance)
-                context["embed_video_url"] = admin_embed_video_url(self.instance)
+                context["has_uploaded_source"] = bool(original_key)
+                context["uploaded_filename"] = os.path.basename(original_key) if original_key else ""
+                context["video_status"] = status
+                context["transcode_hls"] = getattr(settings, "GLOBAL_SOLUTIONS_TRANSCODE_HLS", False)
+                context["needs_processing"] = status == GlobalSolutionsVideoStatus.UPLOADED
+                context["public_video_url"] = admin_public_video_url(instance)
+                context["embed_video_url"] = admin_embed_video_url(instance)
             return context
 
 
