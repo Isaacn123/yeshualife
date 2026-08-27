@@ -10,7 +10,6 @@ from django.conf import settings
 from wagtail.admin.panels import Panel
 
 from .api_urls import video_api_urls_for
-from .models import GlobalSolutionsVideoStatus
 from .public_urls import admin_embed_video_url, admin_public_video_url
 
 
@@ -37,7 +36,7 @@ class GlobalSolutionsVideoB2UploadPanel(Panel):
                 context["uploaded_filename"] = os.path.basename(original_key) if original_key else ""
                 context["video_status"] = status
                 context["transcode_hls"] = getattr(settings, "GLOBAL_SOLUTIONS_TRANSCODE_HLS", False)
-                context["needs_processing"] = status == GlobalSolutionsVideoStatus.UPLOADED
+                context["needs_processing"] = status == "uploaded"
                 context["public_video_url"] = admin_public_video_url(instance)
                 context["embed_video_url"] = admin_embed_video_url(instance)
             return context
