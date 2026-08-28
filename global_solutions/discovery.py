@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from django.conf import settings as django_settings
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.urls import reverse
 
 from .models import (
@@ -62,6 +62,24 @@ def get_home_categories(*, limit: int = 8):
         SolutionCategory.objects.filter(is_active=True, show_on_home=True).order_by(
             "sort_order", "name"
         )[:limit]
+    )
+
+
+def get_home_topic_categories(*, limit: int = 10):
+    """Solution categories for main-site homepage, with ready video counts."""
+    return list(
+        SolutionCategory.objects.filter(is_active=True, show_on_home=True)
+        .annotate(
+            video_count=Count(
+                "videos",
+                filter=Q(
+                    videos__is_active=True,
+                    videos__status=GlobalSolutionsVideoStatus.READY,
+                    videos__parent_video__isnull=True,
+                ),
+            )
+        )
+        .order_by("sort_order", "name")[:limit]
     )
 
 

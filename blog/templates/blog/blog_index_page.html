@@ -28,6 +28,8 @@
     {% include "blog/sections/top-section-updates.html" %}
 </div>
 
+{% include "blog/sections/explore_programs.html" %}
+
 <section class="yl-home-updates" aria-labelledby="yl-home-updates-heading">
   {% include "blog/sections/home_section_head.html" with eyebrow="Programs & stories" title="Latest Updates" lead="Fresh highlights from our work in the field, community programs, and lasting solutions." title_id="yl-home-updates-heading" %}
   <div class="yl-home-updates__content">
@@ -57,6 +59,8 @@
 {% if global_solutions_home_card %}
   {% include "blog/sections/global_solutions_home_card.html" with card=global_solutions_home_card %}
 {% endif %}
+
+{% include "blog/sections/browse_by_topic.html" %}
 
 {% include "blog/sections/global_solutions_latest_videos.html" %}
 

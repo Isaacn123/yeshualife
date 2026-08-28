@@ -1,0 +1,20 @@
+{# Expects: home_programs #}
+{% if home_programs %}
+<section class="yl-home-programs" aria-labelledby="yl-home-programs-heading">
+  <div class="container">
+    {% include "blog/sections/home_section_head.html" with eyebrow="What we do" title="Explore our programs" lead="Jump into the areas where Yeshua Life serves communities through agriculture, relief, and lasting solutions." title_id="yl-home-programs-heading" section_class="yl-home-section-head--programs" %}
+    <div class="yl-home-programs__grid">
+      {% for program in home_programs %}
+        <a href="{{ program.url }}" class="yl-home-program-card yl-home-program-card--{{ program.theme }}">
+          <span class="yl-home-program-card__icon" aria-hidden="true"></span>
+          <span class="yl-home-program-card__copy">
+            <span class="yl-home-program-card__title">{{ program.title }}</span>
+            <span class="yl-home-program-card__desc">{{ program.description }}</span>
+          </span>
+          <span class="yl-home-program-card__arrow" aria-hidden="true">→</span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}

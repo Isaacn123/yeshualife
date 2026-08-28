@@ -1,0 +1,24 @@
+{# Expects: global_solutions_topic_categories, optional global_solutions_settings #}
+{% if global_solutions_topic_categories %}
+<section class="gs-home-topics" aria-labelledby="gs-home-topics-heading">
+  <div class="container">
+    {% include "blog/sections/home_section_head.html" with eyebrow="Global Solutions" title="Browse by topic" lead="Find videos by subject — from crop farming and livestock to community programs." title_id="gs-home-topics-heading" section_class="yl-home-section-head--topics gs-home-topics__head" %}
+    <div class="gs-home-topics__grid">
+      {% for category in global_solutions_topic_categories %}
+        <a href="{{ category.get_absolute_url }}" class="gs-home-topic-card">
+          <span class="gs-home-topic-card__name">{{ category.name }}</span>
+          {% if category.description %}
+            <span class="gs-home-topic-card__desc">{{ category.description|truncatewords:14 }}</span>
+          {% endif %}
+          {% if category.video_count %}
+            <span class="gs-home-topic-card__count">{{ category.video_count }} video{{ category.video_count|pluralize }}</span>
+          {% endif %}
+        </a>
+      {% endfor %}
+    </div>
+    <p class="gs-home-topics__all">
+      <a href="{% url 'global_solutions:farmhub_home' %}">View all topics on Global Solutions →</a>
+    </p>
+  </div>
+</section>
+{% endif %}
