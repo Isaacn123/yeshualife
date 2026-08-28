@@ -155,12 +155,18 @@ class HomepageEvent(models.Model):
     starts_at = models.DateTimeField(
         blank=True,
         null=True,
-        help_text="Optional. Card stays hidden until this date/time.",
+        help_text=(
+            "Optional. When the card first appears on the homepage. "
+            "Leave blank to show immediately (recommended for upcoming events)."
+        ),
     )
     ends_at = models.DateTimeField(
         blank=True,
         null=True,
-        help_text="Optional. Card is hidden after this date/time.",
+        help_text=(
+            "Optional. Hide the card after this date/time "
+            "(e.g. the day after your event ends)."
+        ),
     )
     sort_order = models.PositiveIntegerField(
         default=0,

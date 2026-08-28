@@ -1,6 +1,6 @@
-{# Loads its own data via template tag — include on any homepage template. #}
-{% load wagtailimages_tags homepage_events_tags %}
-{% get_homepage_events_section as homepage_events %}
+{# Full section — two or more events. Include in page flow (e.g. after Latest Updates). #}
+{% load homepage_events_tags %}
+{% get_homepage_events_section "section" as homepage_events %}
 {% if homepage_events and homepage_events.events %}
 <section class="yl-home-events" aria-labelledby="yl-home-events-heading">
   <div class="container">
@@ -9,42 +9,7 @@
     {% endwith %}
     <div class="yl-home-events__grid">
       {% for event in homepage_events.events %}
-        <article class="yl-home-event-card yl-home-event-card--{{ event.kind }}">
-          {% if event.image %}
-            <div class="yl-home-event-card__media">
-              {% image event.image fill-640x360 class="yl-home-event-card__img" alt=event.title %}
-            </div>
-          {% endif %}
-          <div class="yl-home-event-card__body">
-            {% if event.formatted_date_line %}
-              <p class="yl-home-event-card__date">{{ event.formatted_date_line }}</p>
-            {% endif %}
-            <h3 class="yl-home-event-card__title">{{ event.title }}</h3>
-            {% if event.description %}
-              <p class="yl-home-event-card__desc">{{ event.description }}</p>
-            {% endif %}
-            {% if event.has_video %}
-              <div class="yl-home-event-card__video">
-                <video
-                  class="yl-home-event-card__video-el"
-                  controls
-                  playsinline
-                  preload="metadata"
-                  {% if event.image %}poster="{{ event.card_image_url }}"{% endif %}
-                >
-                  <source src="{{ event.video_url }}">
-                  Your browser does not support embedded video.
-                </video>
-              </div>
-            {% endif %}
-            {% if event.has_link %}
-              <a class="yl-home-event-card__btn" href="{{ event.link }}">
-                {{ event.button_label }}
-                <span class="yl-home-event-card__btn-arrow" aria-hidden="true">→</span>
-              </a>
-            {% endif %}
-          </div>
-        </article>
+        {% include "blog/sections/homepage_event_card.html" with event=event %}
       {% endfor %}
     </div>
   </div>

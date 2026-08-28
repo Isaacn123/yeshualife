@@ -26,8 +26,6 @@
     {% include "home/sections/top-section-updates.html" %}
 </div>
 
-{% include "blog/sections/homepage_events.html" %}
-
 
 <div class="d-flex flex-column justify-content-center align-items-center wrap-blog">
     {% for post in  page.get_children %}
@@ -79,6 +77,7 @@
 
 {% include "blog/sections/yl_support_cta.html" %}
 
+{% include "blog/sections/homepage_events_popup.html" %}
 
 
 {% endblock  %}

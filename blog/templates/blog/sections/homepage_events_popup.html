@@ -1,0 +1,42 @@
+{# Bottom-right popup — single event only. Include near end of homepage body. #}
+{% load homepage_events_tags %}
+{% get_homepage_events_section "popup" as homepage_events %}
+{% if homepage_events and homepage_events.events %}
+  {% with event=homepage_events.events.0 settings=homepage_events.settings %}
+    <aside
+      class="yl-home-event-popup"
+      id="ylHomeEventPopup"
+      data-event-id="{{ event.pk }}"
+      role="dialog"
+      aria-labelledby="ylHomeEventPopupTitle"
+      aria-live="polite"
+    >
+      <div class="yl-home-event-popup__shell">
+        <button type="button" class="yl-home-event-popup__close" aria-label="Dismiss announcement">
+          <span aria-hidden="true">×</span>
+        </button>
+        {% if settings.section_eyebrow %}
+          <p class="yl-home-event-popup__eyebrow">{{ settings.section_eyebrow }}</p>
+        {% endif %}
+        {% include "blog/sections/homepage_event_card.html" with event=event compact=1 %}
+      </div>
+    </aside>
+    <script>
+      (function () {
+        var popup = document.getElementById("ylHomeEventPopup");
+        if (!popup) return;
+        var key = "yl-home-event-popup-" + popup.dataset.eventId;
+        if (sessionStorage.getItem(key) === "1") {
+          popup.hidden = true;
+          return;
+        }
+        var closeBtn = popup.querySelector(".yl-home-event-popup__close");
+        if (!closeBtn) return;
+        closeBtn.addEventListener("click", function () {
+          popup.hidden = true;
+          sessionStorage.setItem(key, "1");
+        });
+      })();
+    </script>
+  {% endwith %}
+{% endif %}
