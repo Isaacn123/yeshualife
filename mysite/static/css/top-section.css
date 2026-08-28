@@ -1346,6 +1346,7 @@ p {
   bottom: 1.15rem;
   z-index: 1050;
   width: min(22rem, calc(100vw - 2.3rem));
+  max-height: calc(100vh - 2.3rem);
   max-height: calc(100dvh - 2.3rem);
   pointer-events: none;
   animation: yl-home-event-popup-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -1576,28 +1577,73 @@ p {
 @media (max-width: 767.98px) {
   .yl-home-event-popup {
     --yl-popup-scale: min(
-      1,
-      calc((100vw - 1rem) / 22rem),
-      calc((100dvh - 1rem) / 28rem)
+      0.72,
+      calc((100vw - 1.25rem) / 22rem),
+      calc((100svh - 1.25rem) / 30rem),
+      calc((100vh - 1.25rem) / 30rem)
     );
     right: max(0.5rem, env(safe-area-inset-right, 0px));
     bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
     left: auto;
     width: 22rem;
-    max-height: calc((100dvh - 1rem) / var(--yl-popup-scale));
-    transform: scale(var(--yl-popup-scale));
-    transform-origin: bottom right;
+    max-height: none;
+    transform: none;
     animation: yl-home-event-popup-in-mobile 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .yl-home-event-popup__shell {
-    max-height: 100%;
+    zoom: var(--yl-popup-scale);
+    max-height: calc((100svh - 1.25rem) / var(--yl-popup-scale));
+    max-height: calc((100dvh - 1.25rem) / var(--yl-popup-scale));
+    max-height: calc((100vh - 1.25rem) / var(--yl-popup-scale));
     animation: none;
     transform: none;
   }
 
   .yl-home-event-popup__shell:hover {
     transform: none;
+  }
+
+  /* Full text while scrolling — no line clamp on phones */
+  .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__desc {
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+  }
+}
+
+/* Firefox / browsers without zoom: scale the shell wrapper instead */
+@supports not (zoom: 1) {
+  @media (max-width: 767.98px) {
+    .yl-home-event-popup {
+      --yl-popup-scale: min(
+        0.72,
+        calc((100vw - 1.25rem) / 22rem),
+        calc((100svh - 1.25rem) / 30rem),
+        calc((100vh - 1.25rem) / 30rem)
+      );
+      transform: scale(var(--yl-popup-scale));
+      transform-origin: bottom right;
+      max-height: calc((100svh - 1.25rem) / var(--yl-popup-scale));
+      max-height: calc((100dvh - 1.25rem) / var(--yl-popup-scale));
+      max-height: calc((100vh - 1.25rem) / var(--yl-popup-scale));
+    }
+
+    .yl-home-event-popup__shell {
+      zoom: 1;
+      max-height: 100%;
+    }
+  }
+}
+
+@media (max-width: 390px) {
+  .yl-home-event-popup {
+    --yl-popup-scale: min(
+      0.66,
+      calc((100vw - 1rem) / 22rem),
+      calc((100svh - 1rem) / 28rem),
+      calc((100vh - 1rem) / 28rem)
+    );
   }
 }
 
@@ -1644,10 +1690,13 @@ body.yl-home-event-share-open {
   position: relative;
   z-index: 1;
   width: min(42rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
   max-height: calc(100dvh - 2rem);
   overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
   background: #fffdf9;
   border: 1px solid rgba(80, 60, 40, 0.2);
   border-radius: 16px;
@@ -1746,19 +1795,33 @@ body.yl-home-event-share-open {
       max(0.5rem, env(safe-area-inset-right, 0px))
       max(0.5rem, env(safe-area-inset-bottom, 0px))
       max(0.5rem, env(safe-area-inset-left, 0px));
+    align-items: center;
   }
 
   .yl-home-event-share__panel {
-    --yl-share-scale: min(
-      1,
-      calc((100vw - 1rem) / 42rem),
-      calc((100dvh - 1rem) / 36rem)
-    );
-    width: 42rem;
-    max-height: calc((100dvh - 1rem) / var(--yl-share-scale));
-    transform: scale(var(--yl-share-scale));
-    transform-origin: center center;
+    width: min(42rem, calc(100vw - 1rem));
+    max-height: calc(100svh - 1rem);
+    max-height: calc(100dvh - 1rem);
+    max-height: calc(100vh - 1rem);
+    zoom: 1;
+    transform: none;
     animation: yl-home-event-share-in-mobile 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .yl-home-event-share__toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #fffdf9;
+    padding-bottom: 0.35rem;
+  }
+}
+
+@supports not (zoom: 1) {
+  @media (max-width: 767.98px) {
+    .yl-home-event-share__panel {
+      transform: none;
+    }
   }
 }
 
