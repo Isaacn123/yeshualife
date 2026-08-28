@@ -3,12 +3,21 @@
 <section class="gs-home-videos" aria-labelledby="gs-home-videos-heading">
   <div class="container">
     <header class="gs-home-videos__head">
-      <p class="gs-home-videos__eyebrow">
-        {% if global_solutions_settings %}{{ global_solutions_settings.page_title|default:"Global Solutions" }}{% else %}Global Solutions{% endif %}
-      </p>
-      <h2 class="gs-home-videos__title" id="gs-home-videos-heading">Latest farming videos</h2>
+      <h2 class="gs-home-videos__title" id="gs-home-videos-heading">
+        {% if global_solutions_settings %}
+          {{ global_solutions_settings.page_title|default:"Global Solutions" }}
+        {% else %}
+          Global Solutions
+        {% endif %}
+      </h2>
       <p class="gs-home-videos__lead">
-        Practical solutions from the field — crop care, livestock, irrigation, and community programs.
+        {% if global_solutions_settings and global_solutions_settings.hero_subtitle %}
+          {{ global_solutions_settings.hero_subtitle }}
+        {% elif global_solutions_settings and global_solutions_settings.seo_description %}
+          {{ global_solutions_settings.seo_description }}
+        {% else %}
+          Practical solutions and field stories from across our programs.
+        {% endif %}
       </p>
     </header>
 
@@ -77,7 +86,11 @@
 
     <div class="gs-home-videos__footer">
       <a class="gs-home-videos__all-link" href="{% url 'global_solutions:farmhub_home' %}">
-        Browse all Global Solutions
+        {% if global_solutions_settings %}
+          {{ global_solutions_settings.home_card_button_label }}
+        {% else %}
+          Explore Global Solutions
+        {% endif %}
         <span class="gs-home-videos__all-arrow" aria-hidden="true">→</span>
       </a>
     </div>

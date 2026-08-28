@@ -1,0 +1,10 @@
+{# Optional: eyebrow, title (required), lead, heading_id (or title_id) #}
+<header class="yl-home-section-head{% if section_class %} {{ section_class }}{% endif %}">
+  {% if eyebrow %}
+    <p class="yl-home-section-head__eyebrow">{{ eyebrow }}</p>
+  {% endif %}
+  <h2 class="yl-home-section-head__title"{% if heading_id or title_id %} id="{{ heading_id|default:title_id }}"{% endif %}>{{ title }}</h2>
+  {% if lead %}
+    <p class="yl-home-section-head__lead">{{ lead }}</p>
+  {% endif %}
+</header>

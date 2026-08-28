@@ -692,6 +692,60 @@ p {
   }
 }
 
+/* Shared homepage section headings */
+.yl-home-section-head {
+  --yl-home-head-font: "Plus Jakarta Sans", "Segoe UI", Roboto, sans-serif;
+  --yl-home-head-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --yl-home-head-text: #2c2419;
+  --yl-home-head-muted: #5c6b52;
+  --yl-home-head-green: #3d6b35;
+
+  max-width: 42rem;
+  margin: 0 auto 2.25rem;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.yl-home-section-head__eyebrow {
+  margin: 0 0 0.5rem;
+  font-family: var(--yl-home-head-font);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--yl-home-head-green);
+}
+
+.yl-home-section-head__title {
+  margin: 0 0 0.75rem;
+  font-family: var(--yl-home-head-display);
+  font-size: clamp(1.75rem, 3vw, 2.35rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--yl-home-head-text);
+}
+
+.yl-home-section-head__lead {
+  margin: 0;
+  font-family: var(--yl-home-head-font);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--yl-home-head-muted);
+}
+
+.yl-home-updates {
+  padding-top: 2.5rem;
+}
+
+.yl-home-updates__content {
+  margin-top: 0.25rem;
+}
+
+.yl-home-section-head--updates {
+  margin-bottom: 2rem;
+}
+
 /* Global Solutions — latest videos on main homepage */
 .gs-home-videos {
   --gs-video-bg: #f7f1e6;
@@ -717,21 +771,6 @@ p {
   max-width: 42rem;
   margin: 0 auto 2.5rem;
   text-align: center;
-}
-
-.gs-home-videos__eyebrow {
-  display: inline-block;
-  margin: 0 0 0.65rem;
-  padding: 0.32rem 0.85rem;
-  border-radius: 999px;
-  font-family: var(--gs-video-font);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #7a5a12;
-  background: var(--gs-video-gold-soft);
-  border: 1px solid rgba(196, 138, 26, 0.28);
 }
 
 .gs-home-videos__title {
