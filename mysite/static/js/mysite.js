@@ -22,7 +22,7 @@
       return;
     }
 
-    document.querySelectorAll(".navbar .dropdown-toggle").forEach(function (toggle) {
+    document.querySelectorAll(".yl-site-nav .dropdown-toggle").forEach(function (toggle) {
       var existing = bootstrap.Dropdown.getInstance(toggle);
       if (existing) {
         existing.dispose();
@@ -31,37 +31,35 @@
     });
   }
 
-  function initNavbarCollapse() {
-    if (!window.bootstrap || !window.bootstrap.Collapse) {
+  function bindNavbarCollapse() {
+    if (document.documentElement._ylNavbarCollapseBound) {
       return;
     }
+    document.documentElement._ylNavbarCollapseBound = true;
 
-    var toggler = document.getElementById("ylNavbarToggler");
-    var menu = document.getElementById("navbarCollapse");
-    if (!toggler || !menu) {
-      return;
-    }
+    document.addEventListener(
+      "click",
+      function (event) {
+        var toggler = event.target.closest(".yl-site-nav .navbar-toggler");
+        if (!toggler || !window.bootstrap || !window.bootstrap.Collapse) {
+          return;
+        }
 
-    if (toggler._ylCollapseInit) {
-      return;
-    }
-    toggler._ylCollapseInit = true;
+        var menu = document.getElementById("navbarCollapse");
+        if (!menu) {
+          return;
+        }
 
-    var collapse = bootstrap.Collapse.getOrCreateInstance(menu, { toggle: false });
-
-    function toggleMenu(event) {
-      if (event) {
         event.preventDefault();
         event.stopPropagation();
-      }
-      collapse.toggle();
-    }
-
-    toggler.addEventListener("click", toggleMenu);
+        bootstrap.Collapse.getOrCreateInstance(menu, { toggle: false }).toggle();
+      },
+      true
+    );
   }
 
   function initNavbar() {
-    initNavbarCollapse();
+    bindNavbarCollapse();
     initNavbarDropdowns();
   }
 

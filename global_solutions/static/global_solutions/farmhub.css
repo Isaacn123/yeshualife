@@ -76,6 +76,18 @@ body.template-globalsolutions.template-farmhub h3 {
   box-shadow: var(--fh-shadow-sm);
 }
 
+/* FarmHub pages also have the main site navbar — keep it above this header on mobile */
+@media (max-width: 767.98px) {
+  body.template-farmhub .yl-site-nav.sticky-top {
+    z-index: 1050 !important;
+  }
+
+  body.template-farmhub .fh-header {
+    top: 3.5rem;
+    z-index: 1040;
+  }
+}
+
 .fh-header-inner {
   display: flex;
   flex-wrap: wrap;

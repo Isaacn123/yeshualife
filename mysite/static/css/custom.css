@@ -90,3 +90,60 @@ p{
 .content-image-lightbox__caption {
     color: rgba(255, 255, 255, 0.78);
 }
+
+/* Site navbar — global fixes (theme.min.css + iOS touch) */
+.yl-site-nav .navbar-toggler,
+.yl-site-nav .navbar-toggler *,
+.yl-site-nav [data-bs-toggle="collapse"],
+.yl-site-nav [data-bs-toggle="collapse"] * {
+  pointer-events: auto !important;
+}
+
+.yl-site-nav.sticky-top {
+  z-index: 1050;
+}
+
+@media (max-width: 767.98px) {
+  .yl-site-nav > .container-fluid {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.35rem;
+  }
+
+  .yl-site-nav .navbar-toggler {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.45rem 0.6rem;
+    margin-left: auto;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    z-index: 1052;
+    flex-shrink: 0;
+  }
+
+  .yl-site-nav .navbar-collapse {
+    position: relative;
+    z-index: 1051;
+    flex-basis: 100%;
+    width: 100%;
+  }
+
+  .yl-site-nav button.nav-link.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    color: rgba(255, 255, 255, 0.88);
+    cursor: pointer;
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  .yl-site-nav button.nav-link.dropdown-toggle::after {
+    margin-left: auto;
+  }
+}

@@ -568,6 +568,7 @@ def farmhub_category(request, slug):
         "category": category,
         "videos": videos,
         "farmhub_home_url": request.build_absolute_uri(reverse("global_solutions:farmhub_home")),
+        "categories": get_active_categories(),
     }
     return render(request, "global_solutions/category_page.html", ctx)
 
