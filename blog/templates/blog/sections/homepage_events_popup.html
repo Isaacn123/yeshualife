@@ -6,9 +6,9 @@
     <style>
       @media (max-width: 767.98px) {
         .yl-home-event-popup {
-          width: min(12.5rem, 48vw) !important;
-          max-height: min(36vh, 14.5rem) !important;
-          max-height: min(36dvh, 14.5rem) !important;
+          width: min(15rem, 56vw) !important;
+          max-height: none !important;
+          height: auto !important;
           right: max(0.45rem, env(safe-area-inset-right, 0px)) !important;
           bottom: max(0.45rem, env(safe-area-inset-bottom, 0px)) !important;
           left: auto !important;
@@ -16,17 +16,66 @@
           animation: none !important;
         }
         .yl-home-event-popup__shell {
-          max-height: 100% !important;
+          max-height: none !important;
+          height: auto !important;
+          overflow: visible !important;
           animation: none !important;
           transform: none !important;
         }
+        .yl-home-event-popup__toolbar {
+          padding: 0.28rem 0.35rem 0 !important;
+        }
+        .yl-home-event-popup__share {
+          padding: 0.26rem 0.5rem !important;
+          font-size: 0.62rem !important;
+        }
+        .yl-home-event-popup__close {
+          width: 1.5rem !important;
+          height: 1.5rem !important;
+          font-size: 1rem !important;
+        }
+        .yl-home-event-popup__eyebrow {
+          padding: 0.15rem 0.55rem 0 !important;
+          font-size: 0.52rem !important;
+        }
+        .yl-home-event-popup .yl-home-event-card {
+          overflow: visible !important;
+        }
         .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__media {
-          max-height: 4.5rem !important;
+          width: 100% !important;
+          aspect-ratio: 16 / 9 !important;
+          max-height: 3.35rem !important;
+          overflow: hidden !important;
+        }
+        .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__img {
+          display: block !important;
+          width: 100% !important;
+          height: 100% !important;
+          object-fit: cover !important;
+        }
+        .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__body {
+          padding: 0.4rem 0.55rem 0.55rem !important;
+          gap: 0.2rem !important;
+        }
+        .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__date {
+          font-size: 0.5rem !important;
+          line-height: 1.2 !important;
+        }
+        .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__title {
+          font-size: 0.72rem !important;
+          line-height: 1.15 !important;
         }
         .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__desc {
-          display: block !important;
-          overflow: visible !important;
-          -webkit-line-clamp: unset !important;
+          display: -webkit-box !important;
+          -webkit-box-orient: vertical !important;
+          -webkit-line-clamp: 3 !important;
+          overflow: hidden !important;
+          font-size: 0.58rem !important;
+          line-height: 1.32 !important;
+        }
+        .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__btn {
+          font-size: 0.58rem !important;
+          margin-top: 0.12rem !important;
         }
         .yl-home-event-share__panel {
           width: min(42rem, calc(100vw - 1rem)) !important;
@@ -39,16 +88,6 @@
           top: 0 !important;
           z-index: 2 !important;
           background: #fffdf9 !important;
-        }
-      }
-      @media (max-width: 390px) {
-        .yl-home-event-popup {
-          width: min(11.5rem, 46vw) !important;
-          max-height: min(32vh, 13rem) !important;
-          max-height: min(32dvh, 13rem) !important;
-        }
-        .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__media {
-          max-height: 3.85rem !important;
         }
       }
     </style>

@@ -4,7 +4,7 @@
   {% if event.image %}
     <div class="yl-home-event-card__media">
       {% if compact %}
-        {% image event.image fill-400x225 class="yl-home-event-card__img" alt=event.title %}
+        {% image event.image fill-320x180 class="yl-home-event-card__img" alt=event.title %}
       {% elif modal %}
         {% image event.image fill-960x540 class="yl-home-event-card__img" alt=event.title %}
       {% else %}
