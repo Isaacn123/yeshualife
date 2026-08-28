@@ -1,7 +1,8 @@
 from .base import *
+import os
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Override via .env: DEV_DEBUG=False or DEV_DEBUG=True
+DEBUG = os.environ.get("DEV_DEBUG", "True").lower() in ("true", "1", "yes")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-9@865u5i22(b6n03#k396q%a84pfbnqsj^*+ua9qp-l7k3#5-!"
