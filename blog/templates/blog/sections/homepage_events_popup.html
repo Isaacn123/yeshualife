@@ -39,23 +39,30 @@
           font-size: 0.52rem !important;
         }
         .yl-home-event-popup .yl-home-event-card {
+          width: 100% !important;
           overflow: visible !important;
         }
         .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__media {
           width: 100% !important;
-          aspect-ratio: 16 / 9 !important;
-          max-height: 3.35rem !important;
+          max-width: 100% !important;
+          height: 4.25rem !important;
+          max-height: 4.25rem !important;
+          aspect-ratio: unset !important;
+          margin: 0 !important;
           overflow: hidden !important;
         }
         .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__img {
           display: block !important;
           width: 100% !important;
+          min-width: 100% !important;
+          max-width: none !important;
           height: 100% !important;
           object-fit: cover !important;
+          object-position: center !important;
         }
         .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__body {
-          padding: 0.4rem 0.55rem 0.55rem !important;
-          gap: 0.2rem !important;
+          padding: 0.45rem 0.55rem 0.65rem !important;
+          gap: 0.24rem !important;
         }
         .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__date {
           font-size: 0.5rem !important;
@@ -68,7 +75,7 @@
         .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__desc {
           display: -webkit-box !important;
           -webkit-box-orient: vertical !important;
-          -webkit-line-clamp: 3 !important;
+          -webkit-line-clamp: 4 !important;
           overflow: hidden !important;
           font-size: 0.58rem !important;
           line-height: 1.32 !important;
