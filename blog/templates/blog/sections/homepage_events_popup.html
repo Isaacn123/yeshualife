@@ -3,6 +3,55 @@
 {% get_homepage_events_section "popup" as homepage_events %}
 {% if homepage_events and homepage_events.events %}
   {% with event=homepage_events.events.0 settings=homepage_events.settings %}
+    <style>
+      @media (max-width: 767.98px) {
+        .yl-home-event-popup {
+          width: min(12.5rem, 48vw) !important;
+          max-height: min(36vh, 14.5rem) !important;
+          max-height: min(36dvh, 14.5rem) !important;
+          right: max(0.45rem, env(safe-area-inset-right, 0px)) !important;
+          bottom: max(0.45rem, env(safe-area-inset-bottom, 0px)) !important;
+          left: auto !important;
+          transform: none !important;
+          animation: none !important;
+        }
+        .yl-home-event-popup__shell {
+          max-height: 100% !important;
+          animation: none !important;
+          transform: none !important;
+        }
+        .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__media {
+          max-height: 4.5rem !important;
+        }
+        .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__desc {
+          display: block !important;
+          overflow: visible !important;
+          -webkit-line-clamp: unset !important;
+        }
+        .yl-home-event-share__panel {
+          width: min(42rem, calc(100vw - 1rem)) !important;
+          max-height: calc(100vh - 1rem) !important;
+          max-height: calc(100dvh - 1rem) !important;
+          transform: none !important;
+        }
+        .yl-home-event-share__toolbar {
+          position: sticky !important;
+          top: 0 !important;
+          z-index: 2 !important;
+          background: #fffdf9 !important;
+        }
+      }
+      @media (max-width: 390px) {
+        .yl-home-event-popup {
+          width: min(11.5rem, 46vw) !important;
+          max-height: min(32vh, 13rem) !important;
+          max-height: min(32dvh, 13rem) !important;
+        }
+        .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__media {
+          max-height: 3.85rem !important;
+        }
+      }
+    </style>
     <aside
       class="yl-home-event-popup"
       id="ylHomeEventPopup"

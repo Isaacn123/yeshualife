@@ -1576,26 +1576,22 @@ p {
 
 @media (max-width: 767.98px) {
   .yl-home-event-popup {
-    --yl-popup-scale: min(
-      0.72,
-      calc((100vw - 1.25rem) / 22rem),
-      calc((100svh - 1.25rem) / 30rem),
-      calc((100vh - 1.25rem) / 30rem)
-    );
-    right: max(0.5rem, env(safe-area-inset-right, 0px));
-    bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+    right: max(0.45rem, env(safe-area-inset-right, 0px));
+    bottom: max(0.45rem, env(safe-area-inset-bottom, 0px));
     left: auto;
-    width: 22rem;
-    max-height: none;
+    width: min(12.5rem, 48vw);
+    max-height: min(36vh, 14.5rem);
+    max-height: min(36dvh, 14.5rem);
+    max-height: min(36svh, 14.5rem);
     transform: none;
     animation: yl-home-event-popup-in-mobile 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .yl-home-event-popup__shell {
-    zoom: var(--yl-popup-scale);
-    max-height: calc((100svh - 1.25rem) / var(--yl-popup-scale));
-    max-height: calc((100dvh - 1.25rem) / var(--yl-popup-scale));
-    max-height: calc((100vh - 1.25rem) / var(--yl-popup-scale));
+    zoom: 1;
+    max-height: min(36vh, 14.5rem);
+    max-height: min(36dvh, 14.5rem);
+    max-height: min(36svh, 14.5rem);
     animation: none;
     transform: none;
   }
@@ -1604,33 +1600,70 @@ p {
     transform: none;
   }
 
-  /* Full text while scrolling — no line clamp on phones */
+  .yl-home-event-popup__toolbar {
+    padding: 0.35rem 0.35rem 0;
+  }
+
+  .yl-home-event-popup__share {
+    padding: 0.3rem 0.55rem;
+    font-size: 0.68rem;
+  }
+
+  .yl-home-event-popup__close {
+    width: 1.65rem;
+    height: 1.65rem;
+    font-size: 1.1rem;
+  }
+
+  .yl-home-event-popup__eyebrow {
+    padding: 0.2rem 0.65rem 0;
+    font-size: 0.58rem;
+  }
+
+  .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__media {
+    aspect-ratio: 16 / 9;
+    max-height: 4.5rem;
+  }
+
+  .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__img {
+    object-fit: cover;
+  }
+
+  .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__body {
+    padding: 0.55rem 0.65rem 0.7rem;
+    gap: 0.3rem;
+  }
+
+  .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__title {
+    font-size: 0.82rem;
+    line-height: 1.2;
+  }
+
+  .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__date {
+    font-size: 0.58rem;
+  }
+
   .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__desc {
     display: block;
     overflow: visible;
     -webkit-line-clamp: unset;
+    font-size: 0.68rem;
+    line-height: 1.4;
+  }
+
+  .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__btn {
+    font-size: 0.68rem;
   }
 }
 
-/* Firefox / browsers without zoom: scale the shell wrapper instead */
 @supports not (zoom: 1) {
   @media (max-width: 767.98px) {
     .yl-home-event-popup {
-      --yl-popup-scale: min(
-        0.72,
-        calc((100vw - 1.25rem) / 22rem),
-        calc((100svh - 1.25rem) / 30rem),
-        calc((100vh - 1.25rem) / 30rem)
-      );
-      transform: scale(var(--yl-popup-scale));
-      transform-origin: bottom right;
-      max-height: calc((100svh - 1.25rem) / var(--yl-popup-scale));
-      max-height: calc((100dvh - 1.25rem) / var(--yl-popup-scale));
-      max-height: calc((100vh - 1.25rem) / var(--yl-popup-scale));
+      transform: none;
+      max-height: min(36vh, 14.5rem);
     }
 
     .yl-home-event-popup__shell {
-      zoom: 1;
       max-height: 100%;
     }
   }
@@ -1638,12 +1671,20 @@ p {
 
 @media (max-width: 390px) {
   .yl-home-event-popup {
-    --yl-popup-scale: min(
-      0.66,
-      calc((100vw - 1rem) / 22rem),
-      calc((100svh - 1rem) / 28rem),
-      calc((100vh - 1rem) / 28rem)
-    );
+    width: min(11.5rem, 46vw);
+    max-height: min(32vh, 13rem);
+    max-height: min(32dvh, 13rem);
+    max-height: min(32svh, 13rem);
+  }
+
+  .yl-home-event-popup__shell {
+    max-height: min(32vh, 13rem);
+    max-height: min(32dvh, 13rem);
+    max-height: min(32svh, 13rem);
+  }
+
+  .yl-home-event-popup .yl-home-event-card--compact .yl-home-event-card__media {
+    max-height: 3.85rem;
   }
 }
 
