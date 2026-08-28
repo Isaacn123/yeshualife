@@ -1371,7 +1371,7 @@ p {
 
 .yl-home-event-popup__eyebrow {
   margin: 0;
-  padding: 0.85rem 2.75rem 0 1rem;
+  padding: 0.35rem 1rem 0;
   font-family: var(--yl-event-font);
   font-size: 0.68rem;
   font-weight: 700;
@@ -1380,11 +1380,43 @@ p {
   color: var(--yl-event-gold);
 }
 
+.yl-home-event-popup__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.45rem 0;
+}
+
+.yl-home-event-popup__share {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.38rem 0.75rem;
+  border: 1px solid rgba(154, 114, 9, 0.22);
+  border-radius: 999px;
+  font-family: var(--yl-event-font);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #2c2419;
+  background: linear-gradient(135deg, #f0d998 0%, #e8b84a 55%, #d4a017 100%);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.yl-home-event-popup__share:hover,
+.yl-home-event-popup__share:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(196, 138, 26, 0.22);
+}
+
+.yl-home-event-popup__share-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
 .yl-home-event-popup__close {
-  position: absolute;
-  top: 0.45rem;
-  right: 0.45rem;
-  z-index: 2;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1465,6 +1497,147 @@ p {
     right: 0.75rem;
     bottom: 0.75rem;
     width: min(20rem, calc(100vw - 1.5rem));
+  }
+}
+
+/* Full-screen share / expanded event view */
+body.yl-home-event-share-open {
+  overflow: hidden;
+}
+
+.yl-home-event-share {
+  position: fixed;
+  inset: 0;
+  z-index: 1060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.yl-home-event-share[hidden] {
+  display: none !important;
+}
+
+.yl-home-event-share__backdrop {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: none;
+  background: rgba(18, 14, 10, 0.72);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  cursor: pointer;
+}
+
+.yl-home-event-share__panel {
+  position: relative;
+  z-index: 1;
+  width: min(42rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  background: #fffdf9;
+  border: 1px solid rgba(80, 60, 40, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(18, 14, 10, 0.28);
+  animation: yl-home-event-share-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.yl-home-event-share__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 0.75rem 0;
+}
+
+.yl-home-event-share__action {
+  padding: 0.55rem 1rem;
+  border: 1px solid rgba(80, 60, 40, 0.18);
+  border-radius: 999px;
+  font-family: var(--yl-event-font, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #2c2419;
+  background: #f5efe4;
+  cursor: pointer;
+}
+
+.yl-home-event-share__action--primary {
+  color: #2c2419;
+  background: linear-gradient(135deg, #f0d998 0%, #e8b84a 55%, #d4a017 100%);
+  border-color: rgba(154, 114, 9, 0.22);
+}
+
+.yl-home-event-share__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  margin-left: 0.15rem;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  font-size: 1.45rem;
+  line-height: 1;
+  color: #6b6258;
+  background: #f5efe4;
+  cursor: pointer;
+}
+
+.yl-home-event-share__eyebrow {
+  margin: 0;
+  padding: 0.25rem 1.25rem 0;
+  font-family: var(--yl-event-font, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9a7209;
+}
+
+.yl-home-event-share .yl-home-event-card {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.yl-home-event-card--modal .yl-home-event-card__title {
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+}
+
+.yl-home-event-card--modal .yl-home-event-card__desc {
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.yl-home-event-card--modal .yl-home-event-card__body {
+  padding: 1.15rem 1.35rem 1.45rem;
+}
+
+@keyframes yl-home-event-share-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .yl-home-event-share {
+    padding: 0.65rem;
+    align-items: flex-end;
+  }
+
+  .yl-home-event-share__panel {
+    width: 100%;
+    max-height: calc(100vh - 1.3rem);
+    border-radius: 14px 14px 12px 12px;
   }
 }
 

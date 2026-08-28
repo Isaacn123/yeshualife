@@ -1,4 +1,4 @@
-{# Bottom-right popup — single event only. Include near end of homepage body. #}
+{# Bottom-right popup — single event only. Share opens a large focused view. #}
 {% load homepage_events_tags %}
 {% get_homepage_events_section "popup" as homepage_events %}
 {% if homepage_events and homepage_events.events %}
@@ -7,34 +7,143 @@
       class="yl-home-event-popup"
       id="ylHomeEventPopup"
       data-event-id="{{ event.pk }}"
+      data-event-hash="yl-event-{{ event.pk }}"
+      data-event-title="{{ event.title|escapejs }}"
+      data-event-text="{{ event.description|default:event.title|truncatewords:40|escapejs }}"
+      data-event-link="{% if event.has_link %}{{ event.link|escapejs }}{% endif %}"
       role="dialog"
       aria-labelledby="ylHomeEventPopupTitle"
       aria-live="polite"
     >
       <div class="yl-home-event-popup__shell">
-        <button type="button" class="yl-home-event-popup__close" aria-label="Dismiss announcement">
-          <span aria-hidden="true">×</span>
-        </button>
+        <div class="yl-home-event-popup__toolbar">
+          <button type="button" class="yl-home-event-popup__share" aria-label="Open and share event">
+            <span class="yl-home-event-popup__share-icon" aria-hidden="true">↗</span>
+            <span>Share</span>
+          </button>
+          <button type="button" class="yl-home-event-popup__close" aria-label="Dismiss announcement">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
         {% if settings.section_eyebrow %}
           <p class="yl-home-event-popup__eyebrow">{{ settings.section_eyebrow }}</p>
         {% endif %}
         {% include "blog/sections/homepage_event_card.html" with event=event compact=1 %}
       </div>
     </aside>
+
+    <div
+      class="yl-home-event-share"
+      id="ylHomeEventShare"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="ylHomeEventShareTitle"
+    >
+      <button type="button" class="yl-home-event-share__backdrop" aria-label="Close event"></button>
+      <div class="yl-home-event-share__panel">
+        <div class="yl-home-event-share__toolbar">
+          <button type="button" class="yl-home-event-share__action" data-share-copy>
+            Copy link
+          </button>
+          <button type="button" class="yl-home-event-share__action yl-home-event-share__action--primary" data-share-native>
+            Share
+          </button>
+          <button type="button" class="yl-home-event-share__close" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        {% if settings.section_eyebrow %}
+          <p class="yl-home-event-share__eyebrow">{{ settings.section_eyebrow }}</p>
+        {% endif %}
+        {% include "blog/sections/homepage_event_card.html" with event=event modal=1 %}
+      </div>
+    </div>
+
     <script>
       (function () {
         var popup = document.getElementById("ylHomeEventPopup");
-        if (!popup) return;
-        var key = "yl-home-event-popup-" + popup.dataset.eventId;
-        if (sessionStorage.getItem(key) === "1") {
-          popup.hidden = true;
-          return;
+        var shareView = document.getElementById("ylHomeEventShare");
+        if (!popup || !shareView) return;
+
+        var eventId = popup.dataset.eventId;
+        var eventHash = popup.dataset.eventHash || ("yl-event-" + eventId);
+        var dismissKey = "yl-home-event-popup-" + eventId;
+        var shareUrl = popup.dataset.eventLink || (window.location.origin + window.location.pathname + "#" + eventHash);
+
+        function openShareView() {
+          shareView.hidden = false;
+          document.body.classList.add("yl-home-event-share-open");
+          if (window.history && window.history.replaceState) {
+            window.history.replaceState(null, "", "#" + eventHash);
+          } else {
+            window.location.hash = eventHash;
+          }
         }
-        var closeBtn = popup.querySelector(".yl-home-event-popup__close");
-        if (!closeBtn) return;
-        closeBtn.addEventListener("click", function () {
+
+        function closeShareView() {
+          shareView.hidden = true;
+          document.body.classList.remove("yl-home-event-share-open");
+          if (window.location.hash === "#" + eventHash && window.history && window.history.replaceState) {
+            window.history.replaceState(null, "", window.location.pathname + window.location.search);
+          }
+        }
+
+        function dismissPopup() {
           popup.hidden = true;
-          sessionStorage.setItem(key, "1");
+          sessionStorage.setItem(dismissKey, "1");
+        }
+
+        if (sessionStorage.getItem(dismissKey) === "1" && window.location.hash !== "#" + eventHash) {
+          popup.hidden = true;
+        }
+
+        if (window.location.hash === "#" + eventHash) {
+          openShareView();
+        }
+
+        popup.querySelector(".yl-home-event-popup__close").addEventListener("click", dismissPopup);
+
+        popup.querySelector(".yl-home-event-popup__share").addEventListener("click", function () {
+          openShareView();
+        });
+
+        shareView.querySelector(".yl-home-event-share__backdrop").addEventListener("click", closeShareView);
+        shareView.querySelector(".yl-home-event-share__close").addEventListener("click", closeShareView);
+
+        shareView.querySelector("[data-share-copy]").addEventListener("click", function () {
+          var btn = this;
+          var original = btn.textContent;
+          function done() {
+            btn.textContent = "Copied!";
+            setTimeout(function () { btn.textContent = original; }, 1800);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(shareUrl).then(done).catch(function () {
+              window.prompt("Copy this link:", shareUrl);
+            });
+          } else {
+            window.prompt("Copy this link:", shareUrl);
+          }
+        });
+
+        shareView.querySelector("[data-share-native]").addEventListener("click", function () {
+          var payload = {
+            title: popup.dataset.eventTitle || document.title,
+            text: popup.dataset.eventText || "",
+            url: shareUrl,
+          };
+          if (navigator.share) {
+            navigator.share(payload).catch(function () {});
+          } else {
+            shareView.querySelector("[data-share-copy]").click();
+          }
+        });
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && !shareView.hidden) {
+            closeShareView();
+          }
         });
       })();
     </script>
