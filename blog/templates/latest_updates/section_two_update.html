@@ -1,36 +1,36 @@
-{% load static %}
-{% load wagtailcore_tags  wagtailimages_tags%}
-
-<section class="yl-latest-duo text-center pt-3 pb-0" id="bicycleFeatures">
-    <div class="container-fluid">
-      <div class="row m-0 g-3">
-
-        {% for page in pages %}
-        <div class="col-md-6">
-            <div class="yl-latest-duo__frame position-relative overflow-hidden rounded">
-                <div class="bg-holder yl-latest-duo__bg" style="background-image:url('{% image page.specific.image fill-1920x1080 as img %}{{ img.url }}');"></div>
-                <div class="yl-latest-duo__scrim" aria-hidden="true"></div>
-                <div class="position-relative py-8 py-md-10">
-                    <div data-zanim-timeline="{}">
-                        <div class="overflow-hidden">
-                            <p class="yl-latest-duo__eyebrow" data-zanim-xs="{&quot;delay&quot;:0}">
-                                Yeshua Life {{ page.get_parent.title }}
-                            </p>
-                        </div>
-                        <div class="overflow-hidden">
-                            <h2 class="yl-latest-duo__title" data-zanim-xs="{&quot;delay&quot;:0.1}">
-                                {{ page.specific.intro }}
-                            </h2>
-                        </div>
-                        <div data-zanim-xs="{&quot;delay&quot;:0.2}">
-                            <a class="yl-latest-card__btn mt-4" href="{{ page.url }}">{{ page.title }} <span class="yl-latest-card__btn-arrow" aria-hidden="true">→</span></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
-      </div>
-    </div>
-  </section>
+{% load static %}
+{% load wagtailcore_tags  wagtailimages_tags%}
+
+<section class="yl-latest-duo text-center pt-3 pb-0" id="bicycleFeatures">
+    <div class="container-fluid">
+      <div class="row m-0 g-3">
+
+        {% for page in pages %}
+        <div class="col-md-6">
+            <div class="yl-latest-duo__frame position-relative overflow-hidden rounded">
+                <div class="bg-holder yl-latest-duo__bg" style="background-image:url('{% image page.specific.image fill-1920x1080 as img %}{{ img.url }}');"></div>
+                <div class="yl-latest-duo__scrim" aria-hidden="true"></div>
+                <div class="position-relative py-8 py-md-10">
+                    <div data-zanim-timeline="{}">
+                        <div class="overflow-hidden">
+                            <p class="yl-latest-duo__eyebrow" data-zanim-xs="{&quot;delay&quot;:0}">
+                                Yeshua Life {{ page.get_parent.title }}
+                            </p>
+                        </div>
+                        <div class="overflow-hidden">
+                            <h2 class="yl-latest-duo__title" data-zanim-xs="{&quot;delay&quot;:0.1}">
+                                {{ page.specific.intro }}
+                            </h2>
+                        </div>
+                        <div data-zanim-xs="{&quot;delay&quot;:0.2}">
+                            <a class="yl-latest-card__btn yl-latest-card__btn--duo mt-4" href="{{ page.url }}">Read more <span class="yl-latest-card__btn-arrow" aria-hidden="true">→</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+      </div>
+    </div>
+  </section>
 
