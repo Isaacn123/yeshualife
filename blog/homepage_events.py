@@ -133,6 +133,14 @@ class HomepageEvent(models.Model):
         related_name="+",
         help_text="Optional card image (640×360 or wider recommended).",
     )
+    video = models.ForeignKey(
+        "wagtaildocs.Document",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        help_text="Optional MP4 or WebM clip shown below the description on the card.",
+    )
     link = models.CharField(
         max_length=300,
         blank=True,
@@ -203,6 +211,20 @@ class HomepageEvent(models.Model):
     def has_link(self) -> bool:
         return bool((self.link or "").strip())
 
+    @property
+    def has_video(self) -> bool:
+        return bool(self.video_id)
+
+    @property
+    def video_url(self) -> str:
+        if not self.video_id:
+            return ""
+        try:
+            return self.video.url
+        except Exception:
+            file_obj = getattr(self.video, "file", None)
+            return file_obj.url if file_obj else ""
+
     panels = [
         MultiFieldPanel(
             [
@@ -219,6 +241,7 @@ class HomepageEvent(models.Model):
                 FieldPanel("event_time_label"),
                 FieldPanel("description"),
                 FieldPanel("image"),
+                FieldPanel("video"),
             ],
             heading="Content",
         ),

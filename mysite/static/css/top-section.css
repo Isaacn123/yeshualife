@@ -1273,6 +1273,28 @@ p {
   flex: 1;
 }
 
+.yl-home-event-card__video {
+  width: 100%;
+  margin-top: 0.5rem;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #efe4d2;
+  border: 1px solid rgba(80, 60, 40, 0.12);
+}
+
+.yl-home-event-card__video-el {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  vertical-align: middle;
+  background: #1a1510;
+}
+
+.yl-home-event-card__video + .yl-home-event-card__btn {
+  margin-top: 0.85rem;
+}
+
 .yl-home-event-card__btn {
   display: inline-flex;
   align-items: center;

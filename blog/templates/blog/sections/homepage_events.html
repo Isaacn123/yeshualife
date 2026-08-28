@@ -22,6 +22,20 @@
             {% if event.description %}
               <p class="yl-home-event-card__desc">{{ event.description }}</p>
             {% endif %}
+            {% if event.has_video %}
+              <div class="yl-home-event-card__video">
+                <video
+                  class="yl-home-event-card__video-el"
+                  controls
+                  playsinline
+                  preload="metadata"
+                  {% if event.image %}poster="{{ event.card_image_url }}"{% endif %}
+                >
+                  <source src="{{ event.video_url }}">
+                  Your browser does not support embedded video.
+                </video>
+              </div>
+            {% endif %}
             {% if event.has_link %}
               <a class="yl-home-event-card__btn" href="{{ event.link }}">
                 {{ event.button_label }}
