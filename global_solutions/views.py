@@ -15,7 +15,7 @@ from .api_urls import video_api_urls_placeholder_map
 from .b2 import b2_public_url, get_b2_s3_client
 from .b2_upload import safe_upload_filename
 
-from .description_utils import split_description_text
+from .description_utils import split_description_for_detail
 from .discovery import (
     build_farmhub_home_context,
     get_similar_videos_for_detail,
@@ -218,9 +218,10 @@ def create_similar_video(request, video_id):
         return JsonResponse({"error": "Similar clips cannot have their own similar videos."}, status=400)
 
     title = (request.POST.get("title") or "").strip()
+    clip_type = (request.POST.get("clip_type") or "video").strip().lower()
     if not title:
         n = parent.similar_videos.count() + 1
-        title = f"Similar clip {n}"
+        title = f"Similar photo {n}" if clip_type == "image" else f"Similar clip {n}"
 
     child = GlobalSolutionsVideo.objects.create(
         parent_video=parent,
@@ -420,10 +421,15 @@ def b2_complete_multipart_upload(request, video_id):
 @staff_member_required
 def video_thumbnails(request, video_id):
     video = get_object_or_404(GlobalSolutionsVideo, pk=video_id)
-    if not video.original_b2_key:
-        return JsonResponse({"error": "No uploaded video yet."}, status=400)
     from .thumbnails import list_thumbnail_options
 
+    if not video.original_b2_key:
+        if video.parent_video_id and (video.poster_b2_key or "").strip():
+            payload = list_thumbnail_options(video)
+            payload["playback_url"] = ""
+            payload["ok"] = True
+            return JsonResponse(payload)
+        return JsonResponse({"error": "No uploaded video yet."}, status=400)
     payload = list_thumbnail_options(video)
     payload["playback_url"] = video.playback_url
     payload["ok"] = True
@@ -616,13 +622,16 @@ def farmhub_video(request, slug):
     video = record_page_visit(request, slug)
     related = get_related_videos(video, limit=8)
     similar_videos = get_similar_videos_for_detail(video)
-    description_lead, description_rest = split_description_text(video.description)
+    description_lead, description_rest, description_is_richtext = split_description_for_detail(
+        video.description
+    )
     ctx = {
-        "page": _farmhub_page(video.title, video.description[:300]),
+        "page": _farmhub_page(video.title, video.description_plain[:300]),
         "site_title": get_site_title(),
         "video": video,
         "description_lead": description_lead,
         "description_rest": description_rest,
+        "description_is_richtext": description_is_richtext,
         "related_videos": related,
         "similar_videos": similar_videos,
         "view_already_counted": video_view_counted_in_session(request, slug),

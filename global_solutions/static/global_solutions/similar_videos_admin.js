@@ -11,6 +11,74 @@
     return "";
   }
 
+  async function uploadImage(url, file) {
+    var body = new FormData();
+    body.append("image", file);
+    var resp = await fetch(url, {
+      method: "POST",
+      headers: { "X-CSRFToken": csrfToken() },
+      body: body,
+      credentials: "same-origin",
+    });
+    var json = {};
+    try {
+      json = await resp.json();
+    } catch (e) {
+      json = {};
+    }
+    if (!resp.ok) {
+      throw new Error((json && json.error) || ("Upload failed: " + resp.status));
+    }
+    return json;
+  }
+
+  function setPictureStatus(block, text) {
+    var el = block.querySelector(".gs-similar-picture-status");
+    if (el) el.textContent = text;
+  }
+
+  function setPicturePreview(block, url) {
+    var wrap = block.querySelector(".gs-similar-picture-preview");
+    if (!wrap) return;
+    wrap.classList.remove("gs-similar-picture-preview--empty");
+    wrap.innerHTML = "";
+    if (!url) {
+      wrap.classList.add("gs-similar-picture-preview--empty");
+      return;
+    }
+    var img = document.createElement("img");
+    img.className = "gs-similar-picture-preview__img";
+    img.src = url;
+    img.alt = "Uploaded picture preview";
+    wrap.appendChild(img);
+    block.classList.add("gs-similar-block--image");
+    block.setAttribute("data-is-image-clip", "1");
+  }
+
+  async function uploadPicture(block) {
+    var urls = parseApiUrls(block);
+    var fileInput = block.querySelector(".gs-similar-picture-file");
+    if (!urls || !fileInput || !fileInput.files || !fileInput.files.length) {
+      throw new Error("Choose a picture file first (JPEG, PNG, or WebP).");
+    }
+    if (!urls.thumbnails_upload) {
+      throw new Error("Picture upload is not configured for this clip.");
+    }
+    var uploadBtn = block.querySelector(".gs-similar-picture-upload");
+    if (uploadBtn) uploadBtn.disabled = true;
+    try {
+      await syncTitle(block);
+      setPictureStatus(block, "Uploading picture…");
+      var data = await uploadImage(urls.thumbnails_upload, fileInput.files[0]);
+      setPicturePreview(block, data.poster_url || (data.custom && data.custom.url));
+      setPictureStatus(block, "Picture uploaded. It will appear on the public page.");
+      setStatus(block, "Photo clip ready (no video required).", false);
+      fileInput.value = "";
+    } finally {
+      if (uploadBtn) uploadBtn.disabled = false;
+    }
+  }
+
   async function postForm(url, data) {
     var body = new URLSearchParams();
     Object.keys(data || {}).forEach(function (k) {
@@ -158,6 +226,15 @@
     if (!block || block._gsSimilarBound) return;
     block._gsSimilarBound = true;
 
+    var pictureUploadBtn = block.querySelector(".gs-similar-picture-upload");
+    if (pictureUploadBtn) {
+      pictureUploadBtn.addEventListener("click", function () {
+        uploadPicture(block).catch(function (e) {
+          setPictureStatus(block, "Error: " + (e.message || String(e)));
+        });
+      });
+    }
+
     var uploadBtn = block.querySelector(".gs-similar-upload");
     if (uploadBtn) {
       uploadBtn.addEventListener("click", function () {
@@ -243,18 +320,28 @@
       '<input type="text" class="w-field__input gs-similar-title" maxlength="200" value="' + (title || "").replace(/"/g, "&quot;") + '">' +
       adminLinksHtml(embedUrl, publicUrl) +
       "</div>" +
+      '<div class="gs-similar-block__picture">' +
+      '<label class="w-field__label">Photo clip</label>' +
+      '<p class="help">Upload a picture to show in the carousel without a video file (JPEG, PNG, or WebP, max 5 MB).</p>' +
+      '<div class="gs-similar-picture-preview gs-similar-picture-preview--empty"></div>' +
+      '<input type="file" class="w-field__input gs-similar-picture-file" accept="image/jpeg,image/png,image/webp">' +
+      '<div class="gs-similar-block__upload-actions">' +
+      '<button type="button" class="button button-secondary gs-similar-picture-upload">Upload picture</button>' +
+      "</div>" +
+      '<div class="gs-similar-picture-status help">No picture yet.</div>' +
+      "</div>" +
       '<div class="gs-similar-block__upload">' +
-      '<label class="w-field__label">Video file</label>' +
+      '<label class="w-field__label">Video file (optional)</label>' +
       '<input type="file" class="w-field__input gs-similar-file" accept="video/*">' +
       '<div class="gs-similar-block__upload-actions">' +
       '<button type="button" class="button gs-similar-upload">Upload to B2</button>' +
       '<button type="button" class="button button-secondary no gs-similar-delete">Delete clip</button>' +
       "</div>" +
       '<div class="gs-similar-progress"><div class="gs-similar-progress__bar"></div></div>' +
-      '<div class="gs-similar-status help">No file yet</div>' +
+      '<div class="gs-similar-status help">No video yet</div>' +
       "</div>" +
       '<div class="gsu-thumbnail-section gs-similar-thumbs" hidden>' +
-      '<h4 class="gsu-thumbnail-section__title">Thumbnail</h4>' +
+      '<h4 class="gsu-thumbnail-section__title">Video thumbnail</h4>' +
       '<div class="gsu-thumbnail-layout">' +
       '<div><video class="gsu-thumbnail-preview-video" controls playsinline preload="metadata"></video>' +
       '<div class="gsu-thumbnail-current"><strong>Current thumbnail:</strong></div></div>' +
@@ -280,33 +367,44 @@
     };
   }
 
+  function createSimilarBlock(list, clipType) {
+    var createUrl = list.getAttribute("data-create-url");
+    if (!createUrl) return Promise.reject(new Error("Missing create URL."));
+    var payload = {};
+    if (clipType === "image") payload.clip_type = "image";
+    return postForm(createUrl, payload).then(function (data) {
+      var videoId = data.video_id;
+      var urls = defaultApiUrls(videoId);
+      var block = buildBlockFromTemplate(
+        videoId,
+        data.title || "",
+        JSON.stringify(urls),
+        "/global-solutions/api/videos/" + videoId + "/similar/delete/",
+        "/global-solutions/api/videos/" + videoId + "/similar/meta/",
+        data.public_url || "",
+        data.embed_url || ""
+      );
+      list.appendChild(block);
+      wireBlock(block);
+      if (clipType === "image") {
+        var pictureInput = block.querySelector(".gs-similar-picture-file");
+        if (pictureInput) pictureInput.focus();
+      }
+      return block;
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     var list = document.getElementById("gs-similar-list");
     var addBtn = document.getElementById("gs-similar-add");
+    var addPictureBtn = document.getElementById("gs-similar-add-picture");
     if (!list || !addBtn) return;
 
     list.querySelectorAll(".gs-similar-block").forEach(wireBlock);
 
     addBtn.addEventListener("click", function () {
-      var createUrl = list.getAttribute("data-create-url");
-      if (!createUrl) return;
       addBtn.disabled = true;
-      postForm(createUrl, {})
-        .then(function (data) {
-          var videoId = data.video_id;
-          var urls = defaultApiUrls(videoId);
-          var block = buildBlockFromTemplate(
-            videoId,
-            data.title || "",
-            JSON.stringify(urls),
-            "/global-solutions/api/videos/" + videoId + "/similar/delete/",
-            "/global-solutions/api/videos/" + videoId + "/similar/meta/",
-            data.public_url || "",
-            data.embed_url || ""
-          );
-          list.appendChild(block);
-          wireBlock(block);
-        })
+      createSimilarBlock(list, "video")
         .catch(function (e) {
           window.alert(e.message || String(e));
         })
@@ -314,5 +412,18 @@
           addBtn.disabled = false;
         });
     });
+
+    if (addPictureBtn) {
+      addPictureBtn.addEventListener("click", function () {
+        addPictureBtn.disabled = true;
+        createSimilarBlock(list, "image")
+          .catch(function (e) {
+            window.alert(e.message || String(e));
+          })
+          .finally(function () {
+            addPictureBtn.disabled = false;
+          });
+      });
+    }
   });
 })();

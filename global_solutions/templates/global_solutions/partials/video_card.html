@@ -31,7 +31,7 @@
     <div class="fh-video-card-copy">
       <h3 class="{{ video.title|title_scale_class:'fh-video-card-title' }}">{{ video.title }}</h3>
       {% if video.description %}
-        <p class="fh-video-card-desc">{{ video.description|striptags }}</p>
+        <p class="fh-video-card-desc">{{ video.description_plain }}</p>
       {% endif %}
     </div>
   </a>

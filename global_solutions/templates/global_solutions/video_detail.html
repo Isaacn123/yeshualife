@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
-{% load global_solutions_extras %}
+{% load global_solutions_extras blog_richtext %}
 
 {% block body_class %}template-farmhub template-farmhub-video{% endblock %}
 
 {% block social_meta %}
-  {% include "global_solutions/partials/social_meta_tags.html" with share_title=video.title share_description=video.description|truncatewords:50 share_image=video.thumbnail_url share_type="video.other" %}
+  {% include "global_solutions/partials/social_meta_tags.html" with share_title=video.title share_description=video.description_plain|truncatewords:50 share_image=video.thumbnail_url share_type="video.other" %}
 {% endblock %}
 
 {% block extra_css %}
@@ -67,14 +67,16 @@
       {% if video.creator %}
         <a href="{{ video.creator.get_absolute_url }}" class="fh-video-creator-link">{{ video.creator.name }}</a>
       {% endif %}
-      {% if description_lead %}
+      {% if description_lead and not description_is_richtext %}
         <div class="fh-video-desc fh-video-desc--lead">{{ description_lead|linebreaks }}</div>
       {% endif %}
     </aside>
 
-    {% if description_rest or video.tags_list %}
+    {% if description_is_richtext or description_rest or video.tags_list %}
     <div class="fh-video-body">
-      {% if description_rest %}
+      {% if description_is_richtext and video.description %}
+        <div class="fh-video-desc fh-video-desc--richtext">{{ video.description|blog_richtext }}</div>
+      {% elif description_rest %}
         <div class="fh-video-desc">{{ description_rest|linebreaks }}</div>
       {% endif %}
       {% if video.tags_list %}

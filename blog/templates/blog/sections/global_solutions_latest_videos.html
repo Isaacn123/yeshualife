@@ -1,0 +1,86 @@
+{# Expects: global_solutions_latest_videos, optional global_solutions_settings #}
+{% if global_solutions_latest_videos %}
+<section class="gs-home-videos" aria-labelledby="gs-home-videos-heading">
+  <div class="container">
+    <header class="gs-home-videos__head">
+      <p class="gs-home-videos__eyebrow">
+        {% if global_solutions_settings %}{{ global_solutions_settings.page_title|default:"Global Solutions" }}{% else %}Global Solutions{% endif %}
+      </p>
+      <h2 class="gs-home-videos__title" id="gs-home-videos-heading">Latest farming videos</h2>
+      <p class="gs-home-videos__lead">
+        Practical solutions from the field — crop care, livestock, irrigation, and community programs.
+      </p>
+    </header>
+
+    <div class="gs-home-videos__grid">
+      {% for video in global_solutions_latest_videos %}
+        <article class="gs-home-video-card">
+          <a href="{{ video.get_absolute_url }}" class="gs-home-video-card__link">
+            <div class="gs-home-video-card__media">
+              {% if video.thumbnail_url %}
+                <img
+                  src="{{ video.thumbnail_url }}"
+                  alt=""
+                  class="gs-home-video-card__img"
+                  loading="lazy"
+                  decoding="async"
+                >
+              {% elif video.playback_url and not video.playback_uses_hls %}
+                <video
+                  class="gs-home-video-card__preview"
+                  preload="metadata"
+                  muted
+                  playsinline
+                  aria-hidden="true"
+                  src="{{ video.playback_url }}"
+                ></video>
+              {% else %}
+                <div class="gs-home-video-card__placeholder" aria-hidden="true">
+                  <span class="gs-home-video-card__placeholder-icon"></span>
+                </div>
+              {% endif %}
+              <span class="gs-home-video-card__play" aria-hidden="true"></span>
+              {% if video.category %}
+                <span class="gs-home-video-card__badge">{{ video.category.name }}</span>
+              {% endif %}
+              {% if video.duration_display %}
+                <span class="gs-home-video-card__duration">{{ video.duration_display }}</span>
+              {% endif %}
+            </div>
+
+            <div class="gs-home-video-card__body">
+              {% if video.published_at %}
+                <time class="gs-home-video-card__date" datetime="{{ video.published_at|date:'Y-m-d' }}">
+                  {{ video.published_at|date:"M j, Y" }}
+                </time>
+              {% endif %}
+              <h3 class="gs-home-video-card__title">{{ video.title }}</h3>
+              {% if video.description_plain %}
+                <p class="gs-home-video-card__excerpt">{{ video.description_plain|truncatewords:22 }}</p>
+              {% endif %}
+              <span class="gs-home-video-card__cta">Watch video<span aria-hidden="true"> →</span></span>
+            </div>
+          </a>
+          {% if video.creator or video.views_display %}
+            <div class="gs-home-video-card__meta">
+              {% if video.creator %}
+                <span class="gs-home-video-card__stat">{{ video.creator.name }}</span>
+              {% endif %}
+              {% if video.views_display %}
+                <span class="gs-home-video-card__stat">{{ video.views_display }} views</span>
+              {% endif %}
+            </div>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+
+    <div class="gs-home-videos__footer">
+      <a class="gs-home-videos__all-link" href="{% url 'global_solutions:farmhub_home' %}">
+        Browse all Global Solutions
+        <span class="gs-home-videos__all-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}

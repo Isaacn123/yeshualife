@@ -13,16 +13,20 @@
       </p>
       <p class="help">
         Add extra clips for the same story (e.g. more angles from a Karamoja feeding).
-        Each clip gets its own upload and thumbnail. They appear under the description on the public video page — not as separate hub listings.
+        Each clip can be a <strong>video</strong>, a <strong>photo</strong>, or both (video + thumbnail).
+        They appear under the description on the public video page — not as separate hub listings.
       </p>
       <div id="gs-similar-list" class="gs-similar-list" data-create-url="{{ similar_create_url }}">
         {% for block in similar_video_blocks %}
           {% include "global_solutions/wagtail_panels/similar_video_block.html" with similar=block.similar api_urls_json=block.api_urls_json public_video_url=block.public_video_url embed_video_url=block.embed_video_url %}
         {% endfor %}
       </div>
-      <button type="button" class="button button-secondary" id="gs-similar-add">+ Add similar video</button>
+      <div class="gs-similar-panel__actions">
+        <button type="button" class="button button-secondary" id="gs-similar-add">+ Add similar video</button>
+        <button type="button" class="button button-secondary" id="gs-similar-add-picture">+ Add picture</button>
+      </div>
       <script src="{% static 'global_solutions/thumbnail_picker.js' %}?v=20260819"></script>
-      <script src="{% static 'global_solutions/similar_videos_admin.js' %}?v=20260820e"></script>
+      <script src="{% static 'global_solutions/similar_videos_admin.js' %}?v=20260828"></script>
       <script src="{% static 'global_solutions/admin_copy_url.js' %}?v=20260820"></script>
     {% elif video_id %}
       <p class="help">This row is a similar clip attached to another video. Edit the main video to manage its extra clips.</p>

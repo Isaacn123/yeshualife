@@ -1245,6 +1245,39 @@ body.template-globalsolutions.template-farmhub h3 {
   max-width: 72rem;
 }
 
+.fh-video-desc--richtext > :first-child {
+  margin-top: 0;
+}
+
+.fh-video-desc--richtext img,
+.fh-video-desc--richtext .richtext-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+  border-radius: 0.35rem;
+}
+
+.fh-video-desc--richtext .responsive-object {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+
+.fh-video-desc--richtext .responsive-object iframe,
+.fh-video-desc--richtext .responsive-object object,
+.fh-video-desc--richtext .responsive-object embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 .fh-video-sidebar .fh-video-desc--lead {
   margin-top: 0.75rem;
 }
@@ -1422,6 +1455,19 @@ body.template-globalsolutions.template-farmhub h3 {
   display: block;
   object-fit: cover;
   object-position: center;
+  background: #1a1612;
+}
+
+.fh-similar-clip__photo {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  background: #1a1612;
+}
+
+.fh-similar-clip__media--photo {
   background: #1a1612;
 }
 

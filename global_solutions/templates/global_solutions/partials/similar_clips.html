@@ -3,7 +3,7 @@
   <header class="fh-section-head fh-similar-clips__head">
     <div class="fh-section-head-text">
       <p class="fh-section-eyebrow">From this story</p>
-      <h2 class="fh-section-title">More moments to watch</h2>
+      <h2 class="fh-section-title">More from this story</h2>
     </div>
     {% if similar_videos|length > 1 %}
       <p class="fh-similar-clips__hint">Swipe or use the arrows to browse {{ similar_videos|length }} clips</p>
@@ -54,6 +54,15 @@
                         {% if clip.title %}aria-label="{{ clip.title }}"{% endif %}
                       ></video>
                     {% endif %}
+                  </div>
+                {% elif clip.thumbnail_url %}
+                  <div class="fh-similar-clip__media fh-similar-clip__media--photo">
+                    <img
+                      class="fh-similar-clip__photo"
+                      src="{{ clip.thumbnail_url }}"
+                      alt="{{ clip.title|default:'Story photo' }}"
+                      loading="lazy"
+                    >
                   </div>
                 {% endif %}
                 <figcaption class="fh-similar-clip__caption">
@@ -130,6 +139,15 @@
                 {% if clip.thumbnail_url %}poster="{{ clip.thumbnail_url }}"{% endif %}
               ></video>
             {% endif %}
+          </div>
+        {% elif clip.thumbnail_url %}
+          <div class="fh-similar-clip__media fh-similar-clip__media--single fh-similar-clip__media--photo">
+            <img
+              class="fh-similar-clip__photo"
+              src="{{ clip.thumbnail_url }}"
+              alt="{{ clip.title|default:'Story photo' }}"
+              loading="lazy"
+            >
           </div>
         {% endif %}
         <figcaption class="fh-similar-clip__caption">

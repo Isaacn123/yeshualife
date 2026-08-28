@@ -2,7 +2,11 @@
 
 from django.test import SimpleTestCase
 
-from global_solutions.description_utils import split_description_text
+from global_solutions.description_utils import (
+    has_richtext_media,
+    split_description_for_detail,
+    split_description_text,
+)
 
 
 class SplitDescriptionTextTests(SimpleTestCase):
@@ -30,3 +34,24 @@ class SplitDescriptionTextTests(SimpleTestCase):
         self.assertEqual(len(lead.split()), 60)
         self.assertEqual(len(rest.split()), 5)
         self.assertNotIn("<p>", lead)
+
+
+class SplitDescriptionForDetailTests(SimpleTestCase):
+    def test_plain_text_uses_sidebar_and_body_split(self):
+        words = ["word"] * 65
+        text = " ".join(words)
+        lead, rest, is_richtext = split_description_for_detail(text)
+        self.assertEqual(len(lead.split()), 60)
+        self.assertEqual(len(rest.split()), 5)
+        self.assertFalse(is_richtext)
+
+    def test_image_description_renders_full_richtext_in_body(self):
+        source = '<p>Intro</p><embed embedtype="image" format="fullwidth" id="1" alt="Field photo">'
+        lead, rest, is_richtext = split_description_for_detail(source)
+        self.assertEqual(lead, "Intro")
+        self.assertEqual(rest, "")
+        self.assertTrue(is_richtext)
+
+    def test_has_richtext_media_detects_embeds(self):
+        self.assertTrue(has_richtext_media('<embed embedtype="image" id="1">'))
+        self.assertFalse(has_richtext_media("Plain farming tips only."))

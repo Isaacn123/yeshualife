@@ -330,7 +330,23 @@ class GlobalSolutionsVideo(models.Model):
 
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=220, unique=True, blank=True)
-    description = models.TextField(blank=True, default="")
+    description = RichTextField(
+        blank=True,
+        features=[
+            "h2",
+            "h3",
+            "h4",
+            "bold",
+            "italic",
+            "ol",
+            "ul",
+            "hr",
+            "link",
+            "document-link",
+            "image",
+            "embed",
+        ],
+    )
     tags = models.CharField(
         max_length=500,
         blank=True,
@@ -430,6 +446,13 @@ class GlobalSolutionsVideo(models.Model):
     def is_similar_clip(self) -> bool:
         return bool(self.parent_video_id)
 
+    @property
+    def is_image_clip(self) -> bool:
+        """Similar clip that shows a photo only (no uploaded video file)."""
+        return bool(self.parent_video_id) and not (self.original_b2_key or "").strip() and bool(
+            (self.poster_b2_key or "").strip()
+        )
+
     def get_ready_similar_videos(self):
         return self.similar_videos.filter(
             is_active=True,
@@ -454,10 +477,21 @@ class GlobalSolutionsVideo(models.Model):
     def tags_list(self) -> list[str]:
         return [t.strip() for t in self.tags.split(",") if t.strip()]
 
-    def _split_description(self, word_limit: int = 60) -> tuple[str, str]:
-        from .description_utils import split_description_text
+    @property
+    def description_plain(self) -> str:
+        """Plain-text description for cards, meta tags, and excerpts."""
+        from django.utils.html import strip_tags
 
-        return split_description_text(self.description, word_limit)
+        from wagtail.rich_text import expand_db_html
+
+        raw = getattr(self.description, "source", None) or str(self.description or "")
+        return strip_tags(expand_db_html(raw)).strip()
+
+    def _split_description(self, word_limit: int = 60) -> tuple[str, str]:
+        from .description_utils import split_description_for_detail
+
+        lead, rest, _is_richtext = split_description_for_detail(self.description, word_limit)
+        return lead, rest
 
     @property
     def description_lead(self) -> str:
@@ -467,7 +501,7 @@ class GlobalSolutionsVideo(models.Model):
 
     @property
     def description_rest(self) -> str:
-        """Remaining description shown below the video in the main column."""
+        """Remaining plain-text description (empty when body uses full rich text)."""
         _, rest = self._split_description()
         return rest
 

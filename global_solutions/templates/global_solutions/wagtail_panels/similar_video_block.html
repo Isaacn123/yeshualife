@@ -1,53 +1,78 @@
-{% load static %}
-<div
-  class="gs-similar-block"
-  data-video-id="{{ similar.id }}"
-  data-delete-url="{% url 'global_solutions:delete_similar_video' video_id=similar.id %}"
-  data-meta-url="{% url 'global_solutions:update_similar_video_meta' video_id=similar.id %}"
->
-  <script type="application/json" class="gs-similar-api-json">{{ api_urls_json|safe }}</script>
-  <div class="gs-similar-block__head">
-    <label class="w-field__label">Clip title</label>
-    <input type="text" class="w-field__input gs-similar-title" value="{{ similar.title }}" maxlength="200" placeholder="e.g. Karamoja feeding — part 2">
-    <p class="gs-similar-stats help">{{ similar.page_views_display }} page views · {{ similar.views_display }} views · {{ similar.likes_display }} likes · {{ similar.shares_display }} shares</p>
-    {% include "global_solutions/wagtail_panels/admin_public_url.html" with public_video_url=public_video_url embed_video_url=embed_video_url %}
-  </div>
-  <div class="gs-similar-block__upload">
-    <label class="w-field__label">Video file</label>
-    <input type="file" class="w-field__input gs-similar-file" accept="video/*">
-    <div class="gs-similar-block__upload-actions">
-      <button type="button" class="button gs-similar-upload">Upload to B2</button>
-      <button type="button" class="button button-secondary no gs-similar-delete">Delete clip</button>
-    </div>
-    <div class="gs-similar-progress"><div class="gs-similar-progress__bar"></div></div>
-    <div class="gs-similar-status help{% if similar.status == 'failed' or similar.last_error %} gs-similar-status--error{% endif %}">
-      {% if similar.last_error %}
-        Upload failed: {{ similar.last_error }}
-      {% elif similar.original_b2_key %}
-        Uploaded
-      {% else %}
-        No file yet
-      {% endif %}
-    </div>
-  </div>
-  <div class="gsu-thumbnail-section gs-similar-thumbs" {% if not similar.original_b2_key %}hidden{% endif %}>
-    <h4 class="gsu-thumbnail-section__title">Thumbnail</h4>
-    <div class="gsu-thumbnail-layout">
-      <div>
-        <video class="gsu-thumbnail-preview-video" controls playsinline preload="metadata"></video>
-        <div class="gsu-thumbnail-current"><strong>Current thumbnail:</strong></div>
-      </div>
-      <div>
-        <div class="gsu-thumbnail-options" aria-label="Thumbnail options"></div>
-        <div class="gsu-thumbnail-actions">
-          <button type="button" class="button button-secondary gsu-thumbnail-regenerate">Generate 3 options</button>
-        </div>
-        <label class="gsu-thumbnail-custom">
-          Or upload your own image
-          <input class="gsu-thumbnail-custom-input" type="file" accept="image/jpeg,image/png,image/webp">
-        </label>
-        <div class="gsu-thumbnail-status help"></div>
-      </div>
-    </div>
-  </div>
-</div>
+{% load static %}
+<div
+  class="gs-similar-block{% if similar.is_image_clip %} gs-similar-block--image{% endif %}"
+  data-video-id="{{ similar.id }}"
+  data-delete-url="{% url 'global_solutions:delete_similar_video' video_id=similar.id %}"
+  data-meta-url="{% url 'global_solutions:update_similar_video_meta' video_id=similar.id %}"
+  data-is-image-clip="{% if similar.is_image_clip %}1{% else %}0{% endif %}"
+>
+  <script type="application/json" class="gs-similar-api-json">{{ api_urls_json|safe }}</script>
+  <div class="gs-similar-block__head">
+    <label class="w-field__label">Clip title</label>
+    <input type="text" class="w-field__input gs-similar-title" value="{{ similar.title }}" maxlength="200" placeholder="e.g. Karamoja feeding — part 2">
+    <p class="gs-similar-stats help">{{ similar.page_views_display }} page views · {{ similar.views_display }} views · {{ similar.likes_display }} likes · {{ similar.shares_display }} shares</p>
+    {% include "global_solutions/wagtail_panels/admin_public_url.html" with public_video_url=public_video_url embed_video_url=embed_video_url %}
+  </div>
+
+  <div class="gs-similar-block__picture">
+    <label class="w-field__label">Photo clip</label>
+    <p class="help">Upload a picture to show in the carousel without a video file (JPEG, PNG, or WebP, max 5 MB).</p>
+    <div class="gs-similar-picture-preview{% if not similar.is_image_clip %} gs-similar-picture-preview--empty{% endif %}">
+      {% if similar.is_image_clip and similar.thumbnail_url %}
+        <img class="gs-similar-picture-preview__img" src="{{ similar.thumbnail_url }}" alt="{{ similar.title }}">
+      {% endif %}
+    </div>
+    <input type="file" class="w-field__input gs-similar-picture-file" accept="image/jpeg,image/png,image/webp">
+    <div class="gs-similar-block__upload-actions">
+      <button type="button" class="button button-secondary gs-similar-picture-upload">Upload picture</button>
+    </div>
+    <div class="gs-similar-picture-status help">
+      {% if similar.is_image_clip %}
+        Picture uploaded — visible on the public page.
+      {% else %}
+        No picture yet.
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="gs-similar-block__upload">
+    <label class="w-field__label">Video file (optional)</label>
+    <input type="file" class="w-field__input gs-similar-file" accept="video/*">
+    <div class="gs-similar-block__upload-actions">
+      <button type="button" class="button gs-similar-upload">Upload to B2</button>
+      <button type="button" class="button button-secondary no gs-similar-delete">Delete clip</button>
+    </div>
+    <div class="gs-similar-progress"><div class="gs-similar-progress__bar"></div></div>
+    <div class="gs-similar-status help{% if similar.status == 'failed' or similar.last_error %} gs-similar-status--error{% endif %}">
+      {% if similar.last_error %}
+        Upload failed: {{ similar.last_error }}
+      {% elif similar.original_b2_key %}
+        Video uploaded
+      {% elif similar.is_image_clip %}
+        Photo clip (no video)
+      {% else %}
+        No video yet
+      {% endif %}
+    </div>
+  </div>
+  <div class="gsu-thumbnail-section gs-similar-thumbs" {% if not similar.original_b2_key %}hidden{% endif %}>
+    <h4 class="gsu-thumbnail-section__title">Video thumbnail</h4>
+    <div class="gsu-thumbnail-layout">
+      <div>
+        <video class="gsu-thumbnail-preview-video" controls playsinline preload="metadata"></video>
+        <div class="gsu-thumbnail-current"><strong>Current thumbnail:</strong></div>
+      </div>
+      <div>
+        <div class="gsu-thumbnail-options" aria-label="Thumbnail options"></div>
+        <div class="gsu-thumbnail-actions">
+          <button type="button" class="button button-secondary gsu-thumbnail-regenerate">Generate 3 options</button>
+        </div>
+        <label class="gsu-thumbnail-custom">
+          Or upload your own image
+          <input class="gsu-thumbnail-custom-input" type="file" accept="image/jpeg,image/png,image/webp">
+        </label>
+        <div class="gsu-thumbnail-status help"></div>
+      </div>
+    </div>
+  </div>
+</div>

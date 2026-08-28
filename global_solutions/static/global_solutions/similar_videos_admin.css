@@ -74,6 +74,41 @@
   transition: width 0.15s ease;
 }
 
+.gs-similar-block__picture {
+  margin-bottom: 0.85rem;
+  padding: 0.85rem;
+  border: 1px dashed #c5d0d0;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.gs-similar-block--image {
+  border-color: #007d7e;
+}
+
+.gs-similar-picture-preview {
+  margin: 0.5rem 0 0.75rem;
+  max-width: 16rem;
+}
+
+.gs-similar-picture-preview--empty {
+  display: none;
+}
+
+.gs-similar-picture-preview__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.gs-similar-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .gs-similar-thumbs .gsu-thumbnail-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;

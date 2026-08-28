@@ -419,7 +419,8 @@ def select_video_poster(video, b2_key: str, *, save: bool = True) -> str:
 
 
 def upload_custom_poster(video, uploaded_file) -> dict:
-    if not video.original_b2_key:
+    is_similar_image = bool(video.parent_video_id) and not (video.original_b2_key or "").strip()
+    if not video.original_b2_key and not is_similar_image:
         raise ValueError("Video has no source file.")
 
     content_type = (getattr(uploaded_file, "content_type", "") or "").lower()
@@ -461,6 +462,13 @@ def upload_custom_poster(video, uploaded_file) -> dict:
             pass
 
     url = select_video_poster(video, key)
+    if is_similar_image:
+        from .models import GlobalSolutionsVideoStatus
+
+        video.status = GlobalSolutionsVideoStatus.READY
+        video.last_error = ""
+        video.save(update_fields=["status", "last_error", "updated_at"])
+
     return {
         "id": "custom",
         "b2_key": key,

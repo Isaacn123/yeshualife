@@ -24,6 +24,7 @@ from landClearing.models import LandClearingPage
 from production.models import ProductionPage
 from solutions.models import SolutionsPage
 from global_solutions.models import GlobalSolutionsSettings
+from global_solutions.discovery import get_latest_videos
 
 # Create your models here.
 
@@ -117,6 +118,8 @@ class BlogIndexPage(Page):
         context['global_solutions_home_card'] = (
             gs_settings if gs_settings and gs_settings.shows_home_card else None
         )
+        context['global_solutions_settings'] = gs_settings
+        context['global_solutions_latest_videos'] = get_latest_videos(limit=3)
         return render(request,'blog/blog_index_page.html', context)  
 
 class VideoBlock(blocks.StructBlock):
