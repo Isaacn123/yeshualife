@@ -447,7 +447,61 @@ p {
     line-height: 4rem;
  }
 
+/* Navbar — fix Sparrow/theme.min.css blocking taps on toggler children (iOS zoom bug) */
+.yl-site-nav .navbar-toggler,
+.yl-site-nav .navbar-toggler *,
+.yl-site-nav [data-bs-toggle="collapse"],
+.yl-site-nav [data-bs-toggle="collapse"] * {
+  pointer-events: auto !important;
+}
+
 @media (max-width: 767.98px) {
+  .yl-site-nav > .container-fluid {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.35rem;
+  }
+
+  .yl-site-nav__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-right: 0;
+    max-width: calc(100% - 3.75rem);
+  }
+
+  .yl-site-nav__brand-text {
+    font-size: 1rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .yl-site-nav .navbar-toggler {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.45rem 0.6rem;
+    margin-left: auto;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    z-index: 1031;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .yl-site-nav .navbar-toggler-icon {
+    width: 1.35rem;
+    height: 1.35rem;
+    pointer-events: none;
+  }
+
+  .yl-site-nav .navbar-collapse {
+    flex-basis: 100%;
+    width: 100%;
+  }
+
   .navbar-collapse {
     padding-top: 0.5rem;
     padding-bottom: 0.75rem;

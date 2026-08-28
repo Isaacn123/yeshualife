@@ -31,6 +31,40 @@
     });
   }
 
-  document.addEventListener("DOMContentLoaded", initNavbarDropdowns);
-  window.addEventListener("pageshow", initNavbarDropdowns);
+  function initNavbarCollapse() {
+    if (!window.bootstrap || !window.bootstrap.Collapse) {
+      return;
+    }
+
+    var toggler = document.getElementById("ylNavbarToggler");
+    var menu = document.getElementById("navbarCollapse");
+    if (!toggler || !menu) {
+      return;
+    }
+
+    if (toggler._ylCollapseInit) {
+      return;
+    }
+    toggler._ylCollapseInit = true;
+
+    var collapse = bootstrap.Collapse.getOrCreateInstance(menu, { toggle: false });
+
+    function toggleMenu(event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      collapse.toggle();
+    }
+
+    toggler.addEventListener("click", toggleMenu);
+  }
+
+  function initNavbar() {
+    initNavbarCollapse();
+    initNavbarDropdowns();
+  }
+
+  document.addEventListener("DOMContentLoaded", initNavbar);
+  window.addEventListener("pageshow", initNavbar);
 })();
