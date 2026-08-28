@@ -1348,7 +1348,7 @@ p {
   width: min(22rem, calc(100vw - 2.3rem));
   max-height: calc(100vh - 2.3rem);
   pointer-events: none;
-  animation: yl-home-event-popup-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: yl-home-event-popup-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .yl-home-event-popup[hidden] {
@@ -1358,15 +1358,48 @@ p {
 .yl-home-event-popup__shell {
   position: relative;
   pointer-events: auto;
-  background: var(--yl-event-card);
-  border: 1px solid var(--yl-event-border);
-  border-radius: 14px;
+  background: linear-gradient(180deg, #fffdf9 0%, #faf6ef 100%);
+  border: 1px solid rgba(196, 138, 26, 0.22);
+  border-radius: 16px;
   box-shadow:
-    0 16px 40px rgba(44, 36, 25, 0.18),
-    0 4px 12px rgba(44, 36, 25, 0.08);
+    0 1px 2px rgba(44, 36, 25, 0.05),
+    0 6px 14px rgba(44, 36, 25, 0.07),
+    0 16px 32px rgba(44, 36, 25, 0.1),
+    0 28px 56px rgba(44, 36, 25, 0.14),
+    0 0 0 1px rgba(255, 255, 255, 0.65) inset,
+    0 0 40px rgba(196, 138, 26, 0.14);
   overflow: hidden;
   max-height: inherit;
   overflow-y: auto;
+  transform-origin: bottom right;
+  animation: yl-home-event-popup-float 4.5s ease-in-out 0.75s infinite;
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.28s ease,
+    border-color 0.28s ease;
+}
+
+.yl-home-event-popup__shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  z-index: 1;
+}
+
+.yl-home-event-popup__shell:hover {
+  animation-play-state: paused;
+  transform: translateY(-5px) scale(1.01);
+  border-color: rgba(196, 138, 26, 0.38);
+  box-shadow:
+    0 2px 4px rgba(44, 36, 25, 0.06),
+    0 10px 22px rgba(44, 36, 25, 0.1),
+    0 22px 44px rgba(44, 36, 25, 0.14),
+    0 36px 72px rgba(44, 36, 25, 0.16),
+    0 0 0 1px rgba(255, 255, 255, 0.7) inset,
+    0 0 56px rgba(196, 138, 26, 0.22);
 }
 
 .yl-home-event-popup__eyebrow {
@@ -1482,13 +1515,41 @@ p {
 }
 
 @keyframes yl-home-event-popup-in {
-  from {
+  0% {
     opacity: 0;
-    transform: translateY(1.25rem) scale(0.96);
+    transform: translateY(1.75rem) scale(0.92);
   }
-  to {
+  60% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.02);
+  }
+  100% {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes yl-home-event-popup-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yl-home-event-popup {
+    animation: yl-home-event-popup-in 0.01ms both;
+  }
+
+  .yl-home-event-popup__shell {
+    animation: none;
+  }
+
+  .yl-home-event-popup__shell:hover {
+    transform: none;
   }
 }
 
