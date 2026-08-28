@@ -56,9 +56,7 @@
   </div>
 </section>
 
-{% if homepage_events %}
-  {% include "blog/sections/homepage_events.html" %}
-{% endif %}
+{% include "blog/sections/homepage_events.html" %}
 
 {% if global_solutions_home_card %}
   {% include "blog/sections/global_solutions_home_card.html" with card=global_solutions_home_card %}

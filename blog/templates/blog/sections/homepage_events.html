@@ -1,5 +1,6 @@
-{# Expects: homepage_events dict with settings + events #}
-{% load wagtailimages_tags %}
+{# Loads its own data via template tag — include on any homepage template. #}
+{% load wagtailimages_tags homepage_events_tags %}
+{% get_homepage_events_section as homepage_events %}
 {% if homepage_events and homepage_events.events %}
 <section class="yl-home-events" aria-labelledby="yl-home-events-heading">
   <div class="container">
