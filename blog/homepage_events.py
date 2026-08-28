@@ -1,11 +1,27 @@
 from __future__ import annotations
 
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.formats import date_format
+from django.utils.text import slugify
 
 from wagtail.admin.panels import FieldPanel, HelpPanel, MultiFieldPanel
 from wagtail.snippets.models import register_snippet
+
+
+def _unique_event_slug(base: str, *, exclude_pk=None) -> str:
+    base = slugify(base)[:200] or "event"
+    slug = base
+    n = 2
+    while True:
+        qs = HomepageEvent.objects.filter(slug=slug)
+        if exclude_pk is not None:
+            qs = qs.exclude(pk=exclude_pk)
+        if not qs.exists():
+            return slug
+        slug = f"{base}-{n}"
+        n += 1
 
 
 def _wagtail_image_rendition_url(image, *, spec: str = "fill-640x360") -> str:
@@ -109,6 +125,12 @@ class HomepageEvent(models.Model):
         default=HomepageEventKind.EVENT,
     )
     title = models.CharField(max_length=200)
+    slug = models.SlugField(
+        max_length=220,
+        unique=True,
+        blank=True,
+        help_text="URL for the public event page (used when sharing). Auto-filled from title if left blank.",
+    )
     event_date = models.DateField(
         blank=True,
         null=True,
@@ -145,7 +167,7 @@ class HomepageEvent(models.Model):
         max_length=300,
         blank=True,
         default="",
-        help_text="Where the button goes. Leave blank to hide the button.",
+        help_text="Optional register / external URL for the action button on the event page.",
     )
     button_text = models.CharField(
         max_length=80,
@@ -182,6 +204,14 @@ class HomepageEvent(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not (self.slug or "").strip():
+            self.slug = _unique_event_slug(self.title, exclude_pk=self.pk)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self) -> str:
+        return reverse("blog:homepage_event_detail", kwargs={"slug": self.slug})
 
     @property
     def is_visible_now(self) -> bool:
@@ -243,6 +273,7 @@ class HomepageEvent(models.Model):
         MultiFieldPanel(
             [
                 FieldPanel("title"),
+                FieldPanel("slug"),
                 FieldPanel("event_date"),
                 FieldPanel("event_time_label"),
                 FieldPanel("description"),

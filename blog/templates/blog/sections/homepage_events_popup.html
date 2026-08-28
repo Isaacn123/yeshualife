@@ -10,7 +10,7 @@
       data-event-hash="yl-event-{{ event.pk }}"
       data-event-title="{{ event.title|escapejs }}"
       data-event-text="{{ event.description|default:event.title|truncatewords:40|escapejs }}"
-      data-event-link="{% if event.has_link %}{{ event.link|escapejs }}{% endif %}"
+      data-share-url="{{ request.scheme }}://{{ request.get_host }}{{ event.get_absolute_url }}"
       role="dialog"
       aria-labelledby="ylHomeEventPopupTitle"
       aria-live="polite"
@@ -68,8 +68,7 @@
 
         var eventId = popup.dataset.eventId;
         var eventHash = popup.dataset.eventHash || ("yl-event-" + eventId);
-        var dismissKey = "yl-home-event-popup-" + eventId;
-        var shareUrl = popup.dataset.eventLink || (window.location.origin + window.location.pathname + "#" + eventHash);
+        var shareUrl = popup.dataset.shareUrl || window.location.href;
 
         function openShareView() {
           shareView.hidden = false;
@@ -91,15 +90,11 @@
 
         function dismissPopup() {
           popup.hidden = true;
-          sessionStorage.setItem(dismissKey, "1");
-        }
-
-        if (sessionStorage.getItem(dismissKey) === "1" && window.location.hash !== "#" + eventHash) {
-          popup.hidden = true;
         }
 
         if (window.location.hash === "#" + eventHash) {
-          openShareView();
+          window.location.replace(shareUrl);
+          return;
         }
 
         popup.querySelector(".yl-home-event-popup__close").addEventListener("click", dismissPopup);

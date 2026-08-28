@@ -1641,6 +1641,68 @@ body.yl-home-event-share-open {
   }
 }
 
+/* Public event detail page (shared links) */
+.yl-home-event-detail {
+  background: #faf6ef;
+  padding: 2rem 0 3.5rem;
+  min-height: 60vh;
+}
+
+.yl-home-event-detail__wrap {
+  max-width: 44rem;
+}
+
+.yl-home-event-detail__back {
+  margin: 0 0 1.25rem;
+  font-family: "Plus Jakarta Sans", "Segoe UI", Roboto, sans-serif;
+  font-size: 0.88rem;
+}
+
+.yl-home-event-detail__back a {
+  color: #9a7209;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.yl-home-event-detail__back a:hover,
+.yl-home-event-detail__back a:focus-visible {
+  text-decoration: underline;
+}
+
+.yl-home-event-detail__eyebrow {
+  margin: 0 0 0.85rem;
+  font-family: "Plus Jakarta Sans", "Segoe UI", Roboto, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9a7209;
+}
+
+.yl-home-event-detail .yl-home-event-card {
+  border: 1px solid rgba(80, 60, 40, 0.2);
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(44, 36, 25, 0.1);
+  overflow: hidden;
+}
+
+.yl-home-event-detail__share {
+  margin-top: 1.35rem;
+  text-align: center;
+}
+
+.yl-home-event-detail__share-btn {
+  padding: 0.68rem 1.35rem;
+  border: 1px solid rgba(154, 114, 9, 0.22);
+  border-radius: 999px;
+  font-family: "Plus Jakarta Sans", "Segoe UI", Roboto, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #2c2419;
+  background: linear-gradient(135deg, #f0d998 0%, #e8b84a 55%, #d4a017 100%);
+  cursor: pointer;
+}
+
 /* Explore our programs */
 .yl-home-programs {
   --yl-prog-bg: #f3f6ef;

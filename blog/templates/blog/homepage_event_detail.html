@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static wagtailimages_tags %}
+
+{% block body_class %}template-homepage-event-detail{% endblock %}
+
+{% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/top-section.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include "nav_bar.html" %}
+
+<main class="yl-home-event-detail">
+  <div class="container yl-home-event-detail__wrap">
+    <p class="yl-home-event-detail__back">
+      <a href="/">← Back to home</a>
+    </p>
+    {% if event_settings.section_eyebrow %}
+      <p class="yl-home-event-detail__eyebrow">{{ event_settings.section_eyebrow }}</p>
+    {% endif %}
+    {% include "blog/sections/homepage_event_card.html" with event=event modal=1 %}
+    <div class="yl-home-event-detail__share">
+      <button type="button" class="yl-home-event-detail__share-btn" id="ylEventDetailShare">
+        Share this event
+      </button>
+    </div>
+  </div>
+</main>
+
+<script>
+  (function () {
+    var btn = document.getElementById("ylEventDetailShare");
+    if (!btn) return;
+    var shareUrl = window.location.href;
+    var shareTitle = "{{ event.title|escapejs }}";
+    var shareText = "{{ event.description|default:event.title|truncatewords:40|escapejs }}";
+    btn.addEventListener("click", function () {
+      var payload = { title: shareTitle, text: shareText, url: shareUrl };
+      if (navigator.share) {
+        navigator.share(payload).catch(function () {});
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(function () {
+          btn.textContent = "Link copied!";
+          setTimeout(function () { btn.textContent = "Share this event"; }, 1800);
+        });
+      } else {
+        window.prompt("Copy this link:", shareUrl);
+      }
+    });
+  })();
+</script>
+{% endblock %}
+
+{% block footer %}
+{% include "blog/footer.html" %}
+{% endblock %}
