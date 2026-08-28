@@ -26,6 +26,7 @@ from solutions.models import SolutionsPage
 from global_solutions.models import GlobalSolutionsSettings
 from global_solutions.discovery import get_home_topic_categories, get_latest_videos
 from blog.home_programs import HOME_PROGRAMS
+from blog.homepage_events import get_homepage_events_for_context
 
 # Create your models here.
 
@@ -123,6 +124,7 @@ class BlogIndexPage(Page):
         context['global_solutions_latest_videos'] = get_latest_videos(limit=3)
         context['home_programs'] = HOME_PROGRAMS
         context['global_solutions_topic_categories'] = get_home_topic_categories(limit=8)
+        context['homepage_events'] = get_homepage_events_for_context()
         return render(request,'blog/blog_index_page.html', context)  
 
 class VideoBlock(blocks.StructBlock):
@@ -255,3 +257,6 @@ class BlogPage(Page):
 
 def get_latest_awards(self):
     return AwardsPage.objects.live().order_by('-first_published_at')[:5]
+
+
+from .homepage_events import HomepageEvent, HomepageEventsSettings  # noqa: E402, F401

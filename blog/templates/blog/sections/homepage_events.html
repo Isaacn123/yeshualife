@@ -1,0 +1,37 @@
+{# Expects: homepage_events dict with settings + events #}
+{% load wagtailimages_tags %}
+{% if homepage_events and homepage_events.events %}
+<section class="yl-home-events" aria-labelledby="yl-home-events-heading">
+  <div class="container">
+    {% with settings=homepage_events.settings %}
+      {% include "blog/sections/home_section_head.html" with eyebrow=settings.section_eyebrow title=settings.section_title lead=settings.section_lead title_id="yl-home-events-heading" section_class="yl-home-section-head--events" %}
+    {% endwith %}
+    <div class="yl-home-events__grid">
+      {% for event in homepage_events.events %}
+        <article class="yl-home-event-card yl-home-event-card--{{ event.kind }}">
+          {% if event.image %}
+            <div class="yl-home-event-card__media">
+              {% image event.image fill-640x360 class="yl-home-event-card__img" alt=event.title %}
+            </div>
+          {% endif %}
+          <div class="yl-home-event-card__body">
+            {% if event.formatted_date_line %}
+              <p class="yl-home-event-card__date">{{ event.formatted_date_line }}</p>
+            {% endif %}
+            <h3 class="yl-home-event-card__title">{{ event.title }}</h3>
+            {% if event.description %}
+              <p class="yl-home-event-card__desc">{{ event.description }}</p>
+            {% endif %}
+            {% if event.has_link %}
+              <a class="yl-home-event-card__btn" href="{{ event.link }}">
+                {{ event.button_label }}
+                <span class="yl-home-event-card__btn-arrow" aria-hidden="true">→</span>
+              </a>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}

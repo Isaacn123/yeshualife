@@ -1,21 +1,23 @@
-{% load static %}
-{% load wagtailcore_tags wagtailimages_tags global_solutions_extras %}
-<section class="text-center py-0 overflow-hidden" id="bicycleCta">
-
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col px-4">
-          <div class="position-relative overflow-hidden rounded">
-            
-            <div class="bg-holder overlay" style="background-image: url(&quot;{% image page.specific.image fill-1920x1080 as img %}{{img.url}}&quot;); transform: translate3d(0px, 56px, 0px);" data-parallax="" data-rellax-percentage="0.5" data-rellax-speed="-3">
-
-            </div><!--/.bg-holder-->
-            <div class="position-relative py-8 py-md-11" data-zanim-timeline="{}">
-              <h2 class="{{ page.title|title_scale_class:'yl-latest-hero__title' }} text-white px-4 px-sm-0 mb-4" data-zanim-xs="{&quot;delay&quot;:0.1}" style="transform: translate(0px, 0px); opacity: 1;">{{ page.title }}</h2>
-              <div data-zanim-xs="{&quot;delay&quot;:0.2}" style="transform: translate(0px, 0px); opacity: 1;"><a class="btn btn-outline-light border-2 mt-3" href="{{ page.url }}">Read More</a></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div><!-- end of .container-->
-  </section>
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags global_solutions_extras %}
+<section class="yl-latest-hero text-center py-0 overflow-hidden" id="bicycleCta">
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col px-4">
+          <div class="yl-latest-hero__frame position-relative overflow-hidden rounded">
+            
+            <div class="bg-holder yl-latest-hero__bg" style="background-image: url(&quot;{% image page.specific.image fill-1920x1080 as img %}{{img.url}}&quot;);" data-parallax="" data-rellax-percentage="0.5" data-rellax-speed="-3">
+
+            </div>
+            <div class="yl-latest-hero__scrim" aria-hidden="true"></div>
+            <div class="position-relative py-8 py-md-11" data-zanim-timeline="{}">
+              <h2 class="{{ page.title|title_scale_class:'yl-latest-hero__title' }} text-white px-4 px-sm-0 mb-4" data-zanim-xs="{&quot;delay&quot;:0.1}">{{ page.title }}</h2>
+              <div data-zanim-xs="{&quot;delay&quot;:0.2}"><a class="yl-latest-card__btn yl-latest-card__btn--hero mt-3" href="{{ page.url }}">Read more <span class="yl-latest-card__btn-arrow" aria-hidden="true">→</span></a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
