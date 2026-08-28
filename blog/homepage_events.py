@@ -60,20 +60,20 @@ class HomepageEventsSettings(models.Model):
 
     @classmethod
     def load(cls):
-        obj, _ = cls.objects.get_or_create(
-            pk=1,
-            defaults={
-                "section_enabled": False,
-                "section_eyebrow": "What's next",
-                "section_title": "Upcoming events & announcements",
-                "section_lead": (
-                    "Join us in the field, online, and in community — "
-                    "dates and highlights worth marking on your calendar."
-                ),
-                "max_items": 3,
-            },
+        """Return the settings row editors manage in Snippets (same pattern as Global Solutions)."""
+        obj = cls.objects.order_by("pk").first()
+        if obj:
+            return obj
+        return cls.objects.create(
+            section_enabled=False,
+            section_eyebrow="What's next",
+            section_title="Upcoming events & announcements",
+            section_lead=(
+                "Join us in the field, online, and in community — "
+                "dates and highlights worth marking on your calendar."
+            ),
+            max_items=3,
         )
-        return obj
 
     panels = [
         MultiFieldPanel(

@@ -113,19 +113,22 @@ class BlogIndexPage(Page):
 
         return _combined_pages
 
-    def serve(self,request):
-        context = self.get_context(request=request)
-        context['combined_pages'] = self.get_combined_pages()
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["combined_pages"] = self.get_combined_pages()
         gs_settings = GlobalSolutionsSettings.load()
-        context['global_solutions_home_card'] = (
+        context["global_solutions_home_card"] = (
             gs_settings if gs_settings and gs_settings.shows_home_card else None
         )
-        context['global_solutions_settings'] = gs_settings
-        context['global_solutions_latest_videos'] = get_latest_videos(limit=3)
-        context['home_programs'] = HOME_PROGRAMS
-        context['global_solutions_topic_categories'] = get_home_topic_categories(limit=8)
-        context['homepage_events'] = get_homepage_events_for_context()
-        return render(request,'blog/blog_index_page.html', context)  
+        context["global_solutions_settings"] = gs_settings
+        context["global_solutions_latest_videos"] = get_latest_videos(limit=3)
+        context["home_programs"] = HOME_PROGRAMS
+        context["global_solutions_topic_categories"] = get_home_topic_categories(limit=8)
+        context["homepage_events"] = get_homepage_events_for_context()
+        return context
+
+    def serve(self, request):
+        return render(request, "blog/blog_index_page.html", self.get_context(request))  
 
 class VideoBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=True)
