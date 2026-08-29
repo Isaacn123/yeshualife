@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'css/top-section.css' %}?v=20260829a">
+<link rel="stylesheet" href="{% static 'css/top-section.css' %}?v=20260829c">
 {% compress css %}
 <link rel="stylesheet" href="{% static "css/customcss.css" %}">
 <link rel="stylesheet" href="{% static "css/loaders.min.css" %}">
@@ -23,9 +23,11 @@
 {% include "blog/new_section/header.html" %}   
 {% comment %} </section> {% endcomment %}
 
+{% comment %} Category pill list removed — programs live in Explore our programs slider below.
 <div class="top-content-wrap">
     {% include "blog/sections/top-section-updates.html" %}
 </div>
+{% endcomment %}
 
 {% include "blog/sections/explore_programs.html" %}
 

@@ -2,19 +2,75 @@
 {% if home_programs %}
 <section class="yl-home-programs" aria-labelledby="yl-home-programs-heading">
   <div class="container">
-    {% include "blog/sections/home_section_head.html" with eyebrow="What we do" title="Explore our programs" lead="Jump into the areas where Yeshua Life serves communities through agriculture, relief, and lasting solutions." title_id="yl-home-programs-heading" section_class="yl-home-section-head--programs" %}
-    <div class="yl-home-programs__grid">
-      {% for program in home_programs %}
-        <a href="{{ program.url }}" class="yl-home-program-card yl-home-program-card--{{ program.theme }}">
-          <span class="yl-home-program-card__icon" aria-hidden="true"></span>
-          <span class="yl-home-program-card__copy">
-            <span class="yl-home-program-card__title">{{ program.title }}</span>
-            <span class="yl-home-program-card__desc">{{ program.description }}</span>
-          </span>
-          <span class="yl-home-program-card__arrow" aria-hidden="true">→</span>
-        </a>
-      {% endfor %}
+    <div class="yl-home-programs__intro">
+      {% include "blog/sections/home_section_head.html" with eyebrow="What we do" title="Explore our programs" lead="Jump into the areas where Yeshua Life serves communities through agriculture, relief, and lasting solutions." title_id="yl-home-programs-heading" section_class="yl-home-section-head--programs" %}
+    </div>
+    <div class="yl-home-programs__slider" data-programs-slider>
+      <button type="button" class="yl-home-programs__nav yl-home-programs__nav--prev" aria-label="Previous programs" disabled>
+        <span aria-hidden="true">‹</span>
+      </button>
+      <div class="yl-home-programs__viewport" tabindex="0" role="region" aria-label="Program cards">
+        <div class="yl-home-programs__track">
+          {% for program in home_programs %}
+            <div class="yl-home-programs__slide">
+              <a href="{{ program.url }}" class="yl-home-program-card yl-home-program-card--{{ program.theme }}">
+                <span class="yl-home-program-card__icon" aria-hidden="true"></span>
+                <span class="yl-home-program-card__copy">
+                  <span class="yl-home-program-card__title">{{ program.title }}</span>
+                  <span class="yl-home-program-card__desc">{{ program.description }}</span>
+                </span>
+                <span class="yl-home-program-card__arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <button type="button" class="yl-home-programs__nav yl-home-programs__nav--next" aria-label="Next programs">
+        <span aria-hidden="true">›</span>
+      </button>
     </div>
   </div>
 </section>
+<script>
+(function () {
+  var slider = document.querySelector("[data-programs-slider]");
+  if (!slider) return;
+
+  var viewport = slider.querySelector(".yl-home-programs__viewport");
+  var track = slider.querySelector(".yl-home-programs__track");
+  var prevBtn = slider.querySelector(".yl-home-programs__nav--prev");
+  var nextBtn = slider.querySelector(".yl-home-programs__nav--next");
+  if (!viewport || !track || !prevBtn || !nextBtn) return;
+
+  function getStep() {
+    var slide = track.querySelector(".yl-home-programs__slide");
+    if (!slide) return 0;
+    var gap = parseFloat(getComputedStyle(track).gap) || 0;
+    return slide.getBoundingClientRect().width + gap;
+  }
+
+  function getPageSize() {
+    var step = getStep();
+    if (!step) return 1;
+    return Math.max(1, Math.round(viewport.clientWidth / step));
+  }
+
+  function updateNav() {
+    var maxScroll = viewport.scrollWidth - viewport.clientWidth;
+    prevBtn.disabled = viewport.scrollLeft <= 2;
+    nextBtn.disabled = viewport.scrollLeft >= maxScroll - 2;
+  }
+
+  function scrollByPage(direction) {
+    var amount = getStep() * getPageSize() * direction;
+    viewport.scrollBy({ left: amount, behavior: "smooth" });
+  }
+
+  prevBtn.addEventListener("click", function () { scrollByPage(-1); });
+  nextBtn.addEventListener("click", function () { scrollByPage(1); });
+  viewport.addEventListener("scroll", updateNav, { passive: true });
+  window.addEventListener("resize", updateNav);
+  updateNav();
+})();
+</script>
 {% endif %}

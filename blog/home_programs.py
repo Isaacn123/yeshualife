@@ -39,4 +39,22 @@ HOME_PROGRAMS: list[dict[str, str]] = [
         "description": "Recognition and milestones from our work across programs.",
         "theme": "olive",
     },
+    {
+        "title": "Land Clearing",
+        "url": "/landclearing/",
+        "description": "Clearing and preparing land for farming and community projects.",
+        "theme": "sage",
+    },
+    {
+        "title": "Products",
+        "url": "/donation/",
+        "description": "Support our work through products and giving opportunities.",
+        "theme": "amber",
+    },
+    {
+        "title": "Food Processing",
+        "url": "/food/",
+        "description": "Value addition and processing for stronger local food systems.",
+        "theme": "rust",
+    },
 ]
