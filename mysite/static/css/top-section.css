@@ -1673,6 +1673,28 @@ p {
   }
 }
 
+@media (min-width: 768px) {
+  .yl-home-event-popup {
+    width: min(19.5rem, calc(100vw - 2.3rem));
+  }
+
+  .yl-home-event-share__panel {
+    width: min(36rem, calc(100vw - 2rem));
+  }
+
+  .yl-home-event-detail__wrap {
+    max-width: 38rem;
+  }
+
+  .yl-home-event-card--modal .yl-home-event-card__title {
+    font-size: clamp(1.2rem, 2vw, 1.65rem);
+  }
+
+  .yl-home-event-card--modal .yl-home-event-card__body {
+    padding: 1rem 1.15rem 1.25rem;
+  }
+}
+
 @supports not (zoom: 1) {
   @media (max-width: 767.98px) {
     .yl-home-event-popup {
