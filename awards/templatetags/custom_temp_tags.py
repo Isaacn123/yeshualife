@@ -48,6 +48,9 @@ def canonical_url(context):
     elif request.path.startswith("/landclearing/"):
         return "https://yeshualifeug.com/landclearing"
 
+    elif request.path.startswith("/events/"):
+        return request.build_absolute_uri().replace("http://", "https://", 1)
+
     elif request.path == "/contact/":
         return "https://yeshualifeug.com/contact/"
     elif request.path.startswith("/landclearing/"):

@@ -1,7 +1,19 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags wagtailimages_tags compress structured_data_tags %}
+{% load static wagtailcore_tags wagtailimages_tags compress structured_data_tags social_tags %}
 
 {% block body_class %}template-blogindexpage{% endblock  %}
+
+{% block social_meta %}
+{% with share_title=page.seo_title|default:page.title share_description=page.search_description|default:page.intro|default:page.title %}
+  {% if page.image %}
+    {% image page.image fill-1200x630 as home_og_img %}
+    {% include "partials/social_meta_share.html" with share_url=request.build_absolute_uri share_title=share_title share_description=share_description share_image_url=home_og_img.url share_type="website" %}
+  {% else %}
+    {% static 'images/karamoja_re.jpg' as home_hero_image %}
+    {% include "partials/social_meta_share.html" with share_url=request.build_absolute_uri share_title=share_title share_description=share_description share_image_url=home_hero_image share_type="website" %}
+  {% endif %}
+{% endwith %}
+{% endblock %}
 
 {% block extra_css  %}
 <link rel="preconnect" href="https://fonts.googleapis.com">

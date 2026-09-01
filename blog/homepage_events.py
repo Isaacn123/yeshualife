@@ -4,6 +4,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.formats import date_format
+from django.utils.html import strip_tags
 from django.utils.text import slugify
 
 from wagtail.admin.panels import FieldPanel, HelpPanel, MultiFieldPanel
@@ -32,6 +33,17 @@ def _wagtail_image_rendition_url(image, *, spec: str = "fill-640x360") -> str:
     except Exception:
         file_obj = getattr(image, "file", None)
         return file_obj.url if file_obj else ""
+
+
+def _wagtail_og_image_url(image) -> str:
+    """Relative URL for a WhatsApp-friendly 1200x630 JPEG rendition."""
+    if not image:
+        return ""
+    for spec in ("fill-1200x630|format-jpeg", "fill-1200x630", "width-1200"):
+        url = _wagtail_image_rendition_url(image, spec=spec)
+        if url:
+            return url
+    return ""
 
 
 class HomepageEventKind(models.TextChoices):
@@ -237,6 +249,15 @@ class HomepageEvent(models.Model):
     @property
     def card_image_url(self) -> str:
         return _wagtail_image_rendition_url(self.image)
+
+    @property
+    def og_image_path(self) -> str:
+        return _wagtail_og_image_url(self.image)
+
+    @property
+    def share_description_plain(self) -> str:
+        raw = strip_tags(self.description or "") or (self.title or "")
+        return " ".join(raw.split())[:300]
 
     @property
     def button_label(self) -> str:

@@ -1,0 +1,29 @@
+{% load social_tags static %}
+{% absolute_url share_url|default:request.path as page_url %}
+{% with share_title=share_title|default:"Yeshua Life" share_description=share_description|default:share_title %}
+<meta property="og:type" content="{{ share_type|default:'article' }}">
+<meta property="og:site_name" content="Yeshua Life">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="{{ page_url }}">
+<meta property="og:title" content="{{ share_title }}">
+<meta property="og:description" content="{{ share_description }}">
+<meta name="description" content="{{ share_description }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@yeshualife_info">
+<meta name="twitter:title" content="{{ share_title }}">
+<meta name="twitter:description" content="{{ share_description }}">
+{% if share_image_url %}
+  {% absolute_url share_image_url as image_url %}
+{% else %}
+  {% absolute_url '/static/images/yeshua_logo2.png' as image_url %}
+{% endif %}
+<meta property="og:image" content="{{ image_url }}">
+<meta property="og:image:secure_url" content="{{ image_url }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+{% if share_title %}<meta property="og:image:alt" content="{{ share_title }}">{% endif %}
+<meta name="twitter:image" content="{{ image_url }}">
+<meta itemprop="name" content="{{ share_title }}">
+<meta itemprop="description" content="{{ share_description }}">
+<meta itemprop="image" content="{{ image_url }}">
+{% endwith %}

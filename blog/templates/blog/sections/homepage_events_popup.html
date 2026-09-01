@@ -1,8 +1,9 @@
 {# Bottom-right popup — single event only. Share opens a large focused view. #}
-{% load homepage_events_tags %}
+{% load homepage_events_tags social_tags %}
 {% get_homepage_events_section "popup" as homepage_events %}
 {% if homepage_events and homepage_events.events %}
   {% with event=homepage_events.events.0 settings=homepage_events.settings %}
+    {% absolute_url event.get_absolute_url as event_share_url %}
     <style>
       @media (max-width: 767.98px) {
         .yl-home-event-popup {
@@ -126,8 +127,8 @@
       data-event-id="{{ event.pk }}"
       data-event-hash="yl-event-{{ event.pk }}"
       data-event-title="{{ event.title|escapejs }}"
-      data-event-text="{{ event.description|default:event.title|truncatewords:40|escapejs }}"
-      data-share-url="{{ request.scheme }}://{{ request.get_host }}{{ event.get_absolute_url }}"
+      data-event-text="{{ event.share_description_plain|escapejs }}"
+      data-share-url="{{ event_share_url }}"
       role="dialog"
       aria-labelledby="ylHomeEventPopupTitle"
       aria-live="polite"

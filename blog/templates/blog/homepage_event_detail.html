@@ -1,32 +1,10 @@
 {% extends "base.html" %}
-{% load static wagtailimages_tags social_tags %}
+{% load static wagtailimages_tags %}
 
 {% block title %}{{ event.title }}{% endblock %}
 
 {% block social_meta %}
-{% absolute_url request.build_absolute_uri as page_url %}
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="Yeshua Life">
-<meta property="og:url" content="{{ page_url }}">
-<meta property="og:title" content="{{ event.title }}">
-<meta property="og:description" content="{{ event.description|default:event.title|truncatewords:40 }}">
-<meta name="description" content="{{ event.description|default:event.title|truncatewords:40 }}">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@yeshualife_info">
-<meta name="twitter:title" content="{{ event.title }}">
-<meta name="twitter:description" content="{{ event.description|default:event.title|truncatewords:40 }}">
-{% if event.image %}
-  {% image event.image fill-1200x630 as og_img %}
-  {% absolute_url og_img.url as image_url %}
-  <meta property="og:image:alt" content="{{ event.title }}">
-{% else %}
-  {% absolute_url '/static/images/yeshua_logo2.png' as image_url %}
-{% endif %}
-<meta property="og:image" content="{{ image_url }}">
-<meta property="og:image:secure_url" content="{{ image_url }}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:image" content="{{ image_url }}">
+{% include "partials/social_meta_share.html" with share_url=share_url share_title=event.title share_description=event.share_description_plain share_image_url=share_image_url %}
 {% endblock %}
 
 {% block body_class %}template-homepage-event-detail{% endblock %}
@@ -62,9 +40,9 @@
   (function () {
     var btn = document.getElementById("ylEventDetailShare");
     if (!btn) return;
-    var shareUrl = window.location.href;
+    var shareUrl = "{{ share_url|escapejs }}";
     var shareTitle = "{{ event.title|escapejs }}";
-    var shareText = "{{ event.description|default:event.title|truncatewords:40|escapejs }}";
+    var shareText = "{{ event.share_description_plain|escapejs }}";
     btn.addEventListener("click", function () {
       var payload = { title: shareTitle, text: shareText, url: shareUrl };
       if (navigator.share) {
