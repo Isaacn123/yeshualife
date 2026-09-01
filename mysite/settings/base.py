@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "wagtailcodeblock",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
+    "wagtail.contrib.sitemaps",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",

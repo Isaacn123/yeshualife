@@ -1,7 +1,8 @@
-User-agent: Twitterbot
-Disallow: 
-
-Allow: /images
-Allow: /archives
 User-agent: *
-Disallow: /
+Allow: /
+Disallow: /admin/
+Disallow: /django-admin/
+Disallow: /api/
+Disallow: /api_auth/
+
+Sitemap: https://yeshualifeug.com/sitemap.xml

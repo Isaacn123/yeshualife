@@ -31,7 +31,7 @@ def json_ld_markup():
         "name": "Yeshua's Agriculture systems Turning Karamoja Dry Land Into Food Bucket",
         "url": "https://yeshualifeug.com/agriculture-systems-turning-karamoja-dry-land-into-food-bucket/",
         "image": "https://yeshualifeug.com/media/images/PHOTO-2023-06-15-22-38-29_kXZPy2r.width-1080.jpg",
-        "description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
+        "description": "In the semi-arid region of Karamoja, Yeshua Life has helped revitalize dry land into productive farmland through sustainable agriculture systems."
       },
       {
         "@context": "http://schema.org",

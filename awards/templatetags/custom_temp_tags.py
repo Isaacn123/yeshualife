@@ -1,65 +1,20 @@
-
 from django import template
+
+from blog.templatetags.social_tags import build_absolute_url
 
 register = template.Library()
 
 
 @register.simple_tag(takes_context=True)
 def canonical_url(context):
-    request = context['request']
-    if request.path == "/payments/":
-        return "https://yeshualifeug.com/payments"
-    elif request.path.startswith("/payments/"):
-        return "https://yeshualifeug.com/payments"
-    
-    elif request.path == "/donation/":
-        return "https://yeshualifeug.com/donation"
-    elif request.path.startswith("/donation/"):
-        return "https://yeshualifeug.com/donation"
-    
+    """
+    Canonical URL for the current page.
 
-    elif request.path == "/karamoja/":
-        return "https://yeshualifeug.com/karamoja"
-    elif request.path.startswith("/karamoja/"):
-        return "https://yeshualifeug.com/karamoja"
-    
-    elif request.path == "/response/":
-        return "https://yeshualifeug.com/response"
-    elif request.path.startswith("/response/"):
-        return "https://yeshualifeug.com/response"
-
-    elif request.path == "/solution/":
-        return "https://yeshualifeug.com/solution"
-    elif request.path.startswith("/solution/"):
-        return "https://yeshualifeug.com/solution"
-
-    elif request.path == "/production/":
-        return "https://yeshualifeug.com/production"
-    elif request.path.startswith("/production/"):
-        return "https://yeshualifeug.com/production"
-    
-    elif request.path == "/awards/":
-        return "https://yeshualifeug.com/awards"
-    elif request.path.startswith("/awards/"):
-        return "https://yeshualifeug.com/awards"
-
-    elif request.path == "/landclearing/":
-        return "https://yeshualifeug.com/landclearing"
-    elif request.path.startswith("/landclearing/"):
-        return "https://yeshualifeug.com/landclearing"
-
-    elif request.path.startswith("/events/"):
-        return request.build_absolute_uri().replace("http://", "https://", 1)
-
-    elif request.path == "/contact/":
-        return "https://yeshualifeug.com/contact/"
-    elif request.path.startswith("/landclearing/"):
-        return "https://yeshualifeug.com/contact/"
-    
-    elif request.path == "/production/":
-        return "https://yeshualifeug.com/production/"
-    elif request.path.startswith("/production/"):
-        return "https://yeshualifeug.com/production/"
-    
-    else:
-        return request.build_absolute_uri()
+    Each page should point to itself so Google can index articles and sub-pages.
+    Only merge true duplicates (e.g. multiple payment URLs).
+    """
+    request = context["request"]
+    path = request.path
+    if path == "/payments" or path.startswith("/payments/"):
+        return build_absolute_url(request, "/payments/")
+    return build_absolute_url(request, path)

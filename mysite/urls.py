@@ -1,16 +1,23 @@
 from django.conf import settings
-from django.urls import include, path, re_path
+from django.urls import include, path
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap as django_sitemap
+
+from wagtail.contrib.sitemaps import Sitemap
 
 # from yeshualife.blog.models import LatestEntriesFeed
 from .api import api_router
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
-from wagtail.contrib.sitemaps.views import sitemap
 from search import views as search_views
 from django.views.generic import TemplateView
-from django.views.static import serve
+
+from mysite.views import robots_txt
+
+sitemaps = {
+    "wagtail": Sitemap(),
+}
 
 urlpatterns = [
     path("django-admin/", admin.site.urls),
@@ -18,22 +25,14 @@ urlpatterns = [
     path("documents/", include(wagtaildocs_urls)),
     path("api/v2/", api_router.urls),
     path("search/", search_views.search, name="search"),
-    path("api_auth/", include('payments.urls')), 
+    path("api_auth/", include('payments.urls')),
+    path("robots.txt", robots_txt, name="robots_txt"),
     path("", include("blog.urls")),
     path("", include("global_solutions.urls")),
     path('google334554454.html', TemplateView.as_view(template_name="google7c516833d92b99b0.html")),
     # path('feeds/latest/', LatestEntriesFeed(), name='latest_feed'),
 
 ]
-
-# urlpatterns += [
-#     re_path(r'^robots.txt$', serve, {
-#         'path': 'robots.txt',
-#         'document_root': settings.STATIC_ROOT,
-#     }),
-# ]
-
-
 if settings.DEBUG:
     from django.conf.urls.static import static
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -43,12 +42,6 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns = urlpatterns + [
-    # For anything not caught by a more specific rule above, hand over to
-    # Wagtail's page serving mechanism. This should be the last pattern in
-    # the list:
-    path('sitemap.xml', sitemap),
+    path("sitemap.xml", django_sitemap, {"sitemaps": sitemaps}),
     path("", include(wagtail_urls)),
-    # Alternatively, if you want Wagtail pages to be served from a subpath
-    # of your site, rather than the site root:
-    #    path("pages/", include(wagtail_urls)),
 ]
