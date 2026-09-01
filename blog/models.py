@@ -26,6 +26,7 @@ from solutions.models import SolutionsPage
 from global_solutions.models import GlobalSolutionsSettings
 from global_solutions.discovery import get_home_topic_categories, get_latest_videos
 from blog.home_programs import HOME_PROGRAMS
+from blog.home_share import build_home_share_context
 from blog.homepage_events import get_homepage_events_for_context
 
 # Create your models here.
@@ -125,6 +126,7 @@ class BlogIndexPage(Page):
         context["home_programs"] = HOME_PROGRAMS
         context["global_solutions_topic_categories"] = get_home_topic_categories(limit=8)
         context["homepage_events"] = get_homepage_events_for_context()
+        context.update(build_home_share_context(request, self))
         return context
 
     def serve(self, request):

@@ -4,15 +4,7 @@
 {% block body_class %}template-blogindexpage{% endblock  %}
 
 {% block social_meta %}
-{% with share_title=page.seo_title|default:page.title share_description=page.search_description|default:page.intro|default:page.title %}
-  {% if page.image %}
-    {% image page.image fill-1200x630 as home_og_img %}
-    {% include "partials/social_meta_share.html" with share_url=request.build_absolute_uri share_title=share_title share_description=share_description share_image_url=home_og_img.url share_type="website" %}
-  {% else %}
-    {% static 'images/karamoja_re.jpg' as home_hero_image %}
-    {% include "partials/social_meta_share.html" with share_url=request.build_absolute_uri share_title=share_title share_description=share_description share_image_url=home_hero_image share_type="website" %}
-  {% endif %}
-{% endwith %}
+{% include "partials/social_meta_share.html" with share_url=share_url share_title=share_title share_description=share_description share_image_url=share_image_url share_type=share_type share_image_width=share_image_width share_image_height=share_image_height %}
 {% endblock %}
 
 {% block extra_css  %}
