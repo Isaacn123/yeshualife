@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags wagtailimages_tags global_solutions_extras %}
+{% load static wagtailcore_tags wagtailimages_tags global_solutions_extras srcset_tags %}
 
 <section class="yl-feature-spotlight yl-feature-spotlight--{% if image_first %}image-left{% else %}image-right{% endif %}">
   {% with article=post.specific %}
@@ -6,7 +6,7 @@
     <div class="col-lg-5 yl-feature-spotlight__media-col{% if image_first %} order-lg-1{% else %} order-lg-2{% endif %}">
       <a href="{% pageurl post %}" class="yl-feature-spotlight__media-link">
         {% if article.image %}
-          {% srcset_image article.image class="yl-feature-spotlight__img" width-{600,800,960} sizes="(max-width: 767px) 100vw, (max-width: 991px) 45vw, 480px" %}
+          {% srcset_image article.image class="yl-feature-spotlight__img" widths="600,800,960" sizes="(max-width: 767px) 100vw, (max-width: 991px) 45vw, 480px" %}
         {% else %}
           <div class="yl-feature-spotlight__placeholder" aria-hidden="true"></div>
         {% endif %}

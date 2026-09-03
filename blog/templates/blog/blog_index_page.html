@@ -127,13 +127,12 @@
 
 
 {% endblock  %}
-{% compress js %}
 {% block extra_js %}
+{# Keep JSON-LD outside compress — compressor treats it as JS and throws Unexpected token ':' #}
 <script type="application/ld+json">
   {% json_ld_markup %}
 </script>
-{% endblock  %}
-{% endcompress %}
+{% endblock %}
 {% block footer %}
 {% include "blog/footer.html" %}
 {% endblock  %}

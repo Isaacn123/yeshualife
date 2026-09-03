@@ -173,13 +173,15 @@
         <script src="{% static 'css/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/mysite.js' %}?v=20260828c"></script>
         <script type="text/javascript" src="{% static 'js/content-image-lightbox.js' %}?v=20260826a"></script>
+        {% endcompress %}
+        {# Keep JSON-LD outside compress — compressor treats it as JS and throws Unexpected token ':' #}
         <script type="application/ld+json">
             {
               "@context": "http://schema.org",
               "@type": "Organization",
               "name": "Yeshua Life Limited",
-              "url": "https://www.yeshualifeug.com",
-              "logo": "https://www.yeshualifeug.com/static/images/yeshua_logo2.png",
+              "url": "https://yeshualifeug.com",
+              "logo": "https://yeshualifeug.com/static/images/yeshua_logo2.png",
               "contactPoint": {
                 "@type": "ContactPoint",
                 "telephone": "+256-740-769-952",
@@ -189,12 +191,10 @@
                 "https://www.facebook.com/yeshualifeu",
                 "https://twitter.com/yeshualife_info",
                 "https://www.youtube.com/@yeshua-life",
-                "https://www.linkedin.com/company/yeshua-life",
-                //"https://www.instagram.com/yourprofile"
+                "https://www.linkedin.com/company/yeshua-life"
               ]
             }
-            </script>
-            {% endcompress %}
+        </script>
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}
         {% endblock %}

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags wagtailimages_tags compress global_solutions_extras blog_richtext %}
+{% load static wagtailcore_tags wagtailimages_tags compress global_solutions_extras blog_richtext srcset_tags %}
 
 {% block body_class %}template-blogpage{% endblock %}
 
@@ -40,7 +40,7 @@
 
     {% if page.image %}
       <figure class="yl-article__figure container-medium">
-        {% srcset_image page.image class="yl-article__hero-img image-blog-main" width-{1080,800,640} sizes="(max-width: 767px) 100vw, min(72rem, 92vw)" %}
+        {% srcset_image page.image class="yl-article__hero-img image-blog-main" widths="1080,800,640" sizes="(max-width: 767px) 100vw, min(72rem, 92vw)" %}
         {% if page.caption %}
           <figcaption class="yl-article__caption">{{ page.caption }}</figcaption>
         {% endif %}
