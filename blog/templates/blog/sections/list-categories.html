@@ -55,7 +55,7 @@
                     <div class="image-container" style="height: 300px; overflow: hidden;">
                         <a  class="blog-title-link" href="{% pageurl post %}">
                     {% comment %} <img class="img-fluid w-100 mb-3 img-thumbnail shadow-sm rounded-0" src="https://ichef.bbci.co.uk/news/976/cpsprodpb/118D9/production/_131779817_ramat.jpg.webp" alt="" style="object-fit: cover; height: 100%;"> {% endcomment %}
-                    {% srcset_image post.specific.image class="image-clothing-main" width-{400,600} sizes="(max-width: 667px) 90vw, (max-width: 991px) 78vw, 59vw" %}
+                    {% srcset_image post.specific.image class="image-clothing-main" widths="400,600" sizes="(max-width: 667px) 90vw, (max-width: 991px) 78vw, 59vw" %}
                         </a>
                     </div>
                     <h2 class="h4">{{post.title}}</h2>

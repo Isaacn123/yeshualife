@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% load wagtailcore_tags wagtailimages_tags%}
+{% load wagtailcore_tags wagtailimages_tags srcset_tags %}
 
 {% block body_class %}template-blogindexpage{% endblock  %}
 
@@ -28,7 +28,7 @@
     
     <h3 class="big-blog-title text-center"><a  class="blog-title-link" href="{% pageurl post %}">{{ post.title}}</a></h3>
     <p class="blog-metadata-large">{{post.specific.date}}</p>
-    <a href="{% pageurl post %}">{% srcset_image post.specific.image class="image-blog-main" width-{600,700} sizes="(max-width: 767px) 90vw, (max-width: 991px) 78vw, 59vw" %}</a>
+    <a href="{% pageurl post %}">{% srcset_image post.specific.image class="image-blog-main" widths="600,700" sizes="(max-width: 767px) 90vw, (max-width: 991px) 78vw, 59vw" %}</a>
     <p class="intro"> {{post.specific.intro}}</p>
     
     {% endfor %}

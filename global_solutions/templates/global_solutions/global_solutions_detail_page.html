@@ -26,7 +26,7 @@
             <div class="content text-center">
                 <h1 class="p-3">{{ page.title }}</h1>
                 {% if page.image %}
-                    {% srcset_image page.image class="image-blog-main" width-{1080,800} sizes="(max-width: 991px) 90vw, 87vw" %}
+                    {% srcset_image page.image class="image-blog-main" widths="1080,800" sizes="(max-width: 991px) 90vw, 87vw" %}
                 {% endif %}
 
                 {% if page.date %}
