@@ -150,6 +150,7 @@
                     class="content-image-lightbox__iframe"
                     title="Video preview"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen
                     hidden
                   ></iframe>
@@ -172,7 +173,7 @@
         {% compress js %}
         <script src="{% static 'css/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/mysite.js' %}?v=20260828c"></script>
-        <script type="text/javascript" src="{% static 'js/content-image-lightbox.js' %}?v=20260826a"></script>
+        <script type="text/javascript" src="{% static 'js/content-image-lightbox.js' %}?v=20260903a"></script>
         {% endcompress %}
         {# Keep JSON-LD outside compress — compressor treats it as JS and throws Unexpected token ':' #}
         <script type="application/ld+json">

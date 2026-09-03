@@ -9,16 +9,19 @@
 
   var CONTENT_EMBED_SELECTOR = [
     ".blog-content-section .responsive-object",
+    ".yl-article__video .responsive-object",
     ".fh-video-desc .responsive-object",
   ].join(",");
 
   var CONTENT_VIDEO_SELECTOR = [
     ".blog-content-section video",
+    ".yl-article__video video",
     ".fh-video-desc video",
   ].join(",");
 
   var CONTENT_IFRAME_SELECTOR = [
     ".blog-content-section iframe",
+    ".yl-article__video iframe",
     ".fh-video-desc iframe",
   ].join(",");
 
@@ -59,8 +62,33 @@
     var src = (iframe.getAttribute("src") || "").toLowerCase();
     return (
       /\/global-solutions\/embed\//.test(src) ||
-      /\/farmhub\/embed\//.test(src)
+      /\/farmhub\/embed\//.test(src) ||
+      /youtube\.com\/embed\//.test(src) ||
+      /youtube-nocookie\.com\/embed\//.test(src) ||
+      /youtu\.be\//.test(src) ||
+      /player\.vimeo\.com\//.test(src)
     );
+  }
+
+  function ensureEmbedReferrerPolicy(iframe) {
+    if (!iframe) {
+      return;
+    }
+    var src = (iframe.getAttribute("src") || "").toLowerCase();
+    if (
+      /youtube\.com\/embed\//.test(src) ||
+      /youtube-nocookie\.com\/embed\//.test(src) ||
+      /player\.vimeo\.com\//.test(src)
+    ) {
+      iframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+      // Help YouTube receive origin context when opened from lightbox too.
+      if (!iframe.getAttribute("allow")) {
+        iframe.setAttribute(
+          "allow",
+          "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        );
+      }
+    }
   }
 
   function markInlineEmbed(container, iframe) {
@@ -135,6 +163,8 @@
         return;
       }
       hideAllMedia();
+      ensureEmbedReferrerPolicy(modalIframe);
+      modalIframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
       modalIframe.src = withAutoplay(src);
       modalIframe.title = getCaption(iframe) || "Video preview";
       modalIframe.hidden = false;
@@ -212,6 +242,7 @@
       if (!iframe) {
         return;
       }
+      ensureEmbedReferrerPolicy(iframe);
       if (isInlinePlayableEmbed(iframe)) {
         markInlineEmbed(container, iframe);
         return;
@@ -222,6 +253,7 @@
     });
 
     document.querySelectorAll(CONTENT_IFRAME_SELECTOR).forEach(function (iframe) {
+      ensureEmbedReferrerPolicy(iframe);
       if (iframe.closest(".responsive-object") || iframe.closest(".content-lightbox-iframe-host")) {
         return;
       }

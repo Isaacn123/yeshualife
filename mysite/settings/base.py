@@ -365,6 +365,9 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
+# YouTube embeds need a cross-origin Referer. Django's default "same-origin"
+# causes "Error 153 / Video player configuration error" in the iframe.
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 # Global Solutions: default is progressive MP4 from B2 after upload (no ffmpeg / no CLI).
 # Set GLOBAL_SOLUTIONS_TRANSCODE_HLS=true to use HLS + run: manage.py process_global_solutions_videos

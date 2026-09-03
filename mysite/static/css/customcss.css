@@ -1007,6 +1007,29 @@ body.template-blogpage .yl-article__richtext p:empty {
   max-width: 100%;
 }
 
+.yl-article__video .responsive-object {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #101010;
+}
+
+.yl-article__video .responsive-object iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  pointer-events: auto;
+}
+
+.yl-article__video .responsive-object.yl-inline-embed {
+  cursor: default;
+}
+
 .yl-article__footer {
   margin-top: 2.5rem;
   padding-top: 1.5rem;
