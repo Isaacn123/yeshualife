@@ -2857,6 +2857,9 @@ body.yl-home-event-share-open {
   width: 100%;
   max-width: none;
   margin: 0 0 2rem;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
 }
 
 .yl-home-response__slider-wrap .yl-page-carousel {
