@@ -2,7 +2,7 @@
 {# Optional: link_slides=True wraps each image in a link to the page (no button). #}
 {% load wagtailcore_tags wagtailimages_tags %}
 {% if page.carousel %}
-  <div class="yl-page-carousel container-medium my-4">
+  <div class="yl-page-carousel{% if not full_bleed %} container-medium my-4{% endif %}">
     <div
       id="ylPageCarousel-{{ page.id }}"
       class="carousel slide yl-page-carousel__slider"
