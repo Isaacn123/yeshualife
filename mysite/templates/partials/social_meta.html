@@ -1,30 +1,27 @@
 {% load social_tags %}
 {% absolute_url request.build_absolute_uri as page_url %}
 {% with specific=page.specific %}
-{% with share_title=specific.seo_title|default:specific.title share_description=specific.search_description|default:specific.intro|default:specific.title %}
+{% with share_title=specific.seo_title|default:specific.title %}
 {% page_share_image_url specific as image_url %}
+{% page_share_description specific as share_description %}
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Yeshua Life">
 <meta property="og:url" content="{{ page_url }}">
 <meta property="og:title" content="{{ share_title }}">
-<meta property="og:description" content="{{ share_description|truncatechars:200 }}">
-<meta name="description" content="{{ share_description|truncatechars:200 }}">
+<meta property="og:description" content="{{ share_description }}">
+<meta name="description" content="{{ share_description }}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@yeshualife_info">
 <meta name="twitter:title" content="{{ share_title }}">
-<meta name="twitter:description" content="{{ share_description|truncatechars:200 }}">
-{% if specific.image and specific.image.title %}
-<meta property="og:image:alt" content="{{ specific.image.title }}">
-{% else %}
-<meta property="og:image:alt" content="{{ share_title }}">
-{% endif %}
+<meta name="twitter:description" content="{{ share_description }}">
+<meta property="og:image:alt" content="{% if specific.image and specific.image.title %}{{ specific.image.title }}{% else %}{{ share_title }}{% endif %}">
 <meta property="og:image" content="{{ image_url }}">
 <meta property="og:image:secure_url" content="{{ image_url }}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:image" content="{{ image_url }}">
 <meta itemprop="name" content="{{ share_title }}">
-<meta itemprop="description" content="{{ share_description|truncatechars:200 }}">
+<meta itemprop="description" content="{{ share_description }}">
 <meta itemprop="image" content="{{ image_url }}">
 {% endwith %}
 {% endwith %}

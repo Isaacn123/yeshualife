@@ -84,27 +84,33 @@ def resolve_page_share_image_url(request, page) -> str:
     """
     Absolute HTTPS image URL for Open Graph / WhatsApp.
 
-    Uses page.image, then first carousel image, then a landscape site fallback
-    (not the small logo — crawlers often ignore tiny images).
+    Prefer a same-origin /og-image/<id>/ URL. WhatsApp often fails to load
+    thumbnails hosted on *.r2.dev even when the image is publicly reachable.
     """
+    from django.urls import reverse
+
     specific = page
     try:
         specific = page.specific
     except Exception:
         pass
 
-    candidates = []
-    main = getattr(specific, "image", None)
-    if main:
-        candidates.extend(_image_candidate_urls(main))
-    carousel_img = _first_carousel_image(specific)
-    if carousel_img:
-        candidates.extend(_image_candidate_urls(carousel_img))
+    image = getattr(specific, "image", None) or _first_carousel_image(specific)
+    if image is not None and getattr(image, "pk", None):
+        try:
+            # Ensure a share-sized rendition exists before advertising the URL.
+            _image_candidate_urls(image)
+            path = reverse("og_share_image", kwargs={"image_id": image.pk})
+            return build_absolute_url(request, path)
+        except Exception:
+            pass
 
-    for url in candidates:
-        absolute = build_absolute_url(request, url)
-        if absolute:
-            return absolute
+    # Last resort: direct file URL or landscape static fallback
+    if image is not None:
+        for url in _image_candidate_urls(image):
+            absolute = build_absolute_url(request, url)
+            if absolute:
+                return absolute
     return build_absolute_url(request, _OG_FALLBACK)
 
 
@@ -112,6 +118,40 @@ def resolve_page_share_image_url(request, page) -> str:
 def absolute_url(context, url: str = "") -> str:
     """Build an absolute https URL for Open Graph / WhatsApp share previews."""
     return build_absolute_url(context.get("request"), url)
+
+
+def resolve_page_share_description(page) -> str:
+    specific = page
+    try:
+        specific = page.specific
+    except Exception:
+        pass
+
+    for attr in ("search_description", "intro"):
+        value = (getattr(specific, attr, None) or "").strip()
+        if value:
+            return value[:200]
+
+    body = getattr(specific, "body", None)
+    if body:
+        try:
+            from django.utils.html import strip_tags
+
+            text = strip_tags(str(body)).strip()
+            if text:
+                return text[:200]
+        except Exception:
+            pass
+
+    return (getattr(specific, "title", None) or "Yeshua Life").strip()
+
+
+@register.simple_tag(takes_context=True)
+def page_share_description(context, page=None) -> str:
+    target = page or context.get("page")
+    if not target:
+        return "Yeshua Life"
+    return resolve_page_share_description(target)
 
 
 @register.simple_tag(takes_context=True)
