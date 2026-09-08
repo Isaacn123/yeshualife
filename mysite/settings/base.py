@@ -349,6 +349,11 @@ WAGTAILEMBEDS_FINDERS = [
 WAGTAILEMBEDS_RESPONSIVE_HTML = True
 WAGTAILIMAGES_MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20MB
 
+# Keep Django request/body limits at/above Wagtail image max (multipart overhead).
+# Note: 413 "Request Entity Too Large" is usually nginx client_max_body_size, not Django.
+DATA_UPLOAD_MAX_MEMORY_SIZE = 25 * 1024 * 1024  # 25MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 25 * 1024 * 1024  # 25MB
+
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "https://yeshualifeug.com"

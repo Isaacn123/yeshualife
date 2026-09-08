@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'css/top-section.css' %}?v=20260908b">
+<link rel="stylesheet" href="{% static 'css/top-section.css' %}?v=20260908d">
 {% compress css %}
 <link rel="stylesheet" href="{% static "css/customcss.css" %}">
 <link rel="stylesheet" href="{% static "css/loaders.min.css" %}">
@@ -63,13 +63,13 @@
 
 {% include "blog/sections/homepage_events.html" %}
 
-{% include "blog/sections/latest_response_updates.html" %}
+{% include "blog/sections/global_solutions_latest_videos.html" %}
 
 {% if global_solutions_home_card %}
   {% include "blog/sections/global_solutions_home_card.html" with card=global_solutions_home_card %}
 {% endif %}
 
-{% include "blog/sections/global_solutions_latest_videos.html" %}
+{% include "blog/sections/latest_response_updates.html" %}
 
 
 <div class="d-flex flex-column justify-content-center align-items-center wrap-blog">
