@@ -1,67 +1,17 @@
-{# Expects: home_production_pages, optional production_index_url #}
-{% load wagtailcore_tags wagtailimages_tags %}
-{% if home_production_pages %}
+{# Expects: production_carousel_page and/or home_production_pages, production_index_url #}
+{% if production_carousel_page or home_production_pages %}
 <section class="yl-home-production" aria-labelledby="yl-home-production-heading">
   <div class="container">
     {% include "blog/sections/home_section_head.html" with eyebrow="Machinery & Production" title="Equipment & capacity in action" lead="See how machinery and production strengthen farms, processing, and community livelihoods." title_id="yl-home-production-heading" section_class="yl-home-section-head--production" %}
+  </div>
 
-    <div class="yl-home-production__slider" data-production-slider>
-      <button type="button" class="yl-home-production__nav yl-home-production__nav--prev" aria-label="Previous production stories" disabled>
-        <span aria-hidden="true">‹</span>
-      </button>
-      <div class="yl-home-production__viewport" tabindex="0" role="region" aria-label="Machinery and production stories">
-        <div class="yl-home-production__track">
-          {% for item in home_production_pages %}
-            <div class="yl-home-production__slide">
-              <article class="yl-home-production-card">
-                <a href="{% pageurl item %}" class="yl-home-production-card__link">
-                  <div class="yl-home-production-card__media">
-                    {% if item.specific.image %}
-                      {% image item.specific.image fill-800x520 as prod_thumb %}
-                      <img
-                        src="{{ prod_thumb.url }}"
-                        alt=""
-                        class="yl-home-production-card__img"
-                        loading="lazy"
-                        decoding="async"
-                      >
-                    {% else %}
-                      <div class="yl-home-production-card__fallback" aria-hidden="true"></div>
-                    {% endif %}
-                  </div>
-                  <div class="yl-home-production-card__body">
-                    {% if item.specific.date or item.first_published_at %}
-                      <time
-                        class="yl-home-production-card__date"
-                        datetime="{% if item.specific.date %}{{ item.specific.date|date:'Y-m-d' }}{% else %}{{ item.first_published_at|date:'Y-m-d' }}{% endif %}"
-                      >
-                        {% if item.specific.date %}
-                          {{ item.specific.date|date:"M j, Y" }}
-                        {% else %}
-                          {{ item.first_published_at|date:"M j, Y" }}
-                        {% endif %}
-                      </time>
-                    {% endif %}
-                    <h3 class="yl-home-production-card__title">{{ item.title }}</h3>
-                    {% if item.specific.intro %}
-                      <p class="yl-home-production-card__lead">{{ item.specific.intro|truncatewords:16 }}</p>
-                    {% endif %}
-                    <span class="yl-home-production-card__cta">
-                      View story
-                      <span aria-hidden="true">→</span>
-                    </span>
-                  </div>
-                </a>
-              </article>
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-      <button type="button" class="yl-home-production__nav yl-home-production__nav--next" aria-label="Next production stories">
-        <span aria-hidden="true">›</span>
-      </button>
+  {% if production_carousel_page %}
+    <div class="yl-home-production__slider-wrap">
+      {% include "partials/page_image_carousel.html" with page=production_carousel_page link_slides=True %}
     </div>
+  {% endif %}
 
+  <div class="container">
     <div class="yl-home-production__footer">
       <a class="yl-home-production__all" href="{{ production_index_url|default:'/production/' }}">
         Explore Machinery &amp; Production
@@ -70,46 +20,4 @@
     </div>
   </div>
 </section>
-<script>
-(function () {
-  var slider = document.querySelector("[data-production-slider]");
-  if (!slider) return;
-
-  var viewport = slider.querySelector(".yl-home-production__viewport");
-  var track = slider.querySelector(".yl-home-production__track");
-  var prevBtn = slider.querySelector(".yl-home-production__nav--prev");
-  var nextBtn = slider.querySelector(".yl-home-production__nav--next");
-  if (!viewport || !track || !prevBtn || !nextBtn) return;
-
-  function getStep() {
-    var slide = track.querySelector(".yl-home-production__slide");
-    if (!slide) return 0;
-    var gap = parseFloat(getComputedStyle(track).gap) || 0;
-    return slide.getBoundingClientRect().width + gap;
-  }
-
-  function getPageSize() {
-    var step = getStep();
-    if (!step) return 1;
-    return Math.max(1, Math.round(viewport.clientWidth / step));
-  }
-
-  function updateNav() {
-    var maxScroll = viewport.scrollWidth - viewport.clientWidth;
-    prevBtn.disabled = viewport.scrollLeft <= 2;
-    nextBtn.disabled = viewport.scrollLeft >= maxScroll - 2;
-  }
-
-  function scrollByPage(direction) {
-    var amount = getStep() * getPageSize() * direction;
-    viewport.scrollBy({ left: amount, behavior: "smooth" });
-  }
-
-  prevBtn.addEventListener("click", function () { scrollByPage(-1); });
-  nextBtn.addEventListener("click", function () { scrollByPage(1); });
-  viewport.addEventListener("scroll", updateNav, { passive: true });
-  window.addEventListener("resize", updateNav);
-  updateNav();
-})();
-</script>
 {% endif %}

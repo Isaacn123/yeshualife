@@ -1194,6 +1194,25 @@ body.template-blogpage .yl-article__richtext p:empty {
   object-fit: cover;
 }
 
+.yl-page-carousel__slide-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.yl-page-carousel__slide-link:hover,
+.yl-page-carousel__slide-link:focus-visible {
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+.yl-page-carousel__slide-link:focus-visible .yl-page-carousel__img {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: -2px;
+}
+
 .yl-page-carousel .carousel-control-prev,
 .yl-page-carousel .carousel-control-next {
   width: 12%;

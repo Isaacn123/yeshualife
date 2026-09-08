@@ -1,5 +1,6 @@
 {# Bootstrap image carousel for page.carousel StreamField (carousel_item.image). #}
-{% load wagtailimages_tags %}
+{# Optional: link_slides=True wraps each image in a link to the page (no button). #}
+{% load wagtailcore_tags wagtailimages_tags %}
 {% if page.carousel %}
   <div class="yl-page-carousel container-medium my-4">
     <div
@@ -26,7 +27,13 @@
         {% for block in page.carousel %}
           {% if block.block_type == "carousel_item" and block.value.image %}
             <div class="carousel-item{% if forloop.first %} active{% endif %}">
-              {% image block.value.image fill-1200x675 class="d-block w-100 yl-page-carousel__img" %}
+              {% if link_slides %}
+                <a href="{% pageurl page %}" class="yl-page-carousel__slide-link" aria-label="Read: {{ page.title }}">
+                  {% image block.value.image fill-1200x675 class="d-block w-100 yl-page-carousel__img" %}
+                </a>
+              {% else %}
+                {% image block.value.image fill-1200x675 class="d-block w-100 yl-page-carousel__img" %}
+              {% endif %}
             </div>
           {% endif %}
         {% endfor %}

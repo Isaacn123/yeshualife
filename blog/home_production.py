@@ -1,4 +1,4 @@
-"""Helpers for homepage Machinery & Production slider."""
+"""Helpers for homepage Machinery & Production section."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from django.utils import timezone
 
 
 def get_latest_production_pages(limit: int = 10):
-    """Latest live Production detail pages for the homepage slider."""
+    """Latest live Production detail pages."""
     try:
         from production.models import ProductionPage
 
@@ -22,6 +22,23 @@ def get_latest_production_pages(limit: int = 10):
         return page.first_published_at or page.latest_revision_created_at or timezone.now()
 
     return sorted(pages, key=_sort_key, reverse=True)
+
+
+def get_production_carousel_page(pages=None):
+    """
+    First Production page with carousel images (same StreamField as detail pages).
+    Searches provided pages, then a wider live set if needed.
+    """
+    candidates = list(pages or [])
+    if not candidates:
+        candidates = get_latest_production_pages(limit=20)
+
+    for page in candidates:
+        specific = getattr(page, "specific", page)
+        carousel = getattr(specific, "carousel", None)
+        if carousel:
+            return specific
+    return None
 
 
 def get_production_index_url() -> str:
