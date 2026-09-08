@@ -3150,11 +3150,11 @@ body.yl-home-event-share-open {
 
 .yl-home-production__slider-wrap .yl-page-carousel__inner {
   border-radius: 12px !important;
-  min-height: clamp(280px, 48vw, 560px);
+  min-height: clamp(360px, 58vw, 680px);
 }
 
 .yl-home-production__slider-wrap .carousel-item {
-  min-height: clamp(280px, 48vw, 560px);
+  min-height: clamp(360px, 58vw, 680px);
 }
 
 .yl-home-production__slider-wrap .yl-page-carousel__slide-link {
@@ -3166,7 +3166,7 @@ body.yl-home-event-share-open {
 
 .yl-home-production__slider-wrap .yl-page-carousel__img {
   width: 100%;
-  height: clamp(280px, 48vw, 560px);
+  height: clamp(360px, 58vw, 680px);
   max-height: none;
   object-fit: cover;
 }
