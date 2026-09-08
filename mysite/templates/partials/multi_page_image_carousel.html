@@ -1,0 +1,61 @@
+{# Multi-page carousel: expects slides = [{"image": ..., "page": ...}, ...] #}
+{% load wagtailcore_tags wagtailimages_tags %}
+{% if slides %}
+  <div class="yl-page-carousel yl-multi-page-carousel">
+    <div
+      id="ylMultiCarousel-{{ carousel_id|default:'home' }}"
+      class="carousel slide yl-page-carousel__slider"
+      data-bs-ride="carousel"
+      data-bs-interval="5000"
+    >
+      {% if slides|length > 1 %}
+        <div class="carousel-indicators">
+          {% for slide in slides %}
+            <button
+              type="button"
+              data-bs-target="#ylMultiCarousel-{{ carousel_id|default:'home' }}"
+              data-bs-slide-to="{{ forloop.counter0 }}"
+              {% if forloop.first %}class="active" aria-current="true"{% endif %}
+              aria-label="Slide {{ forloop.counter }}"
+            ></button>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="carousel-inner yl-page-carousel__inner rounded overflow-hidden">
+        {% for slide in slides %}
+          <div class="carousel-item{% if forloop.first %} active{% endif %}">
+            <a
+              href="{% pageurl slide.page %}"
+              class="yl-page-carousel__slide-link"
+              aria-label="Read: {{ slide.page.title }}"
+            >
+              {% image slide.image fill-1200x675 class="d-block w-100 yl-page-carousel__img" %}
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if slides|length > 1 %}
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#ylMultiCarousel-{{ carousel_id|default:'home' }}"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#ylMultiCarousel-{{ carousel_id|default:'home' }}"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}

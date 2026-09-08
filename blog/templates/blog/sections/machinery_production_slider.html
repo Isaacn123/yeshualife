@@ -1,15 +1,13 @@
-{# Expects: production_carousel_page and/or home_production_pages, production_index_url #}
-{% if production_carousel_page or home_production_pages %}
+{# Expects: production_carousel_slides, production_index_url #}
+{% if production_carousel_slides %}
 <section class="yl-home-production" aria-labelledby="yl-home-production-heading">
   <div class="container">
     {% include "blog/sections/home_section_head.html" with eyebrow="Machinery & Production" title="Equipment & capacity in action" lead="See how machinery and production strengthen farms, processing, and community livelihoods." title_id="yl-home-production-heading" section_class="yl-home-section-head--production" %}
   </div>
 
-  {% if production_carousel_page %}
-    <div class="yl-home-production__slider-wrap">
-      {% include "partials/page_image_carousel.html" with page=production_carousel_page link_slides=True %}
-    </div>
-  {% endif %}
+  <div class="yl-home-production__slider-wrap">
+    {% include "partials/multi_page_image_carousel.html" with slides=production_carousel_slides carousel_id="production" %}
+  </div>
 
   <div class="container">
     <div class="yl-home-production__footer">

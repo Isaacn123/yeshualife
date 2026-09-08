@@ -33,8 +33,7 @@ from blog.home_response_updates import (
     get_response_index_url,
 )
 from blog.home_production import (
-    get_latest_production_pages,
-    get_production_carousel_page,
+    get_production_carousel_slides,
     get_production_index_url,
 )
 from blog.homepage_events import get_homepage_events_for_context
@@ -140,9 +139,7 @@ class BlogIndexPage(Page):
         context["latest_response_updates"] = latest_response
         context["response_carousel_page"] = get_response_carousel_page(latest_response)
         context["response_index_url"] = get_response_index_url()
-        home_production = get_latest_production_pages(limit=10)
-        context["home_production_pages"] = home_production
-        context["production_carousel_page"] = get_production_carousel_page(home_production)
+        context["production_carousel_slides"] = get_production_carousel_slides(max_slides=24)
         context["production_index_url"] = get_production_index_url()
         context.update(build_home_share_context(request, self))
         return context

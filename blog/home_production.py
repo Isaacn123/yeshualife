@@ -24,21 +24,42 @@ def get_latest_production_pages(limit: int = 10):
     return sorted(pages, key=_sort_key, reverse=True)
 
 
-def get_production_carousel_page(pages=None):
+def get_production_carousel_slides(max_slides: int = 24):
     """
-    First Production page with carousel images (same StreamField as detail pages).
-    Searches provided pages, then a wider live set if needed.
-    """
-    candidates = list(pages or [])
-    if not candidates:
-        candidates = get_latest_production_pages(limit=20)
+    Collect carousel images from every live Production page that has them.
 
-    for page in candidates:
+    Returns a list of dicts: {"image": Image, "page": ProductionPage}
+    Newest pages first; slides within a page keep their StreamField order.
+    """
+    try:
+        from production.models import ProductionPage
+
+        pages = list(
+            ProductionPage.objects.live().public().order_by("-first_published_at")
+        )
+    except Exception:
+        return []
+
+    slides = []
+    for page in pages:
         specific = getattr(page, "specific", page)
         carousel = getattr(specific, "carousel", None)
-        if carousel:
-            return specific
-    return None
+        if not carousel:
+            continue
+        for block in carousel:
+            if getattr(block, "block_type", None) != "carousel_item":
+                continue
+            img = None
+            try:
+                img = block.value.get("image") if hasattr(block.value, "get") else block.value["image"]
+            except Exception:
+                img = getattr(block.value, "image", None)
+            if not img:
+                continue
+            slides.append({"image": img, "page": specific})
+            if len(slides) >= max_slides:
+                return slides
+    return slides
 
 
 def get_production_index_url() -> str:
