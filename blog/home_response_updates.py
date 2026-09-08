@@ -60,6 +60,16 @@ def get_latest_response_updates(limit: int = 3):
     return unique
 
 
+def get_response_carousel_page(pages):
+    """First page in the list that has carousel images (for homepage slider)."""
+    for page in pages or []:
+        specific = getattr(page, "specific", page)
+        carousel = getattr(specific, "carousel", None)
+        if carousel:
+            return specific
+    return None
+
+
 def get_response_index_url() -> str:
     try:
         from karamoja_response.models import karamojaResponseIndexPage

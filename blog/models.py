@@ -27,7 +27,11 @@ from global_solutions.models import GlobalSolutionsSettings
 from global_solutions.discovery import get_home_topic_categories, get_latest_videos
 from blog.home_programs import HOME_PROGRAMS
 from blog.home_share import build_home_share_context
-from blog.home_response_updates import get_latest_response_updates, get_response_index_url
+from blog.home_response_updates import (
+    get_latest_response_updates,
+    get_response_carousel_page,
+    get_response_index_url,
+)
 from blog.homepage_events import get_homepage_events_for_context
 
 # Create your models here.
@@ -127,7 +131,9 @@ class BlogIndexPage(Page):
         context["home_programs"] = HOME_PROGRAMS
         context["global_solutions_topic_categories"] = get_home_topic_categories(limit=8)
         context["homepage_events"] = get_homepage_events_for_context()
-        context["latest_response_updates"] = get_latest_response_updates(limit=3)
+        latest_response = get_latest_response_updates(limit=3)
+        context["latest_response_updates"] = latest_response
+        context["response_carousel_page"] = get_response_carousel_page(latest_response)
         context["response_index_url"] = get_response_index_url()
         context.update(build_home_share_context(request, self))
         return context

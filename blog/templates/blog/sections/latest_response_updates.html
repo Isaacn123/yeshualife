@@ -1,9 +1,15 @@
-{# Expects: latest_response_updates, optional response_index_url #}
+{# Expects: latest_response_updates, optional response_carousel_page, response_index_url #}
 {% load wagtailcore_tags wagtailimages_tags %}
 {% if latest_response_updates %}
 <section class="yl-home-response" aria-labelledby="yl-home-response-heading">
   <div class="container">
     {% include "blog/sections/home_section_head.html" with eyebrow="Our Response" title="Latest response updates" lead="Field stories of relief, care, and hope as Yeshua Life answers the cry of communities in need." title_id="yl-home-response-heading" section_class="yl-home-section-head--response" %}
+
+    {% if response_carousel_page %}
+      <div class="yl-home-response__slider-wrap">
+        {% include "partials/page_image_carousel.html" with page=response_carousel_page %}
+      </div>
+    {% endif %}
 
     <div class="yl-home-response__layout">
       {% for item in latest_response_updates %}
