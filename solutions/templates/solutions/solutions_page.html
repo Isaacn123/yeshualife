@@ -27,19 +27,20 @@
 
             <div class="container-medium">
                 <div class="blog-content-grid">
-                    <div>{% include "blog/aside.html" with page=page %}</div>
-                    <div>
+                    <div class="yl-detail-sidebar-col">
+                      {% include "blog/aside.html" with page=page %}
+                    </div>
+                    <div class="yl-detail-body-col">
                         <p>{{page.body|richtext}}</p>
                        
                            <!-- Add this: -->
                            {% comment %} {% image page.image fill-320x240 %} {% endcomment %}
                            <p>{{ page.caption }}</p>
                     </div>
+                    <div class="yl-detail-carousel">
+                      {% include "partials/page_image_carousel.html" with page=page full_bleed=True %}
+                    </div>
                 </div>
-            </div>
-
-            <div class="yl-detail-carousel">
-              {% include "partials/page_image_carousel.html" with page=page full_bleed=True %}
             </div>
 
             <div class="container-medium yl-detail-carousel__after">

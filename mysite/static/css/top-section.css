@@ -2871,13 +2871,34 @@ body.yl-home-event-share-open {
   }
 }
 
-/* Detail pages: full-width slider below description (not squeezed in text column) */
+/* Detail pages: slider below social share, sized like feature image on mobile */
+body.template-blogpage .yl-detail-sidebar-col,
+body.template-blogpage .yl-detail-body-col {
+  min-width: 0;
+  width: 100%;
+}
+
 body.template-blogpage .yl-detail-carousel {
+  grid-column: 1 / -1;
   width: 100%;
   max-width: 100%;
-  margin: 1.25rem 0 1.5rem;
-  padding: 0 12px;
+  margin: 0.75rem 0 0;
+  padding: 0;
   box-sizing: border-box;
+}
+
+@media (max-width: 767.98px) {
+  body.template-blogpage .blog-content-grid > .yl-detail-body-col {
+    order: 1;
+  }
+
+  body.template-blogpage .blog-content-grid > .yl-detail-sidebar-col {
+    order: 2;
+  }
+
+  body.template-blogpage .blog-content-grid > .yl-detail-carousel {
+    order: 3;
+  }
 }
 
 body.template-blogpage .yl-detail-carousel .yl-page-carousel {
@@ -2887,28 +2908,52 @@ body.template-blogpage .yl-detail-carousel .yl-page-carousel {
   padding: 0;
 }
 
+body.template-blogpage .yl-detail-carousel .yl-page-carousel__slider {
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+body.template-blogpage .yl-detail-carousel .yl-page-carousel__inner {
+  border-radius: 0 !important;
+}
+
+/* Match feature image (.image-blog-main): full width, natural height */
 body.template-blogpage .yl-detail-carousel .yl-page-carousel__img {
-  height: clamp(200px, 48vw, 320px);
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center center;
 }
 
 body.template-blogpage .yl-detail-carousel__after {
   width: 100%;
   max-width: min(960px, 100%);
-  margin: 0 auto;
+  margin: 1rem auto 0;
   padding: 0 12px 0.5rem;
   box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
   body.template-blogpage .yl-detail-carousel {
-    padding: 0;
-    max-width: min(960px, 100%);
-    margin-left: auto;
-    margin-right: auto;
+    margin-top: 1.5rem;
+  }
+
+  body.template-blogpage .yl-detail-carousel .yl-page-carousel__slider,
+  body.template-blogpage .yl-detail-carousel .yl-page-carousel__inner {
+    border-radius: 12px !important;
+  }
+
+  body.template-blogpage .yl-detail-carousel .yl-page-carousel__slider {
+    background: #1a1a1a;
   }
 
   body.template-blogpage .yl-detail-carousel .yl-page-carousel__img {
-    height: clamp(240px, 32vw, 380px);
+    height: auto !important;
+    max-height: 480px !important;
+    object-fit: cover !important;
   }
 
   body.template-blogpage .yl-detail-carousel__after {
