@@ -2950,10 +2950,13 @@ body.template-blogpage .yl-detail-carousel__after {
     background: #1a1a1a;
   }
 
+  /* Keep a consistent carousel height on desktop / full layout */
   body.template-blogpage .yl-detail-carousel .yl-page-carousel__img {
-    height: auto !important;
-    max-height: 480px !important;
+    width: 100% !important;
+    height: clamp(280px, 36vw, 420px) !important;
+    max-height: none !important;
     object-fit: cover !important;
+    object-position: center center;
   }
 
   body.template-blogpage .yl-detail-carousel__after {
