@@ -25,7 +25,6 @@
 
             <div class="blog-metadata-large"><p class="meta"> {{page.date}}</p></div>
           </div>
-          {% include "partials/page_image_carousel.html" with page=page %}
           <section class="section blog-content-section">
 
             <div class="container-medium">
@@ -37,6 +36,8 @@
                            <!-- Add this: -->
                            {% comment %} {% image page.image fill-320x240 %} {% endcomment %}
                            <p>{{ page.caption }}</p>
+
+                        {% include "partials/page_image_carousel.html" with page=page %}
                            
                         <p><a href="{{page.get_parent.url}}">Return Home</a></p>
                     </div>
