@@ -1167,3 +1167,38 @@ body.template-blogpage .yl-article__richtext p:empty {
     height: auto !important;
   }
 }
+
+/* Detail-page carousel (Response, Karamoja, etc.) */
+.yl-page-carousel {
+  width: 100%;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.yl-page-carousel__slider {
+  background: #1a1a1a;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(44, 36, 25, 0.12);
+}
+
+.yl-page-carousel__inner {
+  min-height: 200px;
+}
+
+.yl-page-carousel__img {
+  width: 100%;
+  height: auto;
+  max-height: 560px;
+  object-fit: cover;
+}
+
+.yl-page-carousel .carousel-control-prev,
+.yl-page-carousel .carousel-control-next {
+  width: 12%;
+}
+
+.yl-page-carousel .carousel-indicators {
+  margin-bottom: 0.75rem;
+}

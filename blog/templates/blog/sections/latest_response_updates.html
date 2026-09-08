@@ -1,0 +1,112 @@
+{# Expects: latest_response_updates, optional response_index_url #}
+{% load wagtailcore_tags wagtailimages_tags %}
+{% if latest_response_updates %}
+<section class="yl-home-response" aria-labelledby="yl-home-response-heading">
+  <div class="container">
+    {% include "blog/sections/home_section_head.html" with eyebrow="Our Response" title="Latest response updates" lead="Field stories of relief, care, and hope as Yeshua Life answers the cry of communities in need." title_id="yl-home-response-heading" section_class="yl-home-section-head--response" %}
+
+    <div class="yl-home-response__layout">
+      {% for item in latest_response_updates %}
+        {% if forloop.first %}
+          <article class="yl-home-response__feature">
+            <a href="{% pageurl item %}" class="yl-home-response__feature-link">
+              <div class="yl-home-response__feature-media">
+                {% if item.specific.image %}
+                  {% image item.specific.image fill-1200x750 as resp_hero %}
+                  <img
+                    src="{{ resp_hero.url }}"
+                    alt=""
+                    class="yl-home-response__feature-img"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                {% else %}
+                  <div class="yl-home-response__feature-fallback" aria-hidden="true"></div>
+                {% endif %}
+                <span class="yl-home-response__feature-scrim" aria-hidden="true"></span>
+              </div>
+              <div class="yl-home-response__feature-copy">
+                <p class="yl-home-response__kicker">Featured update</p>
+                {% if item.specific.date or item.first_published_at %}
+                  <time
+                    class="yl-home-response__date"
+                    datetime="{% if item.specific.date %}{{ item.specific.date|date:'Y-m-d' }}{% else %}{{ item.first_published_at|date:'Y-m-d' }}{% endif %}"
+                  >
+                    {% if item.specific.date %}
+                      {{ item.specific.date|date:"M j, Y" }}
+                    {% else %}
+                      {{ item.first_published_at|date:"M j, Y" }}
+                    {% endif %}
+                  </time>
+                {% endif %}
+                <h3 class="yl-home-response__feature-title">{{ item.title }}</h3>
+                {% if item.specific.intro %}
+                  <p class="yl-home-response__feature-lead">{{ item.specific.intro|truncatewords:28 }}</p>
+                {% endif %}
+                <span class="yl-home-response__cta">
+                  Read the response
+                  <span class="yl-home-response__cta-arrow" aria-hidden="true">→</span>
+                </span>
+              </div>
+            </a>
+          </article>
+          {% if latest_response_updates|length > 1 %}
+            <div class="yl-home-response__stack" role="list">
+          {% endif %}
+        {% else %}
+          <article class="yl-home-response__card" role="listitem">
+            <a href="{% pageurl item %}" class="yl-home-response__card-link">
+              <div class="yl-home-response__card-media">
+                {% if item.specific.image %}
+                  {% image item.specific.image fill-640x420 as resp_thumb %}
+                  <img
+                    src="{{ resp_thumb.url }}"
+                    alt=""
+                    class="yl-home-response__card-img"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                {% else %}
+                  <div class="yl-home-response__card-fallback" aria-hidden="true"></div>
+                {% endif %}
+              </div>
+              <div class="yl-home-response__card-copy">
+                {% if item.specific.date or item.first_published_at %}
+                  <time
+                    class="yl-home-response__date"
+                    datetime="{% if item.specific.date %}{{ item.specific.date|date:'Y-m-d' }}{% else %}{{ item.first_published_at|date:'Y-m-d' }}{% endif %}"
+                  >
+                    {% if item.specific.date %}
+                      {{ item.specific.date|date:"M j, Y" }}
+                    {% else %}
+                      {{ item.first_published_at|date:"M j, Y" }}
+                    {% endif %}
+                  </time>
+                {% endif %}
+                <h3 class="yl-home-response__card-title">{{ item.title }}</h3>
+                {% if item.specific.intro %}
+                  <p class="yl-home-response__card-lead">{{ item.specific.intro|truncatewords:16 }}</p>
+                {% endif %}
+                <span class="yl-home-response__card-cta">
+                  Continue reading
+                  <span aria-hidden="true">→</span>
+                </span>
+              </div>
+            </a>
+          </article>
+        {% endif %}
+        {% if forloop.last and latest_response_updates|length > 1 %}
+            </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="yl-home-response__footer">
+      <a class="yl-home-response__all" href="{{ response_index_url|default:'/response/' }}">
+        View all response updates
+        <span class="yl-home-response__all-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}

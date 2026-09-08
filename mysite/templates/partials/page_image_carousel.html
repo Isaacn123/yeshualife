@@ -1,0 +1,57 @@
+{# Bootstrap image carousel for page.carousel StreamField (carousel_item.image). #}
+{% load wagtailimages_tags %}
+{% if page.carousel %}
+  <div class="yl-page-carousel container-medium my-4">
+    <div
+      id="ylPageCarousel-{{ page.id }}"
+      class="carousel slide yl-page-carousel__slider"
+      data-bs-ride="carousel"
+      data-bs-interval="5000"
+    >
+      {% if page.carousel|length > 1 %}
+        <div class="carousel-indicators">
+          {% for block in page.carousel %}
+            <button
+              type="button"
+              data-bs-target="#ylPageCarousel-{{ page.id }}"
+              data-bs-slide-to="{{ forloop.counter0 }}"
+              {% if forloop.first %}class="active" aria-current="true"{% endif %}
+              aria-label="Slide {{ forloop.counter }}"
+            ></button>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="carousel-inner yl-page-carousel__inner rounded overflow-hidden">
+        {% for block in page.carousel %}
+          {% if block.block_type == "carousel_item" and block.value.image %}
+            <div class="carousel-item{% if forloop.first %} active{% endif %}">
+              {% image block.value.image fill-1200x675 class="d-block w-100 yl-page-carousel__img" %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      {% if page.carousel|length > 1 %}
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#ylPageCarousel-{{ page.id }}"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#ylPageCarousel-{{ page.id }}"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
