@@ -2871,13 +2871,13 @@ body.yl-home-event-share-open {
 
 .yl-home-response__slider-wrap .yl-page-carousel__slider {
   background: #1a1a1a;
-  border-radius: 0;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: none;
 }
 
 .yl-home-response__slider-wrap .yl-page-carousel__inner {
-  border-radius: 0 !important;
+  border-radius: 12px !important;
 }
 
 .yl-home-response__slider-wrap .yl-page-carousel__img {
@@ -3086,6 +3086,251 @@ body.yl-home-event-share-open {
   .yl-home-response__all,
   .yl-home-response__cta-arrow,
   .yl-home-response__all-arrow {
+    transition: none;
+  }
+}
+
+/* Homepage Machinery & Production slider */
+.yl-home-production {
+  --yl-prod-font: "Plus Jakarta Sans", "Segoe UI", Roboto, sans-serif;
+  --yl-prod-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --yl-prod-text: #2c2419;
+  --yl-prod-muted: #6b6258;
+  --yl-prod-accent: #a06b3a;
+  --yl-prod-card: #fffdf9;
+  --yl-prod-border: rgba(80, 60, 40, 0.14);
+
+  position: relative;
+  padding: 3.75rem 0 4rem;
+  background:
+    radial-gradient(ellipse 70% 55% at 85% 0%, rgba(196, 140, 80, 0.18), transparent 55%),
+    linear-gradient(180deg, #f3ebe0 0%, #ebe1d2 100%);
+}
+
+.yl-home-section-head--production {
+  margin-bottom: 2rem;
+}
+
+.yl-home-production__slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.yl-home-production__viewport {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.yl-home-production__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.yl-home-production__track {
+  display: flex;
+  gap: 1.1rem;
+  padding: 0.25rem 0.15rem 0.75rem;
+}
+
+.yl-home-production__slide {
+  flex: 0 0 min(78vw, 300px);
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .yl-home-production__slide {
+    flex-basis: calc((100% - 2.2rem) / 3);
+  }
+}
+
+@media (min-width: 1100px) {
+  .yl-home-production__slide {
+    flex-basis: calc((100% - 3.3rem) / 4);
+  }
+}
+
+.yl-home-production__nav {
+  flex: 0 0 auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--yl-prod-border);
+  background: rgba(255, 253, 249, 0.92);
+  color: var(--yl-prod-text);
+  font-size: 1.45rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+}
+
+.yl-home-production__nav:hover:not(:disabled),
+.yl-home-production__nav:focus-visible:not(:disabled) {
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+.yl-home-production__nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+@media (max-width: 575.98px) {
+  .yl-home-production__nav {
+    display: none;
+  }
+}
+
+.yl-home-production-card {
+  height: 100%;
+}
+
+.yl-home-production-card__link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  background: var(--yl-prod-card);
+  border: 1px solid var(--yl-prod-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(44, 36, 25, 0.07);
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.yl-home-production-card__link:hover,
+.yl-home-production-card__link:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 36px rgba(44, 36, 25, 0.11);
+  color: inherit;
+}
+
+.yl-home-production-card__media {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #2c2419;
+}
+
+.yl-home-production-card__img,
+.yl-home-production-card__fallback {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.yl-home-production-card__fallback {
+  background: linear-gradient(145deg, #c49a6c, #8b6a42 55%, #5c4428);
+}
+
+.yl-home-production-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+  padding: 1rem 1.05rem 1.15rem;
+}
+
+.yl-home-production-card__date {
+  font-family: var(--yl-prod-font);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--yl-prod-muted);
+}
+
+.yl-home-production-card__title {
+  margin: 0;
+  font-family: var(--yl-prod-display);
+  font-size: 1.12rem;
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -0.015em;
+  color: var(--yl-prod-text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.yl-home-production-card__lead {
+  margin: 0;
+  font-family: var(--yl-prod-font);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--yl-prod-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+.yl-home-production-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
+  font-family: var(--yl-prod-font);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--yl-prod-accent);
+}
+
+.yl-home-production__footer {
+  margin-top: 1.75rem;
+  text-align: center;
+}
+
+.yl-home-production__all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--yl-prod-font);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--yl-prod-accent);
+  text-decoration: none;
+  padding: 0.65rem 1.15rem;
+  border: 1px solid rgba(160, 107, 58, 0.3);
+  border-radius: 999px;
+  background: rgba(255, 253, 249, 0.75);
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.yl-home-production__all:hover,
+.yl-home-production__all:focus-visible {
+  background: #fffdf9;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(44, 36, 25, 0.08);
+  color: var(--yl-prod-accent);
+}
+
+.yl-home-production__all-arrow {
+  transition: transform 0.2s ease;
+}
+
+.yl-home-production__all:hover .yl-home-production__all-arrow {
+  transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yl-home-production-card__link,
+  .yl-home-production__all,
+  .yl-home-production__all-arrow,
+  .yl-home-production__viewport {
+    scroll-behavior: auto;
     transition: none;
   }
 }
