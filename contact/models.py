@@ -48,6 +48,13 @@ class ContactIndexPage(Page):
     FieldPanel('body_content')
     ]
 
+    def get_context(self, request, *args, **kwargs):
+        from .forms import ContactMessageForm
+
+        context = super().get_context(request, *args, **kwargs)
+        context["form"] = ContactMessageForm()
+        return context
+
 class VideoBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=True)
     video_url = blocks.URLBlock(required=True)

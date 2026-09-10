@@ -10,7 +10,8 @@ SECRET_KEY = "django-insecure-9@865u5i22(b6n03#k396q%a84pfbnqsj^*+ua9qp-l7k3#5-!
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = ["*"]
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_* / CONTACT_TO_EMAIL are configured in base.py from .env
+# (set EMAIL_HOST + credentials so contact form mail is delivered).
 
 try:
     from .local import *

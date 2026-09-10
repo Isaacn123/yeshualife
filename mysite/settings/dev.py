@@ -12,7 +12,7 @@ SECRET_KEY = "django-insecure-9@865u5i22(b6n03#k396q%a84pfbnqsj^*+ua9qp-l7k3#5-!
 ALLOWED_HOSTS = ['yeshualifeug.com', 'www.yeshualifeug.com', '167.99.117.231', '127.0.0.1']
 # ALLOWED_HOSTS = ['http://yeshualifeug.com', 'http://167.99.117.231']
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_* configured in base.py from .env (defaults to console when EMAIL_HOST unset)
 
 
 try:

@@ -30,6 +30,7 @@ urlpatterns = [
     path("og-image/<int:image_id>/", og_share_image, name="og_share_image"),
     path("", include("blog.urls")),
     path("", include("global_solutions.urls")),
+    path("", include("contact.urls")),
     path('google334554454.html', TemplateView.as_view(template_name="google7c516833d92b99b0.html")),
     # path('feeds/latest/', LatestEntriesFeed(), name='latest_feed'),
 

@@ -401,3 +401,35 @@ try:
     GLOBAL_SOLUTIONS_PUBLIC_VIDEO_CAP = int(os.environ.get("GLOBAL_SOLUTIONS_PUBLIC_VIDEO_CAP", "72"))
 except ValueError:
     GLOBAL_SOLUTIONS_PUBLIC_VIDEO_CAP = 72
+
+# Contact form destination (website messages)
+CONTACT_TO_EMAIL = os.environ.get("CONTACT_TO_EMAIL", "info@yeshualifeug.com").strip()
+DEFAULT_FROM_EMAIL = os.environ.get(
+    "DEFAULT_FROM_EMAIL", CONTACT_TO_EMAIL or "info@yeshualifeug.com"
+).strip()
+SERVER_EMAIL = os.environ.get("SERVER_EMAIL", DEFAULT_FROM_EMAIL).strip()
+
+# Optional SMTP — if EMAIL_HOST is set, use SMTP; otherwise console (dev-friendly).
+_email_host = os.environ.get("EMAIL_HOST", "").strip()
+if _email_host:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = _email_host
+    EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "").strip()
+    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "").strip()
+    EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "true").lower() in (
+        "1",
+        "true",
+        "yes",
+        "on",
+    )
+    EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "false").lower() in (
+        "1",
+        "true",
+        "yes",
+        "on",
+    )
+else:
+    EMAIL_BACKEND = os.environ.get(
+        "EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend"
+    )

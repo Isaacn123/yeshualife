@@ -3468,3 +3468,238 @@ body.template-blogpage .wrapper > .d-flex > .content {
   }
 }
 
+/* —— Lasting Solutions (/solution/) hero —— */
+.yl-solutions-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #0b0b0b;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.yl-solutions-hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+.yl-solutions-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #0b0b0b;
+}
+
+.yl-solutions-hero__media.overlay:before {
+  z-index: 1;
+  background: linear-gradient(
+    105deg,
+    rgba(8, 8, 8, 0.72) 0%,
+    rgba(8, 8, 8, 0.45) 48%,
+    rgba(8, 8, 8, 0.28) 100%
+  );
+}
+
+.yl-solutions-hero__poster,
+.yl-solutions-hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.yl-solutions-hero__video {
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+
+.yl-solutions-hero__video.is-ready {
+  opacity: 1;
+}
+
+.yl-solutions-hero__poster {
+  z-index: 0;
+}
+
+.yl-solutions-hero__title {
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.06em;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+}
+
+.yl-solutions-hero__lead {
+  max-width: 28rem;
+  line-height: 1.45;
+  opacity: 0.95;
+}
+
+.yl-solutions-hero__cta {
+  border-width: 1.5px;
+  padding: 0.65rem 1.35rem;
+  letter-spacing: 0.04em;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.yl-solutions-hero__cta:hover,
+.yl-solutions-hero__cta:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+#YeshualifeAbout {
+  padding-top: clamp(3.5rem, 8vw, 6.5rem) !important;
+  padding-bottom: clamp(3.5rem, 8vw, 6.5rem) !important;
+}
+
+#YeshualifeAbout .lead {
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  line-height: 1.65;
+  color: #555;
+}
+
+#YeshualifeAbout .btn {
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 767.98px) {
+  .yl-solutions-hero .row.min-vh-100 {
+    min-height: 88svh;
+    padding-top: 5.5rem;
+    padding-bottom: 3rem;
+  }
+
+  .yl-solutions-hero__title {
+    font-size: clamp(2.1rem, 9vw, 3rem) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yl-solutions-hero__video {
+    display: none;
+  }
+
+  .yl-solutions-hero__cta {
+    transition: none;
+  }
+}
+
+/* —— Contact page —— */
+.yl-contact {
+  --yl-contact-ink: #1c1c1c;
+  background: #fff;
+}
+
+.yl-contact__row {
+  min-height: calc(100vh - 4.5rem);
+  min-height: calc(100svh - 4.5rem);
+}
+
+.yl-contact__panel {
+  display: flex;
+  align-items: center;
+  background: #fff;
+}
+
+.yl-contact__inner {
+  width: 100%;
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: clamp(1.75rem, 4vw, 3rem) clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.yl-contact__title {
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  margin-bottom: 1.25rem;
+  color: var(--yl-contact-ink);
+  text-underline-offset: 0.15em;
+}
+
+.yl-contact__details p {
+  line-height: 1.55;
+  color: #555;
+}
+
+.yl-contact__shout {
+  margin-top: 1.75rem;
+  margin-bottom: 0.85rem;
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+}
+
+.yl-contact__form .form-control {
+  border-radius: 0.35rem;
+  padding: 0.7rem 0.85rem;
+}
+
+.yl-contact__message {
+  min-height: 6.5rem;
+  max-height: 10rem;
+  resize: vertical;
+}
+
+.yl-contact__hp {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+}
+
+.yl-contact__send {
+  padding: 0.7rem 1rem;
+  letter-spacing: 0.03em;
+}
+
+.yl-contact__alert {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.yl-contact__visual {
+  position: relative;
+  min-height: 18rem;
+  background: #111;
+  overflow: hidden;
+}
+
+.yl-contact__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 18rem;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (min-width: 992px) {
+  .yl-contact__visual {
+    min-height: 100%;
+  }
+
+  .yl-contact__image {
+    position: absolute;
+    inset: 0;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .yl-contact__row {
+    min-height: 0;
+  }
+
+  .yl-contact__visual {
+    order: -1;
+    max-height: 42vh;
+  }
+
+  .yl-contact__image {
+    max-height: 42vh;
+  }
+}
+
