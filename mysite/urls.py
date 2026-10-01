@@ -13,7 +13,7 @@ from wagtail.documents import urls as wagtaildocs_urls
 from search import views as search_views
 from django.views.generic import TemplateView
 
-from mysite.views import og_share_image, robots_txt
+from mysite.views import about_page, og_share_image, robots_txt
 
 sitemaps = {
     "wagtail": Sitemap(),
@@ -27,6 +27,7 @@ urlpatterns = [
     path("search/", search_views.search, name="search"),
     path("api_auth/", include('payments.urls')),
     path("robots.txt", robots_txt, name="robots_txt"),
+    path("about/", about_page, name="about"),
     path("og-image/<int:image_id>/", og_share_image, name="og_share_image"),
     path("", include("blog.urls")),
     path("", include("global_solutions.urls")),

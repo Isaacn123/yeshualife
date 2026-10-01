@@ -1,7 +1,13 @@
 from django.http import FileResponse, Http404, HttpResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
+
+
+@require_GET
+def about_page(request):
+    """Public About page — not a Wagtail page, so it always exists at /about/."""
+    return render(request, "about.html")
 
 
 def robots_txt(request):

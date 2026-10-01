@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+{% block title_suffix %} - Yeshua Life{% endblock %}
+
+{% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+{% include "nav_bar.html" %}
+
+<section class="yl-about-hero">
+  <div class="yl-about-hero__media">
+    <img src="{% static 'images/karamoja_re.jpg' %}" alt="Yeshua Life work in Karamoja" width="1200" height="900">
+  </div>
+  <div class="yl-about-hero__copy">
+    <p class="yl-about-hero__eyebrow">Yeshua Life</p>
+    <h1 class="yl-about-hero__title">Promoting hope, ending hunger.</h1>
+    <p class="yl-about-hero__lead">
+      We stand with families in Karamoja — from immediate relief to lasting agriculture —
+      so no one has to survive on leaves.
+    </p>
+    <div class="yl-about-hero__actions">
+      <a class="btn btn-danger" href="/payments">Pay Online</a>
+      <a class="btn btn-outline-dark" href="/contact/">Contact us</a>
+    </div>
+  </div>
+</section>
+
+<section class="yl-about-story" aria-labelledby="yl-about-story-heading">
+  {% include "blog/sections/home_section_head.html" with eyebrow="Who we are" title="A pillar of hope in Karamoja" lead="Climate adversity, drought, and failed harvests have driven widespread famine. Yeshua Life exists to answer that cry with food, skills, and lasting solutions." heading_id="yl-about-story-heading" %}
+  <blockquote class="yl-about-quote">
+    <p>
+      Karamoja’s challenges resonate deeply. Where families are driven to subsist on leaves,
+      Yeshua Life remains steadfast in its mission to alleviate hunger.
+    </p>
+    <footer>Robert Kayanja, Founder</footer>
+  </blockquote>
+</section>
+
+<section class="yl-about-work" aria-labelledby="yl-about-work-heading">
+  {% include "blog/sections/home_section_head.html" with eyebrow="How we serve" title="Agriculture that lasts" lead="Our work spans the field, the workshop, and the community." heading_id="yl-about-work-heading" %}
+  <div class="yl-about-grid">
+    <article class="yl-about-card">
+      <h3>Crop production</h3>
+      <p>Seeds, planting, and harvests that turn dry seasons into reliable food.</p>
+    </article>
+    <article class="yl-about-card">
+      <h3>Irrigation</h3>
+      <p>Water infrastructure so communities are not left waiting on the rains.</p>
+    </article>
+    <article class="yl-about-card">
+      <h3>Agro-processing</h3>
+      <p>Machinery and food value addition that keep harvests useful longer.</p>
+    </article>
+    <article class="yl-about-card">
+      <h3>Animal husbandry</h3>
+      <p>Livestock that strengthens household income alongside the fields.</p>
+    </article>
+    <article class="yl-about-card">
+      <h3>Skills for women and youth</h3>
+      <p>Training so the next season is led by the community itself.</p>
+    </article>
+    <article class="yl-about-card">
+      <h3>Land clearing</h3>
+      <p>Opening ground so new farms can take root where hunger has been the rule.</p>
+    </article>
+  </div>
+</section>
+
+<section class="yl-about-programs" aria-labelledby="yl-about-programs-heading">
+  {% include "blog/sections/home_section_head.html" with eyebrow="Explore" title="Where to go next" heading_id="yl-about-programs-heading" %}
+  <div class="yl-about-links">
+    <a href="/karamoja">Karamoja Cry</a>
+    <a href="/response">Our Response</a>
+    <a href="/solution">Lasting Solutions</a>
+    <a href="/global-solutions/">Global Solutions</a>
+    <a href="/production">Machinery &amp; Production</a>
+    <a href="/awards">Awards</a>
+  </div>
+</section>
+
+<section class="yl-about-visit">
+  <div>
+    <h2>Visit or write</h2>
+    <p>Rubaga Road, off Nabunya, Kampala, Uganda</p>
+    <p><a href="tel:+256740769952">+256-740-769-952</a></p>
+    <p><a href="mailto:info@yeshualifeug.com">info@yeshualifeug.com</a></p>
+  </div>
+  <a class="btn btn-danger" href="/contact/">Send a message</a>
+</section>
+{% endblock %}
+
+{% block footer %}
+{% include "blog/footer.html" %}
+{% endblock %}
