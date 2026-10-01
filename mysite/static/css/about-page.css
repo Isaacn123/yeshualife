@@ -1,0 +1,181 @@
+.yl-org {
+  --ink: #1a1a1a;
+  --muted: #4a4a4a;
+  --line: #e4e4e4;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 3.5rem 1.25rem 4.5rem;
+  color: var(--ink);
+  font-family: "Plus Jakarta Sans", "Segoe UI", Roboto, sans-serif;
+  background: #fff;
+}
+
+.yl-org__mast {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.yl-org__org {
+  margin: 0 0 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.yl-org h1 {
+  margin: 0 0 1rem;
+  font-family: Fraunces, Georgia, "Times New Roman", serif;
+  font-size: clamp(2.5rem, 6vw, 3.75rem);
+  font-weight: 560;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.yl-org__lead {
+  margin: 0;
+  max-width: 38rem;
+  font-size: 1.2rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.yl-org__figure {
+  margin: 2rem 0 0;
+}
+
+.yl-org__figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 460px;
+  object-fit: cover;
+  background: #111;
+}
+
+.yl-org__figure figcaption {
+  margin-top: 0.55rem;
+  font-size: 0.82rem;
+  color: #777;
+}
+
+.yl-org__block {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  gap: 1.5rem 2rem;
+  padding: 2.25rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.yl-org__block h2 {
+  margin: 0.15rem 0 0;
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 560;
+}
+
+.yl-org__prose p {
+  margin: 0 0 1rem;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: #333;
+}
+
+.yl-org__prose p:last-child {
+  margin-bottom: 0;
+}
+
+.yl-org__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.yl-org__list li + li {
+  border-top: 1px solid var(--line);
+}
+
+.yl-org__list a {
+  display: grid;
+  grid-template-columns: 9.5rem 1fr;
+  gap: 1rem;
+  padding: 0.95rem 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.yl-org__list a:hover span:first-child {
+  text-decoration: underline;
+}
+
+.yl-org__list a span:first-child {
+  font-weight: 600;
+}
+
+.yl-org__list a span:last-child {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.yl-org address {
+  font-style: normal;
+}
+
+.yl-org address p {
+  margin: 0 0 0.65rem;
+  line-height: 1.55;
+}
+
+.yl-org address a {
+  color: inherit;
+}
+
+.yl-org__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.25rem 0 0;
+}
+
+.yl-org__btn {
+  display: inline-block;
+  padding: 0.55rem 1rem;
+  background: #1a1a1a;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.yl-org__btn:hover {
+  color: #fff;
+  background: #333;
+}
+
+.yl-org__btn--quiet {
+  background: transparent;
+  color: #1a1a1a;
+  border: 1px solid #1a1a1a;
+}
+
+.yl-org__btn--quiet:hover {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+@media (max-width: 720px) {
+  .yl-org {
+    padding-top: 2.25rem;
+  }
+
+  .yl-org__block,
+  .yl-org__list a {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+  }
+
+  .yl-org__list a {
+    padding: 0.85rem 0;
+  }
+}

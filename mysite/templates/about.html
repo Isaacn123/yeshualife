@@ -1,98 +1,103 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}About Us{% endblock %}
+{% block title %}About{% endblock %}
 {% block title_suffix %} - Yeshua Life{% endblock %}
 
 {% block extra_css %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/about-page.css' %}?v=20261001b">
 {% endblock %}
 
 {% block content %}
 {% include "nav_bar.html" %}
 
-<section class="yl-about-hero">
-  <div class="yl-about-hero__media">
-    <img src="{% static 'images/karamoja_re.jpg' %}" alt="Yeshua Life work in Karamoja" width="1200" height="900">
-  </div>
-  <div class="yl-about-hero__copy">
-    <p class="yl-about-hero__eyebrow">Yeshua Life</p>
-    <h1 class="yl-about-hero__title">Promoting hope, ending hunger.</h1>
-    <p class="yl-about-hero__lead">
-      We stand with families in Karamoja — from immediate relief to lasting agriculture —
-      so no one has to survive on leaves.
+<article class="yl-org">
+  <header class="yl-org__mast">
+    <p class="yl-org__org">Yeshua Life Limited</p>
+    <h1>About</h1>
+    <p class="yl-org__lead">
+      Yeshua Life is a Ugandan organization based in Kampala. We work in the Karamoja region to reduce hunger through food relief, crop production, irrigation, and food processing.
     </p>
-    <div class="yl-about-hero__actions">
-      <a class="btn btn-danger" href="/payments">Pay Online</a>
-      <a class="btn btn-outline-dark" href="/contact/">Contact us</a>
+  </header>
+
+  <figure class="yl-org__figure">
+    <img src="{% static 'images/karamoja_re.jpg' %}" alt="Agricultural work supported by Yeshua Life in Karamoja" width="1600" height="900">
+    <figcaption>Karamoja, Uganda</figcaption>
+  </figure>
+
+  <section class="yl-org__block">
+    <h2>The organization</h2>
+    <div class="yl-org__prose">
+      <p>
+        Karamoja faces repeated drought, failed harvests, and food shortages. Households have at times had little to eat beyond wild leaves. Yeshua Life was established to respond to that need, first with relief and then with farming that can continue after the emergency.
+      </p>
+      <p>
+        The work is practical. We support planting and harvest, irrigation, land preparation, livestock, and training for women and young people in agriculture. Processing and machinery are part of the same effort, so food produced in the region can be kept and used.
+      </p>
+      <p>
+        The organization is led by its founder, Robert Kayanja, and operates from Rubaga Road, off Nabunya, in Kampala.
+      </p>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="yl-about-story" aria-labelledby="yl-about-story-heading">
-  {% include "blog/sections/home_section_head.html" with eyebrow="Who we are" title="A pillar of hope in Karamoja" lead="Climate adversity, drought, and failed harvests have driven widespread famine. Yeshua Life exists to answer that cry with food, skills, and lasting solutions." heading_id="yl-about-story-heading" %}
-  <blockquote class="yl-about-quote">
-    <p>
-      Karamoja’s challenges resonate deeply. Where families are driven to subsist on leaves,
-      Yeshua Life remains steadfast in its mission to alleviate hunger.
+  <section class="yl-org__block">
+    <h2>Areas of work</h2>
+    <ul class="yl-org__list">
+      <li>
+        <a href="/karamoja">
+          <span>Karamoja</span>
+          <span>The food crisis in the region, and why the work is based there.</span>
+        </a>
+      </li>
+      <li>
+        <a href="/response">
+          <span>Relief</span>
+          <span>Food and direct support for households facing acute shortage.</span>
+        </a>
+      </li>
+      <li>
+        <a href="/solution">
+          <span>Farming</span>
+          <span>Crop production, irrigation, and community cultivation meant to last beyond a single season.</span>
+        </a>
+      </li>
+      <li>
+        <a href="/production">
+          <span>Production</span>
+          <span>Machinery, agro-processing, and food value addition.</span>
+        </a>
+      </li>
+      <li>
+        <a href="/landclearing">
+          <span>Land preparation</span>
+          <span>Clearing and opening ground so farms can be established.</span>
+        </a>
+      </li>
+      <li>
+        <a href="/global-solutions/">
+          <span>Field media</span>
+          <span>Video from the programs, published under Global Solutions.</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="yl-org__block yl-org__office">
+    <h2>Office</h2>
+    <address>
+      <p>Rubaga Road, off Nabunya<br>Kampala, Uganda</p>
+      <p><a href="tel:+256740769952">+256 740 769 952</a></p>
+      <p><a href="mailto:info@yeshualifeug.com">info@yeshualifeug.com</a></p>
+    </address>
+    <p class="yl-org__actions">
+      <a class="yl-org__btn" href="/contact/">Contact</a>
+      <a class="yl-org__btn yl-org__btn--quiet" href="/payments">Pay online</a>
     </p>
-    <footer>Robert Kayanja, Founder</footer>
-  </blockquote>
-</section>
-
-<section class="yl-about-work" aria-labelledby="yl-about-work-heading">
-  {% include "blog/sections/home_section_head.html" with eyebrow="How we serve" title="Agriculture that lasts" lead="Our work spans the field, the workshop, and the community." heading_id="yl-about-work-heading" %}
-  <div class="yl-about-grid">
-    <article class="yl-about-card">
-      <h3>Crop production</h3>
-      <p>Seeds, planting, and harvests that turn dry seasons into reliable food.</p>
-    </article>
-    <article class="yl-about-card">
-      <h3>Irrigation</h3>
-      <p>Water infrastructure so communities are not left waiting on the rains.</p>
-    </article>
-    <article class="yl-about-card">
-      <h3>Agro-processing</h3>
-      <p>Machinery and food value addition that keep harvests useful longer.</p>
-    </article>
-    <article class="yl-about-card">
-      <h3>Animal husbandry</h3>
-      <p>Livestock that strengthens household income alongside the fields.</p>
-    </article>
-    <article class="yl-about-card">
-      <h3>Skills for women and youth</h3>
-      <p>Training so the next season is led by the community itself.</p>
-    </article>
-    <article class="yl-about-card">
-      <h3>Land clearing</h3>
-      <p>Opening ground so new farms can take root where hunger has been the rule.</p>
-    </article>
-  </div>
-</section>
-
-<section class="yl-about-programs" aria-labelledby="yl-about-programs-heading">
-  {% include "blog/sections/home_section_head.html" with eyebrow="Explore" title="Where to go next" heading_id="yl-about-programs-heading" %}
-  <div class="yl-about-links">
-    <a href="/karamoja">Karamoja Cry</a>
-    <a href="/response">Our Response</a>
-    <a href="/solution">Lasting Solutions</a>
-    <a href="/global-solutions/">Global Solutions</a>
-    <a href="/production">Machinery &amp; Production</a>
-    <a href="/awards">Awards</a>
-  </div>
-</section>
-
-<section class="yl-about-visit">
-  <div>
-    <h2>Visit or write</h2>
-    <p>Rubaga Road, off Nabunya, Kampala, Uganda</p>
-    <p><a href="tel:+256740769952">+256-740-769-952</a></p>
-    <p><a href="mailto:info@yeshualifeug.com">info@yeshualifeug.com</a></p>
-  </div>
-  <a class="btn btn-danger" href="/contact/">Send a message</a>
-</section>
+  </section>
+</article>
 {% endblock %}
 
 {% block footer %}
