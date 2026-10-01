@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block title %}{% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}{% endblock %}
+{% block title_suffix %} - Yeshua Life{% endblock %}
+
+{% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/about-page.css' %}?v=20261001c">
+{% endblock %}
+
+{% block content %}
+{% include "nav_bar.html" %}
+
+<article class="yl-org">
+  <header class="yl-org__mast">
+    {% if page.organization_name %}
+    <p class="yl-org__org">{{ page.organization_name }}</p>
+    {% endif %}
+    <h1>{{ page.title }}</h1>
+    {% if page.lead %}
+    <p class="yl-org__lead">{{ page.lead }}</p>
+    {% endif %}
+  </header>
+
+  <figure class="yl-org__figure">
+    {% if page.hero_image %}
+    {% image page.hero_image fill-1600x900 alt=page.image_alt %}
+    {% else %}
+    <img src="{% static 'images/karamoja_re.jpg' %}" alt="{{ page.image_alt }}" width="1600" height="900">
+    {% endif %}
+    {% if page.image_caption %}
+    <figcaption>{{ page.image_caption }}</figcaption>
+    {% endif %}
+  </figure>
+
+  <section class="yl-org__block">
+    <h2>{{ page.organization_heading }}</h2>
+    <div class="yl-org__prose">
+      {{ page.body|richtext }}
+    </div>
+  </section>
+
+  <section class="yl-org__block">
+    <h2>{{ page.work_heading }}</h2>
+    <ul class="yl-org__list">
+      {% for area in page.work_areas.all %}
+      <li>
+        {% if area.url %}
+        <a class="yl-org__row" href="{{ area.url }}">
+          <span>{{ area.title }}</span>
+          <span>{{ area.summary }}</span>
+        </a>
+        {% else %}
+        <div class="yl-org__row">
+          <span>{{ area.title }}</span>
+          <span>{{ area.summary }}</span>
+        </div>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section class="yl-org__block yl-org__office">
+    <h2>{{ page.office_heading }}</h2>
+    <address>
+      {% if page.address %}
+      <p>{{ page.address|linebreaksbr }}</p>
+      {% endif %}
+      {% if page.phone %}
+      <p><a href="{{ page.phone_href }}">{{ page.phone }}</a></p>
+      {% endif %}
+      {% if page.email %}
+      <p><a href="mailto:{{ page.email }}">{{ page.email }}</a></p>
+      {% endif %}
+    </address>
+    <p class="yl-org__actions">
+      {% if page.primary_label and page.primary_url %}
+      <a class="yl-org__btn" href="{{ page.primary_url }}">{{ page.primary_label }}</a>
+      {% endif %}
+      {% if page.secondary_label and page.secondary_url %}
+      <a class="yl-org__btn yl-org__btn--quiet" href="{{ page.secondary_url }}">{{ page.secondary_label }}</a>
+      {% endif %}
+    </p>
+  </section>
+</article>
+{% endblock %}
+
+{% block footer %}
+{% include "blog/footer.html" %}
+{% endblock %}

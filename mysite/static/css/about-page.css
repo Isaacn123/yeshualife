@@ -96,7 +96,7 @@
   border-top: 1px solid var(--line);
 }
 
-.yl-org__list a {
+.yl-org__row {
   display: grid;
   grid-template-columns: 9.5rem 1fr;
   gap: 1rem;
@@ -109,11 +109,11 @@
   text-decoration: underline;
 }
 
-.yl-org__list a span:first-child {
+.yl-org__row span:first-child {
   font-weight: 600;
 }
 
-.yl-org__list a span:last-child {
+.yl-org__row span:last-child {
   color: var(--muted);
   line-height: 1.45;
 }
@@ -170,12 +170,12 @@
   }
 
   .yl-org__block,
-  .yl-org__list a {
+  .yl-org__row {
     grid-template-columns: 1fr;
     gap: 0.45rem;
   }
 
-  .yl-org__list a {
+  .yl-org__row {
     padding: 0.85rem 0;
   }
 }

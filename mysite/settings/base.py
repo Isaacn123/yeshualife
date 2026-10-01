@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     'django_social_share',
     'landClearing',
     'contact',
+    "about",
     "global_solutions",
     # 'htmlmin',
     # 'django_htmlmin',
