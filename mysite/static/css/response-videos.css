@@ -355,6 +355,11 @@ body.yl-rv-fs-open {
   background: #000;
 }
 
+/* Hide page videos while custom FS is open so native maximize cannot flash over it */
+body.yl-rv-fs-open .yl-rv video {
+  visibility: hidden !important;
+}
+
 .yl-rv-fs {
   position: fixed;
   inset: 0;
@@ -372,6 +377,14 @@ body.yl-rv-fs-open {
 
 .yl-rv-fs[hidden] {
   display: none !important;
+}
+
+.yl-rv-fs.is-open {
+  display: block !important;
+}
+
+.yl-rv-fs.is-open #yl-rv-fs-player {
+  visibility: visible !important;
 }
 
 .yl-rv-fs:fullscreen,

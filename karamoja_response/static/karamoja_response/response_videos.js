@@ -271,10 +271,25 @@
       }
     } catch (e) {}
     try {
-      if (video && video.webkitDisplayingFullscreen && video.webkitExitFullscreen) {
+      if (video && typeof video.webkitExitFullscreen === "function") {
         video.webkitExitFullscreen();
       }
     } catch (e) {}
+    try {
+      if (video && typeof video.webkitExitFullScreen === "function") {
+        video.webkitExitFullScreen();
+      }
+    } catch (e) {}
+  }
+
+  function resolveFsSlug(slug, video) {
+    loadPlaylist();
+    if (slug && playlistBySlug[slug]) return slug;
+    var fromVideo = slugFromVideoEl(video);
+    if (fromVideo && playlistBySlug[fromVideo]) return fromVideo;
+    var page = currentPageSlug();
+    if (page && playlistBySlug[page]) return page;
+    return playlistOrder[0] || "";
   }
 
   function selectDesktop(slug, shouldPlay, skipScroll) {
@@ -496,6 +511,7 @@
 
     var player = el.querySelector("#yl-rv-fs-player");
     if (player) {
+      bindFsPlayerNativeBlock(player);
       player.addEventListener("ended", function () {
         if (!fs.open) return;
         // Advance when a clip finishes
@@ -538,20 +554,24 @@
     }
   }
 
-  function openFullscreen(slug) {
-    loadPlaylist();
-    if (!slug || !playlistBySlug[slug]) return;
-    if (playlistOrder.length < 1) return;
+  function openFullscreen(slug, sourceVideo) {
+    var resolved = resolveFsSlug(slug, sourceVideo);
+    if (!resolved) return;
     var el = ensureFullscreen();
     fs.open = true;
+    fs.slug = resolved;
     document.body.classList.add("yl-rv-fs-open");
     if (isIOS()) document.body.classList.add("yl-rv-fs-open--ios");
     if (isAndroid()) document.body.classList.add("yl-rv-fs-open--android");
     el.hidden = false;
+    el.classList.add("is-open");
     setThemeColor("#000000");
-    loadFullscreenVideo(slug, true);
-    // Do not call browser requestFullscreen here — on phones it steals gestures
-    // and blocks next/previous. The fixed black overlay already fills the screen.
+    // Pause / hide page videos first so native maximize cannot stay visible.
+    pauseAllVideos(document.getElementById("yl-rv-fs-player"));
+    if (sourceVideo) exitNativeFullscreen(sourceVideo);
+    exitNativeFullscreen(null);
+    loadFullscreenVideo(resolved, true);
+    // Do not call browser requestFullscreen — phones steal gestures.
   }
 
   function closeFullscreen() {
@@ -568,8 +588,12 @@
         player.pause();
       } catch (e) {}
       player.removeAttribute("src");
+      exitNativeFullscreen(player);
     }
-    if (el) el.hidden = true;
+    if (el) {
+      el.hidden = true;
+      el.classList.remove("is-open");
+    }
   }
 
   function stepFullscreen(delta) {
@@ -586,63 +610,100 @@
     loadFullscreenVideo(next, true);
   }
 
-  function bindNativeFullscreenRedirect(video) {
-    if (!video || video._ylRvFsBound || video.id === "yl-rv-fs-player") return;
-    video._ylRvFsBound = true;
-
-    // Hide/disable the browser maximize control where supported.
+  function hardenVideoAgainstNativeFs(video) {
+    if (!video) return;
     try {
       video.setAttribute("controlslist", "nofullscreen nodownload noremoteplayback");
       video.setAttribute("playsinline", "");
       video.setAttribute("webkit-playsinline", "");
+      video.setAttribute("x5-playsinline", "true");
       video.disablePictureInPicture = true;
     } catch (e) {}
+  }
 
-    function openOursOnly() {
-      // Never enter native fullscreen first — that causes: default → then custom.
-      openFullscreen(slugFromVideoEl(video));
+  function bindFsPlayerNativeBlock(player) {
+    if (!player || player._ylRvFsBound) return;
+    player._ylRvFsBound = true;
+    hardenVideoAgainstNativeFs(player);
+
+    function stayInCustom() {
+      exitNativeFullscreen(player);
+      window.setTimeout(function () {
+        exitNativeFullscreen(player);
+      }, 0);
     }
 
-    // Replace native fullscreen APIs so they open custom directly (no native flash).
     try {
-      if (typeof video.webkitEnterFullscreen === "function") {
-        video.webkitEnterFullscreen = openOursOnly;
-      }
-      if (typeof video.webkitEnterFullScreen === "function") {
-        video.webkitEnterFullScreen = openOursOnly;
-      }
-      video.requestFullscreen = function () {
-        openOursOnly();
+      player.requestFullscreen = function () {
+        stayInCustom();
         return Promise.resolve();
       };
-      if (video.webkitRequestFullscreen) {
-        video.webkitRequestFullscreen = openOursOnly;
+      if (player.webkitRequestFullscreen) player.webkitRequestFullscreen = stayInCustom;
+      if (player.webkitRequestFullScreen) player.webkitRequestFullScreen = stayInCustom;
+      if (typeof player.webkitEnterFullscreen === "function") {
+        player.webkitEnterFullscreen = stayInCustom;
       }
-      if (video.webkitRequestFullScreen) {
-        video.webkitRequestFullScreen = openOursOnly;
+      if (typeof player.webkitEnterFullScreen === "function") {
+        player.webkitEnterFullScreen = stayInCustom;
       }
     } catch (e) {}
 
-    // If the OS still forces native fullscreen (some iOS builds), cancel it only.
-    // Do NOT open custom from these events — that is what showed: native first, custom after exit.
-    function cancelNativeOnly() {
+    player.addEventListener("webkitbeginfullscreen", stayInCustom);
+    player.addEventListener("fullscreenchange", function () {
+      if (document.fullscreenElement === player) stayInCustom();
+    });
+  }
+
+  function bindNativeFullscreenRedirect(video) {
+    if (!video || video._ylRvFsBound) return;
+    if (video.id === "yl-rv-fs-player") {
+      bindFsPlayerNativeBlock(video);
+      return;
+    }
+    video._ylRvFsBound = true;
+    hardenVideoAgainstNativeFs(video);
+
+    // Open custom immediately, then dismiss native. Never leave native as the only UI.
+    function takeOver() {
+      if (fs.redirecting) {
+        exitNativeFullscreen(video);
+        return;
+      }
+      fs.redirecting = true;
+      openFullscreen(slugFromVideoEl(video), video);
       exitNativeFullscreen(video);
-      try {
-        if (video.webkitDisplayingFullscreen && video.webkitExitFullscreen) {
-          video.webkitExitFullscreen();
-        }
-      } catch (e) {}
+      window.setTimeout(function () {
+        exitNativeFullscreen(video);
+      }, 0);
+      window.setTimeout(function () {
+        exitNativeFullscreen(video);
+        fs.redirecting = false;
+      }, 160);
     }
 
+    try {
+      if (typeof video.webkitEnterFullscreen === "function") {
+        video.webkitEnterFullscreen = takeOver;
+      }
+      if (typeof video.webkitEnterFullScreen === "function") {
+        video.webkitEnterFullScreen = takeOver;
+      }
+      video.requestFullscreen = function () {
+        takeOver();
+        return Promise.resolve();
+      };
+      if (video.webkitRequestFullscreen) video.webkitRequestFullscreen = takeOver;
+      if (video.webkitRequestFullScreen) video.webkitRequestFullScreen = takeOver;
+    } catch (e) {}
+
     video.addEventListener("fullscreenchange", function () {
-      if (document.fullscreenElement === video) cancelNativeOnly();
+      if (document.fullscreenElement === video) takeOver();
     });
     video.addEventListener("webkitfullscreenchange", function () {
-      if (document.webkitFullscreenElement === video) cancelNativeOnly();
+      if (document.webkitFullscreenElement === video) takeOver();
     });
-    video.addEventListener("webkitbeginfullscreen", function () {
-      cancelNativeOnly();
-    });
+    // iOS control maximize still fires this even when APIs are patched
+    video.addEventListener("webkitbeginfullscreen", takeOver);
   }
 
   function initLikedState() {
@@ -667,15 +728,20 @@
     }
     document.querySelectorAll(".yl-rv__card-video").forEach(bindNativeFullscreenRedirect);
 
-    // If a page video somehow enters browser fullscreen, cancel it only.
-    // Custom fullscreen opens only from the Fullscreen button (or patched APIs).
     document.addEventListener("fullscreenchange", function () {
-      var node = document.fullscreenElement;
+      var node = document.fullscreenElement || document.webkitFullscreenElement;
       if (!node) return;
       if (node.id === "yl-rv-fs") return;
-      var video = node.tagName === "VIDEO" ? node : node.querySelector && node.querySelector(".yl-rv video, video.yl-rv__player, video.yl-rv__card-video");
+      var video =
+        node.tagName === "VIDEO"
+          ? node
+          : node.querySelector && node.querySelector(".yl-rv video");
       if (!video || !video.closest || !video.closest(".yl-rv")) return;
-      if (video.id === "yl-rv-fs-player") return;
+      if (video.id === "yl-rv-fs-player") {
+        exitNativeFullscreen(video);
+        return;
+      }
+      openFullscreen(slugFromVideoEl(video), video);
       exitNativeFullscreen(video);
     });
 
