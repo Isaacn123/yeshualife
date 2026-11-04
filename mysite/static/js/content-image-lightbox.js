@@ -1,11 +1,14 @@
 (function () {
   "use strict";
 
-  var CONTENT_IMAGE_SELECTOR = [
-    ".blog-content-section img:not(.image-blog-main)",
-    ".fh-video-desc img",
-    "main img.richtext-image:not(.image-blog-main)",
-  ].join(",");
+  // Prefer query + filter so nested players (response videos, FarmHub) stay interactive.
+  function isLightboxExcluded(el) {
+    return !!(
+      el &&
+      el.closest &&
+      el.closest(".yl-rv, .fh-video-player-wrap, .fh-similar-clips, .fh-video-card-thumb")
+    );
+  }
 
   var CONTENT_EMBED_SELECTOR = [
     ".blog-content-section .responsive-object",
@@ -224,7 +227,10 @@
       });
     }
 
-    document.querySelectorAll(CONTENT_IMAGE_SELECTOR).forEach(function (img) {
+    document.querySelectorAll(".blog-content-section img:not(.image-blog-main), .fh-video-desc img, main img.richtext-image:not(.image-blog-main)").forEach(function (img) {
+      if (isLightboxExcluded(img)) {
+        return;
+      }
       bindClickable(img, openImagePreview, getCaption(img) || "View image preview");
 
       var parentLink = img.closest("a");
@@ -273,7 +279,7 @@
     });
 
     document.querySelectorAll(CONTENT_VIDEO_SELECTOR).forEach(function (video) {
-      if (video.closest(".fh-video-player-wrap") || video.closest(".fh-similar-clips")) {
+      if (isLightboxExcluded(video)) {
         return;
       }
       bindClickable(video, openVideoPreview, getCaption(video) || "View video preview");

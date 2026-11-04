@@ -110,5 +110,19 @@ class karamojaResponsePage(Page):
     def get_context(self, request):
         context = super().get_context(request)
         context["canonical_url"] = self.get_canonical_url()
-        context["response_videos"] = list(ResponsePageVideo.ready_for_page(self))
+        videos = list(ResponsePageVideo.ready_for_page(self))
+        context["response_videos"] = videos
+        context["response_videos_playlist"] = [
+            {
+                "slug": v.slug,
+                "title": v.title,
+                "src": v.playback_url,
+                "poster": v.thumbnail_url or "",
+                "duration": str(v.duration_seconds or 0),
+                "views": v.views_display,
+                "likes": v.likes_display,
+                "share_path": v.get_absolute_url(),
+            }
+            for v in videos
+        ]
         return context

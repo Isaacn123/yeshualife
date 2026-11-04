@@ -61,6 +61,7 @@
   </div>
 
   {% if response_videos|length > 1 %}
+  {{ response_videos_playlist|json_script:"yl-rv-playlist" }}
   <ul class="yl-rv__rail" role="list">
     {% for video in response_videos %}
     <li>
@@ -68,18 +69,11 @@
         type="button"
         class="yl-rv__thumb{% if forloop.first %} is-active{% endif %}"
         data-slug="{{ video.slug }}"
-        data-title="{{ video.title }}"
-        data-src="{{ video.playback_url }}"
-        data-poster="{{ video.thumbnail_url }}"
-        data-duration="{{ video.duration_seconds|default:0 }}"
-        data-views="{{ video.views_display }}"
-        data-likes="{{ video.likes_display }}"
-        data-share-path="{{ video.get_absolute_url }}"
         aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
       >
         <span class="yl-rv__thumb-media">
           {% if video.thumbnail_url %}
-          <img src="{{ video.thumbnail_url }}" alt="" loading="lazy" decoding="async">
+          <img src="{{ video.thumbnail_url }}" alt="" loading="lazy" decoding="async" draggable="false">
           {% else %}
           <span class="yl-rv__thumb-fallback" aria-hidden="true"></span>
           {% endif %}
