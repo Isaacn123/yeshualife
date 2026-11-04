@@ -382,11 +382,18 @@ body.yl-rv-fs-open {
 
 .yl-rv-fs__stage {
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 3.6rem;
   background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.yl-rv-fs--ios .yl-rv-fs__stage {
+  bottom: 4rem;
 }
 
 .yl-rv-fs__player {
@@ -398,25 +405,39 @@ body.yl-rv-fs-open {
   background: #000;
 }
 
-/* Swipe catcher leaves native control bar free */
-.yl-rv-fs__swipe {
+/* HTML bar under the video — always tappable on iOS/Android */
+.yl-rv-fs__bar {
   position: absolute;
   left: 0;
   right: 0;
-  top: 0;
-  bottom: 4.25rem;
-  z-index: 2;
-  touch-action: none;
+  bottom: 0;
+  z-index: 6;
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.75rem calc(0.55rem + env(safe-area-inset-bottom, 0px));
+  background: #000;
+  box-sizing: border-box;
+  min-height: 3.6rem;
 }
 
-.yl-rv-fs--ios .yl-rv-fs__swipe {
-  bottom: 5rem;
-  top: 3.25rem;
+.yl-rv-fs__nav {
+  flex: 1;
+  appearance: none;
+  border: 0;
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font: 600 0.95rem/1.1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 0.85rem 0.75rem;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
-.yl-rv-fs--android .yl-rv-fs__swipe {
-  bottom: 4.5rem;
-  top: 3rem;
+.yl-rv-fs__nav:active {
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .yl-rv-fs__close {

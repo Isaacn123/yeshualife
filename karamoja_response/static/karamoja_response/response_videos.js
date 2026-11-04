@@ -49,11 +49,13 @@
   }
 
   function neighborSlug(slug, delta) {
+    if (!playlistOrder.length) return "";
     var index = playlistIndex(slug);
-    if (index < 0 || !playlistOrder.length) return "";
-    var next = index + delta;
-    if (next < 0 || next >= playlistOrder.length) return "";
-    return playlistOrder[next];
+    if (index < 0) index = 0;
+    // Wrap around so last ↔ first always moves
+    var next = (index + delta) % playlistOrder.length;
+    if (next < 0) next = playlistOrder.length - 1;
+    return playlistOrder[next] || "";
   }
 
   function readLiked() {
@@ -426,72 +428,80 @@
     el.setAttribute("aria-modal", "true");
     el.setAttribute("aria-label", "Fullscreen video");
 
-    var closeLabel = isIOS() ? "Done" : "Close";
     var closeHtml = isIOS()
       ? '<button type="button" class="yl-rv-fs__close yl-rv-fs__close--done" aria-label="Done">Done</button>'
-      : '<button type="button" class="yl-rv-fs__close yl-rv-fs__close--icon" aria-label="' +
-        closeLabel +
-        '">×</button>';
+      : '<button type="button" class="yl-rv-fs__close yl-rv-fs__close--icon" aria-label="Close">×</button>';
 
+    // Important: nav controls sit in an HTML bar UNDER the video element.
+    // Overlays on top of <video> often cannot receive taps on iOS/Android.
     el.innerHTML =
       closeHtml +
       '<div class="yl-rv-fs__stage">' +
-      '<video id="yl-rv-fs-player" class="yl-rv-fs__player" controls playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-player-fullscreen="true" controlslist="nofullscreen nodownload noremoteplayback" disablepictureinpicture></video>' +
-      '<div class="yl-rv-fs__swipe" aria-hidden="true"></div>' +
+      '<video id="yl-rv-fs-player" class="yl-rv-fs__player" controls playsinline webkit-playsinline x5-playsinline controlslist="nofullscreen nodownload noremoteplayback" disablepictureinpicture></video>' +
+      "</div>" +
+      '<div class="yl-rv-fs__bar">' +
+      '<button type="button" class="yl-rv-fs__nav yl-rv-fs__nav--prev" aria-label="Previous video">‹ Previous</button>' +
+      '<button type="button" class="yl-rv-fs__nav yl-rv-fs__nav--next" aria-label="Next video">Next ›</button>' +
       "</div>";
     document.body.appendChild(el);
 
-    el.querySelector(".yl-rv-fs__close").addEventListener("click", closeFullscreen);
-
-    var swipe = el.querySelector(".yl-rv-fs__swipe");
-    swipe.addEventListener(
-      "touchstart",
-      function (event) {
-        if (!event.touches || !event.touches.length) return;
-        fs.touchActive = true;
-        fs.x = event.touches[0].clientX;
-        fs.y = event.touches[0].clientY;
-      },
-      { passive: true }
-    );
-    swipe.addEventListener(
-      "touchend",
-      function (event) {
-        if (!fs.touchActive || !event.changedTouches || !event.changedTouches.length) return;
-        fs.touchActive = false;
-        var dx = event.changedTouches[0].clientX - fs.x;
-        var dy = event.changedTouches[0].clientY - fs.y;
-        var absX = Math.abs(dx);
-        var absY = Math.abs(dy);
-        if (Math.max(absX, absY) < 45) return;
-        if (absY >= absX) stepFullscreen(dy < 0 ? 1 : -1);
-        else stepFullscreen(dx < 0 ? 1 : -1);
-      },
-      { passive: true }
-    );
-
-    // Mouse drag support on desktop
-    var drag = { on: false, x: 0, y: 0 };
-    swipe.addEventListener("pointerdown", function (event) {
-      if (event.pointerType === "mouse" && event.button !== 0) return;
-      drag.on = true;
-      drag.x = event.clientX;
-      drag.y = event.clientY;
-      try {
-        swipe.setPointerCapture(event.pointerId);
-      } catch (e) {}
+    el.querySelector(".yl-rv-fs__close").addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      closeFullscreen();
     });
-    swipe.addEventListener("pointerup", function (event) {
-      if (!drag.on) return;
-      drag.on = false;
-      var dx = event.clientX - drag.x;
-      var dy = event.clientY - drag.y;
-      var absX = Math.abs(dx);
-      var absY = Math.abs(dy);
-      if (Math.max(absX, absY) < 55) return;
-      if (absY >= absX) stepFullscreen(dy < 0 ? 1 : -1);
-      else stepFullscreen(dx < 0 ? 1 : -1);
+    el.querySelector(".yl-rv-fs__nav--prev").addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      stepFullscreen(-1);
     });
+    el.querySelector(".yl-rv-fs__nav--next").addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      stepFullscreen(1);
+    });
+
+    // Swipe on the bar area (reliable) and on the shell background
+    function bindSwipeTarget(target) {
+      if (!target || target._ylRvSwipeBound) return;
+      target._ylRvSwipeBound = true;
+      target.addEventListener(
+        "touchstart",
+        function (event) {
+          if (!event.touches || !event.touches.length) return;
+          fs.touchActive = true;
+          fs.x = event.touches[0].clientX;
+          fs.y = event.touches[0].clientY;
+        },
+        { passive: true }
+      );
+      target.addEventListener(
+        "touchend",
+        function (event) {
+          if (!fs.touchActive || !event.changedTouches || !event.changedTouches.length) return;
+          fs.touchActive = false;
+          var dx = event.changedTouches[0].clientX - fs.x;
+          var dy = event.changedTouches[0].clientY - fs.y;
+          var absX = Math.abs(dx);
+          var absY = Math.abs(dy);
+          if (Math.max(absX, absY) < 35) return;
+          if (absY >= absX) stepFullscreen(dy < 0 ? 1 : -1);
+          else stepFullscreen(dx < 0 ? 1 : -1);
+        },
+        { passive: true }
+      );
+    }
+    bindSwipeTarget(el.querySelector(".yl-rv-fs__bar"));
+    bindSwipeTarget(el);
+
+    var player = el.querySelector("#yl-rv-fs-player");
+    if (player) {
+      player.addEventListener("ended", function () {
+        if (!fs.open) return;
+        // Advance when a clip finishes
+        if (neighborSlug(fs.slug, 1)) stepFullscreen(1);
+      });
+    }
 
     return el;
   }
@@ -529,7 +539,9 @@
   }
 
   function openFullscreen(slug) {
+    loadPlaylist();
     if (!slug || !playlistBySlug[slug]) return;
+    if (playlistOrder.length < 1) return;
     var el = ensureFullscreen();
     fs.open = true;
     document.body.classList.add("yl-rv-fs-open");
@@ -538,12 +550,8 @@
     el.hidden = false;
     setThemeColor("#000000");
     loadFullscreenVideo(slug, true);
-    // Android/desktop: enter real browser fullscreen so it matches the system player chrome.
-    // iOS often ignores element fullscreen; the fixed overlay still fills the screen.
-    window.setTimeout(function () {
-      if (!fs.open) return;
-      requestShellFullscreen(el);
-    }, 40);
+    // Do not call browser requestFullscreen here — on phones it steals gestures
+    // and blocks next/previous. The fixed black overlay already fills the screen.
   }
 
   function closeFullscreen() {
@@ -565,13 +573,16 @@
   }
 
   function stepFullscreen(delta) {
-    if (!fs.open || !fs.slug || fs.locked) return;
-    var next = neighborSlug(fs.slug, delta);
-    if (!next) return;
+    if (!fs.open || fs.locked) return;
+    loadPlaylist();
+    if (playlistOrder.length < 2) return;
+    var current = fs.slug || currentPageSlug() || playlistOrder[0];
+    var next = neighborSlug(current, delta);
+    if (!next || next === current) return;
     fs.locked = true;
     window.setTimeout(function () {
       fs.locked = false;
-    }, 280);
+    }, 200);
     loadFullscreenVideo(next, true);
   }
 
