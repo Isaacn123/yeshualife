@@ -13,7 +13,14 @@
     y: 0,
     locked: false,
     redirecting: false,
+    chromeTimer: null,
+    chromeVisible: true,
   };
+
+  var PLAY_ICON =
+    '<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>';
+  var PAUSE_ICON =
+    '<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>';
 
   function getCsrfToken() {
     var match = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
@@ -465,13 +472,9 @@
       ? '<button type="button" class="yl-rv-fs__close yl-rv-fs__close--done" aria-label="Done">Done</button>'
       : '<button type="button" class="yl-rv-fs__close yl-rv-fs__close--icon" aria-label="Close">×</button>';
 
-    // Important: nav controls sit in an HTML bar UNDER the video element.
-    // Overlays on top of <video> often cannot receive taps on iOS/Android.
-    // On phones, omit native controls so maximize cannot cover this shell.
-    // Desktop keeps controls (controlslist nofullscreen works there).
-    var fsVideoAttrs = isPhonePlayer()
-      ? 'playsinline webkit-playsinline x5-playsinline controlslist="nofullscreen nodownload noremoteplayback" disablepictureinpicture'
-      : 'controls playsinline webkit-playsinline x5-playsinline controlslist="nofullscreen nodownload noremoteplayback" disablepictureinpicture';
+    // No native controls — custom play/pause chrome auto-hides after idle.
+    var fsVideoAttrs =
+      'playsinline webkit-playsinline x5-playsinline controlslist="nofullscreen nodownload noremoteplayback" disablepictureinpicture';
 
     el.innerHTML =
       closeHtml +
@@ -479,6 +482,12 @@
       '<video id="yl-rv-fs-player" class="yl-rv-fs__player" ' +
       fsVideoAttrs +
       "></video>" +
+      "</div>" +
+      // Chrome sits as a sibling ABOVE the video layer (phones composite <video> over in-stage overlays)
+      '<div class="yl-rv-fs__chrome">' +
+      '<button type="button" class="yl-rv-fs__toggle" aria-label="Pause">' +
+      PAUSE_ICON +
+      "</button>" +
       "</div>" +
       '<div class="yl-rv-fs__bar">' +
       '<button type="button" class="yl-rv-fs__nav yl-rv-fs__nav--prev" aria-label="Previous video">‹ Previous</button>' +
@@ -513,6 +522,7 @@
           fs.touchActive = true;
           fs.x = event.touches[0].clientX;
           fs.y = event.touches[0].clientY;
+          revealFsChrome(true);
         },
         { passive: true }
       );
@@ -536,25 +546,108 @@
     bindSwipeTarget(el);
 
     var player = el.querySelector("#yl-rv-fs-player");
+    var toggle = el.querySelector(".yl-rv-fs__toggle");
     if (player) {
       bindFsPlayerNativeBlock(player);
-      // Tap video to play/pause when native controls are omitted (phones)
-      player.addEventListener("click", function () {
-        if (!fs.open || !isPhonePlayer()) return;
-        if (player.paused) tryAutoplay(player);
-        else {
-          try {
-            player.pause();
-          } catch (e) {}
-        }
+      player.addEventListener("play", function () {
+        updateFsToggleIcon(player);
+        revealFsChrome(true);
+      });
+      player.addEventListener("pause", function () {
+        updateFsToggleIcon(player);
+        revealFsChrome(false);
       });
       player.addEventListener("ended", function () {
         if (!fs.open) return;
+        updateFsToggleIcon(player);
+        revealFsChrome(false);
         if (neighborSlug(fs.slug, 1)) stepFullscreen(1);
       });
     }
+    if (toggle) {
+      toggle.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        toggleFsPlayback();
+      });
+    }
+    el.addEventListener("click", function (event) {
+      if (!fs.open) return;
+      if (event.target.closest(".yl-rv-fs__close, .yl-rv-fs__nav, .yl-rv-fs__toggle")) return;
+      // Tap empty stage / video: reveal chrome, or toggle play if chrome already up
+      if (!fs.chromeVisible) {
+        revealFsChrome(true);
+        return;
+      }
+      toggleFsPlayback();
+    });
 
     return el;
+  }
+
+  function clearFsChromeTimer() {
+    if (fs.chromeTimer) {
+      window.clearTimeout(fs.chromeTimer);
+      fs.chromeTimer = null;
+    }
+  }
+
+  function updateFsToggleIcon(player) {
+    var toggle = document.querySelector("#yl-rv-fs .yl-rv-fs__toggle");
+    if (!toggle) return;
+    var paused = !player || player.paused || player.ended;
+    toggle.innerHTML = paused ? PLAY_ICON : PAUSE_ICON;
+    toggle.setAttribute("aria-label", paused ? "Play" : "Pause");
+    toggle.classList.toggle("is-paused", paused);
+    toggle.classList.toggle("is-playing", !paused);
+  }
+
+  function revealFsChrome(autoHide) {
+    var el = document.getElementById("yl-rv-fs");
+    var player = document.getElementById("yl-rv-fs-player");
+    if (!el) return;
+    fs.chromeVisible = true;
+    el.classList.add("yl-rv-fs--chrome-visible");
+    el.classList.remove("yl-rv-fs--chrome-hidden");
+    updateFsToggleIcon(player);
+    clearFsChromeTimer();
+    // While paused, keep the play button visible. While playing, show pause then hide after 3s.
+    if (autoHide === false || (player && player.paused)) return;
+    fs.chromeTimer = window.setTimeout(function () {
+      hideFsChrome();
+    }, 3000);
+  }
+
+  function hideFsChrome() {
+    var el = document.getElementById("yl-rv-fs");
+    var player = document.getElementById("yl-rv-fs-player");
+    clearFsChromeTimer();
+    if (!el || !fs.open) return;
+    // Keep play button visible while paused
+    if (player && player.paused) {
+      fs.chromeVisible = true;
+      el.classList.add("yl-rv-fs--chrome-visible");
+      el.classList.remove("yl-rv-fs--chrome-hidden");
+      updateFsToggleIcon(player);
+      return;
+    }
+    fs.chromeVisible = false;
+    el.classList.remove("yl-rv-fs--chrome-visible");
+    el.classList.add("yl-rv-fs--chrome-hidden");
+  }
+
+  function toggleFsPlayback() {
+    var player = document.getElementById("yl-rv-fs-player");
+    if (!player || !fs.open) return;
+    if (player.paused) {
+      tryAutoplay(player);
+      revealFsChrome(true);
+    } else {
+      try {
+        player.pause();
+      } catch (e) {}
+      revealFsChrome(false);
+    }
   }
 
   function loadFullscreenVideo(slug, shouldPlay) {
@@ -575,6 +668,8 @@
     shell.setAttribute("data-video-duration", item.duration || "0");
     shell.removeAttribute("data-view-counted");
     bindWatchTracking(player, shell);
+    updateFsToggleIcon(player);
+    revealFsChrome(true);
     if (shouldPlay) tryAutoplay(player);
 
     if (DESKTOP_MQ.matches) selectDesktop(slug, false, true);
@@ -589,31 +684,89 @@
     }
   }
 
+  function syncFsViewport() {
+    var el = document.getElementById("yl-rv-fs");
+    if (!el || !fs.open) return;
+    var vv = window.visualViewport;
+    var w = Math.round((vv && vv.width) || window.innerWidth || document.documentElement.clientWidth || 0);
+    var h = Math.round((vv && vv.height) || window.innerHeight || document.documentElement.clientHeight || 0);
+    var top = Math.round((vv && vv.offsetTop) || 0);
+    var left = Math.round((vv && vv.offsetLeft) || 0);
+    if (!w || !h) return;
+    el.style.setProperty("--yl-rv-vvw", w + "px");
+    el.style.setProperty("--yl-rv-vvh", h + "px");
+    el.style.setProperty("--yl-rv-vvt", top + "px");
+    el.style.setProperty("--yl-rv-vvl", left + "px");
+    el.style.top = top + "px";
+    el.style.left = left + "px";
+    el.style.width = w + "px";
+    el.style.height = h + "px";
+  }
+
+  function bindFsViewportSync() {
+    if (fs._viewportBound) return;
+    fs._viewportBound = true;
+    var onChange = function () {
+      if (!fs.open) return;
+      syncFsViewport();
+      // iOS often settles layout one frame after rotate
+      window.requestAnimationFrame(syncFsViewport);
+      window.setTimeout(syncFsViewport, 120);
+      window.setTimeout(syncFsViewport, 320);
+    };
+    window.addEventListener("resize", onChange);
+    window.addEventListener("orientationchange", onChange);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", onChange);
+      window.visualViewport.addEventListener("scroll", onChange);
+    }
+  }
+
+  function clearFsViewportStyles(el) {
+    if (!el) return;
+    el.style.removeProperty("--yl-rv-vvw");
+    el.style.removeProperty("--yl-rv-vvh");
+    el.style.removeProperty("--yl-rv-vvt");
+    el.style.removeProperty("--yl-rv-vvl");
+    el.style.top = "";
+    el.style.left = "";
+    el.style.width = "";
+    el.style.height = "";
+  }
+
   function openFullscreen(slug, sourceVideo) {
     var resolved = resolveFsSlug(slug, sourceVideo);
     if (!resolved) return;
     var el = ensureFullscreen();
     fs.open = true;
     fs.slug = resolved;
+    fs._bodyScrollY = window.scrollY || window.pageYOffset || 0;
     document.body.classList.add("yl-rv-fs-open");
     if (isIOS()) document.body.classList.add("yl-rv-fs-open--ios");
     if (isAndroid()) document.body.classList.add("yl-rv-fs-open--android");
     el.hidden = false;
     el.classList.add("is-open");
     setThemeColor("#000000");
+    bindFsViewportSync();
+    syncFsViewport();
+    window.requestAnimationFrame(syncFsViewport);
     // Pause / hide page videos first so native maximize cannot stay visible.
     pauseAllVideos(document.getElementById("yl-rv-fs-player"));
     if (sourceVideo) exitNativeFullscreen(sourceVideo);
     exitNativeFullscreen(null);
     loadFullscreenVideo(resolved, true);
+    revealFsChrome(true);
     // Do not call browser requestFullscreen — phones steal gestures.
   }
 
   function closeFullscreen() {
     var el = document.getElementById("yl-rv-fs");
     var player = document.getElementById("yl-rv-fs-player");
+    var scrollY = fs._bodyScrollY || 0;
+    clearFsChromeTimer();
     fs.open = false;
     fs.slug = "";
+    fs.chromeVisible = true;
     document.body.classList.remove("yl-rv-fs-open", "yl-rv-fs-open--ios", "yl-rv-fs-open--android");
     restoreThemeColor();
     exitShellFullscreen();
@@ -627,8 +780,10 @@
     }
     if (el) {
       el.hidden = true;
-      el.classList.remove("is-open");
+      el.classList.remove("is-open", "yl-rv-fs--chrome-hidden", "yl-rv-fs--chrome-visible");
+      clearFsViewportStyles(el);
     }
+    window.scrollTo(0, scrollY);
   }
 
   function stepFullscreen(delta) {

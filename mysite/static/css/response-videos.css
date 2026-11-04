@@ -401,21 +401,33 @@ body.yl-rv-fs-open {
   overflow: hidden;
   overscroll-behavior: none;
   background: #000;
+  /* Lock page so rotate doesn't leave a portrait-sized shell */
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .yl-rv-fs {
   position: fixed;
-  inset: 0;
+  top: var(--yl-rv-vvt, 0px);
+  left: var(--yl-rv-vvl, 0px);
+  right: auto;
+  bottom: auto;
   /* Above browser UI layers so native maximize cannot stay on top */
   z-index: 2147483646;
   background: #000;
-  width: 100%;
-  height: 100%;
-  height: 100dvh;
-  max-height: -webkit-fill-available;
+  width: var(--yl-rv-vvw, 100vw);
+  width: var(--yl-rv-vvw, 100dvw);
+  height: var(--yl-rv-vvh, 100vh);
+  height: var(--yl-rv-vvh, 100dvh);
+  min-width: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
   color: #fff;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+  overflow: hidden;
 }
 
 .yl-rv-fs[hidden] {
@@ -439,10 +451,9 @@ body.yl-rv-fs-open {
 
 .yl-rv-fs__stage {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0; /* bar hidden for now — was 3.6rem / 4rem when prev/next show */
+  inset: 0;
+  width: 100%;
+  height: 100%;
   background: #000;
   display: flex;
   align-items: center;
@@ -454,8 +465,90 @@ body.yl-rv-fs-open {
   inset: 0;
   width: 100%;
   height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   background: #000;
+  /* Let taps reach the chrome layer / shell handlers */
+  pointer-events: none;
+}
+
+/* Overlay chrome above the video compositor layer */
+.yl-rv-fs__chrome {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.yl-rv-fs__toggle {
+  position: relative;
+  left: auto;
+  top: auto;
+  z-index: 9;
+  width: 4.25rem;
+  height: 4.25rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0;
+  margin: 0;
+  background: rgba(12, 12, 12, 0.62);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  pointer-events: auto;
+  opacity: 1;
+  visibility: visible;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+
+.yl-rv-fs__toggle svg {
+  display: block;
+}
+
+.yl-rv-fs__toggle:active {
+  transform: translateZ(0) scale(0.94);
+}
+
+.yl-rv-fs--chrome-hidden .yl-rv-fs__toggle,
+.yl-rv-fs--chrome-hidden .yl-rv-fs__chrome,
+.yl-rv-fs--chrome-hidden .yl-rv-fs__close {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.yl-rv-fs--chrome-visible .yl-rv-fs__toggle,
+.yl-rv-fs--chrome-visible .yl-rv-fs__close {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Landscape: use the full short axis — video fills the viewport */
+@media (orientation: landscape) {
+  .yl-rv-fs,
+  .yl-rv-fs.is-open {
+    width: var(--yl-rv-vvw, 100vw);
+    width: var(--yl-rv-vvw, 100dvw);
+    height: var(--yl-rv-vvh, 100vh);
+    height: var(--yl-rv-vvh, 100dvh);
+  }
+
+  .yl-rv-fs__player {
+    object-fit: contain;
+  }
 }
 
 /* HTML bar under the video — always tappable on iOS/Android */
@@ -495,12 +588,16 @@ body.yl-rv-fs-open {
 
 .yl-rv-fs__close {
   position: absolute;
-  z-index: 5;
+  z-index: 10;
   border: 0;
   cursor: pointer;
   color: #fff;
   -webkit-appearance: none;
   appearance: none;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  pointer-events: auto;
 }
 
 /* iOS-style Done (top left) */
