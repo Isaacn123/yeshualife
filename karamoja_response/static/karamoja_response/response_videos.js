@@ -598,70 +598,50 @@
       video.disablePictureInPicture = true;
     } catch (e) {}
 
-    function openOurs() {
-      var slug = slugFromVideoEl(video);
-      // Open custom first so it is already covering the page,
-      // then dismiss any native fullscreen that tried to appear.
-      openFullscreen(slug);
-      exitNativeFullscreen(video);
-      window.setTimeout(function () {
-        exitNativeFullscreen(video);
-      }, 0);
-      window.setTimeout(function () {
-        exitNativeFullscreen(video);
-      }, 120);
+    function openOursOnly() {
+      // Never enter native fullscreen first — that causes: default → then custom.
+      openFullscreen(slugFromVideoEl(video));
     }
 
-    // Replace native fullscreen entry points so maximize never wins.
+    // Replace native fullscreen APIs so they open custom directly (no native flash).
     try {
       if (typeof video.webkitEnterFullscreen === "function") {
-        video.webkitEnterFullscreen = function () {
-          openOurs();
-        };
+        video.webkitEnterFullscreen = openOursOnly;
       }
       if (typeof video.webkitEnterFullScreen === "function") {
-        video.webkitEnterFullScreen = function () {
-          openOurs();
-        };
+        video.webkitEnterFullScreen = openOursOnly;
       }
       video.requestFullscreen = function () {
-        openOurs();
+        openOursOnly();
         return Promise.resolve();
       };
       if (video.webkitRequestFullscreen) {
-        video.webkitRequestFullscreen = function () {
-          openOurs();
-        };
+        video.webkitRequestFullscreen = openOursOnly;
+      }
+      if (video.webkitRequestFullScreen) {
+        video.webkitRequestFullScreen = openOursOnly;
       }
     } catch (e) {}
 
-    function redirect() {
-      if (fs.redirecting) {
-        exitNativeFullscreen(video);
-        return;
-      }
-      fs.redirecting = true;
-      openOurs();
-      window.setTimeout(function () {
-        fs.redirecting = false;
-      }, 200);
+    // If the OS still forces native fullscreen (some iOS builds), cancel it only.
+    // Do NOT open custom from these events — that is what showed: native first, custom after exit.
+    function cancelNativeOnly() {
+      exitNativeFullscreen(video);
+      try {
+        if (video.webkitDisplayingFullscreen && video.webkitExitFullscreen) {
+          video.webkitExitFullscreen();
+        }
+      } catch (e) {}
     }
 
     video.addEventListener("fullscreenchange", function () {
-      if (document.fullscreenElement === video) redirect();
+      if (document.fullscreenElement === video) cancelNativeOnly();
     });
     video.addEventListener("webkitfullscreenchange", function () {
-      if (document.webkitFullscreenElement === video) redirect();
+      if (document.webkitFullscreenElement === video) cancelNativeOnly();
     });
-    // iOS native player — exit immediately and keep custom on top
     video.addEventListener("webkitbeginfullscreen", function () {
-      redirect();
-    });
-    video.addEventListener("webkitendfullscreen", function () {
-      // If iOS kicked us out of native FS, keep custom open for this clip
-      if (!fs.open) {
-        openFullscreen(slugFromVideoEl(video));
-      }
+      cancelNativeOnly();
     });
   }
 
@@ -687,37 +667,16 @@
     }
     document.querySelectorAll(".yl-rv__card-video").forEach(bindNativeFullscreenRedirect);
 
+    // If a page video somehow enters browser fullscreen, cancel it only.
+    // Custom fullscreen opens only from the Fullscreen button (or patched APIs).
     document.addEventListener("fullscreenchange", function () {
-      var node = document.fullscreenElement || document.webkitFullscreenElement;
-
-      // User exited system fullscreen while our player was open
-      if (!node && fs.open) {
-        // Keep overlay unless they pressed Escape/close — only auto-close if shell was FS'd
-        return;
-      }
-
-      if (!node || fs.open) {
-        // If our shell is the fullscreen element, stay open
-        if (node && node.id === "yl-rv-fs") return;
-        if (!node) return;
-      }
-
-      var video = node.tagName === "VIDEO" ? node : node.querySelector && node.querySelector("video");
+      var node = document.fullscreenElement;
+      if (!node) return;
+      if (node.id === "yl-rv-fs") return;
+      var video = node.tagName === "VIDEO" ? node : node.querySelector && node.querySelector(".yl-rv video, video.yl-rv__player, video.yl-rv__card-video");
       if (!video || !video.closest || !video.closest(".yl-rv")) return;
       if (video.id === "yl-rv-fs-player") return;
-      var slug = slugFromVideoEl(video);
       exitNativeFullscreen(video);
-      window.setTimeout(function () {
-        openFullscreen(slug);
-      }, 30);
-    });
-
-    document.addEventListener("webkitfullscreenchange", function () {
-      var node = document.webkitFullscreenElement;
-      if (!node && fs.open && isAndroid()) {
-        // Android sometimes exits FS on gesture; keep custom overlay.
-        return;
-      }
     });
 
     document.addEventListener("keydown", function (event) {

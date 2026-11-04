@@ -386,15 +386,11 @@ body.yl-rv-fs-open {
   left: 0;
   right: 0;
   top: 0;
-  bottom: 3.6rem;
+  bottom: 0; /* bar hidden for now — was 3.6rem / 4rem when prev/next show */
   background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.yl-rv-fs--ios .yl-rv-fs__stage {
-  bottom: 4rem;
 }
 
 .yl-rv-fs__player {
@@ -408,12 +404,12 @@ body.yl-rv-fs-open {
 
 /* HTML bar under the video — always tappable on iOS/Android */
 .yl-rv-fs__bar {
+  display: none; /* temporarily hidden — restore with flex when prev/next return */
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 6;
-  display: flex;
   gap: 0.55rem;
   align-items: center;
   justify-content: space-between;
