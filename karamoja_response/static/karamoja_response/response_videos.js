@@ -590,18 +590,61 @@
     if (!video || video._ylRvFsBound || video.id === "yl-rv-fs-player") return;
     video._ylRvFsBound = true;
 
+    // Hide/disable the browser maximize control where supported.
+    try {
+      video.setAttribute("controlslist", "nofullscreen nodownload noremoteplayback");
+      video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
+      video.disablePictureInPicture = true;
+    } catch (e) {}
+
+    function openOurs() {
+      var slug = slugFromVideoEl(video);
+      // Open custom first so it is already covering the page,
+      // then dismiss any native fullscreen that tried to appear.
+      openFullscreen(slug);
+      exitNativeFullscreen(video);
+      window.setTimeout(function () {
+        exitNativeFullscreen(video);
+      }, 0);
+      window.setTimeout(function () {
+        exitNativeFullscreen(video);
+      }, 120);
+    }
+
+    // Replace native fullscreen entry points so maximize never wins.
+    try {
+      if (typeof video.webkitEnterFullscreen === "function") {
+        video.webkitEnterFullscreen = function () {
+          openOurs();
+        };
+      }
+      if (typeof video.webkitEnterFullScreen === "function") {
+        video.webkitEnterFullScreen = function () {
+          openOurs();
+        };
+      }
+      video.requestFullscreen = function () {
+        openOurs();
+        return Promise.resolve();
+      };
+      if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen = function () {
+          openOurs();
+        };
+      }
+    } catch (e) {}
+
     function redirect() {
-      if (fs.redirecting || fs.open) {
+      if (fs.redirecting) {
         exitNativeFullscreen(video);
         return;
       }
       fs.redirecting = true;
-      var slug = slugFromVideoEl(video);
-      exitNativeFullscreen(video);
+      openOurs();
       window.setTimeout(function () {
-        openFullscreen(slug);
         fs.redirecting = false;
-      }, 30);
+      }, 200);
     }
 
     video.addEventListener("fullscreenchange", function () {
@@ -610,8 +653,15 @@
     video.addEventListener("webkitfullscreenchange", function () {
       if (document.webkitFullscreenElement === video) redirect();
     });
+    // iOS native player — exit immediately and keep custom on top
     video.addEventListener("webkitbeginfullscreen", function () {
       redirect();
+    });
+    video.addEventListener("webkitendfullscreen", function () {
+      // If iOS kicked us out of native FS, keep custom open for this clip
+      if (!fs.open) {
+        openFullscreen(slugFromVideoEl(video));
+      }
     });
   }
 

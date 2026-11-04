@@ -21,7 +21,10 @@
           class="yl-rv__player"
           controls
           playsinline
+          webkit-playsinline
           preload="metadata"
+          controlslist="nofullscreen nodownload noremoteplayback"
+          disablepictureinpicture
           src="{{ video.playback_url }}"
           {% if video.thumbnail_url %}poster="{{ video.thumbnail_url }}"{% endif %}
         ></video>
@@ -97,7 +100,10 @@
           class="yl-rv__card-video"
           controls
           playsinline
+          webkit-playsinline
           preload="none"
+          controlslist="nofullscreen nodownload noremoteplayback"
+          disablepictureinpicture
           data-src="{{ video.playback_url }}"
           {% if video.thumbnail_url %}poster="{{ video.thumbnail_url }}"{% endif %}
         ></video>
