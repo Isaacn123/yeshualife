@@ -1,0 +1,35 @@
+{% load static %}
+<div class="w-panel__wrapper yl-rv-admin">
+  <div class="w-panel__header">
+    <h2 class="w-panel__heading w-panel__heading--label">{{ self.heading|default:"Videos" }}</h2>
+  </div>
+  <div class="w-panel__content">
+    {% if can_manage_videos %}
+      <link rel="stylesheet" href="{% static 'global_solutions/thumbnail_picker.css' %}">
+      <link rel="stylesheet" href="{% static 'global_solutions/similar_videos_admin.css' %}">
+      <p class="help">
+        Upload conference or field videos for this page. Files go straight to B2 in parts
+        (same as Global Solutions). Choose a thumbnail after upload. Views and likes appear on the public page.
+      </p>
+      <div
+        id="yl-rv-admin-root"
+        data-create-url="{{ create_video_url }}"
+      >
+        <div class="yl-rv-admin__actions" style="margin-bottom:1rem;">
+          <button type="button" class="button" id="yl-rv-add-video">Add video</button>
+        </div>
+        <div id="yl-rv-video-list">
+          {% for block in video_blocks %}
+            {% include "karamoja_response/wagtail_panels/response_video_block.html" with video=block.video api_urls_json=block.api_urls_json %}
+          {% empty %}
+            <p class="help" id="yl-rv-empty">No videos yet. Click “Add video”, then upload a file.</p>
+          {% endfor %}
+        </div>
+      </div>
+      <script src="{% static 'global_solutions/thumbnail_picker.js' %}?v=20260626"></script>
+      <script src="{% static 'karamoja_response/response_videos_admin.js' %}?v=20261104"></script>
+    {% else %}
+      <p class="help">Save this page once, then return here to add videos.</p>
+    {% endif %}
+  </div>
+</div>

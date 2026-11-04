@@ -1,0 +1,40 @@
+{% load static %}
+<div class="w-panel__wrapper">
+  <div class="w-panel__header">
+    <h2 class="w-panel__heading w-panel__heading--label">Video upload</h2>
+  </div>
+  <div class="w-panel__content">
+    {% if can_upload %}
+      <p class="help">
+        The file is sent straight to R2 in parts, so a large conference video is not posted through the website.
+        The document field above still returns an HTML error for big files.
+      </p>
+      <div id="yl-event-videos" data-create-url="{{ create_url }}">
+        {% for clip in clips %}
+          <div
+            class="yl-event-clip"
+            data-clip-id="{{ clip.pk }}"
+            data-primary="{% if clip.is_primary %}1{% else %}0{% endif %}"
+          >
+            <label class="w-field__label">{% if clip.is_primary %}Main video{% else %}Similar video{% endif %}</label>
+            <input type="text" class="w-field__input yl-event-clip__title" maxlength="200" value="{{ clip.title }}">
+            <input type="file" class="w-field__input yl-event-clip__file" accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov">
+            <div class="yl-event-clip__actions">
+              <button type="button" class="button yl-event-clip__upload">{% if clip.is_ready %}Replace on R2{% else %}Upload to R2{% endif %}</button>
+              <button type="button" class="button button-secondary no yl-event-clip__delete">{% if clip.is_primary %}Clear video{% else %}Delete{% endif %}</button>
+            </div>
+            <div class="yl-event-clip__progress"><div class="yl-event-clip__bar"></div></div>
+            <p class="help yl-event-clip__status">{% if clip.is_ready %}Uploaded to R2.{% else %}No video yet.{% endif %}</p>
+          </div>
+        {% endfor %}
+      </div>
+      <p class="yl-event-clip__actions">
+        <button type="button" class="button" id="yl-event-upload-main">Upload main video</button>
+        <button type="button" class="button button-secondary" id="yl-event-add-similar">Add similar video</button>
+      </p>
+      <script src="{% static 'blog/event_videos_admin.js' %}?v=20261004a"></script>
+    {% else %}
+      <p class="help"><strong>Save this event once.</strong> Then come back to this page to upload the video straight to R2.</p>
+    {% endif %}
+  </div>
+</div>

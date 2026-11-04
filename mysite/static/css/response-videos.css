@@ -1,0 +1,245 @@
+.yl-rv {
+  --rv-ink: #1c1915;
+  --rv-muted: #5c564e;
+  --rv-line: rgba(60, 48, 32, 0.14);
+  --rv-gold: #9a7209;
+  --rv-card: #fffdf9;
+  --rv-font: "Plus Jakarta Sans", "Segoe UI", Roboto, sans-serif;
+  --rv-display: "Fraunces", Georgia, "Times New Roman", serif;
+  margin: 2.5rem 0 1rem;
+  padding: 2rem 0 0;
+  border-top: 1px solid var(--rv-line);
+  font-family: var(--rv-font);
+  color: var(--rv-ink);
+}
+
+.yl-rv__intro {
+  margin-bottom: 1.25rem;
+}
+
+.yl-rv__eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rv-gold);
+}
+
+.yl-rv__heading {
+  margin: 0;
+  font-family: var(--rv-display);
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 560;
+  letter-spacing: -0.02em;
+}
+
+.yl-rv__stage {
+  display: grid;
+  gap: 1rem;
+}
+
+.yl-rv__player-wrap {
+  position: relative;
+  background: #0f0e0c;
+  border-radius: 4px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.yl-rv__player {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #0f0e0c;
+}
+
+.yl-rv__meta {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.yl-rv__title {
+  margin: 0;
+  font-family: var(--rv-display);
+  font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+  font-weight: 560;
+  line-height: 1.25;
+}
+
+.yl-rv__engagement {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+}
+
+.yl-rv__stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  color: var(--rv-muted);
+  font-size: 0.92rem;
+}
+
+.yl-rv__stat-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.yl-rv__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.yl-rv__btn {
+  appearance: none;
+  border: 0;
+  background: var(--rv-ink);
+  color: #fff;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.5rem 0.95rem;
+  cursor: pointer;
+}
+
+.yl-rv__btn:hover {
+  background: #333;
+}
+
+.yl-rv__btn.is-liked,
+.yl-rv__btn[aria-pressed="true"] {
+  background: var(--rv-gold);
+}
+
+.yl-rv__btn--quiet {
+  background: transparent;
+  color: var(--rv-ink);
+  border: 1px solid var(--rv-ink);
+}
+
+.yl-rv__btn--quiet:hover {
+  background: var(--rv-ink);
+  color: #fff;
+}
+
+.yl-rv__rail {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.85rem;
+}
+
+.yl-rv__thumb {
+  width: 100%;
+  display: grid;
+  gap: 0.55rem;
+  text-align: left;
+  border: 1px solid transparent;
+  background: var(--rv-card);
+  padding: 0.55rem;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.yl-rv__thumb:hover,
+.yl-rv__thumb.is-active {
+  border-color: var(--rv-line);
+}
+
+.yl-rv__thumb.is-active {
+  box-shadow: inset 0 0 0 1px var(--rv-gold);
+}
+
+.yl-rv__thumb-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #1a1713;
+}
+
+.yl-rv__thumb-media img,
+.yl-rv__thumb-fallback {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.yl-rv__thumb-fallback {
+  background: linear-gradient(135deg, #2a241c, #12100d);
+}
+
+.yl-rv__thumb-play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.yl-rv__thumb-play::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 0.45rem 0 0.45rem 0.75rem;
+  border-color: transparent transparent transparent #fff;
+}
+
+.yl-rv__thumb-duration {
+  position: absolute;
+  right: 0.4rem;
+  bottom: 0.35rem;
+  padding: 0.12rem 0.35rem;
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.yl-rv__thumb-copy {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.yl-rv__thumb-title {
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.3;
+}
+
+.yl-rv__thumb-stats {
+  color: var(--rv-muted);
+  font-size: 0.78rem;
+}
+
+@media (min-width: 900px) {
+  .yl-rv__stage {
+    grid-template-columns: minmax(0, 1.7fr) minmax(14rem, 0.9fr);
+    align-items: end;
+    gap: 1.5rem;
+  }
+
+  .yl-rv__meta {
+    padding-bottom: 0.35rem;
+  }
+
+  .yl-rv__actions {
+    margin-left: 0;
+  }
+}

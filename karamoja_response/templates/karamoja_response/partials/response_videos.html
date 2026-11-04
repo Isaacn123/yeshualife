@@ -1,0 +1,101 @@
+{% if response_videos %}
+<section class="yl-rv" aria-label="Videos">
+  <div class="yl-rv__intro">
+    <p class="yl-rv__eyebrow">Field videos</p>
+    <h2 class="yl-rv__heading">Watch the work</h2>
+  </div>
+
+  <div
+    class="yl-rv__stage"
+    id="yl-rv-stage"
+    data-api-base="/karamoja-response/api/videos/"
+  >
+    {% with video=response_videos.0 %}
+    <div
+      class="yl-rv__player-wrap"
+      data-video-slug="{{ video.slug }}"
+      data-video-duration="{{ video.duration_seconds|default:0 }}"
+    >
+      <video
+        id="yl-rv-player"
+        class="yl-rv__player"
+        controls
+        playsinline
+        preload="metadata"
+        src="{{ video.playback_url }}"
+        {% if video.thumbnail_url %}poster="{{ video.thumbnail_url }}"{% endif %}
+      ></video>
+    </div>
+
+    <div class="yl-rv__meta" id="yl-rv-meta">
+      <h3 class="yl-rv__title" id="yl-rv-title">{{ video.title }}</h3>
+      <div
+        class="yl-rv__engagement"
+        data-video-slug="{{ video.slug }}"
+      >
+        <span class="yl-rv__stat" title="Views">
+          <span class="yl-rv__stat-label">Views</span>
+          <span class="yl-rv__views">{{ video.views_display }}</span>
+        </span>
+        <span class="yl-rv__stat" title="Likes">
+          <span class="yl-rv__stat-label">Likes</span>
+          <span class="yl-rv__likes">{{ video.likes_display }}</span>
+        </span>
+        <div class="yl-rv__actions">
+          <button type="button" class="yl-rv__btn yl-rv__like-btn" data-video-slug="{{ video.slug }}" aria-pressed="false">
+            Like
+          </button>
+          <button
+            type="button"
+            class="yl-rv__btn yl-rv__btn--quiet yl-rv__share-btn"
+            data-video-slug="{{ video.slug }}"
+            data-share-path="{{ video.get_absolute_url }}"
+            data-share-title="{{ video.title }}"
+          >
+            Share
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endwith %}
+  </div>
+
+  {% if response_videos|length > 1 %}
+  <ul class="yl-rv__rail" role="list">
+    {% for video in response_videos %}
+    <li>
+      <button
+        type="button"
+        class="yl-rv__thumb{% if forloop.first %} is-active{% endif %}"
+        data-slug="{{ video.slug }}"
+        data-title="{{ video.title }}"
+        data-src="{{ video.playback_url }}"
+        data-poster="{{ video.thumbnail_url }}"
+        data-duration="{{ video.duration_seconds|default:0 }}"
+        data-views="{{ video.views_display }}"
+        data-likes="{{ video.likes_display }}"
+        data-share-path="{{ video.get_absolute_url }}"
+        aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+      >
+        <span class="yl-rv__thumb-media">
+          {% if video.thumbnail_url %}
+          <img src="{{ video.thumbnail_url }}" alt="" loading="lazy" decoding="async">
+          {% else %}
+          <span class="yl-rv__thumb-fallback" aria-hidden="true"></span>
+          {% endif %}
+          <span class="yl-rv__thumb-play" aria-hidden="true"></span>
+          {% if video.duration_display %}
+          <span class="yl-rv__thumb-duration">{{ video.duration_display }}</span>
+          {% endif %}
+        </span>
+        <span class="yl-rv__thumb-copy">
+          <span class="yl-rv__thumb-title">{{ video.title }}</span>
+          <span class="yl-rv__thumb-stats">{{ video.views_display }} views · {{ video.likes_display }} likes</span>
+        </span>
+      </button>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</section>
+{% endif %}

@@ -1,0 +1,57 @@
+{% load static %}
+<div
+  class="gs-similar-block yl-rv-block"
+  data-video-id="{{ video.id }}"
+  data-delete-url="{% url 'karamoja_response:delete_video' video_id=video.id %}"
+  data-meta-url="{% url 'karamoja_response:update_video_meta' video_id=video.id %}"
+>
+  <script type="application/json" class="yl-rv-api-json">{{ api_urls_json|safe }}</script>
+  <div class="gs-similar-block__head">
+    <label class="w-field__label">Video title</label>
+    <input type="text" class="w-field__input yl-rv-title" value="{{ video.title }}" maxlength="200" placeholder="e.g. Conference highlights">
+    <p class="gs-similar-stats help">{{ video.views_display }} views · {{ video.likes_display }} likes · {{ video.shares_display }} shares · Status: {{ video.status }}</p>
+  </div>
+
+  <div class="gs-similar-block__upload">
+    <label class="w-field__label">Video file</label>
+    <input type="file" class="w-field__input yl-rv-file" accept="video/*">
+    <div class="gs-similar-block__upload-actions">
+      <button type="button" class="button yl-rv-upload">
+        {% if video.original_b2_key %}Replace video on B2{% else %}Upload to B2{% endif %}
+      </button>
+      <button type="button" class="button button-secondary no yl-rv-delete">Delete</button>
+    </div>
+    <div class="gs-similar-progress"><div class="gs-similar-progress__bar"></div></div>
+    <div class="gs-similar-status help{% if video.status == 'failed' or video.last_error %} gs-similar-status--error{% endif %}">
+      {% if video.last_error %}
+        Upload failed: {{ video.last_error }}
+      {% elif video.original_b2_key %}
+        Video uploaded — ready on the public page.
+      {% else %}
+        No video yet.
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="gsu-thumbnail-section yl-rv-thumbs" {% if not video.original_b2_key %}hidden{% endif %}>
+    <h4 class="gsu-thumbnail-section__title">Video thumbnail</h4>
+    <p class="help">Generate 3 frame options or upload your own image.</p>
+    <div class="gsu-thumbnail-layout">
+      <div>
+        <video class="gsu-thumbnail-preview-video" controls playsinline preload="metadata"></video>
+        <div class="gsu-thumbnail-current"><strong>Current thumbnail:</strong></div>
+      </div>
+      <div>
+        <div class="gsu-thumbnail-options" aria-label="Thumbnail options"></div>
+        <div class="gsu-thumbnail-actions">
+          <button type="button" class="button button-secondary gsu-thumbnail-regenerate">Generate 3 options</button>
+        </div>
+        <label class="gsu-thumbnail-custom">
+          Or upload your own image
+          <input class="gsu-thumbnail-custom-input" type="file" accept="image/jpeg,image/png,image/webp">
+        </label>
+        <div class="gsu-thumbnail-status help"></div>
+      </div>
+    </div>
+  </div>
+</div>
