@@ -3,7 +3,15 @@
 
   var LIKED_KEY = "response_liked_videos";
   var playlistBySlug = {};
+  var playlistOrder = [];
   var DESKTOP_MQ = window.matchMedia("(min-width: 900px)");
+  var theater = {
+    open: false,
+    slug: "",
+    touchStartX: 0,
+    touchStartY: 0,
+    touchActive: false,
+  };
 
   function getCsrfToken() {
     var match = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
@@ -15,22 +23,35 @@
     return (root && root.getAttribute("data-api-base")) || "/karamoja-response/api/videos/";
   }
 
-  function isDesktop() {
-    return DESKTOP_MQ.matches;
-  }
-
   function loadPlaylist() {
     var el = document.getElementById("yl-rv-playlist");
     if (!el) return;
     try {
       var items = JSON.parse(el.textContent || "[]");
       if (!Array.isArray(items)) return;
+      playlistOrder = [];
+      playlistBySlug = {};
       items.forEach(function (item) {
-        if (item && item.slug) playlistBySlug[item.slug] = item;
+        if (!item || !item.slug) return;
+        playlistBySlug[item.slug] = item;
+        playlistOrder.push(item.slug);
       });
     } catch (e) {
       playlistBySlug = {};
+      playlistOrder = [];
     }
+  }
+
+  function playlistIndex(slug) {
+    return playlistOrder.indexOf(slug);
+  }
+
+  function neighborSlug(slug, delta) {
+    var index = playlistIndex(slug);
+    if (index < 0 || !playlistOrder.length) return "";
+    var next = index + delta;
+    if (next < 0 || next >= playlistOrder.length) return "";
+    return playlistOrder[next];
   }
 
   function readLiked() {
@@ -133,7 +154,7 @@
     if (!player || !wrap) return;
     clearWatchTracking(player);
 
-    var slug = wrap.getAttribute("data-video-slug") || wrap.getAttribute("data-slug");
+    var slug = wrap.getAttribute("data-video-slug") || wrap.getAttribute("data-slug") || theater.slug;
     if (!slug || wrap.getAttribute("data-view-counted") === "true") return;
 
     var duration = wrap.getAttribute("data-video-duration") || "0";
@@ -170,6 +191,10 @@
               .forEach(function (el) {
                 el.textContent = result.data.views_display + " views · " + likesText + " likes";
               });
+            var theaterViews = document.getElementById("yl-rv-theater-views");
+            if (theaterViews && theater.slug === slug) {
+              theaterViews.textContent = result.data.views_display;
+            }
           }
         })
         .catch(function () {
@@ -207,7 +232,7 @@
   }
 
   function pauseAllVideos(except) {
-    document.querySelectorAll(".yl-rv video").forEach(function (video) {
+    document.querySelectorAll(".yl-rv video, #yl-rv-theater-player").forEach(function (video) {
       if (video === except) return;
       try {
         video.pause();
@@ -227,7 +252,7 @@
     }
   }
 
-  function selectDesktop(slug, shouldPlay) {
+  function selectDesktop(slug, shouldPlay, skipScroll) {
     var item = playlistBySlug[slug];
     var player = document.getElementById("yl-rv-player");
     var wrap = document.querySelector(".yl-rv__player-wrap");
@@ -251,7 +276,7 @@
       wrap.setAttribute("data-video-slug", slug);
       wrap.setAttribute("data-video-duration", item.duration || "0");
       wrap.removeAttribute("data-view-counted");
-      wrap.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (!skipScroll) wrap.scrollIntoView({ behavior: "smooth", block: "start" });
     }
     if (title) title.textContent = item.title || "";
     if (engagement) {
@@ -270,6 +295,8 @@
         shareBtn.setAttribute("data-share-path", item.share_path || "");
         shareBtn.setAttribute("data-share-title", item.title || "");
       }
+      var maxBtn = engagement.querySelector(".yl-rv__max-btn");
+      if (maxBtn) maxBtn.setAttribute("data-slug", slug);
       if (views) views.textContent = item.views || "0";
       if (likes) likes.textContent = item.likes || "0";
     }
@@ -308,6 +335,161 @@
     tryAutoplay(video);
   }
 
+  function ensureTheater() {
+    var existing = document.getElementById("yl-rv-theater");
+    if (existing) return existing;
+
+    var el = document.createElement("div");
+    el.id = "yl-rv-theater";
+    el.className = "yl-rv-theater";
+    el.hidden = true;
+    el.setAttribute("role", "dialog");
+    el.setAttribute("aria-modal", "true");
+    el.setAttribute("aria-label", "Video viewer");
+    el.innerHTML =
+      '<div class="yl-rv-theater__frame">' +
+      '<button type="button" class="yl-rv-theater__close" aria-label="Close">×</button>' +
+      '<button type="button" class="yl-rv-theater__nav yl-rv-theater__nav--prev" aria-label="Previous video">‹</button>' +
+      '<button type="button" class="yl-rv-theater__nav yl-rv-theater__nav--next" aria-label="Next video">›</button>' +
+      '<video id="yl-rv-theater-player" class="yl-rv-theater__player" controls playsinline></video>' +
+      '<div class="yl-rv-theater__meta">' +
+      '<p class="yl-rv-theater__title" id="yl-rv-theater-title"></p>' +
+      '<p class="yl-rv-theater__count"><span id="yl-rv-theater-index">1</span> / <span id="yl-rv-theater-total">1</span> · <span id="yl-rv-theater-views">0</span> views</p>' +
+      '<p class="yl-rv-theater__hint">Swipe or use arrows to browse videos</p>' +
+      "</div></div>";
+    document.body.appendChild(el);
+
+    el.querySelector(".yl-rv-theater__close").addEventListener("click", closeTheater);
+    el.querySelector(".yl-rv-theater__nav--prev").addEventListener("click", function () {
+      stepTheater(-1);
+    });
+    el.querySelector(".yl-rv-theater__nav--next").addEventListener("click", function () {
+      stepTheater(1);
+    });
+
+    el.addEventListener(
+      "touchstart",
+      function (event) {
+        if (!event.touches || !event.touches.length) return;
+        theater.touchActive = true;
+        theater.touchStartX = event.touches[0].clientX;
+        theater.touchStartY = event.touches[0].clientY;
+      },
+      { passive: true }
+    );
+
+    el.addEventListener(
+      "touchend",
+      function (event) {
+        if (!theater.touchActive || !event.changedTouches || !event.changedTouches.length) return;
+        theater.touchActive = false;
+        var dx = event.changedTouches[0].clientX - theater.touchStartX;
+        var dy = event.changedTouches[0].clientY - theater.touchStartY;
+        var absX = Math.abs(dx);
+        var absY = Math.abs(dy);
+        if (Math.max(absX, absY) < 55) return;
+        if (absY >= absX) {
+          // Vertical: swipe up = next, swipe down = previous
+          stepTheater(dy < 0 ? 1 : -1);
+        } else {
+          // Horizontal: swipe left = next, swipe right = previous
+          stepTheater(dx < 0 ? 1 : -1);
+        }
+      },
+      { passive: true }
+    );
+
+    return el;
+  }
+
+  function updateTheaterChrome(slug) {
+    var item = playlistBySlug[slug];
+    var index = playlistIndex(slug);
+    var title = document.getElementById("yl-rv-theater-title");
+    var indexEl = document.getElementById("yl-rv-theater-index");
+    var totalEl = document.getElementById("yl-rv-theater-total");
+    var viewsEl = document.getElementById("yl-rv-theater-views");
+    var prevBtn = document.querySelector(".yl-rv-theater__nav--prev");
+    var nextBtn = document.querySelector(".yl-rv-theater__nav--next");
+    if (title) title.textContent = (item && item.title) || "";
+    if (indexEl) indexEl.textContent = String(index + 1);
+    if (totalEl) totalEl.textContent = String(playlistOrder.length);
+    if (viewsEl) viewsEl.textContent = (item && item.views) || "0";
+    if (prevBtn) prevBtn.disabled = index <= 0;
+    if (nextBtn) nextBtn.disabled = index < 0 || index >= playlistOrder.length - 1;
+  }
+
+  function loadTheaterVideo(slug, shouldPlay) {
+    var item = playlistBySlug[slug];
+    var player = document.getElementById("yl-rv-theater-player");
+    var shell = document.getElementById("yl-rv-theater");
+    if (!item || !player || !shell) return;
+
+    theater.slug = slug;
+    clearWatchTracking(player);
+    pauseAllVideos(player);
+    player.pause();
+    player.removeAttribute("src");
+    if (item.poster) player.setAttribute("poster", item.poster);
+    else player.removeAttribute("poster");
+    player.src = item.src || "";
+    player.load();
+    shell.setAttribute("data-video-slug", slug);
+    shell.setAttribute("data-video-duration", item.duration || "0");
+    shell.removeAttribute("data-view-counted");
+    updateTheaterChrome(slug);
+    bindWatchTracking(player, shell);
+    if (shouldPlay) tryAutoplay(player);
+
+    // Keep page players in sync with theater selection
+    if (DESKTOP_MQ.matches) {
+      selectDesktop(slug, false, true);
+    }
+  }
+
+  function openTheater(slug) {
+    if (!slug || !playlistBySlug[slug] || playlistOrder.length < 1) return;
+    var el = ensureTheater();
+    theater.open = true;
+    document.body.classList.add("yl-rv-theater-open");
+    el.hidden = false;
+    loadTheaterVideo(slug, true);
+  }
+
+  function closeTheater() {
+    var el = document.getElementById("yl-rv-theater");
+    var player = document.getElementById("yl-rv-theater-player");
+    theater.open = false;
+    theater.slug = "";
+    document.body.classList.remove("yl-rv-theater-open");
+    if (player) {
+      clearWatchTracking(player);
+      try {
+        player.pause();
+      } catch (e) {}
+      player.removeAttribute("src");
+    }
+    if (el) el.hidden = true;
+  }
+
+  function stepTheater(delta) {
+    if (!theater.open || !theater.slug) return;
+    var next = neighborSlug(theater.slug, delta);
+    if (!next) return;
+    loadTheaterVideo(next, true);
+  }
+
+  function currentPageSlug() {
+    if (theater.open && theater.slug) return theater.slug;
+    if (DESKTOP_MQ.matches) {
+      var wrap = document.querySelector(".yl-rv__player-wrap");
+      return (wrap && wrap.getAttribute("data-video-slug")) || playlistOrder[0] || "";
+    }
+    var playing = document.querySelector(".yl-rv__card.is-playing");
+    if (playing) return playing.getAttribute("data-slug") || "";
+    return playlistOrder[0] || "";
+  }
+
   function initLikedState() {
     readLiked().forEach(function (slug) {
       setLikeUi(slug, true);
@@ -320,6 +502,7 @@
 
     loadPlaylist();
     initLikedState();
+    ensureTheater();
 
     var desktopPlayer = document.getElementById("yl-rv-player");
     var desktopWrap = document.querySelector(".yl-rv__player-wrap");
@@ -346,6 +529,14 @@
           return;
         }
 
+        var maxBtn = event.target.closest(".yl-rv__max-btn");
+        if (maxBtn) {
+          event.preventDefault();
+          event.stopPropagation();
+          openTheater(maxBtn.getAttribute("data-slug") || currentPageSlug());
+          return;
+        }
+
         var cardStart = event.target.closest(".yl-rv__card-start");
         if (cardStart) {
           event.preventDefault();
@@ -363,6 +554,35 @@
       },
       true
     );
+
+    // Double-tap / double-click a playing video opens max view
+    document.addEventListener("dblclick", function (event) {
+      var video = event.target.closest(".yl-rv__player, .yl-rv__card-video");
+      if (!video) return;
+      event.preventDefault();
+      var card = video.closest(".yl-rv__card");
+      var wrap = video.closest(".yl-rv__player-wrap");
+      var slug =
+        (card && card.getAttribute("data-slug")) ||
+        (wrap && wrap.getAttribute("data-video-slug")) ||
+        currentPageSlug();
+      openTheater(slug);
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (!theater.open) return;
+      if (event.key === "Escape") {
+        closeTheater();
+        return;
+      }
+      if (event.key === "ArrowRight" || event.key === "ArrowUp") {
+        event.preventDefault();
+        stepTheater(1);
+      } else if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
+        event.preventDefault();
+        stepTheater(-1);
+      }
+    });
   }
 
   if (document.readyState === "loading") {

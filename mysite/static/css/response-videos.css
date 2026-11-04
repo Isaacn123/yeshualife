@@ -326,3 +326,122 @@
     margin-left: 0;
   }
 }
+
+/* Max-view theater with swipe through playlist */
+body.yl-rv-theater-open {
+  overflow: hidden;
+}
+
+.yl-rv-theater {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  background: rgba(8, 7, 6, 0.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: pan-y;
+}
+
+.yl-rv-theater[hidden] {
+  display: none !important;
+}
+
+.yl-rv-theater__frame {
+  position: relative;
+  width: min(100vw, 1100px);
+  height: min(100vh, 100dvh);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3.5rem 1rem 1.25rem;
+  box-sizing: border-box;
+}
+
+.yl-rv-theater__player {
+  width: 100%;
+  max-height: calc(100dvh - 8.5rem);
+  background: #000;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+}
+
+.yl-rv-theater__close,
+.yl-rv-theater__nav {
+  appearance: none;
+  border: 0;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  cursor: pointer;
+}
+
+.yl-rv-theater__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  font-size: 1.5rem;
+  line-height: 1;
+  z-index: 2;
+}
+
+.yl-rv-theater__nav {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 999px;
+  font-size: 1.6rem;
+  line-height: 1;
+  z-index: 2;
+}
+
+.yl-rv-theater__nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.yl-rv-theater__nav--prev {
+  left: 0.5rem;
+}
+
+.yl-rv-theater__nav--next {
+  right: 0.5rem;
+}
+
+.yl-rv-theater__meta {
+  margin-top: 0.85rem;
+  color: #f4f1ea;
+  text-align: center;
+}
+
+.yl-rv-theater__title {
+  margin: 0 0 0.25rem;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 560;
+}
+
+.yl-rv-theater__count,
+.yl-rv-theater__hint {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.82rem;
+}
+
+.yl-rv-theater__hint {
+  margin-top: 0.35rem;
+}
+
+@media (max-width: 720px) {
+  .yl-rv-theater__nav {
+    display: none;
+  }
+
+  .yl-rv-theater__frame {
+    padding-inline: 0.65rem;
+  }
+}
