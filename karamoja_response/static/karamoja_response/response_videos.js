@@ -3,6 +3,7 @@
 
   var LIKED_KEY = "response_liked_videos";
   var playlistBySlug = {};
+  var DESKTOP_MQ = window.matchMedia("(min-width: 900px)");
 
   function getCsrfToken() {
     var match = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
@@ -10,8 +11,12 @@
   }
 
   function apiBase() {
-    var stage = document.getElementById("yl-rv-stage");
-    return (stage && stage.getAttribute("data-api-base")) || "/karamoja-response/api/videos/";
+    var root = document.querySelector(".yl-rv");
+    return (root && root.getAttribute("data-api-base")) || "/karamoja-response/api/videos/";
+  }
+
+  function isDesktop() {
+    return DESKTOP_MQ.matches;
   }
 
   function loadPlaylist() {
@@ -128,7 +133,7 @@
     if (!player || !wrap) return;
     clearWatchTracking(player);
 
-    var slug = wrap.getAttribute("data-video-slug");
+    var slug = wrap.getAttribute("data-video-slug") || wrap.getAttribute("data-slug");
     if (!slug || wrap.getAttribute("data-view-counted") === "true") return;
 
     var duration = wrap.getAttribute("data-video-duration") || "0";
@@ -150,16 +155,21 @@
             wrap.setAttribute("data-view-counted", "true");
           }
           if (result.data.views_display != null) {
-            var viewsEl = document.querySelector(".yl-rv__views");
-            if (viewsEl) viewsEl.textContent = result.data.views_display;
-            var likes = document.querySelector(".yl-rv__likes");
-            document.querySelectorAll('.yl-rv__thumb[data-slug="' + slug + '"] .yl-rv__thumb-stats').forEach(function (el) {
-              el.textContent =
-                result.data.views_display +
-                " views · " +
-                ((likes && likes.textContent) || "0") +
-                " likes";
-            });
+            document
+              .querySelectorAll('.yl-rv__engagement[data-video-slug="' + slug + '"] .yl-rv__views')
+              .forEach(function (el) {
+                el.textContent = result.data.views_display;
+              });
+            var likesText = "0";
+            var likesEl = document.querySelector(
+              '.yl-rv__engagement[data-video-slug="' + slug + '"] .yl-rv__likes'
+            );
+            if (likesEl) likesText = likesEl.textContent || "0";
+            document
+              .querySelectorAll('.yl-rv__thumb[data-slug="' + slug + '"] .yl-rv__thumb-stats')
+              .forEach(function (el) {
+                el.textContent = result.data.views_display + " views · " + likesText + " likes";
+              });
           }
         })
         .catch(function () {
@@ -196,15 +206,37 @@
     };
   }
 
-  function selectBySlug(slug) {
+  function pauseAllVideos(except) {
+    document.querySelectorAll(".yl-rv video").forEach(function (video) {
+      if (video === except) return;
+      try {
+        video.pause();
+      } catch (e) {}
+    });
+    document.querySelectorAll(".yl-rv__card.is-playing").forEach(function (card) {
+      if (except && card.contains(except)) return;
+      card.classList.remove("is-playing");
+    });
+  }
+
+  function tryAutoplay(player) {
+    if (!player) return;
+    var playPromise = player.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(function () {});
+    }
+  }
+
+  function selectDesktop(slug, shouldPlay) {
     var item = playlistBySlug[slug];
     var player = document.getElementById("yl-rv-player");
     var wrap = document.querySelector(".yl-rv__player-wrap");
     var title = document.getElementById("yl-rv-title");
-    var engagement = document.querySelector(".yl-rv__engagement");
+    var engagement = document.querySelector(".yl-rv__desktop .yl-rv__engagement");
     if (!item || !player || !slug) return;
 
     clearWatchTracking(player);
+    pauseAllVideos(player);
     player.pause();
     player.removeAttribute("src");
     if (item.poster) {
@@ -219,6 +251,7 @@
       wrap.setAttribute("data-video-slug", slug);
       wrap.setAttribute("data-video-duration", item.duration || "0");
       wrap.removeAttribute("data-view-counted");
+      wrap.scrollIntoView({ behavior: "smooth", block: "start" });
     }
     if (title) title.textContent = item.title || "";
     if (engagement) {
@@ -248,19 +281,50 @@
     });
 
     bindWatchTracking(player, wrap);
+    if (shouldPlay) tryAutoplay(player);
+  }
+
+  function playMobileCard(slug) {
+    var card = document.querySelector('.yl-rv__card[data-slug="' + slug + '"]');
+    if (!card) return;
+    var video = card.querySelector(".yl-rv__card-video");
+    var item = playlistBySlug[slug];
+    if (!video) return;
+
+    pauseAllVideos(video);
+
+    var src = video.getAttribute("src") || video.getAttribute("data-src") || (item && item.src) || "";
+    if (!src) return;
+    if (!video.getAttribute("src")) {
+      video.setAttribute("src", src);
+      video.load();
+    }
+
+    card.classList.add("is-playing");
+    card.removeAttribute("data-view-counted");
+    card.setAttribute("data-video-slug", slug);
+    bindWatchTracking(video, card);
+    card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    tryAutoplay(video);
+  }
+
+  function initLikedState() {
+    readLiked().forEach(function (slug) {
+      setLikeUi(slug, true);
+    });
   }
 
   function init() {
-    var player = document.getElementById("yl-rv-player");
-    var wrap = document.querySelector(".yl-rv__player-wrap");
-    if (!player) return;
+    var root = document.querySelector(".yl-rv");
+    if (!root) return;
 
     loadPlaylist();
-    bindWatchTracking(player, wrap);
+    initLikedState();
 
-    var initialSlug = wrap && wrap.getAttribute("data-video-slug");
-    if (initialSlug && readLiked().indexOf(initialSlug) !== -1) {
-      setLikeUi(initialSlug, true);
+    var desktopPlayer = document.getElementById("yl-rv-player");
+    var desktopWrap = document.querySelector(".yl-rv__player-wrap");
+    if (desktopPlayer && desktopWrap) {
+      bindWatchTracking(desktopPlayer, desktopWrap);
     }
 
     document.addEventListener(
@@ -273,6 +337,7 @@
           likeVideo(likeBtn.getAttribute("data-video-slug"));
           return;
         }
+
         var shareBtn = event.target.closest(".yl-rv__share-btn");
         if (shareBtn) {
           event.preventDefault();
@@ -280,11 +345,20 @@
           shareVideo(shareBtn);
           return;
         }
+
+        var cardStart = event.target.closest(".yl-rv__card-start");
+        if (cardStart) {
+          event.preventDefault();
+          event.stopPropagation();
+          playMobileCard(cardStart.getAttribute("data-slug"));
+          return;
+        }
+
         var thumb = event.target.closest(".yl-rv__thumb");
         if (thumb) {
           event.preventDefault();
           event.stopPropagation();
-          selectBySlug(thumb.getAttribute("data-slug"));
+          selectDesktop(thumb.getAttribute("data-slug"), true);
         }
       },
       true

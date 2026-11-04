@@ -34,6 +34,74 @@
   letter-spacing: -0.02em;
 }
 
+/* Mobile-first: hide desktop stage, show vertical feed */
+.yl-rv__desktop {
+  display: none;
+}
+
+.yl-rv__feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.yl-rv__card {
+  display: grid;
+  gap: 0.75rem;
+  background: var(--rv-card);
+  border: 1px solid var(--rv-line);
+  padding: 0.65rem;
+}
+
+.yl-rv__card.is-playing {
+  border-color: rgba(154, 114, 9, 0.45);
+}
+
+.yl-rv__card-media {
+  position: relative;
+  background: #0f0e0c;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.yl-rv__card-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #0f0e0c;
+}
+
+.yl-rv__card-start {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.yl-rv__card.is-playing .yl-rv__card-start {
+  display: none;
+}
+
+.yl-rv__card-title {
+  margin: 0;
+  font-family: var(--rv-display);
+  font-size: 1.15rem;
+  font-weight: 560;
+  line-height: 1.3;
+}
+
+.yl-rv__card-body {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0 0.15rem 0.2rem;
+}
+
 .yl-rv__stage {
   display: grid;
   gap: 1rem;
@@ -45,6 +113,7 @@
   border-radius: 4px;
   overflow: hidden;
   aspect-ratio: 16 / 9;
+  scroll-margin-top: 5.5rem;
 }
 
 .yl-rv__player {
@@ -94,7 +163,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-left: auto;
+  width: 100%;
 }
 
 .yl-rv__btn {
@@ -190,6 +259,7 @@
   height: 2.4rem;
   border-radius: 999px;
   background: rgba(0, 0, 0, 0.55);
+  pointer-events: none;
 }
 
 .yl-rv__thumb-play::before {
@@ -212,6 +282,7 @@
   color: #fff;
   font-size: 0.72rem;
   font-weight: 600;
+  pointer-events: none;
 }
 
 .yl-rv__thumb-copy {
@@ -232,6 +303,14 @@
 }
 
 @media (min-width: 900px) {
+  .yl-rv__desktop {
+    display: block;
+  }
+
+  .yl-rv__feed {
+    display: none;
+  }
+
   .yl-rv__stage {
     grid-template-columns: minmax(0, 1.7fr) minmax(14rem, 0.9fr);
     align-items: end;
@@ -243,6 +322,7 @@
   }
 
   .yl-rv__actions {
+    width: auto;
     margin-left: 0;
   }
 }
