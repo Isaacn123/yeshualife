@@ -15,6 +15,7 @@
     redirecting: false,
     chromeTimer: null,
     chromeVisible: true,
+    seeking: false,
   };
 
   var PLAY_ICON =
@@ -488,6 +489,11 @@
       '<button type="button" class="yl-rv-fs__toggle" aria-label="Pause">' +
       PAUSE_ICON +
       "</button>" +
+      '<div class="yl-rv-fs__progress">' +
+      '<span class="yl-rv-fs__time yl-rv-fs__time--cur" aria-hidden="true">0:00</span>' +
+      '<input type="range" class="yl-rv-fs__seek" min="0" max="1000" value="0" step="1" aria-label="Seek">' +
+      '<span class="yl-rv-fs__time yl-rv-fs__time--dur" aria-hidden="true">0:00</span>' +
+      "</div>" +
       "</div>" +
       '<div class="yl-rv-fs__bar">' +
       '<button type="button" class="yl-rv-fs__nav yl-rv-fs__nav--prev" aria-label="Previous video">‹ Previous</button>' +
@@ -547,6 +553,7 @@
 
     var player = el.querySelector("#yl-rv-fs-player");
     var toggle = el.querySelector(".yl-rv-fs__toggle");
+    var seek = el.querySelector(".yl-rv-fs__seek");
     if (player) {
       bindFsPlayerNativeBlock(player);
       player.addEventListener("play", function () {
@@ -560,8 +567,18 @@
       player.addEventListener("ended", function () {
         if (!fs.open) return;
         updateFsToggleIcon(player);
+        updateFsProgress(player);
         revealFsChrome(false);
         if (neighborSlug(fs.slug, 1)) stepFullscreen(1);
+      });
+      player.addEventListener("timeupdate", function () {
+        if (!fs.seeking) updateFsProgress(player);
+      });
+      player.addEventListener("loadedmetadata", function () {
+        updateFsProgress(player);
+      });
+      player.addEventListener("durationchange", function () {
+        updateFsProgress(player);
       });
     }
     if (toggle) {
@@ -571,9 +588,44 @@
         toggleFsPlayback();
       });
     }
+    if (seek) {
+      function beginSeek() {
+        fs.seeking = true;
+        revealFsChrome(false);
+      }
+      function onSeekInput() {
+        var p = document.getElementById("yl-rv-fs-player");
+        if (!p || !p.duration) return;
+        var ratio = (parseFloat(seek.value) || 0) / 1000;
+        var curEl = el.querySelector(".yl-rv-fs__time--cur");
+        if (curEl) curEl.textContent = formatFsTime(ratio * p.duration);
+        seek.style.setProperty("--yl-rv-seek", seek.value / 10 + "%");
+      }
+      function endSeek() {
+        var p = document.getElementById("yl-rv-fs-player");
+        fs.seeking = false;
+        if (p && p.duration) {
+          try {
+            p.currentTime = ((parseFloat(seek.value) || 0) / 1000) * p.duration;
+          } catch (e) {}
+          updateFsProgress(p);
+        }
+        revealFsChrome(true);
+      }
+      seek.addEventListener("pointerdown", beginSeek);
+      seek.addEventListener("touchstart", beginSeek, { passive: true });
+      seek.addEventListener("mousedown", beginSeek);
+      seek.addEventListener("input", onSeekInput);
+      seek.addEventListener("change", endSeek);
+      seek.addEventListener("pointerup", endSeek);
+      seek.addEventListener("touchend", endSeek);
+      seek.addEventListener("mouseup", endSeek);
+    }
     el.addEventListener("click", function (event) {
       if (!fs.open) return;
-      if (event.target.closest(".yl-rv-fs__close, .yl-rv-fs__nav, .yl-rv-fs__toggle")) return;
+      if (event.target.closest(".yl-rv-fs__close, .yl-rv-fs__nav, .yl-rv-fs__toggle, .yl-rv-fs__progress")) {
+        return;
+      }
       // Tap empty stage / video: reveal chrome, or toggle play if chrome already up
       if (!fs.chromeVisible) {
         revealFsChrome(true);
@@ -583,6 +635,40 @@
     });
 
     return el;
+  }
+
+  function formatFsTime(seconds) {
+    var s = Math.max(0, Math.floor(seconds || 0));
+    var m = Math.floor(s / 60);
+    var r = s % 60;
+    return m + ":" + (r < 10 ? "0" : "") + r;
+  }
+
+  function updateFsProgress(player) {
+    var el = document.getElementById("yl-rv-fs");
+    if (!el || !player) return;
+    var seek = el.querySelector(".yl-rv-fs__seek");
+    var curEl = el.querySelector(".yl-rv-fs__time--cur");
+    var durEl = el.querySelector(".yl-rv-fs__time--dur");
+    var duration = player.duration;
+    var current = player.currentTime || 0;
+    if (!isFinite(duration) || duration <= 0) {
+      if (seek) {
+        seek.value = "0";
+        seek.style.setProperty("--yl-rv-seek", "0%");
+      }
+      if (curEl) curEl.textContent = "0:00";
+      if (durEl) durEl.textContent = "0:00";
+      return;
+    }
+    var ratio = Math.min(1, Math.max(0, current / duration));
+    var value = Math.round(ratio * 1000);
+    if (seek && !fs.seeking) {
+      seek.value = String(value);
+      seek.style.setProperty("--yl-rv-seek", ratio * 100 + "%");
+    }
+    if (curEl) curEl.textContent = formatFsTime(current);
+    if (durEl) durEl.textContent = formatFsTime(duration);
   }
 
   function clearFsChromeTimer() {
@@ -610,12 +696,13 @@
     el.classList.add("yl-rv-fs--chrome-visible");
     el.classList.remove("yl-rv-fs--chrome-hidden");
     updateFsToggleIcon(player);
+    updateFsProgress(player);
     clearFsChromeTimer();
-    // While paused, keep the play button visible. While playing, show pause then hide after 3s.
-    if (autoHide === false || (player && player.paused)) return;
+    // While paused or scrubbing, keep chrome visible. While playing, fade out after 2s.
+    if (autoHide === false || fs.seeking || (player && player.paused)) return;
     fs.chromeTimer = window.setTimeout(function () {
       hideFsChrome();
-    }, 3000);
+    }, 2000);
   }
 
   function hideFsChrome() {
@@ -623,7 +710,7 @@
     var player = document.getElementById("yl-rv-fs-player");
     clearFsChromeTimer();
     if (!el || !fs.open) return;
-    // Keep play button visible while paused
+    // Keep play + progress visible while paused
     if (player && player.paused) {
       fs.chromeVisible = true;
       el.classList.add("yl-rv-fs--chrome-visible");
@@ -631,6 +718,7 @@
       updateFsToggleIcon(player);
       return;
     }
+    if (fs.seeking) return;
     fs.chromeVisible = false;
     el.classList.remove("yl-rv-fs--chrome-visible");
     el.classList.add("yl-rv-fs--chrome-hidden");
@@ -767,6 +855,7 @@
     fs.open = false;
     fs.slug = "";
     fs.chromeVisible = true;
+    fs.seeking = false;
     document.body.classList.remove("yl-rv-fs-open", "yl-rv-fs-open--ios", "yl-rv-fs-open--android");
     restoreThemeColor();
     exitShellFullscreen();
