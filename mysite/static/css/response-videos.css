@@ -138,6 +138,7 @@
   display: none;
 }
 
+
 .yl-rv__meta {
   display: grid;
   gap: 0.75rem;
@@ -361,6 +362,38 @@
 .yl-rv__expand-btn:hover {
   background: var(--rv-ink);
   color: #fff;
+}
+
+/* Custom maximize on the player — opens our fullscreen, not the system one */
+.yl-rv__expand-btn.yl-rv__fs-icon {
+  position: absolute;
+  right: 0.55rem;
+  bottom: 0.55rem;
+  z-index: 3;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0.4rem;
+  background: rgba(12, 12, 12, 0.62);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.yl-rv__expand-btn.yl-rv__fs-icon:hover,
+.yl-rv__expand-btn.yl-rv__fs-icon:active {
+  background: rgba(12, 12, 12, 0.88);
+  color: #fff;
+}
+
+.yl-rv__expand-btn.yl-rv__fs-icon svg {
+  display: block;
 }
 
 /* Native-like iOS / Android fullscreen shell */

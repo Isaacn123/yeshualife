@@ -318,6 +318,8 @@
       bindWatchTracking(player, wrap);
       var startBtn = wrap.querySelector(".yl-rv__player-start");
       if (startBtn) startBtn.setAttribute("data-slug", slug);
+      var fsIcon = wrap.querySelector(".yl-rv__fs-icon");
+      if (fsIcon) fsIcon.setAttribute("data-slug", slug);
     }
     if (title) title.textContent = item.title || "";
     if (engagement) {
