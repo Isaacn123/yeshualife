@@ -358,12 +358,32 @@ body.yl-rv-theater-open {
   box-sizing: border-box;
 }
 
-.yl-rv-theater__player {
+.yl-rv-theater__stage {
+  position: relative;
   width: 100%;
   max-height: calc(100dvh - 8.5rem);
   background: #000;
   aspect-ratio: 16 / 9;
+}
+
+.yl-rv-theater__player {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #000;
   object-fit: contain;
+}
+
+/* Captures swipes without blocking the bottom native control bar */
+.yl-rv-theater__swipe {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 3.4rem;
+  z-index: 3;
+  touch-action: pan-y;
+  cursor: grab;
 }
 
 .yl-rv-theater__close,
@@ -437,11 +457,26 @@ body.yl-rv-theater-open {
 }
 
 @media (max-width: 720px) {
-  .yl-rv-theater__nav {
-    display: none;
-  }
-
   .yl-rv-theater__frame {
     padding-inline: 0.65rem;
+  }
+
+  .yl-rv-theater__nav {
+    width: 2.35rem;
+    height: 2.35rem;
+    font-size: 1.4rem;
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  .yl-rv-theater__nav--prev {
+    left: 0.25rem;
+  }
+
+  .yl-rv-theater__nav--next {
+    right: 0.25rem;
+  }
+
+  .yl-rv-theater__swipe {
+    bottom: 3.8rem;
   }
 }

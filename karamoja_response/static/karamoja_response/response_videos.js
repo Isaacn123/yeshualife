@@ -335,6 +335,119 @@
     tryAutoplay(video);
   }
 
+  function exitNativeFullscreen(video) {
+    try {
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+    } catch (e) {}
+    try {
+      if (video && video.webkitDisplayingFullscreen && video.webkitExitFullscreen) {
+        video.webkitExitFullscreen();
+      }
+    } catch (e) {}
+  }
+
+  function slugFromVideoEl(video) {
+    if (!video) return currentPageSlug();
+    if (video.id === "yl-rv-theater-player") return theater.slug || currentPageSlug();
+    var card = video.closest(".yl-rv__card");
+    if (card) return card.getAttribute("data-slug") || "";
+    var wrap = video.closest(".yl-rv__player-wrap");
+    if (wrap) return wrap.getAttribute("data-video-slug") || "";
+    return currentPageSlug();
+  }
+
+  function bindNativeFullscreenRedirect(video) {
+    if (!video || video._ylRvFsBound) return;
+    video._ylRvFsBound = true;
+    var redirecting = false;
+
+    function redirectFromNative() {
+      if (redirecting) return;
+      if (theater.open) {
+        exitNativeFullscreen(video);
+        return;
+      }
+      if (playlistOrder.length < 1) return;
+      redirecting = true;
+      var slug = slugFromVideoEl(video);
+      exitNativeFullscreen(video);
+      window.setTimeout(function () {
+        openTheater(slug);
+        redirecting = false;
+      }, 40);
+    }
+
+    video.addEventListener("fullscreenchange", function () {
+      if (document.fullscreenElement === video) redirectFromNative();
+    });
+    video.addEventListener("webkitfullscreenchange", function () {
+      if (document.webkitFullscreenElement === video) redirectFromNative();
+    });
+    // iPhone/iPad native player maximize
+    video.addEventListener("webkitbeginfullscreen", function () {
+      redirectFromNative();
+    });
+  }
+
+  function bindSwipeSurface(surface) {
+    if (!surface || surface._ylRvSwipeBound) return;
+    surface._ylRvSwipeBound = true;
+
+    surface.addEventListener(
+      "touchstart",
+      function (event) {
+        if (!event.touches || !event.touches.length) return;
+        theater.touchActive = true;
+        theater.touchStartX = event.touches[0].clientX;
+        theater.touchStartY = event.touches[0].clientY;
+      },
+      { passive: true }
+    );
+
+    surface.addEventListener(
+      "touchend",
+      function (event) {
+        if (!theater.touchActive || !event.changedTouches || !event.changedTouches.length) return;
+        theater.touchActive = false;
+        var dx = event.changedTouches[0].clientX - theater.touchStartX;
+        var dy = event.changedTouches[0].clientY - theater.touchStartY;
+        var absX = Math.abs(dx);
+        var absY = Math.abs(dy);
+        if (Math.max(absX, absY) < 50) return;
+        if (absY >= absX) {
+          stepTheater(dy < 0 ? 1 : -1);
+        } else {
+          stepTheater(dx < 0 ? 1 : -1);
+        }
+      },
+      { passive: true }
+    );
+
+    // Desktop drag swipe
+    var drag = { active: false, x: 0, y: 0 };
+    surface.addEventListener("pointerdown", function (event) {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      drag.active = true;
+      drag.x = event.clientX;
+      drag.y = event.clientY;
+    });
+    surface.addEventListener("pointerup", function (event) {
+      if (!drag.active) return;
+      drag.active = false;
+      var dx = event.clientX - drag.x;
+      var dy = event.clientY - drag.y;
+      var absX = Math.abs(dx);
+      var absY = Math.abs(dy);
+      if (Math.max(absX, absY) < 60) return;
+      if (absY >= absX) stepTheater(dy < 0 ? 1 : -1);
+      else stepTheater(dx < 0 ? 1 : -1);
+    });
+  }
+
   function ensureTheater() {
     var existing = document.getElementById("yl-rv-theater");
     if (existing) return existing;
@@ -351,11 +464,14 @@
       '<button type="button" class="yl-rv-theater__close" aria-label="Close">×</button>' +
       '<button type="button" class="yl-rv-theater__nav yl-rv-theater__nav--prev" aria-label="Previous video">‹</button>' +
       '<button type="button" class="yl-rv-theater__nav yl-rv-theater__nav--next" aria-label="Next video">›</button>' +
-      '<video id="yl-rv-theater-player" class="yl-rv-theater__player" controls playsinline></video>' +
+      '<div class="yl-rv-theater__stage">' +
+      '<video id="yl-rv-theater-player" class="yl-rv-theater__player" controls playsinline controlslist="nofullscreen nodownload"></video>' +
+      '<div class="yl-rv-theater__swipe" aria-hidden="true"></div>' +
+      "</div>" +
       '<div class="yl-rv-theater__meta">' +
       '<p class="yl-rv-theater__title" id="yl-rv-theater-title"></p>' +
       '<p class="yl-rv-theater__count"><span id="yl-rv-theater-index">1</span> / <span id="yl-rv-theater-total">1</span> · <span id="yl-rv-theater-views">0</span> views</p>' +
-      '<p class="yl-rv-theater__hint">Swipe or use arrows to browse videos</p>' +
+      '<p class="yl-rv-theater__hint">Swipe left/right or tap ‹ › for more videos</p>' +
       "</div></div>";
     document.body.appendChild(el);
 
@@ -367,37 +483,8 @@
       stepTheater(1);
     });
 
-    el.addEventListener(
-      "touchstart",
-      function (event) {
-        if (!event.touches || !event.touches.length) return;
-        theater.touchActive = true;
-        theater.touchStartX = event.touches[0].clientX;
-        theater.touchStartY = event.touches[0].clientY;
-      },
-      { passive: true }
-    );
-
-    el.addEventListener(
-      "touchend",
-      function (event) {
-        if (!theater.touchActive || !event.changedTouches || !event.changedTouches.length) return;
-        theater.touchActive = false;
-        var dx = event.changedTouches[0].clientX - theater.touchStartX;
-        var dy = event.changedTouches[0].clientY - theater.touchStartY;
-        var absX = Math.abs(dx);
-        var absY = Math.abs(dy);
-        if (Math.max(absX, absY) < 55) return;
-        if (absY >= absX) {
-          // Vertical: swipe up = next, swipe down = previous
-          stepTheater(dy < 0 ? 1 : -1);
-        } else {
-          // Horizontal: swipe left = next, swipe right = previous
-          stepTheater(dx < 0 ? 1 : -1);
-        }
-      },
-      { passive: true }
-    );
+    bindSwipeSurface(el.querySelector(".yl-rv-theater__swipe"));
+    bindNativeFullscreenRedirect(el.querySelector("#yl-rv-theater-player"));
 
     return el;
   }
@@ -508,7 +595,29 @@
     var desktopWrap = document.querySelector(".yl-rv__player-wrap");
     if (desktopPlayer && desktopWrap) {
       bindWatchTracking(desktopPlayer, desktopWrap);
+      bindNativeFullscreenRedirect(desktopPlayer);
     }
+    document.querySelectorAll(".yl-rv__card-video").forEach(function (video) {
+      bindNativeFullscreenRedirect(video);
+    });
+
+    // If the page/container goes fullscreen with our video inside, open theater instead.
+    function onDocumentFullscreen() {
+      var fs =
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.msFullscreenElement;
+      if (!fs || theater.open) return;
+      var video = fs.matches && fs.matches("video") ? fs : fs.querySelector && fs.querySelector("video");
+      if (!video || !video.closest || !video.closest(".yl-rv")) return;
+      var slug = slugFromVideoEl(video);
+      exitNativeFullscreen(video);
+      window.setTimeout(function () {
+        openTheater(slug);
+      }, 40);
+    }
+    document.addEventListener("fullscreenchange", onDocumentFullscreen);
+    document.addEventListener("webkitfullscreenchange", onDocumentFullscreen);
 
     document.addEventListener(
       "click",
