@@ -151,6 +151,38 @@
       });
   }
 
+  function listBlocks() {
+    return Array.prototype.slice.call(document.querySelectorAll("#yl-rv-video-list .yl-rv-block"));
+  }
+
+  async function persistOrder() {
+    var blocks = listBlocks();
+    for (var i = 0; i < blocks.length; i++) {
+      var metaUrl = blocks[i].getAttribute("data-meta-url");
+      if (!metaUrl) continue;
+      await postForm(metaUrl, { sort_order: String(i + 1) });
+    }
+  }
+
+  async function moveBlock(block, direction) {
+    var blocks = listBlocks();
+    var index = blocks.indexOf(block);
+    if (index < 0) return;
+    var swapWith = direction < 0 ? blocks[index - 1] : blocks[index + 1];
+    if (!swapWith) return;
+    if (direction < 0) {
+      block.parentNode.insertBefore(block, swapWith);
+    } else {
+      block.parentNode.insertBefore(swapWith, block);
+    }
+    try {
+      await persistOrder();
+      setStatus(block, "Order updated. Reload the public page to see the new sequence.", false);
+    } catch (e) {
+      setStatus(block, "Could not save order: " + (e.message || String(e)), true);
+    }
+  }
+
   function wireBlock(block) {
     if (!block || block._ylRvBound) return;
     block._ylRvBound = true;
@@ -168,6 +200,20 @@
     if (deleteBtn) {
       deleteBtn.addEventListener("click", function () {
         removeBlock(block);
+      });
+    }
+
+    var upBtn = block.querySelector(".yl-rv-move-up");
+    if (upBtn) {
+      upBtn.addEventListener("click", function () {
+        moveBlock(block, -1);
+      });
+    }
+
+    var downBtn = block.querySelector(".yl-rv-move-down");
+    if (downBtn) {
+      downBtn.addEventListener("click", function () {
+        moveBlock(block, 1);
       });
     }
 
@@ -201,10 +247,17 @@
       urlsJson +
       "<\/script>" +
       '<div class="gs-similar-block__head">' +
+      '<div class="yl-rv-block__title-row" style="display:flex;gap:0.5rem;align-items:flex-end;flex-wrap:wrap;">' +
+      '<div style="flex:1;min-width:12rem;">' +
       '<label class="w-field__label">Video title</label>' +
       '<input type="text" class="w-field__input yl-rv-title" maxlength="200" value="' +
       String(video.title || "").replace(/"/g, "&quot;") +
       '">' +
+      "</div>" +
+      '<div class="yl-rv-block__order" style="display:flex;gap:0.35rem;">' +
+      '<button type="button" class="button button-secondary yl-rv-move-up" title="Move up">↑</button>' +
+      '<button type="button" class="button button-secondary yl-rv-move-down" title="Move down">↓</button>' +
+      "</div></div>" +
       '<p class="gs-similar-stats help">0 views · 0 likes · Status: draft</p>' +
       "</div>" +
       '<div class="gs-similar-block__upload">' +

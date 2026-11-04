@@ -7,8 +7,16 @@
 >
   <script type="application/json" class="yl-rv-api-json">{{ api_urls_json|safe }}</script>
   <div class="gs-similar-block__head">
-    <label class="w-field__label">Video title</label>
-    <input type="text" class="w-field__input yl-rv-title" value="{{ video.title }}" maxlength="200" placeholder="e.g. Conference highlights">
+    <div class="yl-rv-block__title-row" style="display:flex;gap:0.5rem;align-items:flex-end;flex-wrap:wrap;">
+      <div style="flex:1;min-width:12rem;">
+        <label class="w-field__label">Video title</label>
+        <input type="text" class="w-field__input yl-rv-title" value="{{ video.title }}" maxlength="200" placeholder="e.g. Conference highlights">
+      </div>
+      <div class="yl-rv-block__order" style="display:flex;gap:0.35rem;">
+        <button type="button" class="button button-secondary yl-rv-move-up" title="Move up">↑</button>
+        <button type="button" class="button button-secondary yl-rv-move-down" title="Move down">↓</button>
+      </div>
+    </div>
     <p class="gs-similar-stats help">{{ video.views_display }} views · {{ video.likes_display }} likes · {{ video.shares_display }} shares · Status: {{ video.status }}</p>
   </div>
 
