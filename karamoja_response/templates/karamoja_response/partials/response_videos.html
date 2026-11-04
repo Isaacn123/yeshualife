@@ -47,9 +47,6 @@
               data-share-path="{{ video.get_absolute_url }}"
               data-share-title="{{ video.title }}"
             >Share</button>
-            {% if response_videos|length > 1 %}
-            <button type="button" class="yl-rv__btn yl-rv__btn--quiet yl-rv__max-btn" data-slug="{{ video.slug }}">Max view</button>
-            {% endif %}
           </div>
         </div>
       </div>
@@ -128,9 +125,6 @@
               data-share-path="{{ video.get_absolute_url }}"
               data-share-title="{{ video.title }}"
             >Share</button>
-            {% if response_videos|length > 1 %}
-            <button type="button" class="yl-rv__btn yl-rv__btn--quiet yl-rv__max-btn" data-slug="{{ video.slug }}">Max view</button>
-            {% endif %}
           </div>
         </div>
       </div>
