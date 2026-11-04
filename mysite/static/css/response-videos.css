@@ -34,7 +34,6 @@
   letter-spacing: -0.02em;
 }
 
-/* Mobile-first: hide desktop stage, show vertical feed */
 .yl-rv__desktop {
   display: none;
 }
@@ -330,4 +329,139 @@
 .yl-rv__player-wrap,
 .yl-rv__card-media {
   touch-action: pan-y;
+}
+
+.yl-rv__expand-btn {
+  appearance: none;
+  border: 1px solid var(--rv-ink);
+  background: transparent;
+  color: var(--rv-ink);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.5rem 0.95rem;
+  cursor: pointer;
+}
+
+.yl-rv__expand-btn:hover {
+  background: var(--rv-ink);
+  color: #fff;
+}
+
+/* Native-like iOS / Android fullscreen shell */
+body.yl-rv-fs-open {
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #000;
+}
+
+.yl-rv-fs {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  background: #000;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  max-height: -webkit-fill-available;
+  color: #fff;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.yl-rv-fs[hidden] {
+  display: none !important;
+}
+
+.yl-rv-fs:fullscreen,
+.yl-rv-fs:-webkit-full-screen {
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+.yl-rv-fs__stage {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.yl-rv-fs__player {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+/* Swipe catcher leaves native control bar free */
+.yl-rv-fs__swipe {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 4.25rem;
+  z-index: 2;
+  touch-action: none;
+}
+
+.yl-rv-fs--ios .yl-rv-fs__swipe {
+  bottom: 5rem;
+  top: 3.25rem;
+}
+
+.yl-rv-fs--android .yl-rv-fs__swipe {
+  bottom: 4.5rem;
+  top: 3rem;
+}
+
+.yl-rv-fs__close {
+  position: absolute;
+  z-index: 5;
+  border: 0;
+  cursor: pointer;
+  color: #fff;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* iOS-style Done (top left) */
+.yl-rv-fs__close--done {
+  top: calc(0.65rem + env(safe-area-inset-top, 0px));
+  left: calc(0.75rem + env(safe-area-inset-left, 0px));
+  right: auto;
+  background: transparent;
+  font: 600 1.05rem/1.2 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+  padding: 0.45rem 0.35rem;
+  letter-spacing: -0.01em;
+}
+
+/* Android-style close (top right circle) */
+.yl-rv-fs__close--icon {
+  top: calc(0.55rem + env(safe-area-inset-top, 0px));
+  right: calc(0.55rem + env(safe-area-inset-right, 0px));
+  left: auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: rgba(28, 28, 28, 0.72);
+  font: 400 1.55rem/1 Roboto, "Segoe UI", sans-serif;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 900px) {
+  .yl-rv-fs__close--done,
+  .yl-rv-fs__close--icon {
+    top: 1rem;
+  }
+
+  .yl-rv-fs__swipe {
+    bottom: 3.75rem;
+  }
 }

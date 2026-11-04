@@ -47,6 +47,9 @@
               data-share-path="{{ video.get_absolute_url }}"
               data-share-title="{{ video.title }}"
             >Share</button>
+            {% if response_videos|length > 1 %}
+            <button type="button" class="yl-rv__expand-btn" data-slug="{{ video.slug }}">Fullscreen</button>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -125,6 +128,9 @@
               data-share-path="{{ video.get_absolute_url }}"
               data-share-title="{{ video.title }}"
             >Share</button>
+            {% if response_videos|length > 1 %}
+            <button type="button" class="yl-rv__expand-btn" data-slug="{{ video.slug }}">Fullscreen</button>
+            {% endif %}
           </div>
         </div>
       </div>
