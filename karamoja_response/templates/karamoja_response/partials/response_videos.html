@@ -19,7 +19,6 @@
         <video
           id="yl-rv-player"
           class="yl-rv__player"
-          controls
           playsinline
           webkit-playsinline
           preload="metadata"
@@ -28,6 +27,9 @@
           src="{{ video.playback_url }}"
           {% if video.thumbnail_url %}poster="{{ video.thumbnail_url }}"{% endif %}
         ></video>
+        <button type="button" class="yl-rv__player-start" data-slug="{{ video.slug }}" aria-label="Play {{ video.title }}">
+          <span class="yl-rv__thumb-play" aria-hidden="true"></span>
+        </button>
       </div>
 
       <div class="yl-rv__meta" id="yl-rv-meta">
@@ -96,7 +98,6 @@
       <div class="yl-rv__card-media">
         <video
           class="yl-rv__card-video"
-          controls
           playsinline
           webkit-playsinline
           preload="none"

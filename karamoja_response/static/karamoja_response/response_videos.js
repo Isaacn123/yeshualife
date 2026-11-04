@@ -303,10 +303,12 @@
     clearWatchTracking(player);
     pauseAllVideos(player);
     player.pause();
+    if (wrap) wrap.classList.remove("is-playing");
     if (item.poster) player.setAttribute("poster", item.poster);
     else player.removeAttribute("poster");
     player.src = item.src || "";
     player.load();
+    applyPageVideoChrome(player);
 
     if (wrap) {
       wrap.setAttribute("data-video-slug", slug);
@@ -314,6 +316,8 @@
       wrap.removeAttribute("data-view-counted");
       if (!skipScroll) wrap.scrollIntoView({ behavior: "smooth", block: "start" });
       bindWatchTracking(player, wrap);
+      var startBtn = wrap.querySelector(".yl-rv__player-start");
+      if (startBtn) startBtn.setAttribute("data-slug", slug);
     }
     if (title) title.textContent = item.title || "";
     if (engagement) {
@@ -358,6 +362,7 @@
     else video.removeAttribute("poster");
     video.src = item.src || "";
     video.load();
+    applyPageVideoChrome(video);
     card.classList.add("is-playing");
     card.removeAttribute("data-view-counted");
     card.setAttribute("data-video-slug", slug);
@@ -376,6 +381,17 @@
 
   function isAndroid() {
     return /Android/i.test(navigator.userAgent);
+  }
+
+  // Phones always expose a native maximize on <video controls>. That layer
+  // sits above our custom FS and causes the still-image / double-player bug.
+  function isPhonePlayer() {
+    return isIOS() || isAndroid();
+  }
+
+  function applyPageVideoChrome(video) {
+    if (!video || video.id === "yl-rv-fs-player") return;
+    hardenVideoAgainstNativeFs(video);
   }
 
   function setThemeColor(color) {
@@ -449,10 +465,18 @@
 
     // Important: nav controls sit in an HTML bar UNDER the video element.
     // Overlays on top of <video> often cannot receive taps on iOS/Android.
+    // On phones, omit native controls so maximize cannot cover this shell.
+    // Desktop keeps controls (controlslist nofullscreen works there).
+    var fsVideoAttrs = isPhonePlayer()
+      ? 'playsinline webkit-playsinline x5-playsinline controlslist="nofullscreen nodownload noremoteplayback" disablepictureinpicture'
+      : 'controls playsinline webkit-playsinline x5-playsinline controlslist="nofullscreen nodownload noremoteplayback" disablepictureinpicture';
+
     el.innerHTML =
       closeHtml +
       '<div class="yl-rv-fs__stage">' +
-      '<video id="yl-rv-fs-player" class="yl-rv-fs__player" controls playsinline webkit-playsinline x5-playsinline controlslist="nofullscreen nodownload noremoteplayback" disablepictureinpicture></video>' +
+      '<video id="yl-rv-fs-player" class="yl-rv-fs__player" ' +
+      fsVideoAttrs +
+      "></video>" +
       "</div>" +
       '<div class="yl-rv-fs__bar">' +
       '<button type="button" class="yl-rv-fs__nav yl-rv-fs__nav--prev" aria-label="Previous video">‹ Previous</button>' +
@@ -512,9 +536,18 @@
     var player = el.querySelector("#yl-rv-fs-player");
     if (player) {
       bindFsPlayerNativeBlock(player);
+      // Tap video to play/pause when native controls are omitted (phones)
+      player.addEventListener("click", function () {
+        if (!fs.open || !isPhonePlayer()) return;
+        if (player.paused) tryAutoplay(player);
+        else {
+          try {
+            player.pause();
+          } catch (e) {}
+        }
+      });
       player.addEventListener("ended", function () {
         if (!fs.open) return;
-        // Advance when a clip finishes
         if (neighborSlug(fs.slug, 1)) stepFullscreen(1);
       });
     }
@@ -613,11 +646,44 @@
   function hardenVideoAgainstNativeFs(video) {
     if (!video) return;
     try {
-      video.setAttribute("controlslist", "nofullscreen nodownload noremoteplayback");
       video.setAttribute("playsinline", "");
       video.setAttribute("webkit-playsinline", "");
       video.setAttribute("x5-playsinline", "true");
+      video.setAttribute("controlslist", "nofullscreen nodownload noremoteplayback");
       video.disablePictureInPicture = true;
+      // Critical: phones always show a native maximize with controls.
+      // That native layer sits on top of custom FS — never enable it on page videos.
+      if (isPhonePlayer() || video.id !== "yl-rv-fs-player") {
+        video.removeAttribute("controls");
+      }
+      // Desktop page videos also skip controls — play via overlay / Fullscreen button.
+      // Only the desktop custom FS player may use native controls.
+      if (video.id === "yl-rv-fs-player" && !isPhonePlayer()) {
+        video.setAttribute("controls", "");
+      }
+    } catch (e) {}
+  }
+
+  function blockNativeFullscreenApi(video, onAttempt) {
+    if (!video) return;
+    var handler =
+      onAttempt ||
+      function () {
+        exitNativeFullscreen(video);
+      };
+    try {
+      video.requestFullscreen = function () {
+        handler();
+        return Promise.resolve();
+      };
+      if (video.webkitRequestFullscreen) video.webkitRequestFullscreen = handler;
+      if (video.webkitRequestFullScreen) video.webkitRequestFullScreen = handler;
+      if (typeof video.webkitEnterFullscreen === "function") {
+        video.webkitEnterFullscreen = handler;
+      }
+      if (typeof video.webkitEnterFullScreen === "function") {
+        video.webkitEnterFullScreen = handler;
+      }
     } catch (e) {}
   }
 
@@ -633,21 +699,7 @@
       }, 0);
     }
 
-    try {
-      player.requestFullscreen = function () {
-        stayInCustom();
-        return Promise.resolve();
-      };
-      if (player.webkitRequestFullscreen) player.webkitRequestFullscreen = stayInCustom;
-      if (player.webkitRequestFullScreen) player.webkitRequestFullScreen = stayInCustom;
-      if (typeof player.webkitEnterFullscreen === "function") {
-        player.webkitEnterFullscreen = stayInCustom;
-      }
-      if (typeof player.webkitEnterFullScreen === "function") {
-        player.webkitEnterFullScreen = stayInCustom;
-      }
-    } catch (e) {}
-
+    blockNativeFullscreenApi(player, stayInCustom);
     player.addEventListener("webkitbeginfullscreen", stayInCustom);
     player.addEventListener("fullscreenchange", function () {
       if (document.fullscreenElement === player) stayInCustom();
@@ -663,47 +715,23 @@
     video._ylRvFsBound = true;
     hardenVideoAgainstNativeFs(video);
 
-    // Open custom immediately, then dismiss native. Never leave native as the only UI.
-    function takeOver() {
-      if (fs.redirecting) {
-        exitNativeFullscreen(video);
-        return;
-      }
-      fs.redirecting = true;
-      openFullscreen(slugFromVideoEl(video), video);
+    // Never open custom under a live native FS session — that is the
+    // "default on top, custom after exit" bug. Only dismiss native if it appears.
+    function dismissNativeOnly() {
       exitNativeFullscreen(video);
       window.setTimeout(function () {
         exitNativeFullscreen(video);
       }, 0);
-      window.setTimeout(function () {
-        exitNativeFullscreen(video);
-        fs.redirecting = false;
-      }, 160);
     }
 
-    try {
-      if (typeof video.webkitEnterFullscreen === "function") {
-        video.webkitEnterFullscreen = takeOver;
-      }
-      if (typeof video.webkitEnterFullScreen === "function") {
-        video.webkitEnterFullScreen = takeOver;
-      }
-      video.requestFullscreen = function () {
-        takeOver();
-        return Promise.resolve();
-      };
-      if (video.webkitRequestFullscreen) video.webkitRequestFullscreen = takeOver;
-      if (video.webkitRequestFullScreen) video.webkitRequestFullScreen = takeOver;
-    } catch (e) {}
-
+    blockNativeFullscreenApi(video, dismissNativeOnly);
     video.addEventListener("fullscreenchange", function () {
-      if (document.fullscreenElement === video) takeOver();
+      if (document.fullscreenElement === video) dismissNativeOnly();
     });
     video.addEventListener("webkitfullscreenchange", function () {
-      if (document.webkitFullscreenElement === video) takeOver();
+      if (document.webkitFullscreenElement === video) dismissNativeOnly();
     });
-    // iOS control maximize still fires this even when APIs are patched
-    video.addEventListener("webkitbeginfullscreen", takeOver);
+    video.addEventListener("webkitbeginfullscreen", dismissNativeOnly);
   }
 
   function initLikedState() {
@@ -723,10 +751,56 @@
     var desktopPlayer = document.getElementById("yl-rv-player");
     var desktopWrap = document.querySelector(".yl-rv__player-wrap");
     if (desktopPlayer && desktopWrap) {
+      applyPageVideoChrome(desktopPlayer);
       bindWatchTracking(desktopPlayer, desktopWrap);
       bindNativeFullscreenRedirect(desktopPlayer);
+      if (!desktopPlayer._ylRvPlayUiBound) {
+        desktopPlayer._ylRvPlayUiBound = true;
+        desktopPlayer.addEventListener("play", function () {
+          desktopWrap.classList.add("is-playing");
+        });
+        desktopPlayer.addEventListener("pause", function () {
+          desktopWrap.classList.remove("is-playing");
+        });
+        desktopPlayer.addEventListener("ended", function () {
+          desktopWrap.classList.remove("is-playing");
+        });
+        desktopPlayer.addEventListener("click", function () {
+          if (desktopPlayer.paused) tryAutoplay(desktopPlayer);
+          else {
+            try {
+              desktopPlayer.pause();
+            } catch (e) {}
+          }
+        });
+      }
     }
-    document.querySelectorAll(".yl-rv__card-video").forEach(bindNativeFullscreenRedirect);
+    document.querySelectorAll(".yl-rv__card-video").forEach(function (video) {
+      applyPageVideoChrome(video);
+      bindNativeFullscreenRedirect(video);
+    });
+    document.querySelectorAll(".yl-rv__card").forEach(function (card) {
+      var video = card.querySelector(".yl-rv__card-video");
+      if (!video || video._ylRvPlayUiBound) return;
+      video._ylRvPlayUiBound = true;
+      video.addEventListener("play", function () {
+        card.classList.add("is-playing");
+      });
+      video.addEventListener("pause", function () {
+        card.classList.remove("is-playing");
+      });
+      video.addEventListener("ended", function () {
+        card.classList.remove("is-playing");
+      });
+      video.addEventListener("click", function () {
+        if (video.paused) tryAutoplay(video);
+        else {
+          try {
+            video.pause();
+          } catch (e) {}
+        }
+      });
+    });
 
     document.addEventListener("fullscreenchange", function () {
       var node = document.fullscreenElement || document.webkitFullscreenElement;
@@ -735,14 +809,11 @@
       var video =
         node.tagName === "VIDEO"
           ? node
-          : node.querySelector && node.querySelector(".yl-rv video");
-      if (!video || !video.closest || !video.closest(".yl-rv")) return;
-      if (video.id === "yl-rv-fs-player") {
+          : node.querySelector && node.querySelector(".yl-rv video, #yl-rv-fs-player");
+      if (!video) return;
+      if (video.id === "yl-rv-fs-player" || (video.closest && video.closest(".yl-rv"))) {
         exitNativeFullscreen(video);
-        return;
       }
-      openFullscreen(slugFromVideoEl(video), video);
-      exitNativeFullscreen(video);
     });
 
     document.addEventListener("keydown", function (event) {
@@ -784,6 +855,14 @@
           event.preventDefault();
           event.stopPropagation();
           openFullscreen(expandBtn.getAttribute("data-slug") || currentPageSlug());
+          return;
+        }
+
+        var playerStart = event.target.closest(".yl-rv__player-start");
+        if (playerStart) {
+          event.preventDefault();
+          event.stopPropagation();
+          selectDesktop(playerStart.getAttribute("data-slug") || currentPageSlug(), true);
           return;
         }
 

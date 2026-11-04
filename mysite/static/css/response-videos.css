@@ -123,6 +123,21 @@
   background: #0f0e0c;
 }
 
+.yl-rv__player-start {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.yl-rv__player-wrap.is-playing .yl-rv__player-start {
+  display: none;
+}
+
 .yl-rv__meta {
   display: grid;
   gap: 0.75rem;
@@ -353,11 +368,6 @@ body.yl-rv-fs-open {
   overflow: hidden;
   overscroll-behavior: none;
   background: #000;
-}
-
-/* Hide page videos while custom FS is open so native maximize cannot flash over it */
-body.yl-rv-fs-open .yl-rv video {
-  visibility: hidden !important;
 }
 
 .yl-rv-fs {
